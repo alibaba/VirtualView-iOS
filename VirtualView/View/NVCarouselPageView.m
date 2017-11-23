@@ -153,7 +153,6 @@
     if (!_isCountDown)
     {
         _isCountDown = YES;
-        __weak typeof(self) weakSelf = self;
         //秒
         NSUInteger timeInterVal = 4;
         if (self.scrollInterval && [self.scrollInterval unsignedIntegerValue] > 0) {
@@ -162,76 +161,74 @@
         if (timeInterVal < 1) {
             timeInterVal = 1;
         }
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:timeInterVal repeats:YES block:^(NSTimer * _Nonnull timer) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf)
-            {
-                
-                [UIView animateWithDuration:0.5 delay:self.animDelay options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-                    if (strongSelf.subViewA.top == 0)
-                    {
-                        strongSelf.subViewA.top = strongSelf.subViewA.height;
-                        strongSelf.subViewB.top = 0;
-                    }
-                    else
-                    {
-                        strongSelf.subViewA.top = 0;
-                        strongSelf.subViewB.top = strongSelf.subViewA.height;
-                    }
-                } completion:^(BOOL finished) {
-                    if (strongSelf.subViewA.top == 0)
-                    {
-                        strongSelf.subViewB.top = -strongSelf.contentView.height;
-                    }
-                    else
-                    {
-                        strongSelf.subViewA.top = -strongSelf.contentView.height;
-                    }
-                    
-                    strongSelf.currentItemIndex += 1;
-                    if (strongSelf.currentItemIndex >= self.data.count)
-                    {
-                        strongSelf.currentItemIndex = 0;
-                    }
-                    NSDictionary *dict = [self.data objectAtIndex:strongSelf.currentItemIndex];
-                    if (dict && [dict isKindOfClass:[NSDictionary class]] == NO) {
-                        dict = nil;
-                    }
-                    NSString *string = [dict objectForKey:@"action"];
-                    if (string && [string isKindOfClass:[NSString class]]) {
-                        string = nil;
-                    }
-                    self.pageView.actionValue = string;
-                    self.pageView.superview.superview.actionValue = self.pageView.actionValue;
-                    
-                    NSUInteger nextIndex = strongSelf.currentItemIndex + 1;
-                    if (nextIndex >= self.data.count)
-                    {
-                        nextIndex = 0;
-                    }
-                    
-                    if (strongSelf.subViewA.top == 0)
-                    {
-                        NSDictionary *item = [self.data objectAtIndex:nextIndex];
-                        if (item && [item isKindOfClass:[NSDictionary class]] == NO) {
-                            item = nil;
-                        }
-                        [strongSelf.subViewB loadData:item];
-                    }
-                    else
-                    {
-                        NSDictionary *item = [self.data objectAtIndex:nextIndex];
-                        if (item && [item isKindOfClass:[NSDictionary class]] == NO) {
-                            item = nil;
-                        }
-                        [strongSelf.subViewA loadData:item];
-                    }
-                }];
-            }
-        }];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:timeInterVal target:self selector:@selector(timerEvent:) userInfo:nil repeats:YES];
     }
 }
 
+- (void)timerEvent:(id)sender
+{
+    [UIView animateWithDuration:0.5 delay:self.animDelay options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+        if (self.subViewA.top == 0)
+        {
+            self.subViewA.top = self.subViewA.height;
+            self.subViewB.top = 0;
+        }
+        else
+        {
+            self.subViewA.top = 0;
+            self.subViewB.top = self.subViewA.height;
+        }
+    } completion:^(BOOL finished) {
+        if (self.subViewA.top == 0)
+        {
+            self.subViewB.top = -self.contentView.height;
+        }
+        else
+        {
+            self.subViewA.top = -self.contentView.height;
+        }
+        
+        self.currentItemIndex += 1;
+        if (self.currentItemIndex >= self.data.count)
+        {
+            self.currentItemIndex = 0;
+        }
+        NSDictionary *dict = [self.data objectAtIndex:self.currentItemIndex];
+        if (dict && [dict isKindOfClass:[NSDictionary class]] == NO) {
+            dict = nil;
+        }
+        NSString *string = [dict objectForKey:@"action"];
+        if (string && [string isKindOfClass:[NSString class]]) {
+            string = nil;
+        }
+        self.pageView.actionValue = string;
+        self.pageView.superview.superview.actionValue = self.pageView.actionValue;
+        
+        NSUInteger nextIndex = self.currentItemIndex + 1;
+        if (nextIndex >= self.data.count)
+        {
+            nextIndex = 0;
+        }
+        
+        if (self.subViewA.top == 0)
+        {
+            NSDictionary *item = [self.data objectAtIndex:nextIndex];
+            if (item && [item isKindOfClass:[NSDictionary class]] == NO) {
+                item = nil;
+            }
+            [self.subViewB loadData:item];
+        }
+        else
+        {
+            NSDictionary *item = [self.data objectAtIndex:nextIndex];
+            if (item && [item isKindOfClass:[NSDictionary class]] == NO) {
+                item = nil;
+            }
+            [self.subViewA loadData:item];
+        }
+    }];
+}
+    
 
 -(void)endCountdown
 {
