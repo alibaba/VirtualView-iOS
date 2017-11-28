@@ -6,18 +6,21 @@
 //
 
 #import "VVLoader.h"
-static VVLoader* _ins;
-@interface VVLoader (){
-    //
-}
+
+@interface VVLoader ()
+
 @end
 
 @implementation VVLoader
-+ (id)shareInstance{
-    if (_ins==nil) {
-        _ins = [VVLoader new];
-        _ins.cacheDic = [NSMutableDictionary new];
-    }
-    return _ins;
+
++ (VVLoader *)sharedLoader
+{
+    static VVLoader *sharedLoader_;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedLoader_ = [VVLoader new];
+    });
+    return sharedLoader_;
 }
+
 @end

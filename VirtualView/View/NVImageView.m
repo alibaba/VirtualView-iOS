@@ -46,7 +46,6 @@
         NSDictionary* propertyInfoCK = [NSDictionary dictionaryWithObjectsAndKeys:varList2,@"varValues",[NSNumber numberWithInt:TYPE_STRING],@"valueType", nil];
         NSNumber* propertyNumCK = [NSNumber numberWithUnsignedInteger:STR_ID_ck];
         [self.mutablePropertyDic setObject:propertyInfoCK forKey:propertyNumCK];
-        //((UIImageView*)self.cocoaView).image = [UIImage imageNamed:@"ic_map_gaode"];
     }
     return self;
 }
@@ -57,9 +56,6 @@
     {
         _maskView = [[UIView alloc]init];
         _maskView.userInteractionEnabled = NO;
-        //_maskView.backgroundColor = [UIColor blackColor];
-        //_maskView.alpha = 0.03f;
-        //[self.cocoaView addSubview:_maskView];
     }
     return _maskView;
 }

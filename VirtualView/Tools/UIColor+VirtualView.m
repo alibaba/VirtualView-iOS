@@ -11,57 +11,53 @@
 
 + (UIColor *)colorWithHexValue:(NSUInteger)hexValue
 {
+    return [self colorWithHexValue:hexValue alpha:255];
+}
+
++ (UIColor *)colorWithHexValue:(NSUInteger)hexValue alpha:(NSUInteger)alpha
+{
     CGFloat r = ((hexValue & 0x00FF0000) >> 16) / 255.0;
     CGFloat g = ((hexValue & 0x0000FF00) >> 8) / 255.0;
     CGFloat b = (hexValue & 0x000000FF) / 255.0;
-    return [self colorWithRed:r green:g blue:b alpha:1];
+    CGFloat a = alpha / 255.0;
+    return [self colorWithRed:r green:g blue:b alpha:a];
 }
 
 + (UIColor *)colorWithString:(NSString *)string
 {
     NSUInteger len = [string length];
     NSUInteger hexValue = 0;
-    NSUInteger alpha = 1.f;
+    NSUInteger alpha = 1;
     if (len == 8 || (len == 9 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:[string lowercaseString]];
+        hexValue = [UIColor hexValueOfString:string];
         alpha = (hexValue & 0xFF000000) >> 24;
         hexValue = hexValue & 0x00FFFFFF;
+    } else if (len == 6 || (len == 7 && [string characterAtIndex:0] == (unichar)'#')) {
+        hexValue = [UIColor hexValueOfString:string];
+        alpha = 255;
+    } else if (len == 3 || (len == 4 && [string characterAtIndex:0] == (unichar)'#')) {
+        hexValue = [UIColor hexValueOfString:string];
+        alpha = 255;
     }
-    else if (len == 6 || (len == 7 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:[string lowercaseString]];
-        alpha = 255.f;
-    }
-    else if (len == 3 || (len == 4 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:[string lowercaseString]];
-        alpha = 255.f;
-    }
-    return [UIColor colorWithHexValue:hexValue];
+    return [UIColor colorWithHexValue:hexValue alpha:alpha];
 }
 
 + (NSUInteger)hexValueOfString:(NSString *)string
 {
-    unsigned result = 0;
-    NSString *newString = string;
-    if([newString hasPrefix:@"#"])
-    {
+    NSString *newString = [string lowercaseString];
+    if ([newString hasPrefix:@"#"]) {
         newString = [string substringFromIndex:1];
     }
-    else if([newString hasPrefix:@"0x"])
-    {
-        newString = [string substringFromIndex:2];
-    }
-    if(newString.length == 3)
-    {
+    if (newString.length == 3) {
         unichar str[6] = {0};
-        for(int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             unichar ch = [newString characterAtIndex:i];
-            str[i*2] = ch;
-            str[i*2+1] = ch;
+            str[i * 2] = ch;
+            str[i * 2 + 1] = ch;
         }
         newString = [NSString stringWithCharacters:str length:6];
     }
-    
+    unsigned result = 0;
     NSScanner *scanner = [NSScanner scannerWithString:newString];
     [scanner scanHexInt:&result];
     return result;

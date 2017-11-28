@@ -7,7 +7,6 @@
 
 #import "VVBinaryLoader.h"
 #import "VVSystemKey.h"
-#import "VVExpressCode.h"
 #import "VVVersionModel.h"
 #define VVHEAD @"ALIVV"
 static VVBinaryLoader* _shareLoader;
@@ -119,16 +118,6 @@ static VVBinaryLoader* _shareLoader;
 //    NSData* strData    = [dataStream subdataWithRange:si.range];
     
     return stringValue;
-}
-
-- (VVExpressCode*)getExprCodeWithType:(NSUInteger)type{
-    
-    NSDictionary* pageDic = [self getPageWithType:type];
-    NSUInteger index  = type%1024;
-    NSArray* expArray = [pageDic objectForKey:@"exp"];
-    SegmentInfo* si   = [expArray objectAtIndex:index];
-    NSData* expData   = [self.dataResource subdataWithRange:si.range];
-    return [[VVExpressCode alloc] initWith:(Byte*)[expData bytes] startPos:0 lenght:expData.length];
 }
 
 - (NSData*)getExtraCodeWithType:(NSUInteger)type{

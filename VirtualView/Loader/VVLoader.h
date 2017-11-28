@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @interface VVLoader : NSObject
-@property(strong, nonatomic)NSMutableDictionary* cacheDic;
-+ (VVLoader*)shareInstance;
+
++ (VVLoader *)sharedLoader;
+
 @end

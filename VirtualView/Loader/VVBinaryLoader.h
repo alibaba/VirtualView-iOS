@@ -7,9 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VVExpressCode;
 @class VVVersionModel;
-
 
 @interface VVBinaryLoader : NSObject
 
@@ -29,8 +27,6 @@
 
 - (NSString*)getStrCodeWithType:(int)type;
 
-- (VVExpressCode*)getExprCodeWithType:(NSUInteger)type;
-
 - (NSData*)getExtraCodeWithType:(NSUInteger)type;
 
 /**
@@ -41,6 +37,9 @@
  */
 - (VVVersionModel *)loadFromBuffer:(NSData*)buff;
 
+/**
+ Clear all loaded data.
+ */
 - (void)clear;
 
 @end

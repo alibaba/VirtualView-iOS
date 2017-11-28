@@ -11,7 +11,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if ([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[VVVersionModel class]]) {
         return [self compare:object] == NSOrderedSame;
     }
     return NO;

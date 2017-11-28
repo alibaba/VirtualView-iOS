@@ -31,8 +31,6 @@
     VVLayerDelegate* _layerDelegate;
     CALayer *myLayer;
 }
-//@property(strong, nonatomic)UIImage* defaultImg;
-//@property(nonatomic, assign)CGSize   imageSize;
 @property(strong, nonatomic)void (^setDataBlock)(void);
 @property(strong, nonatomic)NSString* url;
 @property(strong, nonatomic)NSURLSession* urlSession;
@@ -43,19 +41,13 @@
 @synthesize frame = _frame;
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)downloadURL
 {
-    NSString* url = downloadTask.originalRequest.URL.absoluteString;
+//    NSString* url = downloadTask.originalRequest.URL.absoluteString;
     self.defaultImg = [UIImage imageWithData:[NSData dataWithContentsOfURL:downloadURL]];
-    //[[VVLoader shareInstance].cacheDic setObject:self.defaultImg forKey:url];
-    @synchronized (self) {
-        [[VVLoader shareInstance].cacheDic setObject:self.defaultImg forKey:url];
-    }
-    //NSDictionary* dd =[VVLoader shareInstance].cacheDic;
+//    @synchronized (self) {
+//        [[VVLoader shareInstance].cacheDic setObject:self.defaultImg forKey:url];
+//    }
     if (self.downloadTask==downloadTask) {
-        //__weak typeof(VVImageView*) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            // 更新界面
-            //__strong typeof(VVImageView*) strongSelf = weakSelf;
-            //[strongSelf.updateDelegate updateDisplayRect:self.frame];
             [myLayer setNeedsDisplay];
         });
     }
@@ -85,7 +77,7 @@
 -(id)init{
     self = [super init];
     if (self) {
-        _defaultImg = [UIImage imageNamed:@"ic_map_gaode"];//[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.imgUrl]]];
+//        _defaultImg = [UIImage imageNamed:@"xxx"];
         self.width  = _defaultImg.size.width;
         self.height = _defaultImg.size.height;
         __weak typeof(VVImageView*) weakSelf = self;
@@ -98,8 +90,6 @@
                 [strongSelf.updateDelegate updateDisplayRect:strongSelf.frame];
             });
         };
-        
-        //urlSession=[NSURLSession sharedSession];
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         self.urlSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     }
@@ -134,20 +124,9 @@
 }
 
 - (void)drawRect:(CGRect)rect{
-    //
-    
     if (self.defaultImg==nil) {
-        self.defaultImg = [UIImage imageNamed:@"ic_map_gaode"];
+//        self.defaultImg = [UIImage imageNamed:@"xxx"];
     }
-    //CGRect rt = CGRectMake(self.frame.origin.x+self.paddingLeft, self.frame.origin.y+self.paddingTop, self.imageSize.width, self.imageSize.height);
-    //UIGraphicsBeginImageContextWithOptions(rt.size, NO, 0.0);
-    //CGContextRef con = UIGraphicsGetCurrentContext();
-    
-    //CGContextSaveGState(con);
-    //CGContextDrawImage(con,rt,self.defaultImg.CGImage);
-    //[self.defaultImg drawInRect:rt];
-    //UIGraphicsEndImageContext();
-    //[myLayer setNeedsDisplay];
 }
 
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
@@ -198,9 +177,6 @@
 }
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
-    //
-    //self.url = [dic objectForKey:self.dataTag];
-    //[super setDataObj:dic];
     self.url = nil;
     switch (key) {
         case STR_ID_src:
@@ -216,57 +192,17 @@
     if (rang.location==NSNotFound) {
         self.url = [NSString stringWithFormat:@"https:%@",self.url];
     }
-    UIImage* imgData = [[VVLoader shareInstance].cacheDic objectForKey:self.url];
-    if (imgData==nil) {
-
-        //self.defaultImg = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-        if (self.downloadTask) {
-            //[self.downloadTask cancel];
-        }
-       
+//    UIImage* imgData = [[VVLoader shareInstance].cacheDic objectForKey:self.url];
+//    if (imgData==nil) {
         NSURL *downloadURL = [NSURL URLWithString:self.url];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:downloadURL];
-        //request.allowsCellularAccess = NO;
         self.downloadTask = [self.urlSession downloadTaskWithRequest:request];
         [self.downloadTask resume];
-    }else{
-        self.defaultImg = imgData;
-        //__weak typeof(VVImageView*) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // 更新界面
-            //__strong typeof(VVImageView*) strongSelf = weakSelf;
-            //[strongSelf.updateDelegate updateDisplayRect:strongSelf.frame];
-            [myLayer setNeedsDisplay];
-        });
-    }
-    /*
-    __weak typeof(VVImageView*) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // 耗时的操作
-        __strong typeof(VVImageView*) strongSelf = weakSelf;
-        strongSelf.defaultImg = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.url]]];
-//        _imageSize.width = strongSelf.defaultImg.size.width/3.0;
-//        _imageSize.height = strongSelf.defaultImg.size.height/3.0;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // 更新界面
-            [strongSelf.updateDelegate updateDisplayRect:self.frame];
-        });
-    });
-    */
-    
-    /*
-    __weak typeof(VVImageView*) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // 更新界面
-        __strong typeof(VVImageView*) strongSelf = weakSelf;
-        [strongSelf.updateDelegate updateDisplayRect:self.frame];
-    });
-     */
-    
-//    if (dispatch_block_testcancel(self.setDataBlock)==0) {
-//        dispatch_block_cancel(self.setDataBlock);
+//    }else{
+//        self.defaultImg = imgData;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [myLayer setNeedsDisplay];
+//        });
 //    }
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),self.setDataBlock);
 }
 @end
