@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        flag="flag_exposure|flag_clickable"
+        orientation="V"
+        layoutWidth="match_parent"
+        layoutHeight="match_parent"
+>
+    <VText
+            text="Title: color = #0000FF | initValue = 70"
+            textSize="12"
+            textColor="#333333"
+            background="#008899"
+            layoutWidth="match_parent"
+            layoutHeight="20" />
+
+    <Progress
+            layoutWidth="match_parent"
+            layoutHeight="20"
+            initValue="70"
+            color="#0000FF" />
+
+    <VText
+        text="Title: background = #EEEEEE | color = #0000FF | initValue = 100"
+        textSize="12"
+        textColor="#333333"
+        background="#008899"
+        layoutWidth="match_parent"
+        layoutHeight="20" />
+
+    <Progress
+            layoutWidth="match_parent"
+            layoutHeight="20"
+            initValue="100"
+            color="#0000FF"
+            background="#EEEEEE" />
+
+    <VText
+            text="Title: width = 200 | initValue = 110"
+            textSize="12"
+            textColor="#333333"
+            background="#008899"
+            layoutWidth="match_parent"
+            layoutHeight="20" />
+
+    <Progress
+            layoutWidth="200"
+            layoutHeight="20"
+            initValue="110"
+            color="#0000FF"
+            background="#EEEEEE" />
+
+</VHLayout>
