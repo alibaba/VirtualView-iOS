@@ -22,14 +22,14 @@
                 NSString* stringValue  = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
                 NSString* className = [[VVSystemKey shareInstance] classNameForTag:stringValue];
                 Class cls = NSClassFromString(className);
-                #ifdef DEBUG
+                #ifdef VV_DEBUG
                     NSLog(@"make native class name:%@",className);
                 #endif
 
                 self.cocoaView = [[cls alloc] init];
                 self.nativeView = (id<NativeViewObject>)self.cocoaView;
                 if ([self.cocoaView isKindOfClass:UIView.class]==NO) {
-                    #ifdef DEBUG
+                    #ifdef VV_DEBUG
                         NSLog(@"'%@' is not kind of native view, container can't load.",self.cocoaView);
                     #endif
                     self.cocoaView = nil;

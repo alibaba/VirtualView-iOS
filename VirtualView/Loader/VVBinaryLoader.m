@@ -234,7 +234,7 @@ static VVBinaryLoader* _shareLoader;
             
             
             if (uiOffset==0 || uiSize==0) {
-                #ifdef DEBUG
+                #ifdef VV_DEBUG
                     NSLog(@"ui parse failed");
                 #endif
             }else{
@@ -266,7 +266,7 @@ static VVBinaryLoader* _shareLoader;
             }
             
             if (strOffset==0 || strSize==0) {
-                #ifdef DEBUG
+                #ifdef VV_DEBUG
                     NSLog(@"string parse failed");
                 #endif
             }else{
@@ -291,7 +291,7 @@ static VVBinaryLoader* _shareLoader;
                     SegmentInfo* si = [[SegmentInfo alloc] initWithPageID:pageID];
                     si.range = NSMakeRange(pos+segment, len);
                     
-                    #ifdef DEBUG
+                    #ifdef VV_DEBUG
                         NSData* strData   = [buff subdataWithRange:NSMakeRange(pos, len)];
                         NSString* str = [[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding];
                         NSLog(@"@@@@@@@index:%d,%@",index,str);
@@ -308,7 +308,7 @@ static VVBinaryLoader* _shareLoader;
             
             
             if (exprOffset==0 || exprSize==0) {
-                #ifdef DEBUG
+                #ifdef VV_DEBUG
                     NSLog(@"express parse failed");
                 #endif
             }else{
@@ -335,7 +335,7 @@ static VVBinaryLoader* _shareLoader;
             
             
             if (extraOffset==0 || extraSize==0) {
-                #ifdef DEBUG
+                #ifdef VV_DEBUG
                     NSLog(@"extra parse failed");
                 #endif
             }else{

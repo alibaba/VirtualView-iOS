@@ -505,27 +505,27 @@
             break;
             
         case STR_ID_uuid:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_uuid:%d",value);
             #endif
             break;
             
         case STR_ID_autoDimDirection:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimDirection:%d",value);
             #endif
             _autoDimDirection = value;
             break;
             
         case STR_ID_autoDimX:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimX:%d",value);
             #endif
             _autoDimX = value;
             break;
             
         case STR_ID_autoDimY:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimY:%d",value);
             #endif
             _autoDimY = value;
@@ -626,27 +626,27 @@
             break;
             
         case STR_ID_uuid:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_uuid:%f",value);
             #endif
             break;
             
         case STR_ID_autoDimDirection:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimDirection:%f",value);
             #endif
             _autoDimDirection = value;
             break;
             
         case STR_ID_autoDimX:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimX:%f",value);
             #endif
             _autoDimX = value;
             break;
             
         case STR_ID_autoDimY:
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"STR_ID_autoDimY:%f",value);
             #endif
             _autoDimY = value;

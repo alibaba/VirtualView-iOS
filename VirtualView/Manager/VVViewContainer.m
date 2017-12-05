@@ -48,12 +48,12 @@
 
 - (void)handleLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
     CGPoint pt =[gestureRecognizer locationInView:self];
-    #ifdef DEBUG
+    #ifdef VV_DEBUG
         NSLog(@"x:%f y:%f",pt.x,pt.y);
     #endif
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
     if (vvobj!=nil && [(VVViewObject*)vvobj isLongClickable]) {
-        #ifdef DEBUG
+        #ifdef VV_DEBUG
             NSLog(@"%@:%@",vvobj.action,vvobj.actionValue);
         #endif
         [self.delegate subViewLongPressed:vvobj.action andValue:vvobj.actionValue gesture:gestureRecognizer];
@@ -66,7 +66,7 @@
     CGPoint pt = [touch locationInView:self];
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
     if (vvobj!=nil && [(VVViewObject*)vvobj isClickable]) {
-        #ifdef DEBUG
+        #ifdef VV_DEBUG
             NSLog(@"%@:%@",vvobj.action,vvobj.actionValue);
         #endif
         if([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)])

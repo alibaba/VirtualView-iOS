@@ -173,7 +173,7 @@
             }
             VVViewObject* vvObj = [self.subViews objectAtIndex:index+j];
             CGSize itemSize = [vvObj calculateLayoutSize:_itemMaxSize];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"h:%f,w:%f",itemSize.height,itemSize.width);
             #endif
             tmpWidth+=itemSize.width;

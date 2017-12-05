@@ -162,7 +162,7 @@ static VVViewFactory*   _factory;
     NSString* className = [[VVSystemKey shareInstance] classNameForIndex:widgetid];
     Class cls = NSClassFromString(className);
     widget = [[cls alloc] init];
-    #ifdef DEBUG
+    #ifdef VV_DEBUG
         NSLog(@"make class name:%@",className);
         NSLog(@"makeWidgetWithID---------->widgetid:%d",widgetid);
     #endif
@@ -233,7 +233,7 @@ static VVViewFactory*   _factory;
             *pos+=4;
 
             [tempV setIntValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"int data:key=%d,value=%d",key,value);
             #endif
         }
@@ -256,7 +256,7 @@ static VVViewFactory*   _factory;
 
             value = value*[[VVSystemKey shareInstance] rate];
             [tempV setIntValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"apint data:key=%d,value=%d",key,value);
             #endif
         }
@@ -278,7 +278,7 @@ static VVViewFactory*   _factory;
             *pos+=4;
 
             [tempV setFloatValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"float data:key=%d,value=%f",key,value);
             #endif
         }
@@ -300,7 +300,7 @@ static VVViewFactory*   _factory;
 
             value = value*[[VVSystemKey shareInstance] rate];
             [tempV setFloatValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"apfloat data:key=%d,value=%f",key,value);
             #endif
         }
@@ -322,7 +322,7 @@ static VVViewFactory*   _factory;
             *pos+=4;
             
             [tempV setStringValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"string data:key=%d,value=%d",key,value);
             #endif
         }
@@ -344,7 +344,7 @@ static VVViewFactory*   _factory;
             *pos+=4;
 
             [tempV setExprossValue:value forKey:key];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"expr data:key=%d,value=%d",key,value);
             #endif
         }
@@ -370,7 +370,7 @@ static VVViewFactory*   _factory;
             *pos+=4;
             
             [tempV addUserVar:type nameID:name value:value];
-            #ifdef DEBUG
+            #ifdef VV_DEBUG
                 NSLog(@"exta data:key=%d,value=%d",name,value);
             #endif
         }
