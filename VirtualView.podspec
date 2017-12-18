@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   s.name         = "VirtualView"
   s.version      = "1.0.0"
-  s.summary      = "A solution to create custom view dynamically."
+  s.summary      = "A solution to create & release UI component dynamically."
   s.homepage     = "https://github.com/alibaba/VirtualView-iOS"
   s.license      = { :type => 'MIT' }
   s.author       = { "HarrisonXi" => "gpra8764@gmail.com" }
