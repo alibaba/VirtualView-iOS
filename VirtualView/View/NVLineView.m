@@ -47,6 +47,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (_drawLayer) _drawLayer.delegate = nil;
+}
+
 - (void)setDashMemery{
     if (self.lengths!=nil) {
         free(self.lengths);
