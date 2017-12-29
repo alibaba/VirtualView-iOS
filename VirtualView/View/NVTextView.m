@@ -45,6 +45,21 @@
     return self;
 }
 
+- (BOOL)bold
+{
+    return (self.textStyle & VVTextStyleBold) == VVTextStyleBold;
+}
+
+- (UIFont *)vv_font
+{
+    if (self.bold) {
+        return [UIFont boldSystemFontOfSize:self.frontSize<=0?14:self.frontSize];
+    } else if ((self.textStyle & VVTextStyleItalic) == VVTextStyleItalic) {
+        return [UIFont italicSystemFontOfSize:self.frontSize<=0?14:self.frontSize];
+    } else {
+        return [UIFont systemFontOfSize:self.frontSize<=0?14:self.frontSize];
+    }
+}
 
 - (void)layoutSubviews{
     
@@ -65,7 +80,7 @@
     }else{
         pX = self.paddingLeft;
     }
-    UIFont *font = self.bold?[UIFont boldSystemFontOfSize:self.frontSize<=0?14:self.frontSize]:[UIFont systemFontOfSize:self.frontSize<=0?14:self.frontSize];
+    UIFont *font = [self vv_font];
     self.textView.font = font;
     self.cocoaView.backgroundColor = self.backgroundColor;
     self.cocoaView.frame = self.frame;
@@ -90,7 +105,7 @@
 
 - (void)setData:(NSData*)data{
     //
-    self.textView.text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    self.text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
 }
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
@@ -238,7 +253,7 @@
     }else{
         CGSize textMaxRT = CGSizeMake(_maxSize.width-self.paddingLeft-self.paddingRight, _maxSize.height-self.paddingTop-self.paddingBottom);
         
-        UIFont *font = self.bold?[UIFont boldSystemFontOfSize:self.frontSize<=0?14:self.frontSize]:[UIFont systemFontOfSize:self.frontSize<=0?14:self.frontSize];
+        UIFont *font = [self vv_font];;
         if(self.lineSpace <= 0)
         {
             textSize = [self.text boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
@@ -271,7 +286,15 @@
 
 - (void)setText:(NSString *)text{
     _text = text;
-    self.textView.text = text;
+    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                       attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)}];
+    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                       attributes:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
+    } else {
+        self.textView.text = text;
+    }
 }
 
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
@@ -279,7 +302,6 @@
     switch (key) {
         case STR_ID_text:
             self.text = value;
-            //self.textView.text = value;
             if(self.lineSpace > 0)
             {
                 if(self.text.length > 0)
@@ -327,7 +349,6 @@
         NSString* str = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
         switch (key) {
             case STR_ID_text:
-                self.textView.text = str;
                 self.text = str;
                 break;
                 
@@ -371,7 +392,7 @@
                 self.textView.textColor = UIColorARGBWithHexValue(value);//[UIColor colorWithHexValue:value];
                 break;
             case STR_ID_textStyle:
-                self.bold = value;
+                self.textStyle = (VVTextStyle)value;
                 break;
             case STR_ID_maxLines:
                 self.textView.numberOfLines = value;
