@@ -144,7 +144,16 @@
     CGFloat height = self.heightModle > 0 ? self.heightModle : maxSize.height-self.paddingTop-self.paddingBottom;
     CGSize textMaxRT = CGSizeMake(width, height);
     
-    if(self.text && self.text.length>0){
+    StringInfo* info =[[VVViewFactory shareFactoryInstance] getDrawStringInfo:self.text andFrontSize:self.frontSize];
+
+    if([self.text isEqualToString:@"仅剩5件"])
+    {
+        ;
+    }
+    if(info){
+        self.textSize = info.drawRect;
+        //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
+    }else if(self.text && self.text.length>0){
 
         if (0/*[self.cacheInfoDic objectForKey:@"cached"]*/) {
             //textSize = CGSizeMake([[self.cacheInfoDic objectForKey:@"width"] floatValue], [[self.cacheInfoDic objectForKey:@"height"] floatValue]);
@@ -185,6 +194,10 @@
             }
             textSize.height=fTextRealHeight;
          }
+        StringInfo* info = [[StringInfo alloc] init];
+        info.drawRect = textSize;
+        self.textSize = textSize;
+        [[VVViewFactory shareFactoryInstance] setDrawStringInfo:info forString:self.text frontSize:self.frontSize];
     }
 
     _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
