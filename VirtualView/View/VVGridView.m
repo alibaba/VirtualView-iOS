@@ -444,7 +444,7 @@
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
     if (self.drawLayer==nil) {
-        self.drawLayer = [CALayer layer];
+        self.drawLayer = [VVLayer layer];
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.drawLayer.delegate =  (id<CALayerDelegate>)self;
