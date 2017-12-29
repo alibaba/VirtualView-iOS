@@ -112,6 +112,6 @@ static VVSystemKey* _shareInstance;
 }
 
 - (void)registerWidget:(NSString*)className withIndex:(NSUInteger)index{
-    [_dynamicCodeDic setObject:className forKey:[NSNumber numberWithUnsignedInteger:index]];
+    [_dynamicCodeDic setObject:className forKey:[NSString stringWithFormat:@"%zd", index]];
 }
 @end
