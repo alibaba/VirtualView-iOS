@@ -86,43 +86,22 @@
     }
 }
 
--(id<VVWidgetObject>)hitTest:(CGPoint)point{
-    id<VVWidgetObject> obj=nil;
-    if(self.visible==VISIBLE && self.hidden==NO && self.alpha>0.1f && [self pointInside:point]){
-        if (self.subViews.count>0) {
-            for (VVViewObject* item in self.subViews) {
-                if (item.subViews.count>0) {
-                    obj = [item hitTest:point];
-                    if (obj && ([(VVViewObject*)obj isClickable] || [(VVViewObject*)obj isLongClickable])) {
-                        return obj;
-                    }
-                }else{
-                    //BOOL isInside =[self pointInside:point withView:item];
-                    BOOL isInside =[item pointInside:point];
-                    if (isInside && ([(VVViewObject*)item isClickable] || [(VVViewObject*)item isLongClickable])) {
-                        obj = item;
-                        return obj;
-                    }
+- (id<VVWidgetObject>)hitTest:(CGPoint)point
+{
+    if (self.visible == VISIBLE && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
+        if (self.subViews.count > 0) {
+            for (VVViewObject* item in [self.subViews reverseObjectEnumerator]) {
+                id<VVWidgetObject> obj = [item hitTest:point];
+                if (obj) {
+                    return obj;
                 }
             }
-            //
-            obj = self;
-        }else{
-        /*
-        for(VVViewObject* subView in self.subViews){
-            obj = [subView hitTest:pt];
-            if(obj){
-                return obj;
-            }
         }
-        obj = self;*/
-            obj = self;
+        if ([self isClickable] || [self isLongClickable]) {
+            return self;
         }
     }
-    if ([(VVViewObject*)obj isClickable]==NO &&  [(VVViewObject*)obj isLongClickable]==NO) {
-        obj = nil;
-    }
-    return obj;
+    return nil;
 }
 
 - (VVViewObject*)findViewByID:(int)tagid{
