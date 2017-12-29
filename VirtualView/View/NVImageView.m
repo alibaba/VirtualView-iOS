@@ -95,9 +95,6 @@
                     UIColor* color = func(strongSelf,@selector(pixelColorFromImage:),image);
                     VVLayout* virtualView = (VVLayout*)((VVViewContainer*)strongSelf.updateDelegate).virtualView;
                     virtualView.borderColor = color;
-                    if ([virtualView respondsToSelector:@selector(borderColorChange)]) {
-                        [virtualView performSelector:@selector(borderColorChange)];
-                    }
                 }
             }];
         }else{

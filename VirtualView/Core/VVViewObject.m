@@ -229,6 +229,11 @@
             case STR_ID_autoDimX:
             case STR_ID_autoDimY:
             case STR_ID_borderWidth:
+            case STR_ID_borderRadius:
+            case STR_ID_borderTopLeftRadius:
+            case STR_ID_borderTopRightRadius:
+            case STR_ID_borderBottomLeftRadius:
+            case STR_ID_borderBottomRightRadius:
             case STR_ID_itemHorizontalMargin:
             case STR_ID_itemVerticalMargin:
             case STR_ID_textSize:
@@ -783,6 +788,11 @@
 }
 - (void)reset{
     //
+}
+
+- (void)didFinishBinding
+{
+    
 }
 
 - (void)dataUpdateFinished{

@@ -143,6 +143,11 @@
 #define  STR_ID_lineSpaceExtra  -1118334530
 #define  STR_ID_borderWidth  741115130
 #define  STR_ID_borderColor  722830999
+#define  STR_ID_borderRadius   1349188574
+#define  STR_ID_borderTopLeftRadius  -1228066334
+#define  STR_ID_borderTopRightRadius  333432965
+#define  STR_ID_borderBottomLeftRadius  581268560
+#define  STR_ID_borderBottomRightRadius  588239831
 #define  STR_ID_maxLines  390232059
 #define  STR_ID_dashEffect  1037639619
 #define  STR_ID_lineSpace  -1807275662
@@ -329,6 +334,7 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 
 - (void)addUserVar:(int)type nameID:(int)nameid value:(int)value;
 - (void)reset;
+- (void)didFinishBinding;
 - (void)setData:(NSData*)data;
 - (void)setDataObj:(NSObject*)obj forKey:(int)key;
 - (void)setTagsValue:(NSArray*)tags withData:(NSDictionary*)dic;

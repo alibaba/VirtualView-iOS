@@ -10,4 +10,5 @@
 @interface FrameView : UIView
 @property(assign, nonatomic)CGFloat  lineWidth;
 @property(strong, nonatomic)UIColor* borderColor;
+@property(assign, nonatomic)CGFloat borderRadius;
 @end

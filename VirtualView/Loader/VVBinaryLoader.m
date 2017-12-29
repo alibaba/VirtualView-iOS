@@ -221,10 +221,7 @@ static VVBinaryLoader* _shareLoader;
             [pageDetail setObject:[NSString stringWithFormat:@"%d",minor] forKey:@"minor"];
             [pageDetail setObject:[NSString stringWithFormat:@"%d",patch] forKey:@"patch"];
 
-            versionModel = [VVVersionModel new];
-            versionModel.major = major;
-            versionModel.minor = minor;
-            versionModel.patch = patch;
+            versionModel = [[VVVersionModel alloc] initWithMajor:major minor:minor patch:patch];
 
             short depPageCount, depPageID;
             [buff getBytes:&depPageCount range:NSMakeRange(45, 2)];

@@ -217,15 +217,15 @@
     //[self.drawLayer setNeedsDisplay];
 }
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    [super setUpdateDelegate:delegate];
     if (self.drawLayer==nil) {
         self.drawLayer = [CALayer layer];
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.drawLayer.delegate = self;
         [self.drawLayer setNeedsDisplay];
-        [((UIView*)self.updateDelegate).layer addSublayer:self.drawLayer];
+        [((UIView*)delegate).layer addSublayer:self.drawLayer];
     }
+    [super setUpdateDelegate:delegate];
 }
 
 - (void)setData:(NSData*)data{

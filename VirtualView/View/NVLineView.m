@@ -225,7 +225,6 @@
 }
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    [super setUpdateDelegate:delegate];
     if (self.drawLayer==nil) {
         self.drawLayer = [CALayer layer];
         self.drawLayer.drawsAsynchronously = YES;
@@ -234,6 +233,7 @@
         [self.drawLayer setNeedsDisplay];
         [((UIView*)self.cocoaView).layer addSublayer:self.drawLayer];
     }
+    [super setUpdateDelegate:delegate];
 }
 
 - (void)setData:(NSData*)data{

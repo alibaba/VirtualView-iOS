@@ -9,29 +9,22 @@
 
 @implementation FrameView
 
-- (id)init{
-    self = [super init];
-    if(self){
-        self.lineWidth = 0;
-        self.borderColor = [UIColor clearColor];
-    }
-    return self;
+- (void)setBorderColor:(UIColor *)borderColor
+{
+    _borderColor = borderColor;
+    self.layer.borderColor = borderColor.CGColor;
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-    if (self.lineWidth>0) {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSaveGState(context);
-        CGContextSetLineWidth(context, self.lineWidth);//线的宽度
-
-        CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);//线框颜色
-
-        CGRect rt = CGRectMake(0, 0, (int)self.frame.size.width, (int)self.frame.size.height);
-        CGContextStrokeRect(context,rt);
-        CGContextRestoreGState(context);
-    }
+- (void)setLineWidth:(CGFloat)lineWidth
+{
+    _lineWidth = lineWidth;
+    self.layer.borderWidth = lineWidth;
 }
+
+- (void)setBorderRadius:(CGFloat)borderRadius
+{
+    _borderRadius = borderRadius;
+    self.layer.cornerRadius = borderRadius;
+}
+
 @end

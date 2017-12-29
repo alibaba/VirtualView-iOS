@@ -6,9 +6,11 @@
 //
 
 #import "VVViewObject.h"
+#import "VVLayer.h"
 
 @interface VVLayout : VVViewObject
-@property(strong, nonatomic)CALayer*   drawLayer;
+
+@property(strong, nonatomic)VVLayer*   drawLayer;
 @property(strong, nonatomic)UIColor*   borderColor;
-- (void)borderColorChange;
+
 @end

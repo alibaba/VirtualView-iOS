@@ -406,6 +406,8 @@
         }
         //[item setDataObj:(NSDictionary*)obj];
         item.actionValue = [jsonData objectForKey:item.action];
+        
+        [item didFinishBinding];
     }
     [self.dataCacheDic setObject:widgetValues forKey:jsonData];
 

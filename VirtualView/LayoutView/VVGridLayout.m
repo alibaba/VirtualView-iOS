@@ -73,27 +73,6 @@
                 }
                 CGFloat pX = self.frame.origin.x+(vvObj.width+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
                 CGFloat pY = self.frame.origin.y+(vvObj.height+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
-                /*
-                CGFloat blanceW = (_itemMaxSize.width-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
-                CGFloat blanceH = (_itemMaxSize.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
-                
-                if((vvObj.layoutGravity&Gravity_H_CENTER)==Gravity_H_CENTER){
-                    //
-                    pX += blanceW<0?0:blanceW;
-                }else if((vvObj.layoutGravity&Gravity_RIGHT)!=0){
-                    pX = pX+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
-                }else{
-                    pX += 0;
-                }
-                
-                if((vvObj.layoutGravity&Gravity_V_CENTER)==Gravity_V_CENTER){
-                    //
-                    pY += blanceH<0?0:blanceH;
-                }else if((vvObj.layoutGravity&Gravity_BOTTOM)!=0){
-                    pY = pY+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
-                }else{
-                    pY += 0;
-                }*/
                 
                 vvObj.frame = CGRectMake(pX, pY, vvObj.width, vvObj.height);
                 [vvObj layoutSubviews];

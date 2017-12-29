@@ -443,17 +443,15 @@
 }
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    //[[super ].updateDelegate setUpdateDelegate:delegate];
-    for (VVViewObject* subObj in self.subViews) {
-        subObj.updateDelegate = (id<VVWidgetAction>)self.gridContainer;
-    }
     if (self.drawLayer==nil) {
         self.drawLayer = [CALayer layer];
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.drawLayer.delegate =  (id<CALayerDelegate>)self;
-        //[((UIView*)self.updateDelegate).layer addSublayer:self.drawLayer];
-        [self.gridContainer.layer insertSublayer:self.drawLayer atIndex:0];
+        [self.gridContainer.layer addSublayer:self.drawLayer];
+    }
+    for (VVViewObject* subObj in self.subViews) {
+        subObj.updateDelegate = (id<VVWidgetAction>)self.gridContainer;
     }
 }
 

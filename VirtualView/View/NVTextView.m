@@ -8,14 +8,14 @@
 #import "NVTextView.h"
 #import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
-#import "NVLabel.h"
 #import "FrameView.h"
 #import "VVViewFactory.h"
+
 @interface NVTextView (){
     CGSize _maxSize;
 }
 @property(nonatomic, assign)CGSize  textSize;
-@property(nonatomic, strong)NVLabel* textView;
+@property(nonatomic, strong)UILabel* textView;
 @property(nonatomic, assign)CGFloat lineSpace;
 @property(nonatomic, strong)NSMutableAttributedString* attStr;
 @end
@@ -33,7 +33,7 @@
     self = [super init];
     if (self) {
         self.cocoaView = [[FrameView alloc] init];
-        self.textView = [[NVLabel alloc] init];
+        self.textView = [[UILabel alloc] init];
         self.textView.backgroundColor=[UIColor clearColor];
         self.textView.numberOfLines=1;
         self.textView.textColor = [UIColor blackColor];
@@ -140,18 +140,11 @@
 //        return CGSizeZero;
 //    }
     CGSize textSize = CGSizeZero;
-     CGSize textMaxRT = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
+    CGFloat width = self.widthModle > 0 ? self.widthModle : maxSize.width-self.paddingLeft-self.paddingRight;
+    CGFloat height = self.heightModle > 0 ? self.heightModle : maxSize.height-self.paddingTop-self.paddingBottom;
+    CGSize textMaxRT = CGSizeMake(width, height);
     
-    StringInfo* info =[[VVViewFactory shareFactoryInstance] getDrawStringInfo:self.text andFrontSize:self.frontSize];
-
-    if([self.text isEqualToString:@"仅剩5件"])
-    {
-        ;
-    }
-    if(info){
-        self.textSize = info.drawRect;
-        //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
-    }else if(self.text && self.text.length>0){
+    if(self.text && self.text.length>0){
 
         if (0/*[self.cacheInfoDic objectForKey:@"cached"]*/) {
             //textSize = CGSizeMake([[self.cacheInfoDic objectForKey:@"width"] floatValue], [[self.cacheInfoDic objectForKey:@"height"] floatValue]);
@@ -159,7 +152,7 @@
             //CGSize textMaxRT = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
             //CGSize textSize = CGSizeZero;
             
-            UIFont *font = self.bold?[UIFont boldSystemFontOfSize:self.frontSize<=0?14:self.frontSize]:[UIFont systemFontOfSize:self.frontSize<=0?14:self.frontSize];
+            UIFont *font = [self vv_font];;
 
             CGFloat fHeight=0.0f;
             CGFloat fTextRealHeight=0.0f;
@@ -192,10 +185,6 @@
             }
             textSize.height=fTextRealHeight;
          }
-        StringInfo* info = [[StringInfo alloc] init];
-        info.drawRect = textSize;
-        self.textSize = textSize;
-        [[VVViewFactory shareFactoryInstance] setDrawStringInfo:info forString:self.text frontSize:self.frontSize];
     }
 
     _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
@@ -331,7 +320,6 @@
             break;
         case STR_ID_borderColor:
             self.borderColor = [UIColor colorWithString:value];
-            self.textView.borderColor = self.borderColor;
             break;
         case STR_ID_background:
             self.backgroundColor = [UIColor colorWithString:value];
@@ -368,7 +356,6 @@
                 break;
             case STR_ID_borderColor:
                 self.borderColor = [UIColor colorWithString:str];
-                self.textView.borderColor = self.borderColor;
                 break;
             default:
                 ret = false;
@@ -439,12 +426,25 @@
                 //self.textView.lineWidth = value;
                 ((FrameView*)self.cocoaView).lineWidth = value;
                 break;
+            case STR_ID_borderRadius:
+                //self.textView.lineWidth = value;
+                ((FrameView*)self.cocoaView).borderRadius = value;
+                break;
             default:
                 ret = false;
                 break;
         }
     }
     return ret;
+}
+
+- (void)reset
+{
+    [super reset];
+    // 3556653 -> text
+    if ([self.mutablePropertyDic.allKeys containsObject:@(3556653)]) {
+        self.text = @"";
+    }
 }
 
 @end

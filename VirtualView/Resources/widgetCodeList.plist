@@ -32,25 +32,5 @@
 	<string>VVPageView</string>
 	<key>17</key>
 	<string>VVGridView</string>
-	<key>1001</key>
-	<string>NVTextView</string>
-	<key>1003</key>
-	<string>TMVVRecommendSubView</string>
-	<key>1005</key>
-	<string>TMVVRecommendImageView</string>
-	<key>1008</key>
-	<string>TMVVRecommendBenefitView</string>
-	<key>1009</key>
-	<string>TMVVRecommendPriceView</string>
-	<key>1010</key>
-	<string>VVNavtiveViewContainer</string>
-	<key>1011</key>
-	<string>TMVVSelectedRecommendMagicStick</string>
-	<key>1012</key>
-	<string>TMVVSelectedCountDown</string>
-	<key>1014</key>
-	<string>TMVVVideoView</string>
-	<key>TMMediaPlayerContainer</key>
-	<string>TMVVVideoView</string>
 </dict>
 </plist>

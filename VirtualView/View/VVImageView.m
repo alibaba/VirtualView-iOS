@@ -7,7 +7,6 @@
 
 #import "VVImageView.h"
 #import "VVBinaryLoader.h"
-#import "VVLoader.h"
 
 @implementation VVLayerDelegate
 
@@ -61,7 +60,6 @@
 }
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    [super setUpdateDelegate:delegate];
     if (myLayer==nil) {
         myLayer = [CALayer layer];
         myLayer.drawsAsynchronously = YES;
@@ -70,8 +68,9 @@
         myLayer.delegate = _layerDelegate;
         _layerDelegate.delegateSource = self;
         [myLayer setNeedsDisplay];
-        [((UIView*)self.updateDelegate).layer addSublayer:myLayer];
+        [((UIView*)delegate).layer addSublayer:myLayer];
     }
+    [super setUpdateDelegate:delegate];
 }
 
 -(id)init{
