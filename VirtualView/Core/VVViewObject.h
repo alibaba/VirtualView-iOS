@@ -272,7 +272,7 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 @property(nonatomic, assign)CGSize        maxSize;
 @property(nonatomic, strong)NSString      *actionParam;
 @property(nonatomic, strong)NSString      *classString;
-@property(nonatomic, strong)VVViewObject  *superview;
+@property(nonatomic, weak)  VVViewObject  *superview;
 @property(nonatomic, strong)UIView        *cocoaView;
 @property(nonatomic, assign)CGRect        frame;
 @property(nonatomic, assign)int           childrenWidth;
