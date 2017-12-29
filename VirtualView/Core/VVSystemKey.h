@@ -10,9 +10,9 @@
 @interface VVSystemKey : NSObject
 @property(nonatomic, readonly)NSArray* keyArray;
 @property(nonatomic, readonly)NSDictionary* keyDictionary;
+@property(nonatomic, assign) CGFloat rate;
 + (VVSystemKey*)shareInstance;
 - (NSString*)classNameForIndex:(NSUInteger)index;
 - (NSString*)classNameForTag:(NSString*)tag;
 - (void)registerWidget:(NSString*)className withIndex:(NSUInteger)index;
-- (float)rate;
 @end

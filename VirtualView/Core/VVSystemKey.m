@@ -12,7 +12,6 @@ static VVSystemKey* _shareInstance;
 {
     NSDictionary* _originalCodeDic;
     NSMutableDictionary* _dynamicCodeDic;
-    float                _rate;
 }
 @end
 
@@ -22,10 +21,6 @@ static VVSystemKey* _shareInstance;
         _shareInstance = [[VVSystemKey alloc] init];
     }
     return _shareInstance;
-}
-
-- (float)rate{
-    return _rate;
 }
 
 - (id)init{
