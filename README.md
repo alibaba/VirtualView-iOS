@@ -14,7 +14,7 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 
 ## Features
 
-![xml](https://github.com/alibaba/VirtualView-iOS/raw/master/README/feature.png)
+![feature](https://github.com/alibaba/VirtualView-iOS/raw/master/README/feature.png)
 
 1. Write component via XML.
 2. Compile XML to a out (binary) file.
@@ -22,7 +22,7 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 4. Create component from loaded template and bind data to it.
 5. Show the component.
 
-简单总结起来就是用 XML 描述一个组件，用我们提供的工具编译成 out 二进制文件，在集成了 VirtualView 的 App 里直接加载 out 文件就可以得到一个组件，像使用普通 UIView 一样显示它就好了。
+简单总结起来就是用 XML 描述一个组件，用我们提供的工具编译成 out 二进制文件，在集成了 VirtualView 的 App 里直接加载 out 文件就可以得到一个组件，然后像使用普通 UIView 一样使用它就好了。
 
 ## Install
 
@@ -40,7 +40,9 @@ CocoaPods will install VirtualView as a part of Tangram 2.0.
 
 ### Source codes
 
-Or you can download source codes from [release page](https://github.com/alibaba/VirtualView-iOS/releases) and put them into your project.
+Or you can download source codes from [releases page](https://github.com/alibaba/VirtualView-iOS/releases) and put them into your project.
+
+Remember to download TMUtils codes from another repo: [TMUtils](https://github.com/alibaba/LazyScrollView/tree/master/TMUtils)
 
 ## How to use
 
