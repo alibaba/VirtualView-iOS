@@ -332,7 +332,6 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key;
 - (BOOL)setExprossValue:(int)value forKey:(int)key;
 
-- (void)addUserVar:(int)type nameID:(int)nameid value:(int)value;
 - (void)reset;
 - (void)didFinishBinding;
 - (void)setData:(NSData*)data;

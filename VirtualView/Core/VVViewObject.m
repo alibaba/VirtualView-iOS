@@ -763,29 +763,6 @@
     return ret;
 }
 
-- (void)addUserVar:(int)type nameID:(int)nameid value:(int)value{
-
-    NSObject* dataVal;
-    switch (type) {
-        case 1://TYPE_INT
-            dataVal = [NSNumber numberWithInt:value];
-            break;
-        case 2://TYPE_FLOAT
-            dataVal = [NSNumber numberWithFloat:value];
-            break;
-        case 3://TYPE_STRING
-            dataVal = [_binaryLoader getExtraCodeWithType:value];
-            break;
-        default:
-            break;
-    }
-    
-    if (self.userVarDic == nil) {
-        //[self.userVarDic = [NSMutableDictionary alloc] init];
-    }
-    
-    [self.userVarDic setObject:dataVal forKey:[NSString stringWithFormat:@"%d",nameid]];
-}
 - (void)reset{
     //
 }

@@ -9,37 +9,24 @@
 
 @class VVVersionModel;
 
+/**
+ This class will be deprecated.
+ DO NOT use it.
+ */
 @interface VVBinaryLoader : NSObject
 
-@property(strong, nonatomic)NSMutableDictionary* dataCacheDic;
++ (nonnull id)shareInstance __deprecated;
 
-+ (id)shareInstance;
+- (nullable NSData *)getUICodeWithName:(nonnull NSString *)keyStr __deprecated;
 
-- (NSString*)getMajorWithPageID:(short)pageid;
-
-- (NSString*)getMinorWithPageID:(short)pageid;
-
-- (NSString*)getPatchWithPageID:(short)pageid;
-
-- (NSData*)getUICodeWithName:(NSString*)keyStr;
-
-- (NSData*)getUICodeWithType:(NSUInteger)type;
-
-- (NSString*)getStrCodeWithType:(int)type;
-
-- (NSData*)getExtraCodeWithType:(NSUInteger)type;
+- (nullable NSString *)getStrCodeWithType:(int)type __deprecated;
 
 /**
- Load VirtualView data from binary buffer and return the version info of it.
-
- @param buff Binary buffer.
- @return Version info of data, will be nil if the loading is failed.
+ Load VirtualView template from binary buffer and return the version of it.
+ 
+ @param     buff    Binary buffer.
+ @return            Version of template, will be nil if the loading is failed.
  */
-- (VVVersionModel *)loadFromBuffer:(NSData*)buff;
-
-/**
- Clear all loaded data.
- */
-- (void)clear;
+- (nullable VVVersionModel *)loadFromBuffer:(nonnull NSData *)buff __deprecated;
 
 @end

@@ -7,20 +7,27 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 @class VVViewObject;
 
+//****************************************************************
+
 @interface StringInfo : NSObject
-@property(assign, nonatomic)CGSize drawRect;
-@property(strong, nonatomic)NSMutableAttributedString* attstr;
+
+@property (nonatomic, assign) CGSize drawRect;
+@property (nonatomic, strong) NSMutableAttributedString *attstr;
+
 @end
 
+//****************************************************************
+
 @interface VVViewFactory : NSObject
-+ (VVViewFactory*)shareFactoryInstance;
-- (VVViewObject*)parseWidgetWithTypeID:(NSString*)key collection:(NSMutableArray*)dataTagObjs;
-//- (VVViewObject*)parseWidgetWithTypeID:(NSUInteger)typeID;
-- (VVViewObject*)makeWidgetWithID:(short)widgetid;
-- (UIView*)obtainVirtualWithKey:(NSString*)key;
-- (UIView*)obtainVirtualWithKey:(NSString*)key maxSize:(CGSize)size;
+
++ (VVViewFactory *)shareFactoryInstance;
+- (VVViewObject *)parseWidgetWithTypeID:(NSString *)key collection:(NSMutableArray *)dataTagObjs;
+- (UIView *)obtainVirtualWithKey:(NSString *)key;
+
 - (StringInfo*)getDrawStringInfo:(NSString*)value andFrontSize:(CGFloat)size;
 - (void)setDrawStringInfo:(StringInfo*)strInfo forString:(NSString*)value frontSize:(CGFloat)size;
+
 @end
