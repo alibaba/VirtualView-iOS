@@ -17,58 +17,23 @@
 
 @implementation VVViewContainer
 
-
-//// Only override drawRect: if you perform custom drawing.
-//// An empty implementation adversely affects performance during animation.
-//- (void)drawRect:(CGRect)rect {
-//    // Drawing code
-//    [self.virtualView drawRect:rect];
-//}
-
 - (void)updateDisplayRect:(CGRect)rect{
-    //[self setNeedsDisplayInRect:rect];
+
 }
-/*
-- (void)layerWillDraw:(CALayer *)layer{
-    NSLog(@"____________________________________________________________________________");
-    [self.virtualView calculateLayoutSize:self.frame.size];
-    [self.virtualView layoutSubviews];
-}*/
-
-/*
-- (void)layoutSubviews{
-    //self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.virtualView.frame.size.width, self.virtualView.frame.size.height);
-    [self.virtualView calculateLayoutSize:self.frame.size];
-    self.virtualView.width = self.frame.size.width;
-    self.virtualView.height = self.frame.size.height;
-
-    [self.virtualView layoutSubviews];
-   }
-*/
 
 - (void)handleLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
     CGPoint pt =[gestureRecognizer locationInView:self];
-    #ifdef VV_DEBUG
-        NSLog(@"x:%f y:%f",pt.x,pt.y);
-    #endif
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
     if (vvobj!=nil && [(VVViewObject*)vvobj isLongClickable]) {
-        #ifdef VV_DEBUG
-            NSLog(@"%@:%@",vvobj.action,vvobj.actionValue);
-        #endif
         [self.delegate subViewLongPressed:vvobj.action andValue:vvobj.actionValue gesture:gestureRecognizer];
     }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    //
     UITouch *touch =  [touches anyObject];
     CGPoint pt = [touch locationInView:self];
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
     if (vvobj!=nil && [(VVViewObject*)vvobj isClickable]) {
-        #ifdef VV_DEBUG
-            NSLog(@"%@:%@",vvobj.action,vvobj.actionValue);
-        #endif
         if([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)])
         {
             [self.delegate subView:vvobj clicked:vvobj.action andValue:vvobj.actionValue];
@@ -87,16 +52,11 @@
     if (self) {
         self.virtualView = virtualView;
         self.virtualView.updateDelegate = self;
-        //virtualView.superview = self;
         self.backgroundColor = [UIColor clearColor];
-        self.dataCacheDic = [[NSMutableDictionary alloc] init];//((VVBinaryLoader*)[VVBinaryLoader shareInstance]).dataCacheDic;
-
+        self.dataCacheDic = [[NSMutableDictionary alloc] init];
         if ([self.virtualView isLongClickable]) {
             _pressRecognizer =
             [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressed:)];
-            //代理
-            //longPress.delegate = self;
-            //将长按手势添加到需要实现长按操作的视图里
             [self addGestureRecognizer:_pressRecognizer];
         }
     }
@@ -145,7 +105,6 @@
 
     if ([obj isKindOfClass:NSArray.class]) {
         NSDictionary* tmpDictionary = jsonData;
-        //NSString* varName = nil;
         NSArray* varList = (NSArray*)obj;
         for (NSDictionary* varItem in varList) {
             NSString* varName = [varItem objectForKey:@"varName"];
@@ -209,13 +168,10 @@
             NSDictionary* propertyInfo = [item.mutablePropertyDic objectForKey:key];
             [dataCache setObject:key forKey:@"key"];
 
-            //NSString* varName = [propertyInfo objectForKey:@"varName"];
             NSNumber* valueType = [propertyInfo objectForKey:@"valueType"];
             [dataCache setObject:valueType forKey:@"type"];
 
             NSArray* varObj = [propertyInfo objectForKey:@"varValues"];
-
-            //NSArray* nodes = [varName componentsSeparatedByString:@"."];
             NSObject* valueObj = nil;
             NSDictionary* tmpDictionary = jsonData;
             NSString* varName = nil;
@@ -404,7 +360,6 @@
                     break;
             }
         }
-        //[item setDataObj:(NSDictionary*)obj];
         item.actionValue = [jsonData objectForKey:item.action];
         
         [item didFinishBinding];
@@ -419,7 +374,6 @@
 }
 
 - (VVViewObject*)findObjectByID:(int)tagid{
-    //
     VVViewObject* obj=[self.virtualView findViewByID:tagid];
     return obj;
 }
