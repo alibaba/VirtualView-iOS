@@ -255,7 +255,8 @@
         [VVCommTools convertIntToLittleEndian:&value];
         *pos += 4;
         
-            [tempV setStringValue:value forKey:key];
+        NSString *stringValue = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
+        [tempV setStringValue:stringValue forKey:key];
     }
     
     

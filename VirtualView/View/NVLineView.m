@@ -90,19 +90,19 @@
     return YES;
 }
 
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret = [super setStringValue:value forKey:key];
 
     if (!ret) {
         ret = YES;
-        NSString* str = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
         switch (key) {
             case STR_ID_color:
-                self.lineColor = [UIColor colorWithString:str];
+                self.lineColor = [UIColor colorWithString:value];
                 break;
                 
             case STR_ID_dashEffect:
-                self.dashEffectString = str;
+                self.dashEffectString = value;
                 break;
                 
             default:

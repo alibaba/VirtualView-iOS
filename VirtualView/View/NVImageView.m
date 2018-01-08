@@ -183,18 +183,18 @@
     [self showImage];
 }
 
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret  = [super setStringValue:value forKey:key];
 
     if (!ret) {
         ret = YES;
-        NSString* str = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
         switch (key) {
             case STR_ID_src:
-                self.imgUrl = str;
+                self.imgUrl = value;
                 break;
             case STR_ID_ck:
-                self.ck = str;
+                self.ck = value;
                 break;
             default:
                 break;

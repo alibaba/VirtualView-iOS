@@ -47,24 +47,22 @@
     return YES;
 }
 
--(BOOL)setStringValue:(int)value forKey:(int)key{
+-(BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret = [super setStringValue:value forKey:key];
-    
-    NSString* str = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
-
     if (!ret) {
         ret = true;
         switch (key) {
             case STR_ID_text:
-                self.text = str;
+                self.text = value;
                 break;
             case STR_ID_typeface:
                 break;
             case STR_ID_textSize:
-                self.size = [str intValue];
+                self.size = [value intValue];
                 break;
             case STR_ID_textColor:
-                self.color = [UIColor colorWithString:str];
+                self.color = [UIColor colorWithString:value];
                 break;
             default:
                 ret = false;

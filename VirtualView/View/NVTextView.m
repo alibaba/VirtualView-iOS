@@ -145,7 +145,7 @@
     CGSize textMaxRT = CGSizeMake(width, height);
     
     StringInfo* info =[[VVViewFactory shareFactoryInstance] getDrawStringInfo:self.text andFrontSize:self.frontSize];
-
+    
     if([self.text isEqualToString:@"仅剩5件"])
     {
         ;
@@ -154,7 +154,6 @@
         self.textSize = info.drawRect;
         //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
     }else if(self.text && self.text.length>0){
-
         if (0/*[self.cacheInfoDic objectForKey:@"cached"]*/) {
             //textSize = CGSizeMake([[self.cacheInfoDic objectForKey:@"width"] floatValue], [[self.cacheInfoDic objectForKey:@"height"] floatValue]);
         }else{
@@ -193,11 +192,12 @@
                             NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font,NSParagraphStyleAttributeName:style} context:nil].size;
             }
             textSize.height=fTextRealHeight;
-         }
+        }
         StringInfo* info = [[StringInfo alloc] init];
         info.drawRect = textSize;
         self.textSize = textSize;
         [[VVViewFactory shareFactoryInstance] setDrawStringInfo:info forString:self.text frontSize:self.frontSize];
+
     }
 
     _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
@@ -342,33 +342,33 @@
     return YES;
 }
 
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret = [super setStringValue:value forKey:key];
     
     if (!ret) {
         ret = YES;
-        NSString* str = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
         switch (key) {
             case STR_ID_text:
-                self.text = str;
+                self.text = value;
                 break;
                 
             case STR_ID_typeface:
                 break;
                 
             case STR_ID_textSize:
-                self.textView.font = [UIFont systemFontOfSize:[str intValue]];
-                self.frontSize = [str intValue];
+                self.textView.font = [UIFont systemFontOfSize:[value intValue]];
+                self.frontSize = [value intValue];
                 break;
             case STR_ID_textColor:
-                if (str) {
-                    self.textView.textColor = [UIColor colorWithString:str];
+                if (value) {
+                    self.textView.textColor = [UIColor colorWithString:value];
                 }else{
                     self.textView.textColor = [UIColor blackColor];
                 }
                 break;
             case STR_ID_borderColor:
-                self.borderColor = [UIColor colorWithString:str];
+                self.borderColor = [UIColor colorWithString:value];
                 break;
             default:
                 ret = false;

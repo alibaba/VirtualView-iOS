@@ -13,14 +13,15 @@
 @end
 
 @implementation VVNavtiveViewContainer
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     int ret = [super setStringValue:value forKey:key];
     if (!ret) {
         switch (key) {
             case STR_ID_NativeContainer:
             {
-                NSString* stringValue  = [[VVBinaryLoader shareInstance] getStrCodeWithType:value];
-                NSString* className = [[VVSystemKey shareInstance] classNameForTag:stringValue];
+                NSString* className = [[VVSystemKey shareInstance] classNameForTag:value];
                 Class cls = NSClassFromString(className);
                 #ifdef VV_DEBUG
                     NSLog(@"make native class name:%@",className);

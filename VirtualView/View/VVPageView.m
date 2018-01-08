@@ -49,7 +49,8 @@
     return ret;
 }
 
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret = [super setStringValue:value forKey:key];
     if (!ret) {
         ret = true;

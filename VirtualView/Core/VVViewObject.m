@@ -203,13 +203,11 @@
     return valueVarName;
 }
 
-- (BOOL)setProperty:(int)property valueVar:(int)value{
+- (BOOL)setProperty:(int)property valueVar:(NSString *)value{
     BOOL ret = NO;
-    NSString* strValueVar = [_binaryLoader getStrCodeWithType:value];
-    
-    if (strValueVar!=nil && strValueVar.length>3) {
-        NSString* varTagStart = [strValueVar substringToIndex:2];
-        NSRange rangEnd = [strValueVar rangeOfString:@"}"];
+    if (value!=nil && value.length>3) {
+        NSString* varTagStart = [value substringToIndex:2];
+        NSRange rangEnd = [value rangeOfString:@"}"];
         int valueType = TYPE_OBJECT;
         switch (property) {
             case STR_ID_autoDimDirection:
@@ -278,8 +276,8 @@
                 break;
         }
         if ([varTagStart isEqualToString:@"${"] && rangEnd.location!=NSNotFound) {
-            NSString* valueVarName = [strValueVar substringWithRange:NSMakeRange(2, rangEnd.location-2)];
-            NSNumber* propertyNum = [NSNumber numberWithUnsignedInteger:property];//[_binaryLoader getStrCodeWithType:property];
+            NSString* valueVarName = [value substringWithRange:NSMakeRange(2, rangEnd.location-2)];
+            NSNumber* propertyNum = [NSNumber numberWithUnsignedInteger:property];
             if (valueVarName!=nil && valueVarName.length>0 && propertyNum!=nil) {
                 if (self.mutablePropertyDic==nil) {
                     self.mutablePropertyDic = [[NSMutableDictionary alloc] init];
@@ -308,19 +306,19 @@
             }
         }else if ([varTagStart isEqualToString:@"@{"] && rangEnd.location!=NSNotFound){
             NSRange r2,r3;
-            NSString* valueVarName = [strValueVar substringWithRange:NSMakeRange(2, rangEnd.location-1)];
+            NSString* valueVarName = [value substringWithRange:NSMakeRange(2, rangEnd.location-1)];
             NSNumber* propertyNum = [NSNumber numberWithUnsignedInteger:property];
-            NSRange r1 = [strValueVar rangeOfString:@"?" options:NSCaseInsensitiveSearch range:NSMakeRange(rangEnd.location, strValueVar.length-rangEnd.location)];
+            NSRange r1 = [value rangeOfString:@"?" options:NSCaseInsensitiveSearch range:NSMakeRange(rangEnd.location, value.length-rangEnd.location)];
             
             if (r1.location!=NSNotFound) {
-                r2 = [strValueVar rangeOfString:@":" options:NSCaseInsensitiveSearch range:NSMakeRange(r1.location, strValueVar.length-r1.location)];
+                r2 = [value rangeOfString:@":" options:NSCaseInsensitiveSearch range:NSMakeRange(r1.location, value.length-r1.location)];
                 
                 if (r2.location!=NSNotFound) {
-                    r3 = [strValueVar rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(r2.location, strValueVar.length-r2.location)];
+                    r3 = [value rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(r2.location, value.length-r2.location)];
                     
                     if (r3.location!=NSNotFound) {
-                        NSString* v1 = [strValueVar substringWithRange:NSMakeRange(r1.location+1, r2.location-r1.location-1)];
-                        NSString* v2 = [strValueVar substringWithRange:NSMakeRange(r2.location+1, r3.location-r2.location-1)];
+                        NSString* v1 = [value substringWithRange:NSMakeRange(r1.location+1, r2.location-r1.location-1)];
+                        NSString* v2 = [value substringWithRange:NSMakeRange(r2.location+1, r3.location-r2.location-1)];
                         NSString* vv1 =[v1 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                         NSString* vv2 =[v2 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
@@ -425,8 +423,6 @@
 
 - (BOOL)setIntValue:(int)value forKey:(int)key{
     BOOL ret = YES;
-    //[self setProperty:key valueVar:value dataType:TYPE_INT];
-    
     switch (key) {
 
         case STR_ID_layoutWidth:
@@ -546,8 +542,6 @@
 
 - (BOOL)setFloatValue:(float)value forKey:(int)key{
     BOOL ret = YES;
-    //[self setProperty:key valueVar:value dataType:TYPE_FLOAT];
-    
     switch (key) {
 
         case STR_ID_layoutWidth:
@@ -663,42 +657,41 @@
     return ret;
 }
 
-- (BOOL)setStringValue:(int)value forKey:(int)key{
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key
+{
     BOOL ret = [self setProperty:key valueVar:value];
     if (!ret) {
         ret = YES;
-        NSString* stringValue  = [_binaryLoader getStrCodeWithType:value];
         switch (key) {
 
             case STR_ID_data:
-                //self.data = stringValue;
                 break;
 
             case STR_ID_dataTag:
-                self.dataTag = stringValue;
+                self.dataTag = value;
                 break;
 
             case STR_ID_action:
-                self.action = stringValue;
+                self.action = value;
                 break;
 
             case STR_ID_actionParam:
-                self.actionParam = stringValue;
+                self.actionParam = value;
                 break;
 
             case STR_ID_class:
-                self.classString = stringValue;
+                self.classString = value;
                 break;
 
             case STR_ID_name:
-                self.name = stringValue;
+                self.name = value;
                 break;
 
             case STR_ID_dataUrl:
-                self.dataUrl = stringValue;
+                self.dataUrl = value;
                 break;
             case STR_ID_background:
-                self.backgroundColor = [UIColor colorWithString:stringValue];
+                self.backgroundColor = [UIColor colorWithString:value];
                 break;
             default:
                 ret = NO;

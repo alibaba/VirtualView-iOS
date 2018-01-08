@@ -328,7 +328,7 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 - (void)drawRect:(CGRect)rect;
 - (BOOL)setIntValue:(int)value forKey:(int)key;
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
-- (BOOL)setStringValue:(int)value forKey:(int)key;
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key;
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key;
 - (BOOL)setExprossValue:(int)value forKey:(int)key;
 
