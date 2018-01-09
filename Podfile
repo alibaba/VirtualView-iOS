@@ -6,3 +6,10 @@ target 'VirtualViewDemo' do
     project 'VirtualViewDemo/VirtualViewDemo.xcodeproj'
     pod 'VirtualView', :path => './'
 end
+
+target 'VirtualViewTest' do
+    project 'VirtualViewTest/VirtualViewTest.xcodeproj'
+    pod 'VirtualView', :path => './'
+end
+
+workspace 'VirtualView'

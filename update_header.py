@@ -27,5 +27,6 @@ def updateHeader(DIR, PROJ):
 
 updateHeader(os.path.join(sys.path[0], 'VirtualView'), 'VirtualView')
 updateHeader(os.path.join(sys.path[0], 'VirtualViewDemo'), 'VirtualViewDemo')
+updateHeader(os.path.join(sys.path[0], 'VirtualViewTest'), 'VirtualViewTest')
 print('Header updating is done.')
 
