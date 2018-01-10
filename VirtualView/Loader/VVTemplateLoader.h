@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VVVersionModel.h"
 
 @interface VVTemplateLoader : NSObject
 

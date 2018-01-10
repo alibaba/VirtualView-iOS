@@ -66,21 +66,6 @@
     return ret;
 }
 
-- (BOOL)setExprossValue:(int)value forKey:(int)key{
-    BOOL ret = [super setExprossValue:value forKey:key];
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_onPageFlip:
-                //
-                break;
-            default:
-                break;
-        }
-    }
-    return ret;
-}
-
 - (int)getValue4Array:(NSArray*)arr{
     int value=0;
     for (NSString* item in arr) {

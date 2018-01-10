@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class VVVersionModel;
+#import "VVVersionModel.h"
 
 /**
  This class will be deprecated.
@@ -24,8 +23,8 @@
 /**
  Load VirtualView template from binary buffer and return the version of it.
  
- @param     buff    Binary buffer.
- @return            Version of template, will be nil if the loading is failed.
+ @param  buff  Binary buffer.
+ @return       Version of template, will be nil if the loading is failed.
  */
 - (nullable VVVersionModel *)loadFromBuffer:(nonnull NSData *)buff __deprecated;
 

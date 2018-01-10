@@ -701,34 +701,6 @@
     return ret;
 }
 
-- (BOOL)setExprossValue:(int)value forKey:(int)key{
-    BOOL ret = true;
-    //VVExpressCode* expCode = [_binaryLoader getExprCodeWithType:value];
-    switch (key) {
-        case STR_ID_onClick:
-            //mClickCode = value;
-            //                Log.d(TAG, "click value:" + mClickCode + " id:" + mId);
-            break;
-            
-        case STR_ID_onBeforeDataLoad:
-            //mBeforeLoadDataCode = value;
-            break;
-            
-        case STR_ID_onAfterDataLoad:
-            //mAfterLoadDataCode = value;
-            break;
-            
-        case STR_ID_onSetData:
-            //mSetDataCode = value;
-            break;
-            
-        default:
-            ret = false;
-    }
-    
-    return ret;
-}
-
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
     BOOL ret = true;
     switch (key) {

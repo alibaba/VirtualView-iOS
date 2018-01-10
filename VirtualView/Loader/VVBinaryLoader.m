@@ -7,7 +7,6 @@
 
 #import "VVBinaryLoader.h"
 #import "VVSystemKey.h"
-#import "VVVersionModel.h"
 
 #define VVHEAD @"ALIVV"
 
@@ -230,7 +229,7 @@
         
         
         if (extraOffset > 0 || extraSize > 0) {
-            // 扩展段暂时废弃
+            // 用户扩展段暂时废弃
         }
         
         [self.pagesDic setObject:pageDetail forKey:pageStr];

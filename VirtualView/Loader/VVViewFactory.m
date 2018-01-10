@@ -10,10 +10,6 @@
 #import "VVCommTools.h"
 #import "VVViewObject.h"
 #import "VVViewContainer.h"
-#import "VVTextView.h"
-#import "VVImageView.h"
-#import "VVGridLayout.h"
-#import "VVVHLayout.h"
 #import "VVSystemKey.h"
 
 #define CODE_START_TAG 0
@@ -30,7 +26,7 @@
 @interface VVViewFactory()
 
 @property (nonatomic, strong) VVBinaryLoader *loader;
-@property(strong, nonatomic)NSMutableDictionary* stringDrawRectInfo;
+@property (nonatomic, strong)NSMutableDictionary *stringDrawRectInfo;
 
 @end
 
@@ -74,21 +70,20 @@
     return vvc;
 }
 
-- (StringInfo*)getDrawStringInfo:(NSString*)value andFrontSize:(CGFloat)size{
-    NSDictionary* stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
-    StringInfo* info =[stringInfoDic objectForKey:[NSNumber numberWithFloat:size]];
-    //StringInfo* info = [self.stringDrawRectInfo objectForKey:value];
+- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size
+{
+    NSDictionary *stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
+    StringInfo *info = [stringInfoDic objectForKey:@(size)];
     return info;
 }
 
-- (void)setDrawStringInfo:(StringInfo*)strInfo forString:(NSString*)value frontSize:(CGFloat)size{
-    
-    NSMutableDictionary* stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
+- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size
+{
+    NSMutableDictionary *stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
     if (stringInfoDic) {
-        [stringInfoDic setObject:strInfo forKey:[NSNumber numberWithFloat:size]];
-    }else{
-        NSMutableDictionary* stringInfoDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:strInfo,[NSNumber numberWithFloat:size], nil];
-        //NSDictionary* stringInfoDic = [NSMulDictionary dictionaryWithObjectsAndKeys:strInfo,[NSNumber numberWithFloat:size], nil];
+        [stringInfoDic setObject:strInfo forKey:@(size)];
+    } else {
+        NSMutableDictionary *stringInfoDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:strInfo, [NSNumber numberWithFloat:size], nil];
         [self.stringDrawRectInfo setObject:stringInfoDic forKey:value];
     }
 }
@@ -119,7 +114,6 @@
                     [viewStacks addObject:widget];
                 }
                 widget = [self parseWithData:widgetData currentPos:&pos];
-                
                 break;
             case CODE_END_TAG:
                 tmpv = [viewStacks lastObject];
@@ -131,7 +125,6 @@
                     widget = tmpv;
                     [viewStacks removeObject:tmpv];
                 }
-                
                 break;
             default:
                 break;
@@ -265,17 +258,8 @@
     (*pos)++;
     
     for (int i = 0; i < countExpr; i++) {
-        int key = 0;
-        int value = 0;
-        [widgetData getBytes:&key range:NSMakeRange(*pos, 4)];
-        [VVCommTools convertIntToLittleEndian:&key];
-        *pos += 4;
-        
-        [widgetData getBytes:&value range:NSMakeRange(*pos, 4)];
-        [VVCommTools convertIntToLittleEndian:&value];
-        *pos += 4;
-
-        [tempV setExprossValue:value forKey:key];
+        // 表达式段暂时废弃
+        *pos += 8;
     }
     
     short countUser = 0;
@@ -283,20 +267,8 @@
     (*pos)++;
     
     for (int i = 0; i < countUser; i++) {
-        short type = 0;
-        int name = 0;
-        int value = 0;
-        [widgetData getBytes:&type range:NSMakeRange(*pos, 1)];
-        [VVCommTools convertShortToLittleEndian:&type];
-        *pos += 1;
-        
-        [widgetData getBytes:&name range:NSMakeRange(*pos, 4)];
-        [VVCommTools convertIntToLittleEndian:&name];
-        *pos += 4;
-        
-        [widgetData getBytes:&value range:NSMakeRange(*pos, 4)];
-        [VVCommTools convertIntToLittleEndian:&value];
-        *pos += 4;
+        // 用户扩展段暂时废弃
+        *pos += 9;
     }
     return tempV;
 }
