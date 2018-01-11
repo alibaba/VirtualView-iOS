@@ -10,6 +10,7 @@ end
 target 'VirtualViewTest' do
     project 'VirtualViewTest/VirtualViewTest.xcodeproj'
     pod 'VirtualView', :path => './'
+    pod 'OCHamcrest'
 end
 
 workspace 'VirtualView'
