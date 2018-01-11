@@ -10,7 +10,6 @@
 
 @class VVTemplateLoader;
 
-
 @interface VVTemplateManager : NSObject
 
 /**
@@ -25,6 +24,7 @@
 
 /**
  Load template from file synchronously with default loader.
+ Both of input type and the type in template file will be added into manager.
 
  @param  file  Template file path.
  @param  type  Template type name.
@@ -35,6 +35,7 @@
 
 /**
  Load template from file synchronously with specified loader.
+ Both of input type and the type in template file will be added into manager.
  
  @param  file    Template file path.
  @param  type    Template type name.
@@ -47,6 +48,7 @@
 
 /**
  Load template from binary data synchronously with default loader.
+ Both of input type and the type in template data will be added into manager.
  
  @param  data  Template binary data.
  @param  type  Template type name.
@@ -57,6 +59,7 @@
 
 /**
  Load template from binary data synchronously with specified loader.
+ Both of input type and the type in template data will be added into manager.
  
  @param  data    Template binary data.
  @param  type    Template type name.
@@ -71,6 +74,7 @@
 
 /**
  Load template from file asynchronously with default loader.
+ Both of input type and the type in template file will be added into manager.
 
  @param file        Template file path.
  @param type        Template type name.
@@ -85,7 +89,8 @@
 
 /**
  Load template from file asynchronously with specified loader.
-
+ Both of input type and the type in template file will be added into manager.
+ 
  @param file        Template file path.
  @param type        Template type name.
  @param loader      Specified template loader. If it's nil, manager will use the default loader.
@@ -100,6 +105,7 @@
 
 /**
  Load template from binary data asynchronously with default loader.
+ Both of input type and the type in template data will be added into manager.
  
  @param data        Template binary data.
  @param type        Template type name.
@@ -113,6 +119,7 @@
 
 /**
  Load template from binary data asynchronously with specified loader.
+ Both of input type and the type in template data will be added into manager.
  
  @param data        Template binary data.
  @param type        Template type name.

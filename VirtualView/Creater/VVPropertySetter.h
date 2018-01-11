@@ -11,8 +11,11 @@
 /**
  This is a base class for all PropertySetter. DO NOT use it directly.
  Please use the sub class of it.
- PropertySetter can save 'property => value' key-value-pair and take
- effect with one call.
+ PropertySetter can save 'property => value' key-value-pair.
+ It is used for setting a property with one call.
+ 
+ PropertySetter 可以存储 'property => value' 的键值对。
+ 它是用于一键设置对象属性的。
  */
 @interface VVPropertySetter : NSObject
 

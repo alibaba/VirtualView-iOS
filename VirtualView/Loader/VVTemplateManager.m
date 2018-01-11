@@ -9,7 +9,6 @@
 #import "VVTemplateLoader.h"
 #import "VVTemplateBinaryLoader.h"
 
-
 @implementation VVTemplateManager
 
 + (VVTemplateManager *)sharedManager

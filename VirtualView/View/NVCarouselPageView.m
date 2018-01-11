@@ -52,7 +52,7 @@
 
 @end
 
-@interface NVCarouselPageView()
+@interface NVCarouselPageView ()
 
 @property   (nonatomic, strong) UIView                       *contentView;
 @property   (nonatomic, strong) NVCarouselPageSubView        *subViewA;

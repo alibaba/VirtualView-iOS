@@ -9,4 +9,11 @@
 
 @implementation VVTemplateLoader
 
+- (BOOL)loadTemplateData:(NSData *)data
+              completion:(void (^)(VVVersionModel * _Nullable, VVNodeCreater * _Nullable))completion
+{
+    // Override me.
+    return NO;
+}
+
 @end

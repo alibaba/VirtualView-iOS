@@ -23,7 +23,7 @@
 
 //****************************************************************
 
-@interface VVViewFactory()
+@interface VVViewFactory ()
 
 @property (nonatomic, strong) VVBinaryLoader *loader;
 @property (nonatomic, strong)NSMutableDictionary *stringDrawRectInfo;
