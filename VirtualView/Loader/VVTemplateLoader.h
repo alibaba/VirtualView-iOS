@@ -18,16 +18,31 @@
 @interface VVTemplateLoader : NSObject
 
 /**
- Load template data synchronously.
- It is NOT a asynchronous method. The completion is used for returning mutiple values.
-
- @param  data        Template data.
- @param  completion  Will be called after loading is done.
-         - version   Version of template. Will be nil if loading is failed.
-         - creater   VVNodeCreater. Will be nil if loading is failed.
- @return             Is loading successed.
+ Error of last template loading. Will be nil if loading is successed.
  */
-- (BOOL)loadTemplateData:(nonnull NSData *)data
-              completion:(nullable void(^)(VVVersionModel * _Nullable version, VVNodeCreater * _Nullable creater))completion;
+@property (nonatomic, strong, readonly, nullable) NSError *lastError;
+
+/**
+ Version of last template loading. Will be nil if loading is failed.
+ */
+@property (nonatomic, strong, readonly, nullable) VVVersionModel *lastVersion;
+
+/**
+ Type of last template loading. Will be nil if loading is failed.
+ */
+@property (nonatomic, strong, readonly, nullable) NSString *lastType;
+
+/**
+ VVNodeCreater of last template loading. Will be nil if loading is failed.
+ */
+@property (nonatomic, strong, readonly, nullable) VVNodeCreater *lastCreater;
+
+/**
+ Load template data synchronously.
+
+ @param  data  Template data.
+ @return       Is loading successed.
+ */
+- (BOOL)loadTemplateData:(nonnull NSData *)data;
 
 @end

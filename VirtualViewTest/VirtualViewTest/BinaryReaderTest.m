@@ -46,6 +46,13 @@
     assertThatFloat(floatValue, equalToFloat(0.001f));
 }
 
+- (void)testReadShort {
+    unsigned char bytes[] = {0x01, 0x02};
+    uint16_t uintValue = bytes[1] + (bytes[0] << 8);
+    short shortValue = *((short *)(&uintValue));
+    assertThatShort(shortValue, equalToShort(0x102));
+}
+
 - (void)testReadFloatPerformance1 {
     [self measureBlock:^{
         unsigned char bytes[] = {0x3A, 0x83, 0x12, 0x6F};

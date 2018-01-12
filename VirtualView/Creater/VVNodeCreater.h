@@ -18,9 +18,8 @@
  */
 @interface VVNodeCreater : NSObject
 
-@property (nonatomic, assign) short nodeID;
+@property (nonatomic, assign) short nodeKey;
 @property (nonatomic, strong, nonnull) NSMutableArray<VVPropertySetter *> *propertySetters;
-
 @property (nonatomic, strong, nonnull) NSMutableArray<VVNodeCreater *> *subCreaters;
 
 @end

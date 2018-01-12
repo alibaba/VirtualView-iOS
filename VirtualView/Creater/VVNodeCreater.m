@@ -10,4 +10,20 @@
 
 @implementation VVNodeCreater
 
+- (NSMutableArray<VVPropertySetter *> *)propertySetters
+{
+    if (!_propertySetters) {
+        _propertySetters = [NSMutableArray array];
+    }
+    return _propertySetters;
+}
+
+- (NSMutableArray<VVNodeCreater *> *)subCreaters
+{
+    if (!_subCreaters) {
+        _subCreaters = [NSMutableArray array];
+    }
+    return _subCreaters;
+}
+
 @end
