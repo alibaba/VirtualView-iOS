@@ -145,7 +145,7 @@
     VVNodeCreater *rootCreater = [self loadNodeData];
     NSMutableArray<VVNodeCreater *> *nodeStack = [NSMutableArray array];
     [nodeStack addObject:rootCreater];
-    while (self.location < endLocation - 1) {
+    while (self.location < endLocation) {
         tag = [self readByte];
         if (tag == VV_START_TAG) {
             VVNodeCreater *creater = [self loadNodeData];
@@ -317,7 +317,7 @@
     if (length > 0) {
         NSData *subData = [self.data subdataWithRange:NSMakeRange(self.location, length)];
         result = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
-        self.location += 4;
+        self.location += length;
     } else {
         result = @"";
     }

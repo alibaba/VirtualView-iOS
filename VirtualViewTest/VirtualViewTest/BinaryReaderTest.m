@@ -6,7 +6,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <CoreFoundation/CoreFoundation.h>
+#import <Foundation/Foundation.h>
 #import <OCHamcrest/OCHamcrest.h>
 
 @interface BinaryReaderTest : XCTestCase

@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		0F6AF8B1D68BFDFA902BA35E /* libPods-VirtualViewTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F02F4632E61BA36C34599908 /* libPods-VirtualViewTest.a */; };
 		926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B40432004950B0003D88E /* BinaryReaderTest.m */; };
-		926CFAB3200760B4003C0BCE /* 4096.bin in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAB2200760B4003C0BCE /* 4096.bin */; };
+		926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */; };
+		926CFAC82008BE25003C0BCE /* icon.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC72008BE25003C0BCE /* icon.out */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,7 +19,8 @@
 		926B40402004950B0003D88E /* VirtualViewTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualViewTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		926B40432004950B0003D88E /* BinaryReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryReaderTest.m; sourceTree = "<group>"; };
 		926B40452004950B0003D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		926CFAB2200760B4003C0BCE /* 4096.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = 4096.bin; sourceTree = "<group>"; };
+		926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryLoaderTest.m; sourceTree = "<group>"; };
+		926CFAC72008BE25003C0BCE /* icon.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = icon.out; sourceTree = "<group>"; };
 		F02F4632E61BA36C34599908 /* libPods-VirtualViewTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualViewTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 			children = (
 				926CFAB1200760B4003C0BCE /* Resources */,
 				926B40432004950B0003D88E /* BinaryReaderTest.m */,
+				926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */,
 				926B40452004950B0003D88E /* Info.plist */,
 			);
 			path = VirtualViewTest;
@@ -74,7 +77,7 @@
 		926CFAB1200760B4003C0BCE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				926CFAB2200760B4003C0BCE /* 4096.bin */,
+				926CFAC72008BE25003C0BCE /* icon.out */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -146,7 +149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				926CFAB3200760B4003C0BCE /* 4096.bin in Resources */,
+				926CFAC82008BE25003C0BCE /* icon.out in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */,
+				926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
