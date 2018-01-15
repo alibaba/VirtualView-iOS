@@ -7,6 +7,7 @@
 
 #import "VVNodeCreater.h"
 #import "VVPropertySetter.h"
+#import "VVViewObject.h"
 
 @implementation VVNodeCreater
 
@@ -24,6 +25,33 @@
         _subCreaters = [NSMutableArray array];
     }
     return _subCreaters;
+}
+
+- (VVViewObject *)createNode
+{
+    Class class = NSClassFromString(self.nodeClassName);
+    
+#ifdef DEBUG
+    NSAssert(class != NULL, @"Does not match a class.");
+#endif
+    
+    VVViewObject *node;
+    if (class != NULL) {
+        node = [class new];
+    } else {
+        node = [VVViewObject new];
+    }
+    
+    for (VVPropertySetter *setter in self.propertySetters) {
+        [setter applyToNode:node];
+    }
+    
+    for (VVNodeCreater *creater in self.subCreaters) {
+        VVViewObject *subNode = [creater createNode];
+        [node addSubview:subNode];
+    }
+    
+    return node;
 }
 
 @end

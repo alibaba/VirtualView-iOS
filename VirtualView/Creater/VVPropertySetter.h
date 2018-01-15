@@ -14,6 +14,7 @@
  PropertySetter can save 'property => value' key-value-pair.
  It is used for setting a property with one call.
  
+ 这是所有 PropertySetter 类的基类，请不要直接使用。请使用它的子类。
  PropertySetter 可以存储 'property => value' 的键值对。
  它是用于一键设置对象属性的。
  */

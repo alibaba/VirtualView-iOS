@@ -157,7 +157,7 @@
                 break;
             }
         } else {
-            NSString *errorDescription = [NSString stringWithFormat:@"Invalid tag - 0x%X.", tag];
+            NSString *errorDescription = [NSString stringWithFormat:@"Invalid tag - 0x%2X.", tag];
             self.lastError = VVMakeError(VVInvalidDataError, errorDescription);
             return NO;
         }
@@ -176,7 +176,8 @@
 - (VVNodeCreater *)loadNodeData
 {
     VVNodeCreater *creater = [VVNodeCreater new];
-    creater.nodeKey = [self readShortLE];
+    short nodeKey = [self readShortLE];
+    creater.nodeClassName = [[VVSystemKey shareInstance] classNameForIndex:nodeKey];
     
     short count = [self readByte];
     for (short i = 0; i < count; i++) {
