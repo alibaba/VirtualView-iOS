@@ -23,6 +23,7 @@
 @property (nonatomic, assign, readonly) int key;
 
 - (nonnull instancetype)initWithPropertyKey:(int)key;
+
 - (void)applyToNode:(nullable VVViewObject *)node;
 
 @end

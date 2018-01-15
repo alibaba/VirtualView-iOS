@@ -23,6 +23,6 @@
 @property (nonatomic, strong, nonnull) NSMutableArray<VVPropertySetter *> *propertySetters;
 @property (nonatomic, strong, nonnull) NSMutableArray<VVNodeCreater *> *subCreaters;
 
-- (nonnull VVViewObject *)createNode;
+- (nonnull VVViewObject *)createNodeTree;
 
 @end

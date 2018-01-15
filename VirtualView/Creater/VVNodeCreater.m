@@ -27,7 +27,7 @@
     return _subCreaters;
 }
 
-- (VVViewObject *)createNode
+- (VVViewObject *)createNodeTree
 {
     Class class = NSClassFromString(self.nodeClassName);
     
@@ -47,7 +47,7 @@
     }
     
     for (VVNodeCreater *creater in self.subCreaters) {
-        VVViewObject *subNode = [creater createNode];
+        VVViewObject *subNode = [creater createNodeTree];
         [node addSubview:subNode];
     }
     
