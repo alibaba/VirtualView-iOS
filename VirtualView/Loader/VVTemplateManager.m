@@ -104,14 +104,14 @@
                              forType:(NSString *)type
                      withLoaderClass:(Class)loaderClass
 {
-    VVTemplateLoader *loader = [loaderClass new];
+    VVTemplateLoader *loader = loaderClass != NULL ? [loaderClass new] : [self.defaultLoaderClass new];
     if ([loader loadTemplateData:data]) {
         void (^action)(void) = ^{
             if (![self.loadedTypes containsObject:loader.lastType]) {
                 [self.versions setObject:loader.lastVersion forKey:loader.lastType];
                 [self.creaters setObject:loader.lastCreater forKey:loader.lastType];
             }
-            if ([type isEqualToString:loader.lastType] == NO && [self.loadedTypes containsObject:type] == NO) {
+            if (type && [type isEqualToString:loader.lastType] == NO && [self.loadedTypes containsObject:type] == NO) {
                 [self.versions setObject:loader.lastVersion forKey:type];
                 [self.creaters setObject:loader.lastCreater forKey:type];
             }
@@ -148,15 +148,17 @@
         }
     }];
     opearation.name = type;
-    opearation.completionBlock = ^{
-        if ([NSThread currentThread]) {
-            completion(type, version);
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
+    if (completion) {
+        opearation.completionBlock = ^{
+            if ([NSThread currentThread]) {
                 completion(type, version);
-            });
-        }
-    };
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(type, version);
+                });
+            }
+        };
+    }
     [self.operationQueue addOperation:opearation];
 }
 
@@ -181,15 +183,17 @@
         }
     }];
     opearation.name = type;
-    opearation.completionBlock = ^{
-        if ([NSThread currentThread]) {
-            completion(type, version);
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
+    if (completion) {
+        opearation.completionBlock = ^{
+            if ([NSThread currentThread]) {
                 completion(type, version);
-            });
-        }
-    };
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(type, version);
+                });
+            }
+        };
+    }
     [self.operationQueue addOperation:opearation];
 }
 

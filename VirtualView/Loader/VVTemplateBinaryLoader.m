@@ -220,7 +220,10 @@
         // string properties
         int propertyKey = [self readIntLE];
         int stringKey = [self readIntLE];
-        NSString *stringValue = [self.stringDict objectForKey:@(stringKey)] ?: @"";
+        NSString *stringValue = [[VVSystemKey shareInstance].keyDictionary objectForKey:[NSString stringWithFormat:@"%d", stringKey]];
+        if (!stringValue) {
+            stringValue = [self.stringDict objectForKey:@(stringKey)] ?: @"";
+        }
         VVPropertyStringSetter *setter = [VVPropertyStringSetter setterWithPropertyKey:propertyKey stringValue:stringValue];
         [creater.propertySetters addObject:setter];
     }

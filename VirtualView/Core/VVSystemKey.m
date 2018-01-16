@@ -26,7 +26,7 @@ static VVSystemKey* _shareInstance;
 - (id)init{
     self = [super init];
     if (self) {
-        NSString* path = [[NSBundle mainBundle] pathForResource:@"widgetCodeList" ofType:@"plist"];
+        NSString* path = [[NSBundle bundleForClass:self.class] pathForResource:@"widgetCodeList" ofType:@"plist"];
         _originalCodeDic = [NSDictionary dictionaryWithContentsOfFile:path];
         _dynamicCodeDic = [[NSMutableDictionary alloc] initWithDictionary:_originalCodeDic];
         _keyArray = @[

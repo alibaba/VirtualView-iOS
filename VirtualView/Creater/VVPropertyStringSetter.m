@@ -18,7 +18,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; key = %d; value = %@>", self.class, self, self.key, self.value];
+    return [NSString stringWithFormat:@"<%@: %p; name = %@; value = %@>", self.class, self, self.name, self.value];
 }
 
 - (void)applyToNode:(VVViewObject *)node

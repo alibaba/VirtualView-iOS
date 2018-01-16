@@ -21,6 +21,7 @@
 @interface VVPropertySetter : NSObject
 
 @property (nonatomic, assign, readonly) int key;
+@property (nonatomic, strong, readonly, nullable) NSString *name;
 
 - (nonnull instancetype)initWithPropertyKey:(int)key;
 
