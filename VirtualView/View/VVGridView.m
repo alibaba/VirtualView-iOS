@@ -24,10 +24,7 @@
 - (id)init{
     self = [super init];
     if (self) {
-        //_colCount = 2;
-        //self.gridlayout = [[VVGridLayout alloc] init];
         self.gridContainer = [[UIView alloc] init];
-        //self.gridContainer.backgroundColor = [UIColor grayColor];
     }
     return self;
 }
@@ -47,7 +44,6 @@
     self.frame = CGRectMake(a1, a2, w, h);
     
     self.gridContainer.frame = self.frame;
-    //[super layoutSubviews];
     int index = 0;
     for (int row=0; row<self.rowCount; row++) {
         for (int col=0; col<self.colCount; col++) {
@@ -119,18 +115,6 @@
     return ret;
 }
 
-- (void)setDataTag:(NSString *)dataTag{
-    //
-    NSArray* subItems  = (NSArray*)dataTag;
-    for (NSDictionary* item in subItems) {
-        //
-        //NSUInteger itemId = [[item objectForKey:@"type"] intValue];
-        VVViewObject* vvObj = [[VVViewFactory shareFactoryInstance] parseWidgetWithTypeID:@"" collection:nil];
-        [vvObj setDataObj:item forKey:0];
-        [self addSubview:vvObj];
-    }
-}
-
 - (int)getValue4Array:(NSArray*)arr{
     int value=0;
     for (NSString* item in arr) {
@@ -159,7 +143,6 @@
     
     if ([obj isKindOfClass:NSArray.class]) {
         NSDictionary* tmpDictionary = jsonData;
-        //NSString* varName = nil;
         NSArray* varList = (NSArray*)obj;
         for (NSDictionary* varItem in varList) {
             NSString* varName = [varItem objectForKey:@"varName"];
@@ -204,7 +187,6 @@
 }
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
-    //
     if (obj==nil || obj==self.updateDataObj) {
         return;
     }else{
@@ -219,20 +201,16 @@
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
     for (NSDictionary* jsonData in dataArray) {
-        //
         NSString* widget=[jsonData objectForKey:@"type"];
         NSMutableArray* updateObjs = [[NSMutableArray alloc] init];
         VVViewObject* vv = [[VVViewFactory shareFactoryInstance] parseWidgetWithTypeID:widget collection:updateObjs];
-        //[vv calculateLayoutSize:size];
         for (VVViewObject* item in updateObjs) {
             [item reset];
             for (NSNumber* key in [item.mutablePropertyDic allKeys]) {
                 NSDictionary* propertyInfo = [item.mutablePropertyDic objectForKey:key];
-                //NSString* varName = [propertyInfo objectForKey:@"varName"];
                 NSNumber* valueType = [propertyInfo objectForKey:@"valueType"];
                 NSArray* varObj = [propertyInfo objectForKey:@"varValues"];
                 
-                //NSArray* nodes = [varName componentsSeparatedByString:@"."];
                 NSObject* valueObj = nil;
                 NSDictionary* tmpDictionary = jsonData;
                 NSString* varName = nil;
@@ -261,29 +239,6 @@
                     valueObj = [tmpDictionary objectForKey:varObj];
                     varName = (NSString*)varObj;
                 }
-                /*for (NSString* node in nodes) {
-                    //NSLog(@"%@",node);
-                    NSRange start = [node rangeOfString:@"["];
-                    NSRange end   = [node rangeOfString:@"]"];
-                    if (start.location!=NSNotFound && end.location!=NSNotFound && start.location<end.location) {
-                        NSRange indexRange = NSMakeRange(start.location+1, end.location-start.location-1);
-                        NSString* indexString = [node substringWithRange:indexRange];
-                        NSUInteger index = [indexString integerValue];
-                        NSString* nodeName = [node substringToIndex:start.location];
-                        NSArray* items = [tmpDictionary objectForKey:nodeName];
-                        if (items.count>index) {
-                            valueObj = [items objectAtIndex:index];
-                        }else{
-                            valueObj = @"";
-                        }
-                    }else{
-                        valueObj = [tmpDictionary objectForKey:node];
-                    }
-                    
-                    if ([valueObj isKindOfClass:NSDictionary.class]) {
-                        tmpDictionary = (NSDictionary*)valueObj;
-                    }
-                }*/
 
                 int keyValue = [key intValue];
 
@@ -428,7 +383,6 @@
                         break;
                     }
                 }
-                //[item setDataObj:(NSDictionary*)obj];
             }
         }
         vv.actionValue = [jsonData objectForKey:vv.action];
@@ -474,7 +428,6 @@
     if (vvObj.cocoaView) {
         [vvObj.cocoaView removeFromSuperview];
     }
-    //[vvObj removeFromSuperview];
 }
 
 - (void)resetObj{

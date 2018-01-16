@@ -30,12 +30,11 @@
     [manager loadTemplateFile:[bundle pathForResource:@"NImage" ofType:@"out"] forType:nil];
     [manager loadTemplateFile:[bundle pathForResource:@"NLine" ofType:@"out"] forType:nil];
     [manager loadTemplateFile:[bundle pathForResource:@"NText" ofType:@"out"] forType:nil];
-    [manager loadTemplateFile:[bundle pathForResource:@"Progress" ofType:@"out"] forType:nil];
     [manager loadTemplateFile:[bundle pathForResource:@"FrameLayout" ofType:@"out"] forType:nil];
     [manager loadTemplateFile:[bundle pathForResource:@"RatioLayout" ofType:@"out"] forType:nil];
     [manager loadTemplateFile:[bundle pathForResource:@"VHLayout" ofType:@"out"] forType:@"linear"];
     [manager loadTemplateFile:[bundle pathForResource:@"icon" ofType:@"out"] forType:nil];
-    assertThat(manager.loadedTypes, hasCountOf(9));
+    assertThat(manager.loadedTypes, hasCountOf(8));
     assertThat(manager.loadedTypes, hasItem(@"icon"));
     assertThat(manager.loadedTypes, hasItem(@"linear"));
     assertThat([[manager versionOfType:@"icon"] stringValue], equalTo(@"1.0.13"));
@@ -53,7 +52,6 @@
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NImage" ofType:@"out"] forType:@"NImage" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NLine" ofType:@"out"] forType:@"NLine" completion:nil];
-    [manager loadTemplateFileAsync:[bundle pathForResource:@"Progress" ofType:@"out"] forType:@"Progress" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"FrameLayout" ofType:@"out"] forType:@"FrameLayout" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"RatioLayout" ofType:@"out"] forType:@"RatioLayout" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"VHLayout" ofType:@"out"] forType:@"linear" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
@@ -84,7 +82,7 @@
 
     [self waitForExpectations:@[expectation] timeout:10];
     
-    assertThat(manager.loadedTypes, hasCountOf(9));
+    assertThat(manager.loadedTypes, hasCountOf(8));
     assertThat(manager.loadedTypes, hasItem(@"icon"));
     assertThat(manager.loadedTypes, hasItem(@"linear"));
 }

@@ -11,7 +11,6 @@
 		926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B40432004950B0003D88E /* BinaryReaderTest.m */; };
 		926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */; };
 		926CFAC82008BE25003C0BCE /* icon.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC72008BE25003C0BCE /* icon.out */; };
-		926CFAD0200CCBDE003C0BCE /* Progress.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC9200CCBDE003C0BCE /* Progress.out */; };
 		926CFAD1200CCBDE003C0BCE /* RatioLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACA200CCBDE003C0BCE /* RatioLayout.out */; };
 		926CFAD2200CCBDE003C0BCE /* FrameLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACB200CCBDE003C0BCE /* FrameLayout.out */; };
 		926CFAD3200CCBDE003C0BCE /* NLine.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACC200CCBDE003C0BCE /* NLine.out */; };
@@ -29,7 +28,6 @@
 		926B40452004950B0003D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryLoaderTest.m; sourceTree = "<group>"; };
 		926CFAC72008BE25003C0BCE /* icon.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = icon.out; sourceTree = "<group>"; };
-		926CFAC9200CCBDE003C0BCE /* Progress.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = Progress.out; sourceTree = "<group>"; };
 		926CFACA200CCBDE003C0BCE /* RatioLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = RatioLayout.out; sourceTree = "<group>"; };
 		926CFACB200CCBDE003C0BCE /* FrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = FrameLayout.out; sourceTree = "<group>"; };
 		926CFACC200CCBDE003C0BCE /* NLine.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NLine.out; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 				926CFACE200CCBDE003C0BCE /* NImage.out */,
 				926CFACC200CCBDE003C0BCE /* NLine.out */,
 				926CFACF200CCBDE003C0BCE /* NText.out */,
-				926CFAC9200CCBDE003C0BCE /* Progress.out */,
 				926CFACB200CCBDE003C0BCE /* FrameLayout.out */,
 				926CFACA200CCBDE003C0BCE /* RatioLayout.out */,
 				926CFACD200CCBDE003C0BCE /* VHLayout.out */,
@@ -179,7 +176,6 @@
 				926CFAD4200CCBDE003C0BCE /* VHLayout.out in Resources */,
 				926CFAC82008BE25003C0BCE /* icon.out in Resources */,
 				926CFAD2200CCBDE003C0BCE /* FrameLayout.out in Resources */,
-				926CFAD0200CCBDE003C0BCE /* Progress.out in Resources */,
 				926CFAD5200CCBDE003C0BCE /* NImage.out in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -21,7 +21,7 @@
 
 - (BOOL)loadTemplateData:(NSData *)data
 {
-    // Override me.
+    // override me
     self.lastError = VVMakeError(VVNeedToBeOverridedError, @"Need to be overrided.");
     self.lastVersion = nil;
     self.lastType = nil;

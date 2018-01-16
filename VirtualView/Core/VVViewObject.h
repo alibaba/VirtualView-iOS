@@ -336,7 +336,6 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 - (void)setData:(NSData*)data;
 - (void)setDataObj:(NSObject*)obj forKey:(int)key;
 - (void)setTagsValue:(NSArray*)tags withData:(NSDictionary*)dic;
-- (void)parseData:(NSObject*)bizData;
 - (BOOL)isClickable;
 - (BOOL)isLongClickable;
 - (BOOL)supportExposure;

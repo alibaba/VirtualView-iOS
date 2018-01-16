@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class VVViewObject;
+@class VVViewContainer;
 
 //****************************************************************
 
@@ -18,8 +19,8 @@
  */
 @interface StringInfo : NSObject
 
-@property (nonatomic, assign) CGSize drawRect __deprecated;
-@property (nonatomic, strong) NSMutableAttributedString *attstr __deprecated;
+@property (nonatomic, assign) CGSize drawRect /*__deprecated*/;
+@property (nonatomic, strong) NSMutableAttributedString *attstr /*__deprecated*/;
 
 @end
 
@@ -32,10 +33,10 @@
 @interface VVViewFactory : NSObject
 
 + (VVViewFactory *)shareFactoryInstance __deprecated;
-- (VVViewObject *)parseWidgetWithTypeID:(NSString *)key collection:(NSMutableArray *)dataTagObjs __deprecated;
-- (UIView *)obtainVirtualWithKey:(NSString *)key __deprecated;
+- (VVViewObject *)parseWidgetWithTypeID:(NSString *)key collection:(NSMutableArray *)dataTagObjs __deprecated_msg("use [VVTemplateManager createNodeTreeForType:] and get dataTagObjs by yourself");
+- (VVViewContainer *)obtainVirtualWithKey:(NSString *)key __deprecated_msg("will be moved to VVViewContainer");
 
-- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size __deprecated;
-- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size __deprecated;
+- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size /*__deprecated*/;
+- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size /*__deprecated*/;
 
 @end

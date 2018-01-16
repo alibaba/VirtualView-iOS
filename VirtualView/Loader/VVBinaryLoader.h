@@ -16,9 +16,9 @@
 
 + (nonnull id)shareInstance __deprecated;
 
-- (nullable NSData *)getUICodeWithName:(nonnull NSString *)keyStr __deprecated;
+- (nullable NSData *)getUICodeWithName:(nonnull NSString *)keyStr __deprecated_msg("return nil");
 
-- (nullable NSString *)getStrCodeWithType:(int)type __deprecated;
+- (nullable NSString *)getStrCodeWithType:(int)type __deprecated_msg("return nil");
 
 /**
  Load VirtualView template from binary buffer and return the version of it.
@@ -26,6 +26,6 @@
  @param  buff  Binary buffer.
  @return       Version of template, will be nil if the loading is failed.
  */
-- (nullable VVVersionModel *)loadFromBuffer:(nonnull NSData *)buff __deprecated;
+- (nullable VVVersionModel *)loadFromBuffer:(nonnull NSData *)buff __deprecated_msg("use [VVTemplateManager loadTemplateData:forType:]");
 
 @end

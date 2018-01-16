@@ -17,8 +17,6 @@
 		926B402D200397AB0003D88E /* nimage.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4023200397AA0003D88E /* nimage.xml */; };
 		926B402E200397AB0003D88E /* NText.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4024200397AA0003D88E /* NText.out */; };
 		926B402F200397AB0003D88E /* ntext.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4025200397AA0003D88E /* ntext.xml */; };
-		926B4030200397AB0003D88E /* Progress.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4026200397AA0003D88E /* Progress.out */; };
-		926B4031200397AB0003D88E /* progress.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4027200397AA0003D88E /* progress.xml */; };
 		926B4032200397AB0003D88E /* tmall_component_2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4028200397AB0003D88E /* tmall_component_2.xml */; };
 		926B4033200397AB0003D88E /* TmallComponent2.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4029200397AB0003D88E /* TmallComponent2.out */; };
 		926B4034200397AB0003D88E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B402A200397AB0003D88E /* MainViewController.m */; };
@@ -42,8 +40,6 @@
 		926B4023200397AA0003D88E /* nimage.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nimage.xml; sourceTree = "<group>"; };
 		926B4024200397AA0003D88E /* NText.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NText.out; sourceTree = "<group>"; };
 		926B4025200397AA0003D88E /* ntext.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ntext.xml; sourceTree = "<group>"; };
-		926B4026200397AA0003D88E /* Progress.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = Progress.out; sourceTree = "<group>"; };
-		926B4027200397AA0003D88E /* progress.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = progress.xml; sourceTree = "<group>"; };
 		926B4028200397AB0003D88E /* tmall_component_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tmall_component_2.xml; sourceTree = "<group>"; };
 		926B4029200397AB0003D88E /* TmallComponent2.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = TmallComponent2.out; sourceTree = "<group>"; };
 		926B402A200397AB0003D88E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -112,8 +108,6 @@
 				926B4023200397AA0003D88E /* nimage.xml */,
 				926B4024200397AA0003D88E /* NText.out */,
 				926B4025200397AA0003D88E /* ntext.xml */,
-				926B4026200397AA0003D88E /* Progress.out */,
-				926B4027200397AA0003D88E /* progress.xml */,
 				926B4028200397AB0003D88E /* tmall_component_2.xml */,
 				926B4029200397AB0003D88E /* TmallComponent2.out */,
 			);
@@ -196,8 +190,6 @@
 				926B402E200397AB0003D88E /* NText.out in Resources */,
 				926B402C200397AB0003D88E /* NImage.out in Resources */,
 				926B4012200396DB0003D88E /* Assets.xcassets in Resources */,
-				926B4031200397AB0003D88E /* progress.xml in Resources */,
-				926B4030200397AB0003D88E /* Progress.out in Resources */,
 				926B4033200397AB0003D88E /* TmallComponent2.out in Resources */,
 				926B4032200397AB0003D88E /* tmall_component_2.xml in Resources */,
 			);

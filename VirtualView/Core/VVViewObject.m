@@ -831,28 +831,6 @@
     });
 }
 
-- (void)parseData:(NSObject*)bizData{
-    //
-    if(self.subViews.count>0){
-        if([bizData isKindOfClass:NSArray.class]){
-            NSArray* items = (NSArray*)bizData;
-            int index = 0;
-            for (NSDictionary* item in items) {
-                VVViewObject* subObj = self.subViews[index];
-                [subObj parseData:item];
-                index++;
-            }
-        }else if([bizData isKindOfClass:NSDictionary.class]){
-            //
-            for (VVViewObject* subObj in self.subViews) {
-                [subObj parseData:bizData];
-            }
-        }
-    }else{
-        [self setDataObj:(NSDictionary*)bizData forKey:0];
-    }
-}
-
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
     _updateDelegate = delegate;
     for (VVViewObject* subObj in self.subViews) {

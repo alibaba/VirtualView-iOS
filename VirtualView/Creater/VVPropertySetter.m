@@ -26,7 +26,7 @@
 
 - (void)applyToNode:(VVViewObject *)node
 {
-    // Override me.
+    // override me
 }
 
 @end
