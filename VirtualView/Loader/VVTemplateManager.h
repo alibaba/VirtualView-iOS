@@ -21,6 +21,12 @@
  */
 @property (nonatomic, assign, nonnull) Class defaultLoaderClass;
 
+/**
+ The manager will remove old template before reload it if this value is YES.
+ Default value is YES.
+ */
+@property (nonatomic, assign) BOOL removeTemplateBeforeReload;
+
 @property (nonatomic, strong, readonly, nonnull) NSArray<NSString *> *loadedTypes;
 
 /**
