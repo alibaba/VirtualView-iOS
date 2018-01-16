@@ -65,20 +65,20 @@
 
 - (VVViewObject *)createNodeTreeForType:(NSString *)type
 {
-    VVNodeCreater *creater = [self.creaters objectForKey:type];
-    if (!creater && _operationQueue) {
-        NSOperation *lastOperation = nil;
-        for (NSOperation *operation in _operationQueue.operations) {
+    if ([self.loadedTypes containsObject:type] == NO && _operationQueue) {
+        // Try to find unloaded template in queue and load it immediately.
+        BOOL isLastMatchedOperation = YES;
+        for (NSOperation *operation in _operationQueue.operations.reverseObjectEnumerator) {
             if ([operation.name isEqualToString:type]) {
-                lastOperation = operation;
+                if (isLastMatchedOperation) {
+                    [operation main];
+                    isLastMatchedOperation = NO;
+                }
                 [operation cancel];
             }
         }
-        if (lastOperation) {
-            [lastOperation main];
-            creater = [self.creaters objectForKey:type];
-        }
     }
+    VVNodeCreater *creater = [self.creaters objectForKey:type];
     return creater ? [creater createNodeTree] : nil;
 }
 
@@ -86,26 +86,24 @@
 
 - (void)willLoadType:(NSString *)type
 {
-    if (self.removeTemplateBeforeReload) {
-        void (^action)(void) = ^{
-            if (_operationQueue) {
-                for (NSOperation *operation in _operationQueue.operations) {
-                    if ([operation.name isEqualToString:type]) {
-                        [operation cancel];
-                        operation.completionBlock = nil;
-                    }
+    void (^action)(void) = ^{
+        if (_operationQueue) {
+            for (NSOperation *operation in _operationQueue.operations) {
+                if ([operation.name isEqualToString:type]) {
+                    [operation cancel];
+                    operation.completionBlock = nil;
                 }
             }
-            if ([self.loadedTypes containsObject:type]) {
-                [self.versions removeObjectForKey:type];
-                [self.creaters removeObjectForKey:type];
-            }
-        };
-        if ([NSThread isMainThread]) {
-            action();
-        } else {
-            dispatch_sync(dispatch_get_main_queue(), action);
         }
+        if (self.removeTemplateBeforeReload && [self.loadedTypes containsObject:type]) {
+            [self.versions removeObjectForKey:type];
+            [self.creaters removeObjectForKey:type];
+        }
+    };
+    if ([NSThread isMainThread]) {
+        action();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), action);
     }
 }
 
@@ -185,25 +183,15 @@
 {
     [self willLoadType:type];
     
-    __weak VVTemplateManager *weakSelf = self;
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{
-        VVTemplateManager *strongSelf = weakSelf;
-        if (strongSelf) {
-            NSData *data = [NSData dataWithContentsOfFile:file];
-            version = [strongSelf _loadTemplateData:data forType:type withLoaderClass:loaderClass];
-        }
+        NSData *data = [NSData dataWithContentsOfFile:file];
+        version = [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
     }];
     opearation.name = type;
     if (completion) {
         opearation.completionBlock = ^{
-            if ([NSThread isMainThread]) {
-                completion(type, version);
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(type, version);
-                });
-            }
+            completion(type, version);
         };
     }
     [self.operationQueue addOperation:opearation];
@@ -223,24 +211,14 @@
 {
     [self willLoadType:type];
     
-    __weak VVTemplateManager *weakSelf = self;
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{
-        VVTemplateManager *strongSelf = weakSelf;
-        if (strongSelf) {
-            version = [strongSelf _loadTemplateData:data forType:type withLoaderClass:loaderClass];
-        }
+        version = [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
     }];
     opearation.name = type;
     if (completion) {
         opearation.completionBlock = ^{
-            if ([NSThread isMainThread]) {
-                completion(type, version);
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(type, version);
-                });
-            }
+            completion(type, version);
         };
     }
     [self.operationQueue addOperation:opearation];

@@ -112,11 +112,11 @@
 
 - (void)testLoadTemplateAsyncTwiceB {
     XCTestExpectation *expectation = [XCTestExpectation new];
-    expectation.expectedFulfillmentCount = 2;
+    expectation.expectedFulfillmentCount = 1;
     
     VVTemplateManager *manager = [VVTemplateManager sharedManager];
-    manager.removeTemplateBeforeReload = NO;
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
+    [manager loadTemplateFile:[bundle pathForResource:@"NText" ofType:@"out"] forType:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NImage" ofType:@"out"] forType:@"NImage" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NLine" ofType:@"out"] forType:@"NLine" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"FrameLayout" ofType:@"out"] forType:@"FrameLayout" completion:nil];
@@ -126,9 +126,31 @@
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NText" ofType:@"out"] forType:@"NText" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
         [expectation fulfill];
     }];
+    
+    assertThat(manager.loadedTypes, isNot(hasItem(@"NText")));
+    
+    [self waitForExpectations:@[expectation] timeout:10];
+}
+
+- (void)testLoadTemplateAsyncTwiceC {
+    XCTestExpectation *expectation = [XCTestExpectation new];
+    expectation.expectedFulfillmentCount = 1;
+    
+    VVTemplateManager *manager = [VVTemplateManager sharedManager];
+    manager.removeTemplateBeforeReload = NO;
+    NSBundle *bundle = [NSBundle bundleForClass:self.class];
+    [manager loadTemplateFile:[bundle pathForResource:@"NText" ofType:@"out"] forType:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"NImage" ofType:@"out"] forType:@"NImage" completion:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"NLine" ofType:@"out"] forType:@"NLine" completion:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"FrameLayout" ofType:@"out"] forType:@"FrameLayout" completion:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"RatioLayout" ofType:@"out"] forType:@"RatioLayout" completion:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"VHLayout" ofType:@"out"] forType:@"linear" completion:nil];
+    [manager loadTemplateFileAsync:[bundle pathForResource:@"icon" ofType:@"out"] forType:@"icon" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NText" ofType:@"out"] forType:@"NText" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
         [expectation fulfill];
     }];
+    
+    assertThat(manager.loadedTypes, hasItem(@"NText"));
     
     [self waitForExpectations:@[expectation] timeout:10];
 }
