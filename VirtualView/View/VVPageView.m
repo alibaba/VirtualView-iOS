@@ -139,12 +139,9 @@
 }
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
-    //
-    NSMutableArray* dataTagObjs = nil;
     VVViewContainer* vvContainer = nil;
     if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){
         vvContainer = (VVViewContainer*)[self superview].updateDelegate;
-        dataTagObjs = vvContainer.dataTagObjs;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;

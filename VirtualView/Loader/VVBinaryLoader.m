@@ -20,16 +20,6 @@
     return shareInstance_;
 }
 
-- (NSData *)getUICodeWithName:(NSString *)keyStr
-{
-    return nil;
-}
-
-- (NSString *)getStrCodeWithType:(int)type
-{
-    return nil;
-}
-
 - (VVVersionModel *)loadFromBuffer:(NSData *)buff
 {
     return [[VVTemplateManager sharedManager] loadTemplateData:buff forType:nil];

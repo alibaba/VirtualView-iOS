@@ -6,14 +6,12 @@
 //
 
 #import "VVViewObject.h"
-#import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
 
 @interface VVViewObject ()
 {
     NSMutableArray*   _subViews;
     NSUInteger        _objectID;
-    VVBinaryLoader*   _binaryLoader;
     int _align, _flag, _minWidth, _minHeight;
     //NSMutableDictionary* _mutablePropertyDic;
 }
@@ -29,9 +27,7 @@
     if (self) {
         self.alpha = 1.0f;
         self.hidden = NO;
-        self.dataTagObjs = [[NSMutableDictionary alloc] init];
         _subViews = [[NSMutableArray alloc] init];
-        _binaryLoader = [VVBinaryLoader shareInstance];
         self.backgroundColor = [UIColor clearColor];
         self.gravity = Gravity_LEFT|Gravity_TOP;
         self.visible = VISIBLE;

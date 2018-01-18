@@ -39,7 +39,7 @@
         NSString *path = [[NSBundle mainBundle] pathForResource:self.title ofType:@"out"];
         [[VVTemplateManager sharedManager] loadTemplateFile:path forType:nil];
     }
-    self.container = (VVViewContainer *)[[VVViewFactory shareFactoryInstance] obtainVirtualWithKey:self.title];
+    self.container = [VVViewContainer viewContainerWithTemplateType:self.title];
     [self.scrollView addSubview:self.container];
 }
 

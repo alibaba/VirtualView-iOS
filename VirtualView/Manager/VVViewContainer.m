@@ -8,14 +8,25 @@
 #import "VVViewContainer.h"
 #import "VVLayout.h"
 #import "VVBinaryLoader.h"
+#import "VVTemplateManager.h"
+
 @interface VVViewContainer()<VVWidgetAction>{
     UILongPressGestureRecognizer* _pressRecognizer;
 }
+@property(nonatomic, strong)NSMutableArray *dataTagObjs;
 @property(strong, nonatomic)NSMutableDictionary* dataCacheDic;
 @property(weak, nonatomic)NSObject*            updateDataObj;
 @end
 
 @implementation VVViewContainer
+
++ (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type
+{
+    VVViewObject *vv = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
+    VVViewContainer *vvc = [[VVViewContainer alloc] initWithVirtualView:vv];
+    [vvc attachViews];
+    return vvc;
+}
 
 - (void)updateDisplayRect:(CGRect)rect{
 
@@ -54,6 +65,8 @@
         self.virtualView.updateDelegate = self;
         self.backgroundColor = [UIColor clearColor];
         self.dataCacheDic = [[NSMutableDictionary alloc] init];
+        _dataTagObjs = [NSMutableArray array];
+        [VVViewContainer getDataTagObjsHelper:virtualView collection:_dataTagObjs];
         if ([self.virtualView isLongClickable]) {
             _pressRecognizer =
             [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressed:)];
@@ -377,4 +390,15 @@
     VVViewObject* obj=[self.virtualView findViewByID:tagid];
     return obj;
 }
+
++ (void)getDataTagObjsHelper:(VVViewObject *)node collection:(NSMutableArray *)dataTagObjs
+{
+    if (node.mutablePropertyDic.count > 0) {
+        [dataTagObjs addObject:node];
+    }
+    for (VVViewObject *subNode in node.subViews) {
+        [self getDataTagObjsHelper:subNode collection:dataTagObjs];
+    }
+}
+
 @end

@@ -311,7 +311,6 @@ typedef NS_ENUM(NSUInteger, LINESTYLE) {
 @property(nonatomic, strong)NSMutableDictionary     *userVarDic;
 @property(nonatomic, weak)id<VVWidgetAction>      updateDelegate;
 @property(nonatomic, readonly, copy) NSArray<__kindof VVViewObject *> *subViews;
-@property(nonatomic, strong)NSMutableDictionary      *dataTagObjs;
 @property(nonatomic, strong)NSMutableDictionary      *mutablePropertyDic;
 @property(strong, nonatomic)NSMutableDictionary      *cacheInfoDic;
 

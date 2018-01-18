@@ -6,25 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
-@class VVViewObject;
-@class VVViewContainer;
-
-//****************************************************************
-
-/**
- This class will be deprecated.
- DO NOT use it.
- */
-@interface StringInfo : NSObject
-
-@property (nonatomic, assign) CGSize drawRect /*__deprecated*/;
-@property (nonatomic, strong) NSMutableAttributedString *attstr /*__deprecated*/;
-
-@end
-
-//****************************************************************
+#import "VVViewContainer.h"
 
 /**
  This class will be deprecated.
@@ -33,10 +15,13 @@
 @interface VVViewFactory : NSObject
 
 + (VVViewFactory *)shareFactoryInstance __deprecated;
-- (VVViewObject *)parseWidgetWithTypeID:(NSString *)key collection:(NSMutableArray *)dataTagObjs __deprecated_msg("use [VVTemplateManager createNodeTreeForType:] and get dataTagObjs by yourself");
-- (VVViewContainer *)obtainVirtualWithKey:(NSString *)key __deprecated_msg("will be moved to VVViewContainer");
 
-- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size /*__deprecated*/;
-- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size /*__deprecated*/;
+/**
+ Create the node tree. Return a VVViewContainer that contains the node tree.
+
+ @param key  Template type
+ @return     VVViewContainer with created node tree.
+ */
+- (VVViewContainer *)obtainVirtualWithKey:(NSString *)key __deprecated_msg("use [VVViewContainer viewContainerWithTemplateType:]");
 
 @end

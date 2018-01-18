@@ -11,7 +11,6 @@
 #import "VVPropertyFloatSetter.h"
 #import "VVPropertyStringSetter.h"
 #import "VVSystemKey.h"
-#import <TMUtils/TMUtils.h>
 
 #define VV_TEMPLATE_HEADER @"ALIVV"
 #define VV_START_TAG 0

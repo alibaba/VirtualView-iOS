@@ -16,10 +16,6 @@
 
 + (nonnull id)shareInstance __deprecated;
 
-- (nullable NSData *)getUICodeWithName:(nonnull NSString *)keyStr __deprecated_msg("return nil");
-
-- (nullable NSString *)getStrCodeWithType:(int)type __deprecated_msg("return nil");
-
 /**
  Load VirtualView template from binary buffer and return the version of it.
  

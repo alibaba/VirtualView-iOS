@@ -11,6 +11,8 @@
 #import "VVViewFactory.h"
 #import "VVGridLayout.h"
 #import "VVViewContainer.h"
+#import "VVTemplateManager.h"
+
 @interface VVGridView (){
 
 }
@@ -199,18 +201,17 @@
     }else{
         self.updateDataObj = obj;
     }
-    NSMutableArray* dataTagObjs = nil;
     VVViewContainer* vvContainer = nil;
     if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){
         vvContainer = (VVViewContainer*)[self superview].updateDelegate;
-        dataTagObjs = vvContainer.dataTagObjs;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
     for (NSDictionary* jsonData in dataArray) {
-        NSString* widget=[jsonData objectForKey:@"type"];
+        NSString* nodeType=[jsonData objectForKey:@"type"];
         NSMutableArray* updateObjs = [[NSMutableArray alloc] init];
-        VVViewObject* vv = [[VVViewFactory shareFactoryInstance] parseWidgetWithTypeID:widget collection:updateObjs];
+        VVViewObject* vv = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
+        [VVViewContainer getDataTagObjsHelper:vv collection:updateObjs];
         for (VVViewObject* item in updateObjs) {
             [item reset];
             for (NSNumber* key in [item.mutablePropertyDic allKeys]) {

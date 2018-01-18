@@ -67,12 +67,12 @@
 {
     if ([self.loadedTypes containsObject:type] == NO && _operationQueue) {
         // Try to find unloaded template in queue and load it immediately.
-        BOOL isLastMatchedOperation = YES;
+        BOOL isFirst = YES;
         for (NSOperation *operation in _operationQueue.operations.reverseObjectEnumerator) {
             if ([operation.name isEqualToString:type]) {
-                if (isLastMatchedOperation) {
+                if (isFirst) {
                     [operation main];
-                    isLastMatchedOperation = NO;
+                    isFirst = NO;
                 }
                 [operation cancel];
             }

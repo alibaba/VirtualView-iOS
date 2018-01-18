@@ -16,12 +16,17 @@
 @end
 
 @interface VVViewContainer : UIView
-@property(nonatomic, strong)NSMutableArray *dataTagObjs;
 @property(nonatomic, strong)VVViewObject* virtualView;
 @property(nonatomic, weak)NSObject<VirtualViewDelegate> *delegate;
+
++ (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type;
+
 - (id)initWithVirtualView:(VVViewObject*)virtualView;
 - (void)attachViews;
 - (void) attachViews:(VVViewObject*)virtualView;
 - (void)update:(NSObject*)obj;
 - (VVViewObject*)findObjectByID:(int)tagid;
+
++ (void)getDataTagObjsHelper:(VVViewObject *)node collection:(NSMutableArray *)dataTagObjs;
+
 @end

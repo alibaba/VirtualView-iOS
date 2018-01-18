@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.resources    = 'VirtualView/Resources/*.*'
 
   s.dependency 'SDWebImage', '~> 4.2'
-  s.dependency 'TMUtils', '~> 1.0'
 
 end

@@ -11,6 +11,76 @@
 #import "FrameView.h"
 #import "VVViewFactory.h"
 
+//****************************************************************
+
+@interface StringInfo : NSObject
+
+@property (nonatomic, assign) CGSize drawRect;
+@property (nonatomic, strong) NSMutableAttributedString *attstr;
+
+@end
+
+@implementation StringInfo
+
+@end
+
+//****************************************************************
+
+@interface StringCache : NSObject
+
++ (StringCache *)sharedCache;
+
+@property (nonatomic, strong)NSMutableDictionary *stringDrawRectInfo;
+
+- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size maxWidth:(CGFloat)maxWidth;
+- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size maxWidth:(CGFloat)maxWidth;
+
+@end
+
+@implementation StringCache
+
++ (StringCache *)sharedCache
+{
+    static StringCache *_sharedCache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedCache = [StringCache new];
+    });
+    return _sharedCache;
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _stringDrawRectInfo = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
+
+- (StringInfo *)getDrawStringInfo:(NSString *)value andFrontSize:(CGFloat)size maxWidth:(CGFloat)maxWidth
+{
+    NSDictionary *stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
+    NSString *key = [NSString stringWithFormat:@"%.2f-%.2f", size, maxWidth];
+    StringInfo *info = [stringInfoDic objectForKey:key];
+    return info;
+}
+
+- (void)setDrawStringInfo:(StringInfo *)strInfo forString:(NSString *)value frontSize:(CGFloat)size maxWidth:(CGFloat)maxWidth
+{
+    NSString *key = [NSString stringWithFormat:@"%.2f-%.2f", size, maxWidth];
+    NSMutableDictionary *stringInfoDic = [self.stringDrawRectInfo objectForKey:value];
+    if (stringInfoDic) {
+        [stringInfoDic setObject:strInfo forKey:key];
+    } else {
+        NSMutableDictionary *stringInfoDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:strInfo, key, nil];
+        [self.stringDrawRectInfo setObject:stringInfoDic forKey:value];
+    }
+}
+
+@end
+
+//****************************************************************
+
 @interface NVTextView (){
     CGSize _maxSize;
 }
@@ -141,7 +211,7 @@
     CGFloat height = self.heightModle > 0 ? self.heightModle : maxSize.height-self.paddingTop-self.paddingBottom;
     CGSize textMaxRT = CGSizeMake(width, height);
     
-    StringInfo* info =[[VVViewFactory shareFactoryInstance] getDrawStringInfo:self.text andFrontSize:self.frontSize];
+    StringInfo* info =[[StringCache sharedCache] getDrawStringInfo:self.text andFrontSize:self.frontSize maxWidth:width];
     if(info){
         self.textSize = info.drawRect;
         //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
@@ -185,7 +255,7 @@
         StringInfo* info = [[StringInfo alloc] init];
         info.drawRect = textSize;
         self.textSize = textSize;
-        [[VVViewFactory shareFactoryInstance] setDrawStringInfo:info forString:self.text frontSize:self.frontSize];
+        [[StringCache sharedCache] setDrawStringInfo:info forString:self.text frontSize:self.frontSize maxWidth:width];
 
     }
 
