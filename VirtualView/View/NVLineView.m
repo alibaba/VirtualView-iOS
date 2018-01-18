@@ -49,7 +49,9 @@
 
 - (void)dealloc
 {
-    if (_drawLayer) _drawLayer.delegate = nil;
+    if (self.drawLayer) {
+        self.drawLayer.delegate = nil;
+    }
 }
 
 - (void)setDashMemery{

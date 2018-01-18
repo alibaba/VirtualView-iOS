@@ -95,6 +95,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (myLayer) {
+        myLayer.delegate = nil;
+    }
+}
+
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
 
     switch (key) {
