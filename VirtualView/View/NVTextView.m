@@ -136,9 +136,6 @@
 
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     _maxSize = maxSize;
-//    if (self.text==nil || self.text.length==0) {
-//        return CGSizeZero;
-//    }
     CGSize textSize = CGSizeZero;
     CGFloat width = self.widthModle > 0 ? self.widthModle : maxSize.width-self.paddingLeft-self.paddingRight;
     CGFloat height = self.heightModle > 0 ? self.heightModle : maxSize.height-self.paddingTop-self.paddingBottom;
@@ -146,10 +143,6 @@
     
     StringInfo* info =[[VVViewFactory shareFactoryInstance] getDrawStringInfo:self.text andFrontSize:self.frontSize];
 
-    if([self.text isEqualToString:@"仅剩5件"])
-    {
-        ;
-    }
     if(info){
         self.textSize = info.drawRect;
         //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
@@ -163,16 +156,10 @@
             
             UIFont *font = [self vv_font];;
 
-            CGFloat fHeight=0.0f;
             CGFloat fTextRealHeight=0.0f;
             NSInteger lines = self.textView.numberOfLines;
             if (lines>0) {
-                NSString* fStr=[self.text substringToIndex:1];
-                fHeight = [fStr boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
-                                   NSStringDrawingUsesLineFragmentOrigin |
-                                   NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font} context:nil].size.height;
-                //textMaxRT.height=(fHeight+3)*lines;
-                fTextRealHeight = fHeight*lines;
+                fTextRealHeight = font.lineHeight*lines;
                 if(textMaxRT.height<fTextRealHeight){
                     textMaxRT.height = fTextRealHeight;
                 }
@@ -192,7 +179,9 @@
                             NSStringDrawingUsesLineFragmentOrigin |
                             NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font,NSParagraphStyleAttributeName:style} context:nil].size;
             }
-            textSize.height=fTextRealHeight;
+            if (textSize.height > fTextRealHeight) {
+                textSize.height=fTextRealHeight;
+            }
          }
         StringInfo* info = [[StringInfo alloc] init];
         info.drawRect = textSize;
