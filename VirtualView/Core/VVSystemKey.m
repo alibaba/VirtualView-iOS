@@ -7,7 +7,7 @@
 
 #import "VVSystemKey.h"
 #import <UIKit/UIKit.h>
-static VVSystemKey* _shareInstance;
+
 @interface VVSystemKey ()
 {
     NSDictionary* _originalCodeDic;
@@ -17,9 +17,11 @@ static VVSystemKey* _shareInstance;
 
 @implementation VVSystemKey
 + (VVSystemKey*)shareInstance{
-    if (_shareInstance == nil) {
+    static VVSystemKey* _shareInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         _shareInstance = [[VVSystemKey alloc] init];
-    }
+    });
     return _shareInstance;
 }
 
