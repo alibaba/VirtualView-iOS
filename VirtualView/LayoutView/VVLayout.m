@@ -20,6 +20,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.drawLayer) {
+        self.drawLayer.delegate = nil;
+    }
+}
+
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
     BOOL ret = true;
     switch (key) {

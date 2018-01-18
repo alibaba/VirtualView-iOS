@@ -49,7 +49,9 @@
 
 - (void)dealloc
 {
-    if (_drawLayer) _drawLayer.delegate = nil;
+    if (self.drawLayer) {
+        self.drawLayer.delegate = nil;
+    }
 }
 
 - (void)setDashMemery{
@@ -173,46 +175,28 @@
     return ret;
 }
 
-- (void)drawLayer:(CALayer*)layer inContext:(CGContextRef)ctx{
-    //
-    //    self.drawLayer.bounds=CGRectMake(0, 0, self.frame.size.width, self.frame.origin.y);
-    //    self.drawLayer.anchorPoint=CGPointMake(0,0);
-    //    self.drawLayer.position=CGPointMake(0,0);
-    CGContextTranslateCTM(ctx, 0.0, self.frame.size.height);
-    CGContextScaleCTM(ctx, 1.0, -1.0);
-    CGContextRef currentContext = ctx;//UIGraphicsGetCurrentContext();
-    //设置虚线颜色
+- (void)drawLayer:(CALayer*)layer inContext:(CGContextRef)ctx
+{
+    CGContextRef currentContext = ctx;
     CGContextSetStrokeColorWithColor(currentContext, self.lineColor.CGColor);
-    //设置虚线宽度
     CGContextSetLineWidth(currentContext, self.lineWidth);
     
     if(self.orientation==HORIZONTAL){
-        //
-        //设置虚线绘制起点
-        CGContextMoveToPoint(currentContext, /*self.frame.origin.x*/0, 1);
-        //设置虚线绘制终点
-        CGContextAddLineToPoint(currentContext, /*self.frame.origin.x*/0 + self.frame.size.width, 1);
+        CGFloat centerY = CGRectGetHeight(layer.bounds) / 2;
+        CGContextMoveToPoint(currentContext, 0, centerY);
+        CGContextAddLineToPoint(currentContext, 0 + self.frame.size.width, centerY);
     }else{
-        //设置虚线绘制起点
-        CGContextMoveToPoint(currentContext, /*self.frame.origin.x*/0, /*self.frame.origin.y*/0);
-        //设置虚线绘制终点
-        CGContextAddLineToPoint(currentContext, /*self.frame.origin.x*/0, /*self.frame.origin.y*/0+self.frame.size.height);
+        CGFloat centerX = CGRectGetWidth(layer.bounds) / 2;
+        CGContextMoveToPoint(currentContext, centerX, 0);
+        CGContextAddLineToPoint(currentContext, centerX, 0+self.frame.size.height);
     }
     
     if (self.style==DASH) {
-        //设置虚线排列的宽度间隔:下面的arr中的数字表示先绘制3个点再绘制1个点
-        //下面最后一个参数“2”代表排列的个数。
         [self createDashLengths];
         CGContextSetLineDash(currentContext, 0, self.lengths, self.lengthsCount);
     }
     
     CGContextDrawPath(currentContext, kCGPathStroke);
-    
-    
-    //    NSLog(@"################x:%f,y:%d",self.frame.origin.x,self.frame.origin.y);
-    //    CGContextAddEllipseInRect(ctx, CGRectMake(self.frame.origin.x, 0, 100, 100));
-    //    CGContextSetRGBFillColor(ctx, 0, 0, 1, 1);
-    //    CGContextFillPath(ctx);
 }
 
 - (void)setFrame:(CGRect)frame{

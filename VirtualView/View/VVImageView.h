@@ -14,5 +14,5 @@
 @end
 
 @interface VVLayerDelegate : NSObject<CALayerDelegate>
-@property(nonatomic, strong)VVImageView* delegateSource;
+@property(nonatomic, weak)VVImageView* delegateSource;
 @end

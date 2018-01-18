@@ -29,6 +29,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.drawLayer) {
+        self.drawLayer.delegate = nil;
+    }
+}
+
 - (void)layoutSubviews{
     
     
