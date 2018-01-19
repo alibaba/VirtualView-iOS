@@ -11,6 +11,8 @@
 #import "VVPropertyFloatSetter.h"
 #import "VVPropertyStringSetter.h"
 #import "VVSystemKey.h"
+#import "VVConfig.h"
+#import "VVNodeClassMapper.h"
 
 #define VV_TEMPLATE_HEADER @"ALIVV"
 #define VV_START_TAG 0
@@ -162,7 +164,7 @@
         }
     }
     
-#ifdef DEBUG
+#ifdef VV_DEBUG
     // Verify the location.
     NSAssert(self.location == endLocation, @"Does not match the end.");
 #endif
@@ -175,8 +177,8 @@
 - (VVNodeCreater *)loadNodeData
 {
     VVNodeCreater *creater = [VVNodeCreater new];
-    short nodeKey = [self readShortLE];
-    creater.nodeClassName = [[VVSystemKey shareInstance] classNameForIndex:nodeKey];
+    short nodeID = [self readShortLE];
+    creater.nodeClassName = [VVNodeClassMapper classNameForID:nodeID];
     
     short count = [self readByte];
     for (short i = 0; i < count; i++) {
@@ -191,7 +193,7 @@
     for (short i = 0; i < count; i++) {
         // rp int properties
         int key = [self readIntLE];
-        int value = [self readIntLE] * [VVSystemKey shareInstance].rate;
+        int value = [self readIntLE] * VVConfig.pointRatio;
         VVPropertyIntSetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
         [creater.propertySetters addObject:setter];
     }
@@ -209,7 +211,7 @@
     for (short i = 0; i < count; i++) {
         // rp float properties
         int key = [self readIntLE];
-        float value = [self readFloatLE] * [VVSystemKey shareInstance].rate;
+        float value = [self readFloatLE] * VVConfig.pointRatio;
         VVPropertyFloatSetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
         [creater.propertySetters addObject:setter];
     }

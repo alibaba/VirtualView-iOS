@@ -7,16 +7,13 @@
 
 #import "VVSystemKey.h"
 #import <UIKit/UIKit.h>
-
-@interface VVSystemKey ()
-{
-    NSDictionary* _originalCodeDic;
-    NSMutableDictionary* _dynamicCodeDic;
-}
-@end
+#import "VVNodeClassMapper.h"
+#import "VVConfig.h"
 
 @implementation VVSystemKey
-+ (VVSystemKey*)shareInstance{
+
++ (VVSystemKey *)shareInstance
+{
     static VVSystemKey* _shareInstance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -28,9 +25,6 @@
 - (id)init{
     self = [super init];
     if (self) {
-        NSString* path = [[NSBundle bundleForClass:self.class] pathForResource:@"widgetCodeList" ofType:@"plist"];
-        _originalCodeDic = [NSDictionary dictionaryWithContentsOfFile:path];
-        _dynamicCodeDic = [[NSMutableDictionary alloc] initWithDictionary:_originalCodeDic];
         _keyArray = @[
             @"action",
             @"actionParam",
@@ -345,22 +339,28 @@
             @"113101617" : @"while",
             @"2003872956" : @"width"
         };
-        _rate = [UIScreen mainScreen].bounds.size.width/750;
     }
     return self;
 }
 
-- (NSString*)classNameForIndex:(NSUInteger)index{
-    NSString* className=[_dynamicCodeDic objectForKey:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
-    return className?className:@"";
+- (void)setRate:(CGFloat)rate
+{
+    VVConfig.pointRatio = rate;
 }
 
-- (NSString*)classNameForTag:(NSString*)tag{
-    NSString* className=[_dynamicCodeDic objectForKey:tag];
-    return className?className:@"";
+- (CGFloat)rate
+{
+    return VVConfig.pointRatio;
 }
 
-- (void)registerWidget:(NSString*)className withIndex:(NSUInteger)index{
-    [_dynamicCodeDic setObject:className forKey:[NSString stringWithFormat:@"%zd", index]];
+- (void)registerWidget:(NSString *)className withIndex:(short)index
+{
+    [VVNodeClassMapper registerClassName:className forID:index];
 }
+
+- (NSString *)classNameForIndex:(short)index
+{
+    return [VVNodeClassMapper classNameForID:index];
+}
+
 @end

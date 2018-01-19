@@ -7,7 +7,8 @@
 
 #import "VVNavtiveViewContainer.h"
 #import "VVBinaryLoader.h"
-#import "VVSystemKey.h"
+#import "VVNodeClassMapper.h"
+
 @interface VVNavtiveViewContainer ()
 @property(weak, nonatomic)id<NativeViewObject> nativeView;
 @end
@@ -21,7 +22,7 @@
         switch (key) {
             case STR_ID_NativeContainer:
             {
-                NSString* className = [[VVSystemKey shareInstance] classNameForTag:value];
+                NSString* className = [VVNodeClassMapper classNameForID:[value intValue]];
                 Class cls = NSClassFromString(className);
                 #ifdef VV_DEBUG
                     NSLog(@"make native class name:%@",className);

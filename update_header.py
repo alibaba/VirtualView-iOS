@@ -6,7 +6,8 @@ def updateHeader(DIR, PROJ):
     for path in os.listdir(DIR):
         fullPath = os.path.join(DIR, path)
         if os.path.isdir(fullPath):
-            updateHeader(fullPath, PROJ)
+            if path != "Pods":
+                updateHeader(fullPath, PROJ)
         elif os.path.isfile(fullPath):
             if path.lower().endswith('.m') or path.lower().endswith('.h'):
                 print('Updating: %s' % (path))

@@ -7,12 +7,20 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ This class will be deprecated.
+ DO NOT use it.
+ */
 @interface VVSystemKey : NSObject
+
++ (VVSystemKey *)shareInstance __deprecated;
+
 @property(nonatomic, readonly)NSArray* keyArray;
 @property(nonatomic, readonly)NSDictionary* keyDictionary;
-@property(nonatomic, assign) CGFloat rate;
-+ (VVSystemKey*)shareInstance;
-- (NSString*)classNameForIndex:(NSUInteger)index;
-- (NSString*)classNameForTag:(NSString*)tag;
-- (void)registerWidget:(NSString*)className withIndex:(NSUInteger)index;
+
+@property (nonatomic, assign) CGFloat rate __deprecated_msg("use VVConfig.pointRatio");
+
+- (void)registerWidget:(NSString *)className withIndex:(short)index __deprecated_msg("use [VVNodeClassMapper registerClassName:forID:]");
+- (NSString *)classNameForIndex:(short)index __deprecated_msg("use [VVNodeClassMapper classNameForID:]");
+
 @end

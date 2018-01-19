@@ -31,7 +31,7 @@
 {
     Class class = NSClassFromString(self.nodeClassName);
     
-#ifdef DEBUG
+#ifdef VV_DEBUG
     NSAssert(class != NULL, @"Does not match a class.");
 #endif
     

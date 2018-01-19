@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source       =  { :git => "https://github.com/alibaba/VirtualView-iOS.git", :tag => '1.0.2' } 
   s.source_files = 'VirtualView/**/*.{h,m}' 
   s.requires_arc = true
-  s.resources    = 'VirtualView/Resources/*.*'
+  s.prefix_header_contents = '#import "VVDefines.h"'
 
   s.dependency 'SDWebImage', '~> 4.2'
 
