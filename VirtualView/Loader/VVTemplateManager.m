@@ -60,11 +60,18 @@
 
 - (VVVersionModel *)versionOfType:(NSString *)type
 {
+    if (!type || type.length == 0) {
+        return nil;
+    }
     return [self.versions objectForKey:type];
 }
 
 - (VVViewObject *)createNodeTreeForType:(NSString *)type
 {
+    if (!type || type.length == 0) {
+        return nil;
+    }
+    
     if ([self.loadedTypes containsObject:type] == NO && _operationQueue) {
         // Try to find unloaded template in queue and load it immediately.
         BOOL isFirst = YES;
@@ -86,6 +93,10 @@
 
 - (void)willLoadType:(NSString *)type
 {
+    if (!type || type.length == 0) {
+        return;
+    }
+    
     void (^action)(void) = ^{
         if (_operationQueue) {
             for (NSOperation *operation in _operationQueue.operations) {
@@ -109,6 +120,10 @@
 
 - (void)didLoadType:(NSString *)type version:(VVVersionModel *)version creater:(VVNodeCreater *)creater
 {
+    if (!type || type.length == 0) {
+        return;
+    }
+    
     void (^action)(void) = ^{
         [self.versions setObject:version forKey:type];
         [self.creaters setObject:creater forKey:type];
@@ -134,6 +149,10 @@
 {
     [self willLoadType:type];
     
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file] == NO) {
+        return nil;
+    }
+    
     NSData *data = [NSData dataWithContentsOfFile:file];
     return [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
 }
@@ -149,6 +168,10 @@
                      withLoaderClass:(Class)loaderClass
 {
     [self willLoadType:type];
+    
+    if (!data || data.length == 0) {
+        return nil;
+    }
     
     return [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
 }
@@ -183,6 +206,10 @@
 {
     [self willLoadType:type];
     
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file] == NO) {
+        return;
+    }
+    
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{
         NSData *data = [NSData dataWithContentsOfFile:file];
@@ -210,6 +237,10 @@
                    completion:(void (^)(NSString * _Nonnull, VVVersionModel * _Nullable))completion
 {
     [self willLoadType:type];
+    
+    if (!data || data.length == 0) {
+        return;
+    }
     
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{

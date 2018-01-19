@@ -61,6 +61,12 @@
     self.lastType = nil;
     self.lastCreater = nil;
     
+    // check data length
+    if (!data || data.length == 0) {
+        self.lastError = VVMakeError(VVInvalidDataError, @"Empty data.");
+        return NO;
+    }
+    
     // check header
     NSString *header = [self readString:5];
     if (header.length > 0 && [header isEqualToString:VV_TEMPLATE_HEADER]) {
@@ -77,6 +83,7 @@
         int extraLocation = [self readIntLE];
         int extraSize = [self readIntLE];
         
+        // check main data size
         if (mainLocation > 0 && mainSize > 0) {
             if (stringLocation > 0 && stringSize > 0) {
                 [self loadStringData:stringLocation];
@@ -142,7 +149,7 @@
         return NO;
     }
     
-    // Load root nodes.
+    // Load node tree data.
     VVNodeCreater *rootCreater = [self loadNodeData];
     NSMutableArray<VVNodeCreater *> *nodeStack = [NSMutableArray array];
     [nodeStack addObject:rootCreater];
@@ -165,7 +172,10 @@
     }
     
 #ifdef VV_DEBUG
-    // Verify the location.
+    // verify the stack
+    NSAssert(nodeStack.count == 0, @"Stack is not empty.");
+    
+    // verify the location
     NSAssert(self.location == endLocation, @"Does not match the end.");
 #endif
     
@@ -319,7 +329,7 @@
 - (NSString *)readString:(NSUInteger)length
 {
     NSString *result;
-    if (length > 0) {
+    if (length > 0 && self.location < self.data.length - length) {
         NSData *subData = [self.data subdataWithRange:NSMakeRange(self.location, length)];
         result = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
         self.location += length;
