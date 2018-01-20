@@ -187,6 +187,7 @@
         case STR_ID_typeface:
             break;
         case STR_ID_textSize:
+            self.textView.font = [UIFont systemFontOfSize:[(NSNumber *)obj floatValue]];
             self.frontSize = [(NSNumber*)obj floatValue];
             break;
         case STR_ID_textColor:
@@ -380,8 +381,8 @@
         case STR_ID_typeface:
             break;
         case STR_ID_textSize:
-            self.textView.font = [UIFont systemFontOfSize:[value intValue]];
-            self.frontSize = [value intValue];
+            self.textView.font = [UIFont systemFontOfSize:[value floatValue]];
+            self.frontSize = [value floatValue];
             break;
         case STR_ID_textColor:
             if (value) {
@@ -416,8 +417,8 @@
                 break;
                 
             case STR_ID_textSize:
-                self.textView.font = [UIFont systemFontOfSize:[value intValue]];
-                self.frontSize = [value intValue];
+                self.textView.font = [UIFont systemFontOfSize:[value floatValue]];
+                self.frontSize = [value floatValue];
                 break;
             case STR_ID_textColor:
                 if (value) {
@@ -494,6 +495,7 @@
             case STR_ID_textSize:
                 self.frontSize = value;
                 self.textView.font = [UIFont systemFontOfSize:self.frontSize];
+                break;
             case STR_ID_borderWidth:
                 //self.textView.lineWidth = value;
                 ((FrameView*)self.cocoaView).lineWidth = value;
