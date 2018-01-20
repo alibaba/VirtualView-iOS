@@ -6,7 +6,6 @@
 //
 
 #import "VVNavtiveViewContainer.h"
-#import "VVBinaryLoader.h"
 #import "VVNodeClassMapper.h"
 
 @interface VVNavtiveViewContainer ()

@@ -10,7 +10,6 @@
 #import "VVCommTools.h"
 #import "VVViewContainer.h"
 #import "VVLayout.h"
-#import "VVBinaryLoader.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface NVImageView (){

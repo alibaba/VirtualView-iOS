@@ -6,9 +6,6 @@
 //
 
 #import "VVGridView.h"
-#import "VVViewFactory.h"
-#import "VVBinaryLoader.h"
-#import "VVViewFactory.h"
 #import "VVGridLayout.h"
 #import "VVViewContainer.h"
 #import "VVTemplateManager.h"

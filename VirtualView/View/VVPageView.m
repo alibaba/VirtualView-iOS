@@ -6,8 +6,6 @@
 //
 
 #import "VVPageView.h"
-#import "VVBinaryLoader.h"
-#import "VVViewFactory.h"
 #import "VVViewContainer.h"
 #import "NVCarouselPageView.h"
 

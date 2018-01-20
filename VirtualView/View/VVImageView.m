@@ -6,7 +6,6 @@
 //
 
 #import "VVImageView.h"
-#import "VVBinaryLoader.h"
 
 @implementation VVLayerDelegate
 

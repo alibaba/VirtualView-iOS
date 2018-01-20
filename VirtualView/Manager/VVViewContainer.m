@@ -7,7 +7,6 @@
 
 #import "VVViewContainer.h"
 #import "VVLayout.h"
-#import "VVBinaryLoader.h"
 #import "VVTemplateManager.h"
 
 @interface VVViewContainer()<VVWidgetAction>{

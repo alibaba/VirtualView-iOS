@@ -6,7 +6,6 @@
 //
 
 #import "VVTextView.h"
-#import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
 
 @interface VVTextView (){

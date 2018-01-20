@@ -6,10 +6,8 @@
 //
 
 #import "NVTextView.h"
-#import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
 #import "FrameView.h"
-#import "VVViewFactory.h"
 
 //****************************************************************
 

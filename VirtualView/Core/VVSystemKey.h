@@ -13,14 +13,13 @@
  */
 @interface VVSystemKey : NSObject
 
-+ (VVSystemKey *)shareInstance __deprecated;
++ (nonnull VVSystemKey *)shareInstance __deprecated;
 
-@property(nonatomic, readonly)NSArray* keyArray;
-@property(nonatomic, readonly)NSDictionary* keyDictionary;
+//@property (nonatomic, strong, readonly, nonnull) NSDictionary *keyDictionary __deprecated_msg("use [VVBinaryStringMapper stringForKey:]");
 
 @property (nonatomic, assign) CGFloat rate __deprecated_msg("use VVConfig.pointRatio");
 
-- (void)registerWidget:(NSString *)className withIndex:(short)index __deprecated_msg("use [VVNodeClassMapper registerClassName:forID:]");
-- (NSString *)classNameForIndex:(short)index __deprecated_msg("use [VVNodeClassMapper classNameForID:]");
+//- (nullable NSString *)classNameForIndex:(short)index __deprecated_msg("use [VVNodeClassMapper classNameForID:]");
+//- (void)registerWidget:(nonnull NSString *)className withIndex:(short)index __deprecated_msg("use [VVNodeClassMapper registerClassName:forID:]");
 
 @end

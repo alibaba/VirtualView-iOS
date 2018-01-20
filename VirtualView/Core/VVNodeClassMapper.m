@@ -59,14 +59,7 @@
     return self;
 }
 
-+ (void)registerClassName:(NSString *)className forID:(short)nodeID
-{
-    if (className && className.length > 0 && nodeID > 0) {
-        [[VVNodeClassMapper sharedMapper].mapperDict setObject:className forKey:@(nodeID)];
-    }
-}
-
-+ (NSString *)classNameForID:(NSInteger)nodeID
++ (NSString *)classNameForID:(short)nodeID
 {
     if (nodeID > 0) {
         return [[VVNodeClassMapper sharedMapper].mapperDict objectForKey:@(nodeID)];
@@ -74,10 +67,10 @@
     return nil;
 }
 
-+ (void)registerClassName:(NSString *)className forType:(NSString *)type
++ (void)registerClassName:(NSString *)className forID:(short)nodeID
 {
-    if (className && className.length > 0 && type && type.length > 0) {
-        [[VVNodeClassMapper sharedMapper].mapperDict setObject:className forKey:type];
+    if (className && className.length > 0 && nodeID > 0) {
+        [[VVNodeClassMapper sharedMapper].mapperDict setObject:className forKey:@(nodeID)];
     }
 }
 
@@ -87,6 +80,13 @@
         return [[VVNodeClassMapper sharedMapper].mapperDict objectForKey:type];
     }
     return nil;
+}
+
++ (void)registerClassName:(NSString *)className forType:(NSString *)type
+{
+    if (className && className.length > 0 && type && type.length > 0) {
+        [[VVNodeClassMapper sharedMapper].mapperDict setObject:className forKey:type];
+    }
 }
 
 @end

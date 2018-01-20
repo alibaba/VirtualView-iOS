@@ -10,7 +10,7 @@
 #import "VVPropertyIntSetter.h"
 #import "VVPropertyFloatSetter.h"
 #import "VVPropertyStringSetter.h"
-#import "VVSystemKey.h"
+#import "VVBinarySringMapper.h"
 #import "VVConfig.h"
 #import "VVNodeClassMapper.h"
 
@@ -231,7 +231,7 @@
         // string properties
         int propertyKey = [self readIntLE];
         int stringKey = [self readIntLE];
-        NSString *stringValue = [[VVSystemKey shareInstance].keyDictionary objectForKey:[NSString stringWithFormat:@"%d", stringKey]];
+        NSString *stringValue = [VVBinarySringMapper stringForKey:stringKey];
         if (!stringValue) {
             stringValue = [self.stringDict objectForKey:@(stringKey)] ?: @"";
         }

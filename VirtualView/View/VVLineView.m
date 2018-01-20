@@ -6,7 +6,6 @@
 //
 
 #import "VVLineView.h"
-#import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
 #if defined(__LP64__) && __LP64__
 # define RATE 2

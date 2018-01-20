@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-// internal supported node ID list
+// Internal supported node list.
 #define VV_NODE_ID_FrameLayout    1
 #define VV_NODE_ID_VHLayout       2
 #define VV_NODE_ID_VH2Layout      3
@@ -37,9 +37,9 @@
 
 @interface VVNodeClassMapper : NSObject
 
++ (nullable NSString *)classNameForID:(short)nodeID;
 + (void)registerClassName:(nonnull NSString *)className forID:(short)nodeID;
-+ (nullable NSString *)classNameForID:(NSInteger)nodeID;
-+ (void)registerClassName:(nonnull NSString *)className forType:(nonnull NSString *)type;
 + (nullable NSString *)classNameForType:(nonnull NSString *)type;
++ (void)registerClassName:(nonnull NSString *)className forType:(nonnull NSString *)type;
 
 @end

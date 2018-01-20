@@ -16,10 +16,10 @@
      pointRatio = [UIScreen mainScreen].bounds.size.width / 750
  
  Then you can use RP as a length in your xml template.
- For example, in iPhone SE:
+ For example, on iPhone SE:
  
      pointRatio = 320 / 750 = 0.4266667
-     100 RP = (100 x pointRatio) PT = 42.66667 PT
+     75 RP = (75 x pointRatio) PT = 32 PT
  */
 @property (nonatomic, assign, class) CGFloat pointRatio;
 

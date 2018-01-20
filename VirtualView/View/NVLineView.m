@@ -6,7 +6,6 @@
 //
 
 #import "NVLineView.h"
-#import "VVBinaryLoader.h"
 #import "UIColor+VirtualView.h"
 
 #if defined(__LP64__) && __LP64__
