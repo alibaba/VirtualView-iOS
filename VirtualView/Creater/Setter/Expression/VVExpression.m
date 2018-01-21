@@ -14,7 +14,7 @@
     VVExpression *expression = nil;
     if (string && string.length > 0) {
         string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (string.length > 0) {
+        if (string.length > 3) {
             if ([string hasPrefix:@"@{"]) {
                 expression = [VVIifExpression expressionWithString:string];
             } else if ([string hasPrefix:@"${"]) {
@@ -28,7 +28,7 @@
     return expression;
 }
 
-- (NSString *)valueWithDict:(NSDictionary *)dict
+- (NSString *)resultWithObject:(id)object
 {
     // override me
     return nil;
@@ -54,7 +54,7 @@
     return expression;
 }
 
-- (NSString *)valueWithDict:(NSDictionary *)dict
+- (NSString *)resultWithObject:(id)object
 {
     return self.value;
 }
@@ -66,9 +66,94 @@
 
 @interface VVVariableExpression ()
 
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, copy) NSString *key;
+@property (nonatomic, strong) VVExpression *nextExpression;
+
 @end
 
 @implementation VVVariableExpression
+
++ (VVExpression *)expressionWithString:(NSString *)string
+{
+    VVVariableExpression *expression = nil;
+    if ([string hasPrefix:@"@{"] && [string hasSuffix:@"}"]) {
+        string = [string substringWithRange:NSMakeRange(2, string.length - 3)];
+        string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (string.length > 0) {
+            if (![string hasPrefix:@"["]) {
+                string = [@"." stringByAppendingString:string];
+            }
+            expression = [self private_ExpressionWithString:string];
+        }
+    }
+    return expression;
+}
+
++ (VVVariableExpression *)private_ExpressionWithString:(NSString *)string
+{
+    static NSCharacterSet *nextCharacterSet = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        nextCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"[."];
+    });
+    VVVariableExpression *expression = nil;
+    if ([string hasPrefix:@"["]) {
+        NSRange range = [string rangeOfString:@"]"];
+        if (range.location != NSNotFound) {
+            NSString *indexString = [string substringWithRange:NSMakeRange(1, range.location - 1)];
+            expression = [VVVariableExpression new];
+            expression.index = [indexString integerValue];
+            string = [string substringFromIndex:range.location + 1];
+        }
+    } else if ([string hasPrefix:@"."]) {
+        NSRange range = [string rangeOfCharacterFromSet:nextCharacterSet];
+        if (range.location != NSNotFound) {
+            NSString *key = [string substringToIndex:range.location];
+            expression = [VVVariableExpression new];
+            expression.key = key;
+            string = [string substringFromIndex:range.location];
+        } else {
+            expression = [VVVariableExpression new];
+            expression.key = string;
+            string = nil;
+        }
+    }
+    if (expression && string && string.length > 0) {
+        expression.nextExpression = [self private_ExpressionWithString:string];
+    }
+    return expression;
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _index = -1;
+    }
+    return self;
+}
+
+- (NSString *)resultWithObject:(id)object
+{
+    if (object) {
+        id nextObject = nil;
+        if (self.index >= 0 && [object isKindOfClass:[NSArray class]]) {
+            NSArray *array = (NSArray *)object;
+            if (self.index < array.count) {
+                nextObject = [array objectAtIndex:self.index];
+            }
+        } else if (self.key && self.key.length > 0 && [object isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict =(NSDictionary *)object;
+            nextObject = [dict objectForKey:self.key];
+        }
+        if (self.nextExpression) {
+            return [self.nextExpression resultWithObject:nextObject];
+        } else {
+            return [nextObject description];
+        }
+    }
+    return nil;
+}
 
 @end
 
@@ -88,20 +173,39 @@
 + (VVExpression *)expressionWithString:(NSString *)string
 {
     VVIifExpression *expression = nil;
-    if ([string hasPrefix:@"@{"]) {
-        
+    if ([string hasPrefix:@"@{"] && [string hasSuffix:@"}"]) {
+        string = [string substringWithRange:NSMakeRange(2, string.length - 3)];
+        NSRange range1 = [string rangeOfString:@"?"];
+        NSRange range2 = [string rangeOfString:@":"];
+        if (range1.location != NSNotFound && range2.location != NSNotFound && range2.location > range1.location) {
+            NSString *conditionString = [string substringToIndex:range1.location];
+            NSString *trueString = [string substringWithRange:NSMakeRange(range1.location + 1, range2.location - range1.location - 1)];
+            NSString *falseString = [string substringFromIndex:range2.location + 1];
+            VVExpression *conditionExpression = [VVExpression expressionWithString:conditionString];
+            VVExpression *trueExpression = [VVExpression expressionWithString:trueString];
+            VVExpression *falseExpression = [VVExpression expressionWithString:falseString];
+            if (conditionExpression && trueExpression && falseExpression) {
+                expression = [VVIifExpression new];
+                expression.conditionExpression = conditionExpression;
+                expression.trueExpression = trueExpression;
+                expression.falseExpression = falseExpression;
+            }
+        }
     }
     return expression;
 }
 
-- (NSString *)valueWithDict:(NSDictionary *)dict
+- (NSString *)resultWithObject:(id)object
 {
-    NSString *conditionValue = [self.conditionExpression valueWithDict:dict];
-    if (conditionValue && conditionValue.length > 0 && [conditionValue isEqualToString:@"false"] == NO) {
-        return [self.trueExpression valueWithDict:dict];
-    } else {
-        return [self.falseExpression valueWithDict:dict];
+    if (object && ([object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSArray class]])) {
+        NSString *conditionValue = [self.conditionExpression resultWithObject:object];
+        if (conditionValue && conditionValue.length > 0 && [conditionValue isEqualToString:@"false"] == NO) {
+            return [self.trueExpression resultWithObject:object];
+        } else {
+            return [self.falseExpression resultWithObject:object];
+        }
     }
+    return nil;
 }
 
 @end

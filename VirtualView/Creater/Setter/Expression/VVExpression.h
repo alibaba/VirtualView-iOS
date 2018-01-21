@@ -18,7 +18,13 @@
  */
 + (nullable VVExpression *)expressionWithString:(nonnull NSString *)string;
 
-- (nullable NSString *)valueWithDict:(nullable NSDictionary *)dict;
+/**
+ Get result with specified object.
+
+ @param object  An array or dictionary.
+ @return        Expression result.
+ */
+- (nullable NSString *)resultWithObject:(nullable id)object;
 
 @end
 

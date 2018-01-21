@@ -154,7 +154,7 @@
     }
     
     NSData *data = [NSData dataWithContentsOfFile:file];
-    return [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
+    return [self private_LoadTemplateData:data forType:type withLoaderClass:loaderClass];
 }
 
 - (VVVersionModel *)loadTemplateData:(NSData *)data
@@ -173,12 +173,12 @@
         return nil;
     }
     
-    return [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
+    return [self private_LoadTemplateData:data forType:type withLoaderClass:loaderClass];
 }
 
-- (VVVersionModel *)_loadTemplateData:(NSData *)data
-                              forType:(NSString *)type
-                      withLoaderClass:(Class)loaderClass
+- (VVVersionModel *)private_LoadTemplateData:(NSData *)data
+                                     forType:(NSString *)type
+                             withLoaderClass:(Class)loaderClass
 {
     VVTemplateLoader *loader = loaderClass != NULL ? [loaderClass new] : [self.defaultLoaderClass new];
     if ([loader loadTemplateData:data]) {
@@ -213,7 +213,7 @@
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{
         NSData *data = [NSData dataWithContentsOfFile:file];
-        version = [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
+        version = [self private_LoadTemplateData:data forType:type withLoaderClass:loaderClass];
     }];
     opearation.name = type;
     if (completion) {
@@ -244,7 +244,7 @@
     
     __block VVVersionModel *version = nil;
     NSBlockOperation *opearation = [NSBlockOperation blockOperationWithBlock:^{
-        version = [self _loadTemplateData:data forType:type withLoaderClass:loaderClass];
+        version = [self private_LoadTemplateData:data forType:type withLoaderClass:loaderClass];
     }];
     opearation.name = type;
     if (completion) {

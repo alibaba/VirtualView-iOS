@@ -44,7 +44,7 @@
 - (void)applyToNode:(VVBaseNode *)node withDict:(NSDictionary *)dict
 {
     if (self.expression) {
-        NSString *value = [self.expression valueWithDict:dict];
+        NSString *value = [self.expression resultWithObject:dict];
         [node setStringValue:value forKey:self.key];
     } else {
         [node setStringValue:nil forKey:self.key];
