@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VVVersionModel.h"
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
 @class VVTemplateLoader;
 
@@ -43,7 +43,7 @@
  @param type  Template type.
  @return      Node tree.
  */
-- (nullable VVViewObject *)createNodeTreeForType:(nonnull NSString *)type;
+- (nullable VVBaseNode *)createNodeTreeForType:(nonnull NSString *)type;
 
 #pragma mark Synchronously
 

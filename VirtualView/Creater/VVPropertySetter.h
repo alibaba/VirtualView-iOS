@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
 /**
  This is a base class for all PropertySetter. DO NOT use it directly.
@@ -25,6 +25,6 @@
 
 - (nonnull instancetype)initWithPropertyKey:(int)key;
 
-- (void)applyToNode:(nullable VVViewObject *)node;
+- (void)applyToNode:(nullable VVBaseNode *)node;
 
 @end

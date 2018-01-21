@@ -54,8 +54,8 @@
     for (int row=0; row<self.rowCount; row++) {
         for (int col=0; col<self.colCount; col++) {
             if (index<self.subViews.count) {
-                VVViewObject* vvObj = [self.subViews objectAtIndex:index];
-                if(vvObj.visible==GONE){
+                VVBaseNode* vvObj = [self.subViews objectAtIndex:index];
+                if(vvObj.visible==VVVisibilityGone){
                     continue;
                 }
                 CGFloat pX = (vvObj.width+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
@@ -125,19 +125,19 @@
     int value=0;
     for (NSString* item in arr) {
         if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
-            value=value|Gravity_LEFT;
+            value=value|VVGravityLeft;
         }else if ([item compare:@"right" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_RIGHT;
+            value=value|VVGravityRight;
         }else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_H_CENTER;
+            value=value|VVGravityHCenter;
         }else if ([item compare:@"top" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_TOP;
+            value=value|VVGravityTop;
         }else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_BOTTOM;
+            value=value|VVGravityBottom;
         }else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_V_CENTER;
+            value=value|VVGravityVCenter;
         }else if ([item compare:@"center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_H_CENTER|Gravity_V_CENTER;
+            value=value|VVGravityHCenter|VVGravityVCenter;
         }
     }
     return value;
@@ -207,9 +207,9 @@
     for (NSDictionary* jsonData in dataArray) {
         NSString* nodeType=[jsonData objectForKey:@"type"];
         NSMutableArray* updateObjs = [[NSMutableArray alloc] init];
-        VVViewObject* vv = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
+        VVBaseNode* vv = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
         [VVViewContainer getDataTagObjsHelper:vv collection:updateObjs];
-        for (VVViewObject* item in updateObjs) {
+        for (VVBaseNode* item in updateObjs) {
             [item reset];
             for (NSNumber* key in [item.mutablePropertyDic allKeys]) {
                 NSDictionary* propertyInfo = [item.mutablePropertyDic objectForKey:key];
@@ -355,11 +355,11 @@
 
                             value = [self valueForVariable:value fromJsonData:jsonData];
                             if ([value isEqualToString:@"invisible"]) {
-                                [item setIntValue:INVISIBLE forKey:[key intValue]];
+                                [item setIntValue:VVVisibilityInvisible forKey:[key intValue]];
                             }else if([value isEqualToString:@"visible"]) {
-                                [item setIntValue:VISIBLE forKey:[key intValue]];
+                                [item setIntValue:VVVisibilityVisible forKey:[key intValue]];
                             }else{
-                                [item setIntValue:GONE forKey:[key intValue]];
+                                [item setIntValue:VVVisibilityGone forKey:[key intValue]];
                             }
                         }
                         
@@ -409,24 +409,24 @@
         self.drawLayer.delegate =  (id<CALayerDelegate>)self;
         [self.gridContainer.layer addSublayer:self.drawLayer];
     }
-    for (VVViewObject* subObj in self.subViews) {
+    for (VVBaseNode* subObj in self.subViews) {
         subObj.updateDelegate = (id<VVWidgetAction>)self.gridContainer;
     }
 }
 
-- (void)attachCocoaViews:(VVViewObject*)vvObj{
-    for (VVViewObject* subView in vvObj.subViews) {
+- (void)attachCocoaViews:(VVBaseNode*)vvObj{
+    for (VVBaseNode* subView in vvObj.subViews) {
         [self attachCocoaViews:subView];
-        if (subView.cocoaView && subView.visible!=GONE) {
+        if (subView.cocoaView && subView.visible!=VVVisibilityGone) {
             [self.gridContainer addSubview:subView.cocoaView];
         }
     }
 }
 
-- (void)removeCocoaView:(VVViewObject*)vvObj{
+- (void)removeCocoaView:(VVBaseNode*)vvObj{
 
     NSArray* subViews = [NSArray arrayWithArray:vvObj.subViews];
-    for (VVViewObject* item in subViews) {
+    for (VVBaseNode* item in subViews) {
         [self removeCocoaView:item];
     }
 
@@ -437,7 +437,7 @@
 
 - (void)resetObj{
     NSArray* subViews = [NSArray arrayWithArray:self.subViews];
-    for (VVViewObject* subView in subViews) {
+    for (VVBaseNode* subView in subViews) {
         [self removeCocoaView:subView];
         [subView removeFromSuperview];
     }

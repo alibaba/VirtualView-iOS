@@ -5,9 +5,9 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface VVImageView : VVViewObject
+@interface VVImageView : VVBaseNode
 @property(nonatomic, strong)NSString* imgUrl;
 @property(strong, nonatomic)UIImage* defaultImg;
 @property(nonatomic, assign)CGSize   imageSize;

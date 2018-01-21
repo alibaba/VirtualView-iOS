@@ -146,17 +146,17 @@
     
     CGFloat pY =0, pX=0;
     
-    if ((self.gravity & Gravity_BOTTOM)==Gravity_BOTTOM) {
+    if ((self.gravity & VVGravityBottom)==VVGravityBottom) {
         pY = pY+self.frame.size.height-self.paddingBottom-self.textSize.height;
-    }else if ((self.gravity & Gravity_V_CENTER)==Gravity_V_CENTER){
+    }else if ((self.gravity & VVGravityVCenter)==VVGravityVCenter){
         pY += (self.frame.size.height-self.paddingTop-self.paddingBottom-self.textSize.height)/2.0;
     }else{
         pY += self.paddingTop;
     }
     
-    if ((self.gravity & Gravity_RIGHT)==Gravity_RIGHT) {
+    if ((self.gravity & VVGravityRight)==VVGravityRight) {
         pX += self.frame.size.width-self.paddingRight-self.textSize.width;
-    }else if ((self.gravity & Gravity_H_CENTER)==Gravity_H_CENTER){
+    }else if ((self.gravity & VVGravityHCenter)==VVGravityHCenter){
         pX += (self.frame.size.width-self.paddingLeft-self.paddingRight-self.textSize.width)/2.0;
     }else{
         pX = self.paddingLeft;
@@ -203,12 +203,12 @@
     _textSize.height = textSize.height +1;
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             self.width = textSize.width+1;
             //self.width = [self.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:@"obj",@"key", nil]].width;
             self.width = self.paddingRight+self.paddingLeft+self.width;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.width=maxSize.width;
             
             break;
@@ -219,12 +219,12 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             self.height= textSize.height+1;
             //self.height= [self.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:@"obj",@"key", nil]].height;
             self.height = self.paddingTop+self.paddingBottom+self.height;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.height=maxSize.height;
             
             break;

@@ -5,12 +5,12 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
 
-@interface VVLineView : VVViewObject
+@interface VVLineView : VVBaseNode
 @property(assign, nonatomic)int       orientation;
-@property(assign, nonatomic)LINESTYLE style;
+@property(assign, nonatomic)VVLineStyle style;
 @property(assign, nonatomic)CGFloat   lineWidth;
 @property(assign, nonatomic)CGFloat   *lengths;
 @property(strong, nonatomic)UIColor   *lineColor;

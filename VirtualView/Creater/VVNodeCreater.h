@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @class VVPropertySetter;
-@class VVViewObject;
+@class VVBaseNode;
 
 /**
  VVNodeCreater's struct is similar with XML struct.
@@ -23,6 +23,6 @@
 @property (nonatomic, strong, nonnull) NSMutableArray<VVPropertySetter *> *propertySetters;
 @property (nonatomic, strong, nonnull) NSMutableArray<VVNodeCreater *> *subCreaters;
 
-- (nonnull VVViewObject *)createNodeTree;
+- (nonnull VVBaseNode *)createNodeTree;
 
 @end

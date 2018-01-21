@@ -5,8 +5,8 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface VVContainerView : VVViewObject
+@interface VVContainerView : VVBaseNode
 @property(readonly, nonatomic)int    order;
 @end

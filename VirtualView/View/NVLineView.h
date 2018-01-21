@@ -6,11 +6,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface NVLineView : VVViewObject
+@interface NVLineView : VVBaseNode
 @property(assign, nonatomic)int       orientation;
-@property(assign, nonatomic)LINESTYLE style;
+@property(assign, nonatomic)VVLineStyle style;
 @property(assign, nonatomic)CGFloat   lineWidth;
 @property(assign, nonatomic)CGFloat   *lengths;
 @property(strong, nonatomic)UIColor   *lineColor;

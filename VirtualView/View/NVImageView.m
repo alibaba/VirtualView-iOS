@@ -112,11 +112,11 @@
 
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             // NOT SUPPORT!
             break;
-        case MATCH_PARENT:
-            if (self.superview.widthModle==WRAP_CONTENT && self.superview.autoDimDirection==AUTO_DIM_DIR_NONE) {
+        case VV_MATCH_PARENT:
+            if (self.superview.widthModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
                 //_imageSize.width = maxSize.width;
                 self.width = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
                 _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
@@ -136,11 +136,11 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             // NOT SUPPORT
             break;
-        case MATCH_PARENT:
-            if (self.superview.heightModle==WRAP_CONTENT && self.superview.autoDimDirection==AUTO_DIM_DIR_NONE) {
+        case VV_MATCH_PARENT:
+            if (self.superview.heightModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
                 // NOT SUPPORT
             } else
             {
@@ -154,10 +154,10 @@
             break;
     }
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
             _imageSize.height = _imageSize.width*(self.autoDimY/self.autoDimX);
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
             _imageSize.height = _imageSize.width*(self.autoDimX/self.autoDimY);
         default:
             break;
@@ -210,7 +210,7 @@
                 self.disableCache = value;
                 break;
             case STR_ID_maskColor:
-                self.maskView.backgroundColor = UIColorARGBWithHexValue(value);
+                self.maskView.backgroundColor = [UIColor colorWithHexValue:value];
                 break;
             case STR_ID_itemHeight:
                 self.height = value;

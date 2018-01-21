@@ -5,8 +5,8 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface NVFoundationView : VVViewObject
+@interface NVFoundationView : VVBaseNode
 @property(assign, nonatomic)CGSize    maxCotentSize;
 @end

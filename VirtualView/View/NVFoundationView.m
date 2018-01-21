@@ -17,17 +17,17 @@
     //CGSize contentsize = [self nativeContentSize];
     
     CGFloat pY =0, pX=0;
-    if ((self.gravity & Gravity_TOP)==Gravity_TOP) {
+    if ((self.gravity & VVGravityTop)==VVGravityTop) {
         pY += self.paddingTop;
-    }else if ((self.gravity & Gravity_V_CENTER)==Gravity_V_CENTER){
+    }else if ((self.gravity & VVGravityVCenter)==VVGravityVCenter){
         pY += (self.maxSize.height-self.paddingTop-self.paddingBottom-self.height)/2.0;
     }else{
         pY = pY+self.maxSize.height-self.paddingBottom-self.height;
     }
     
-    if ((self.gravity & Gravity_RIGHT)==Gravity_RIGHT) {
+    if ((self.gravity & VVGravityRight)==VVGravityRight) {
         pX += self.maxSize.width-self.paddingRight-self.width;
-    }else if ((self.gravity & Gravity_H_CENTER)==Gravity_H_CENTER){
+    }else if ((self.gravity & VVGravityHCenter)==VVGravityHCenter){
         pX += (self.maxSize.width-self.paddingLeft-self.paddingRight-self.width)/2.0;
     }else{
         pX = self.paddingLeft;
@@ -42,12 +42,12 @@
     CGSize contentsize = [self nativeContentSize];
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.width = contentsize.width;
             self.width = self.paddingRight+self.paddingLeft+self.width;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.width=maxSize.width;
             //_textSize.width = self.width;
             break;
@@ -58,12 +58,12 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.height= contentsize.height;
             self.height = self.paddingTop+self.paddingBottom+self.height;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.height=maxSize.height;
             //_textSize.height = self.height;
             break;

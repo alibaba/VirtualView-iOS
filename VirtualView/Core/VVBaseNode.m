@@ -1,14 +1,14 @@
 //
-//  VVViewObject.m
+//  VVBaseNode.m
 //  VirtualView
 //
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 #import "UIColor+VirtualView.h"
 
-@interface VVViewObject ()
+@interface VVBaseNode ()
 {
     NSMutableArray*   _subViews;
     NSUInteger        _objectID;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation VVViewObject
+@implementation VVBaseNode
 @synthesize subViews = _subViews;
 @synthesize objectID   = _objectID;
 //@synthesize mutablePropertyDic   = _mutablePropertyDic;
@@ -29,36 +29,36 @@
         self.hidden = NO;
         _subViews = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor clearColor];
-        self.gravity = Gravity_LEFT|Gravity_TOP;
-        self.visible = VISIBLE;
-        self.layoutDirection = DIRECTION_LEFT;
-        self.autoDimDirection = AUTO_DIM_DIR_NONE;
+        self.gravity = VVGravityLeft|VVGravityTop;
+        self.visible = VVVisibilityVisible;
+        self.layoutDirection = VVDirectionLeft;
+        self.autoDimDirection = VVAutoDimDirectionNone;
     }
     return self;
 }
 - (BOOL)isClickable{
-    if (_flag&FLAG_CLICKABLE) {
+    if (_flag&VVFlagClickable) {
         return YES;
     }else{
         return NO;
     }
 }
 - (BOOL)isLongClickable{
-    if (_flag&FLAG_LONG_CLICKABLE) {
+    if (_flag&VVFlagLongClickable) {
         return YES;
     }else{
         return NO;
     }
 }
 - (BOOL)supportExposure{
-    if (_flag&FLAG_EXPOSURE) {
+    if (_flag&VVFlagExposure) {
         return YES;
     }else{
         return NO;
     }
 
 }
--(BOOL)pointInside:(CGPoint)point withView:(VVViewObject*)vvobj{
+-(BOOL)pointInside:(CGPoint)point withView:(VVBaseNode*)vvobj{
     CGFloat x =vvobj.frame.origin.x;
     CGFloat y =vvobj.frame.origin.y;
     CGFloat w =vvobj.frame.size.width;
@@ -84,9 +84,9 @@
 
 - (id<VVWidgetObject>)hitTest:(CGPoint)point
 {
-    if (self.visible == VISIBLE && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
+    if (self.visible == VVVisibilityVisible && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
         if (self.subViews.count > 0) {
-            for (VVViewObject* item in [self.subViews reverseObjectEnumerator]) {
+            for (VVBaseNode* item in [self.subViews reverseObjectEnumerator]) {
                 id<VVWidgetObject> obj = [item hitTest:point];
                 if (obj) {
                     return obj;
@@ -100,15 +100,15 @@
     return nil;
 }
 
-- (VVViewObject*)findViewByID:(int)tagid{
+- (VVBaseNode*)findViewByID:(int)tagid{
 
     if (self.objectID==tagid) {
         return self;
     }
 
-    VVViewObject* obj = nil;
+    VVBaseNode* obj = nil;
 
-    for (VVViewObject* item in self.subViews) {
+    for (VVBaseNode* item in self.subViews) {
         if (/*item.subViews.count==0 &&*/ item.objectID==tagid) {
             obj = item;
             break;
@@ -120,12 +120,12 @@
     return obj;
 }
 
-- (void)addSubview:(VVViewObject*)view{
+- (void)addSubview:(VVBaseNode*)view{
     [_subViews addObject:view];
     view.superview = self;
 }
 
-- (void)removeSubView:(VVViewObject*)view{
+- (void)removeSubView:(VVBaseNode*)view{
     [_subViews removeObject:view];
 }
 
@@ -163,10 +163,10 @@
 
 - (void)autoDim{
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
             self.height = self.width*(self.autoDimY/self.autoDimX);
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
             self.width = self.height*(self.autoDimX/self.autoDimY);
         default:
             break;
@@ -178,9 +178,9 @@
 }
 
 - (void)changeCocoaViewSuperView{
-    if (self.cocoaView.superview && self.visible==GONE) {
+    if (self.cocoaView.superview && self.visible==VVVisibilityGone) {
         [self.cocoaView removeFromSuperview];
-    }else if(self.cocoaView.superview==nil && self.visible!=GONE){
+    }else if(self.cocoaView.superview==nil && self.visible!=VVVisibilityGone){
         [(UIView*)self.updateDelegate addSubview:self.cocoaView];
     }
 }
@@ -462,7 +462,7 @@
             _objectID = value;
             break;
         case STR_ID_background:
-            self.backgroundColor = UIColorARGBWithHexValue(value);//[UIColor colorWithHexValue:value];
+            self.backgroundColor = [UIColor colorWithHexValue:value];
             break;
             
         case STR_ID_gravity:
@@ -512,15 +512,15 @@
         case STR_ID_visibility:
             self.visible = value;
             switch (self.visible) {
-                case INVISIBLE:
+                case VVVisibilityInvisible:
                     self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
-                case VISIBLE:
+                case VVVisibilityVisible:
                     self.hidden = NO;
                     self.cocoaView.hidden = NO;
                     break;
-                case GONE:
+                case VVVisibilityGone:
                     self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
@@ -581,7 +581,7 @@
             _objectID = value;
             break;
         case STR_ID_background:
-            self.backgroundColor = UIColorARGBWithHexValue((int)value);//[UIColor colorWithHexValue:value];
+            self.backgroundColor = [UIColor colorWithHexValue:(int)value];
             break;
             
         case STR_ID_gravity:
@@ -631,15 +631,15 @@
         case STR_ID_visibility:
             self.visible = value;
             switch (self.visible) {
-                case INVISIBLE:
+                case VVVisibilityInvisible:
                     self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
-                case VISIBLE:
+                case VVVisibilityVisible:
                     self.hidden = NO;
                     self.cocoaView.hidden = NO;
                     break;
-                case GONE:
+                case VVVisibilityGone:
                     //
                     break;
             }
@@ -829,7 +829,7 @@
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
     _updateDelegate = delegate;
-    for (VVViewObject* subObj in self.subViews) {
+    for (VVBaseNode* subObj in self.subViews) {
         subObj.updateDelegate = delegate;
     }
 }

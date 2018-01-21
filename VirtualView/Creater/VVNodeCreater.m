@@ -7,7 +7,7 @@
 
 #import "VVNodeCreater.h"
 #import "VVPropertySetter.h"
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
 @implementation VVNodeCreater
 
@@ -27,7 +27,7 @@
     return _subCreaters;
 }
 
-- (VVViewObject *)createNodeTree
+- (VVBaseNode *)createNodeTree
 {
     Class class = NSClassFromString(self.nodeClassName);
     
@@ -35,11 +35,11 @@
     NSAssert(class != NULL, @"Does not match a class.");
 #endif
     
-    VVViewObject *node;
+    VVBaseNode *node;
     if (class != NULL) {
         node = [class new];
     } else {
-        node = [VVViewObject new];
+        node = [VVBaseNode new];
     }
     
     for (VVPropertySetter *setter in self.propertySetters) {
@@ -47,7 +47,7 @@
     }
     
     for (VVNodeCreater *creater in self.subCreaters) {
-        VVViewObject *subNode = [creater createNodeTree];
+        VVBaseNode *subNode = [creater createNodeTree];
         [node addSubview:subNode];
     }
     

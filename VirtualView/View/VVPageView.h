@@ -5,9 +5,9 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface VVPageView : VVViewObject
+@interface VVPageView : VVBaseNode
 @property(assign, nonatomic)BOOL    autoSwitch;
 @property(assign, nonatomic)BOOL    canSlide;
 @property(assign, nonatomic)int     orientation;

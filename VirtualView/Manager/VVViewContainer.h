@@ -6,27 +6,27 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
 @protocol VirtualViewDelegate
 @optional
 - (void)subViewClicked:(NSString*)action andValue:(NSString*)value;
-- (void)subView:(VVViewObject *)view clicked:(NSString*)action andValue:(NSString*)value;
+- (void)subView:(VVBaseNode *)view clicked:(NSString*)action andValue:(NSString*)value;
 - (void)subViewLongPressed:(NSString*)action andValue:(NSString*)value gesture:(UILongPressGestureRecognizer *)gesture;
 @end
 
 @interface VVViewContainer : UIView
-@property(nonatomic, strong)VVViewObject* virtualView;
+@property(nonatomic, strong)VVBaseNode* virtualView;
 @property(nonatomic, weak)NSObject<VirtualViewDelegate> *delegate;
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type;
 
-- (id)initWithVirtualView:(VVViewObject*)virtualView;
+- (id)initWithVirtualView:(VVBaseNode*)virtualView;
 - (void)attachViews;
-- (void) attachViews:(VVViewObject*)virtualView;
+- (void) attachViews:(VVBaseNode*)virtualView;
 - (void)update:(NSObject*)obj;
-- (VVViewObject*)findObjectByID:(int)tagid;
+- (VVBaseNode*)findObjectByID:(int)tagid;
 
-+ (void)getDataTagObjsHelper:(VVViewObject *)node collection:(NSMutableArray *)dataTagObjs;
++ (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs;
 
 @end

@@ -24,7 +24,7 @@
     return [NSString stringWithFormat:@"<%@: %p; name = %@>", self.class, self, self.name];
 }
 
-- (void)applyToNode:(VVViewObject *)node
+- (void)applyToNode:(VVBaseNode *)node
 {
     // override me
 }

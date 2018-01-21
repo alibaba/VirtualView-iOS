@@ -138,12 +138,12 @@
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             _imageSize.width = _defaultImg.size.width/3.0;
             self.width = self.paddingRight+self.paddingLeft+_imageSize.width;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.width = maxSize.width;
 
             break;
@@ -154,12 +154,12 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             _imageSize.height = _defaultImg.size.height/3.0;
             self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.height = maxSize.height;
 
             break;

@@ -66,7 +66,7 @@
     return [self.versions objectForKey:type];
 }
 
-- (VVViewObject *)createNodeTreeForType:(NSString *)type
+- (VVBaseNode *)createNodeTreeForType:(NSString *)type
 {
     if (!type || type.length == 0) {
         return nil;

@@ -133,17 +133,17 @@
     
     
     CGFloat pY =0, pX=0;
-    if ((self.gravity & Gravity_BOTTOM)==Gravity_BOTTOM) {
+    if ((self.gravity & VVGravityBottom)==VVGravityBottom) {
         pY = pY+self.frame.size.height-self.paddingBottom-self.textSize.height;
-    }else if ((self.gravity & Gravity_V_CENTER)==Gravity_V_CENTER){
+    }else if ((self.gravity & VVGravityVCenter)==VVGravityVCenter){
         pY += (self.frame.size.height-self.paddingTop-self.paddingBottom-self.textSize.height)/2.0;
     }else{
         pY += self.paddingTop;
     }
     
-    if ((self.gravity & Gravity_RIGHT)==Gravity_RIGHT) {
+    if ((self.gravity & VVGravityRight)==VVGravityRight) {
         pX += self.frame.size.width-self.paddingRight-self.textSize.width;
-    }else if ((self.gravity & Gravity_H_CENTER)==Gravity_H_CENTER){
+    }else if ((self.gravity & VVGravityHCenter)==VVGravityHCenter){
         pX += (self.frame.size.width-self.paddingLeft-self.paddingRight-self.textSize.width)/2.0;
     }else{
         pX = self.paddingLeft;
@@ -155,14 +155,14 @@
     self.textView.frame = CGRectMake(pX, pY, _textSize.width, _textSize.height);
 
     switch (self.gravity) {
-        case Gravity_LEFT:
+        case VVGravityLeft:
             self.textView.textAlignment = NSTextAlignmentLeft;
             break;
-        case Gravity_H_CENTER:
-        case Gravity_H_CENTER+Gravity_V_CENTER:
+        case VVGravityHCenter:
+        case VVGravityHCenter+VVGravityVCenter:
             self.textView.textAlignment = NSTextAlignmentCenter;
             break;
-        case Gravity_RIGHT:
+        case VVGravityRight:
             self.textView.textAlignment = NSTextAlignmentRight;
             break;
         default:
@@ -262,13 +262,13 @@
     _textSize.height = _textSize.height>textMaxRT.height?textMaxRT.height:_textSize.height;
 
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.width = _textSize.width;
             self.width = self.paddingRight+self.paddingLeft+self.width;
             break;
-        case MATCH_PARENT:
-            if (self.superview.widthModle==WRAP_CONTENT) {
+        case VV_MATCH_PARENT:
+            if (self.superview.widthModle==VV_WRAP_CONTENT) {
                 self.width = self.paddingRight+self.paddingLeft+_textSize.width;
             }else{
                 self.width=maxSize.width;
@@ -282,13 +282,13 @@
     }
 
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.height= _textSize.height;
             self.height = self.paddingTop+self.paddingBottom+self.height;
             break;
-        case MATCH_PARENT:
-            if (self.superview.heightModle==WRAP_CONTENT){
+        case VV_MATCH_PARENT:
+            if (self.superview.heightModle==VV_WRAP_CONTENT){
                 self.height = self.paddingTop+self.paddingBottom+_textSize.height;
             }else{
                 self.height=maxSize.height;
@@ -447,7 +447,7 @@
                 self.textView.font = [UIFont systemFontOfSize:self.frontSize];
                 break;
             case STR_ID_textColor:
-                self.textView.textColor = UIColorARGBWithHexValue(value);//[UIColor colorWithHexValue:value];
+                self.textView.textColor = [UIColor colorWithHexValue:value];
                 break;
             case STR_ID_textStyle:
                 self.textStyle = (VVTextStyle)value;
@@ -462,12 +462,10 @@
                 self.textView.lineBreakMode = value+2;
                 break;
             case STR_ID_borderWidth:
-                //self.textView.lineWidth = value;
                 ((FrameView*)self.cocoaView).lineWidth = value;
                 break;
             case STR_ID_borderColor:
-                self.borderColor = UIColorARGBWithHexValue(value);//[UIColor colorWithHexValue:value];
-                //self.textView.borderColor = self.borderColor;
+                self.borderColor = [UIColor colorWithHexValue:value];
                 ((FrameView*)self.cocoaView).borderColor = self.borderColor;
                 break;
             default:

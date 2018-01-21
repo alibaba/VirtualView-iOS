@@ -21,7 +21,7 @@
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type
 {
-    VVViewObject *vv = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
+    VVBaseNode *vv = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
     VVViewContainer *vvc = [[VVViewContainer alloc] initWithVirtualView:vv];
     [vvc attachViews];
     return vvc;
@@ -34,7 +34,7 @@
 - (void)handleLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
     CGPoint pt =[gestureRecognizer locationInView:self];
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [(VVViewObject*)vvobj isLongClickable]) {
+    if (vvobj!=nil && [(VVBaseNode*)vvobj isLongClickable]) {
         [self.delegate subViewLongPressed:vvobj.action andValue:vvobj.actionValue gesture:gestureRecognizer];
     }
 }
@@ -43,7 +43,7 @@
     UITouch *touch =  [touches anyObject];
     CGPoint pt = [touch locationInView:self];
     id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [(VVViewObject*)vvobj isClickable]) {
+    if (vvobj!=nil && [(VVBaseNode*)vvobj isClickable]) {
         if([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)])
         {
             [self.delegate subView:vvobj clicked:vvobj.action andValue:vvobj.actionValue];
@@ -57,7 +57,7 @@
     }
 }
 
-- (id)initWithVirtualView:(VVViewObject*)virtualView{
+- (id)initWithVirtualView:(VVBaseNode*)virtualView{
     self = [super init];
     if (self) {
         self.virtualView = virtualView;
@@ -79,13 +79,13 @@
     [self attachViews:self.virtualView];
 }
 
-- (void) attachViews:(VVViewObject*)virtualView {
+- (void) attachViews:(VVBaseNode*)virtualView {
     
     if ([virtualView isKindOfClass:VVLayout.class]) {
         for (VVLayout* item in virtualView.subViews) {
             [self attachViews:item];
         }
-    } else if(virtualView.cocoaView && virtualView.visible!=GONE) {
+    } else if(virtualView.cocoaView && virtualView.visible!=VVVisibilityGone) {
         [self addSubview:virtualView.cocoaView];
     }
 }
@@ -94,19 +94,19 @@
     int value=0;
     for (NSString* item in arr) {
         if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
-            value=value|Gravity_LEFT;
+            value=value|VVGravityLeft;
         }else if ([item compare:@"right" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_RIGHT;
+            value=value|VVGravityRight;
         }else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_H_CENTER;
+            value=value|VVGravityHCenter;
         }else if ([item compare:@"top" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_TOP;
+            value=value|VVGravityTop;
         }else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_BOTTOM;
+            value=value|VVGravityBottom;
         }else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_V_CENTER;
+            value=value|VVGravityVCenter;
         }else if ([item compare:@"center" options:NSCaseInsensitiveSearch]){
-            value=value|Gravity_H_CENTER|Gravity_V_CENTER;
+            value=value|VVGravityHCenter|VVGravityVCenter;
         }
     }
     return value;
@@ -168,7 +168,7 @@
     NSDictionary* jsonData = (NSDictionary*)obj;
 
     NSMutableArray* widgetValues = [[NSMutableArray alloc] init];
-    for (VVViewObject* item in self.dataTagObjs) {
+    for (VVBaseNode* item in self.dataTagObjs) {
         [item reset];
 
         for (NSNumber* key in [item.mutablePropertyDic allKeys]) {
@@ -332,11 +332,11 @@
                     }
 
                     if ([value isEqualToString:@"invisible"]) {
-                        intValue = INVISIBLE;
+                        intValue = VVVisibilityInvisible;
                     }else if([value isEqualToString:@"visible"]) {
-                        intValue = VISIBLE;
+                        intValue = VVVisibilityVisible;
                     }else{
-                        intValue = GONE;
+                        intValue = VVVisibilityGone;
                     }
                     [item setIntValue:intValue forKey:[key intValue]];
                     [dataCache setObject:[NSNumber numberWithInt:intValue] forKey:@"value"];
@@ -385,17 +385,17 @@
 
 }
 
-- (VVViewObject*)findObjectByID:(int)tagid{
-    VVViewObject* obj=[self.virtualView findViewByID:tagid];
+- (VVBaseNode*)findObjectByID:(int)tagid{
+    VVBaseNode* obj=[self.virtualView findViewByID:tagid];
     return obj;
 }
 
-+ (void)getDataTagObjsHelper:(VVViewObject *)node collection:(NSMutableArray *)dataTagObjs
++ (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs
 {
     if (node.mutablePropertyDic.count > 0) {
         [dataTagObjs addObject:node];
     }
-    for (VVViewObject *subNode in node.subViews) {
+    for (VVBaseNode *subNode in node.subViews) {
         [self getDataTagObjsHelper:subNode collection:dataTagObjs];
     }
 }

@@ -21,7 +21,7 @@
     return [NSString stringWithFormat:@"<%@: %p; name = %@; value = %f>", self.class, self, self.name, self.value];
 }
 
-- (void)applyToNode:(VVViewObject *)node
+- (void)applyToNode:(VVBaseNode *)node
 {
     [node setFloatValue:self.value forKey:self.key];
 }

@@ -5,9 +5,9 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVViewObject.h"
+#import "VVBaseNode.h"
 
-@interface VVTextView : VVViewObject
+@interface VVTextView : VVBaseNode
 @property(nonatomic, strong)NSString* text;
 @property(nonatomic, assign)float size;
 @property(nonatomic, assign)int lines;

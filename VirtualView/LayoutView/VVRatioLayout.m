@@ -36,8 +36,8 @@
     CGFloat pY = self.frame.origin.y + self.paddingTop ;
     //CGFloat validSize = self.height-_invalidHSize-self.paddingTop-self.paddingBottom;
     
-    for (VVViewObject* vvObj in self.subViews) {
-        if(vvObj.visible==GONE){
+    for (VVBaseNode* vvObj in self.subViews) {
+        if(vvObj.visible==VVVisibilityGone){
             continue;
         }
         pY+=vvObj.marginTop;
@@ -46,19 +46,19 @@
         CGFloat blanceW = (self.width-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
         //CGFloat blanceH = (self.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
         
-         if((vvObj.layoutGravity&Gravity_H_CENTER)==Gravity_H_CENTER){
+         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
          //
          pX += vvObj.marginLeft+blanceW;
-         }else if((vvObj.layoutGravity&Gravity_RIGHT)!=0){
+         }else if((vvObj.layoutGravity&VVGravityRight)!=0){
          pX += vvObj.marginLeft+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
          }else{
          pX += vvObj.marginLeft;
          }
         /*
-        if((vvObj.layoutGravity&Gravity_V_CENTER)==Gravity_V_CENTER){
+        if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
             //
             pY += blanceH<0?0:blanceH;
-        }else if((vvObj.layoutGravity&Gravity_BOTTOM)!=0){
+        }else if((vvObj.layoutGravity&VVGravityBottom)!=0){
             pY = pY+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
         }else{
             pY += 0;
@@ -77,8 +77,8 @@
     CGFloat pX = self.frame.origin.x + self.paddingLeft ;
     //CGFloat validSize = self.width-_invalidHSize-self.paddingLeft-self.paddingRight;
     
-    for (VVViewObject* vvObj in self.subViews) {
-        if(vvObj.visible==GONE){
+    for (VVBaseNode* vvObj in self.subViews) {
+        if(vvObj.visible==VVVisibilityGone){
             continue;
         }
         pX+=vvObj.marginLeft;
@@ -87,19 +87,19 @@
         //CGFloat blanceW = (self.width-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
         CGFloat blanceH = (self.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
         /*
-        if((vvObj.layoutGravity&Gravity_H_CENTER)==Gravity_H_CENTER){
+        if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
             pX += blanceW<0?0:blanceW;
-        }else if((vvObj.layoutGravity&Gravity_RIGHT)!=0){
+        }else if((vvObj.layoutGravity&VVGravityRight)!=0){
             pX = pX+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
         }else{
             pX += 0;
         }*/
         
-        if((vvObj.layoutGravity&Gravity_V_CENTER)==Gravity_V_CENTER){
+        if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
             //
             pY += vvObj.marginTop+blanceH;
-        }else if((vvObj.layoutGravity&Gravity_BOTTOM)!=0){
+        }else if((vvObj.layoutGravity&VVGravityBottom)!=0){
             pY += vvObj.marginTop+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
         }else{
             pY += vvObj.marginTop;
@@ -117,7 +117,7 @@
     [super layoutSubviews];
     
     switch (self.orientation) {
-        case VERTICAL:
+        case VVOrientationVertical:
             [self vertical];
             break;
         default:
@@ -130,10 +130,10 @@
     _totalRatio = 0;
     CGSize itemSize = {0,0};
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
            maxSize.height = maxSize.width*(self.autoDimY/self.autoDimX);
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
            maxSize.width = maxSize.height*(self.autoDimX/self.autoDimY);
             break;
         default:
@@ -144,7 +144,7 @@
     
     CGSize blanceSize = CGSizeMake(maxSize.width-self.marginLeft-self.marginRight, maxSize.height-self.marginTop-self.marginBottom);
     
-    for (VVViewObject* vvObj in self.subViews) {
+    for (VVBaseNode* vvObj in self.subViews) {
         _totalRatio += vvObj.layoutRatio;
         if (vvObj.layoutRatio>0) {
             [ratioSubViews addObject:vvObj];
@@ -155,10 +155,10 @@
         _invalidVSize+= vvObj.marginTop+vvObj.marginBottom;
     }
     
-    for (VVViewObject* vvObj in noratioSubViews) {
+    for (VVBaseNode* vvObj in noratioSubViews) {
         //
         CGSize size = [vvObj calculateLayoutSize:blanceSize];
-        if (self.orientation==HORIZONTAL) {
+        if (self.orientation==VVOrientationHorizontal) {
             blanceSize.width = blanceSize.width - size.width;
         }else{
             blanceSize.height = blanceSize.height - size.height;
@@ -167,10 +167,10 @@
         itemSize.height += size.height;
     }
     
-    for (VVViewObject* vvObj in ratioSubViews) {
+    for (VVBaseNode* vvObj in ratioSubViews) {
         //
         CGSize size={0,0};
-        if (self.orientation==HORIZONTAL) {
+        if (self.orientation==VVOrientationHorizontal) {
             //
             size.width  = blanceSize.width*vvObj.layoutRatio/_totalRatio;
             size.height = blanceSize.height;
@@ -180,7 +180,7 @@
         }
         
         [vvObj calculateLayoutSize:size];
-        if (self.orientation==HORIZONTAL) {
+        if (self.orientation==VVOrientationHorizontal) {
             vvObj.width = size.width;
         }else{
             vvObj.height = size.height;
@@ -190,7 +190,7 @@
         itemSize.height += size.height;
     }
     
-//    for (VVViewObject* vvObj in self.subViews) {
+//    for (VVBaseNode* vvObj in self.subViews) {
 //        _totalRatio += vvObj.layoutRatio;
 //        _invalidHSize+= vvObj.marginLeft+vvObj.marginRight;
 //        _invalidVSize+= vvObj.marginTop+vvObj.marginBottom;
@@ -198,11 +198,11 @@
 //    }
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.width = self.paddingRight+self.paddingLeft+itemSize.width;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.width=maxSize.width;
             
             break;
@@ -214,11 +214,11 @@
     
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
             self.height = self.paddingTop+self.paddingBottom+itemSize.height;
             break;
-        case MATCH_PARENT:
+        case VV_MATCH_PARENT:
             self.height=maxSize.height;
             
             break;
@@ -229,11 +229,11 @@
     self.height = self.height<maxSize.height?self.height:maxSize.height;
     
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
             self.height = self.width*(self.autoDimY/self.autoDimX);
             
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
             self.width = self.height*(self.autoDimX/self.autoDimY);
             break;
         default:

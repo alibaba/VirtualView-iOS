@@ -11,7 +11,7 @@
 -(id)init{
     self = [super init];
     if (self) {
-        self.orientation = HORIZONTAL;
+        self.orientation = VVOrientationHorizontal;
     }
     return self;
 }
@@ -37,7 +37,7 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     switch (self.orientation) {
-        case VERTICAL:
+        case VVOrientationVertical:
             [self vertical];
             break;
         default:
@@ -50,20 +50,20 @@
     CGSize itemsSize={0,0};
     CGFloat maxWidth=0.0, maxHeight = 0.0;
     
-    if (self.heightModle!=MATCH_PARENT && self.heightModle!=WRAP_CONTENT) {
+    if (self.heightModle!=VV_MATCH_PARENT && self.heightModle!=VV_WRAP_CONTENT) {
         maxSize.height = self.height;
     }
     
-    if (self.widthModle!=MATCH_PARENT && self.widthModle!=WRAP_CONTENT) {
+    if (self.widthModle!=VV_MATCH_PARENT && self.widthModle!=VV_WRAP_CONTENT) {
         maxSize.width = self.width;
     }
         
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
             maxSize.height = maxSize.height = maxSize.width*(self.autoDimY/self.autoDimX);
             
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
             maxSize.width = maxSize.width = maxSize.height*(self.autoDimX/self.autoDimY);
             break;
         default:
@@ -74,10 +74,10 @@
     
     int matchWidthType=0,matchHeightType=0;
     NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
-    for (VVViewObject* item in self.subViews) {
-        if(item.visible==GONE){
+    for (VVBaseNode* item in self.subViews) {
+        if(item.visible==VVVisibilityGone){
             continue;
-        }else if(self.widthModle==WRAP_CONTENT && item.widthModle==MATCH_PARENT) {
+        }else if(self.widthModle==VV_WRAP_CONTENT && item.widthModle==VV_MATCH_PARENT) {
             [tmpArray addObject:item];
             continue;
         }
@@ -85,20 +85,20 @@
         matchHeightType = item.heightModle;
         CGSize toItemSize={0,0};
         switch (self.orientation) {
-            case VERTICAL:
-                if (item.widthModle==MATCH_PARENT && self.widthModle==WRAP_CONTENT) {
+            case VVOrientationVertical:
+                if (item.widthModle==VV_MATCH_PARENT && self.widthModle==VV_WRAP_CONTENT) {
                     //continue;
                     toItemSize.width = maxSize.width;//maxWidth;
-                }else/* if (item.widthModle==WRAP_CONTENT)*/{
+                }else/* if (item.widthModle==VV_WRAP_CONTENT)*/{
                     toItemSize.width = maxSize.width;
                 }
                 toItemSize.height = blanceHeight;
                 break;
             default:
-                if (item.heightModle==MATCH_PARENT && self.heightModle==WRAP_CONTENT) {
+                if (item.heightModle==VV_MATCH_PARENT && self.heightModle==VV_WRAP_CONTENT) {
                     //continue;
                     toItemSize.height = maxSize.height;//maxHeight;
-                }else/* if (item.heightModle==WRAP_CONTENT)*/{
+                }else/* if (item.heightModle==VV_WRAP_CONTENT)*/{
                     toItemSize.height = maxSize.height;
                 }
                 toItemSize.width = blanceWidth;
@@ -107,15 +107,15 @@
         toItemSize.height-=item.marginTop+item.marginBottom;
         toItemSize.width -=item.marginLeft+item.marginRight;
         CGSize size = [item calculateLayoutSize:toItemSize];
-        if (self.orientation==VERTICAL) {
+        if (self.orientation==VVOrientationVertical) {
             blanceHeight -= size.height+item.marginTop+item.marginBottom;
             itemsSize.height+=size.height+item.marginTop+item.marginBottom;
             self.childrenHeight = itemsSize.height;
             
-            if (matchWidthType==WRAP_CONTENT) {
+            if (matchWidthType==VV_WRAP_CONTENT) {
                 maxWidth = maxWidth<size.width?size.width:maxWidth;
                 self.childrenWidth = maxWidth;
-            }else if (matchWidthType==MATCH_PARENT && self.widthModle!=WRAP_CONTENT){
+            }else if (matchWidthType==VV_MATCH_PARENT && self.widthModle!=VV_WRAP_CONTENT){
                 self.childrenWidth = maxWidth = maxSize.width;
             }else{
                 self.childrenWidth = maxWidth =maxWidth<size.width?size.width:maxWidth;
@@ -125,10 +125,10 @@
             itemsSize.width+=size.width+item.marginLeft+item.marginRight;
             self.childrenWidth = itemsSize.width;
             
-            if (matchHeightType==WRAP_CONTENT) {
+            if (matchHeightType==VV_WRAP_CONTENT) {
                 maxHeight = maxHeight<size.height?size.height:maxHeight;
                 self.childrenHeight = maxHeight;
-            }else if (matchHeightType==MATCH_PARENT && self.heightModle!=WRAP_CONTENT){
+            }else if (matchHeightType==VV_MATCH_PARENT && self.heightModle!=VV_WRAP_CONTENT){
                 self.childrenHeight = maxHeight = maxSize.height;
             }else{
                 self.childrenHeight = maxHeight = maxHeight<size.height?size.height:maxHeight;
@@ -136,14 +136,14 @@
         }
     }
     
-    //if (self.autoDimDirection==AUTO_DIM_DIR_X) {
+    //if (self.autoDimDirection==VVAutoDimDirectionX) {
         switch ((int)self.widthModle) {
-            case WRAP_CONTENT:
+            case VV_WRAP_CONTENT:
                 //
-                self.width = self.orientation==VERTICAL?maxWidth:itemsSize.width;
+                self.width = self.orientation==VVOrientationVertical?maxWidth:itemsSize.width;
                 self.width = self.paddingRight+self.paddingLeft+self.width;
                 break;
-            case MATCH_PARENT:
+            case VV_MATCH_PARENT:
                 self.width=maxSize.width;
                 
                 break;
@@ -154,14 +154,14 @@
     //}
     
     self.width = self.width<maxSize.width?self.width:maxSize.width;
-    //if (self.autoDimDirection==AUTO_DIM_DIR_Y) {
+    //if (self.autoDimDirection==VVAutoDimDirectionY) {
         switch ((int)self.heightModle) {
-            case WRAP_CONTENT:
+            case VV_WRAP_CONTENT:
                 //
-                self.height= self.orientation==VERTICAL?itemsSize.height:maxHeight;
+                self.height= self.orientation==VVOrientationVertical?itemsSize.height:maxHeight;
                 self.height = self.paddingTop+self.paddingBottom+self.height;
                 break;
-            case MATCH_PARENT:
+            case VV_MATCH_PARENT:
                 self.height=maxSize.height;
                 
                 break;
@@ -173,11 +173,11 @@
 
     self.height = self.height<maxSize.height?self.height:maxSize.height;
     switch (self.autoDimDirection) {
-        case AUTO_DIM_DIR_X:
+        case VVAutoDimDirectionX:
             self.height = self.width*(self.autoDimY/self.autoDimX);
             
             break;
-        case AUTO_DIM_DIR_Y:
+        case VVAutoDimDirectionY:
             self.width = self.height*(self.autoDimX/self.autoDimY);
             break;
         default:
@@ -185,7 +185,7 @@
     }
     //[self autoDim];
     CGSize tmpSize = CGSizeMake(self.width, self.height);
-    for (VVViewObject* vvObj in tmpArray) {
+    for (VVBaseNode* vvObj in tmpArray) {
         [vvObj calculateLayoutSize:tmpSize];
     }
     return CGSizeMake(self.width, self.height);
@@ -195,17 +195,17 @@
     float pY = self.frame.origin.y;
     float height = self.height;
     
-    if ((self.gravity & Gravity_BOTTOM)==Gravity_BOTTOM) {
+    if ((self.gravity & VVGravityBottom)==VVGravityBottom) {
         pY += self.height-self.paddingBottom-self.childrenHeight;
-    }else if ((self.gravity & Gravity_V_CENTER)==Gravity_V_CENTER){
+    }else if ((self.gravity & VVGravityVCenter)==VVGravityVCenter){
         pY += (self.height-self.paddingTop-self.paddingBottom-self.childrenHeight)/2.0;
     }else{
         pY += self.paddingTop;
     }
     
-    for (VVViewObject* item in self.subViews) {
+    for (VVBaseNode* item in self.subViews) {
         //
-        if(item.visible==GONE){
+        if(item.visible==VVVisibilityGone){
             continue;
         }
         CGSize size = CGSizeMake(item.width, item.height);//[item calculateLayoutSize:CGSizeMake(self.width, height)];
@@ -227,10 +227,10 @@
         
         pY += item.marginTop;
         
-        if((item.layoutGravity&Gravity_H_CENTER)==Gravity_H_CENTER){
+        if((item.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
             pX += item.marginLeft+blanceW;
-        }else if((item.layoutGravity&Gravity_RIGHT)!=0){
+        }else if((item.layoutGravity&VVGravityRight)!=0){
             pX = pX+self.width-size.width-item.marginRight;//(blanceW<0?0:blanceW)*2.0;
         }else{
             pX += item.marginLeft;
@@ -248,17 +248,17 @@
     float pX = self.frame.origin.x;
     float width = self.width;
     
-    if ((self.gravity & Gravity_RIGHT)==Gravity_RIGHT) {
+    if ((self.gravity & VVGravityRight)==VVGravityRight) {
         pX = pX+self.width-self.paddingRight-self.childrenWidth;
-    }else if ((self.gravity & Gravity_H_CENTER)==Gravity_H_CENTER){
+    }else if ((self.gravity & VVGravityHCenter)==VVGravityHCenter){
         pX += (self.width-self.paddingLeft-self.paddingRight-self.childrenWidth)/2.0;
     }else{
         pX += self.paddingLeft;
     }
     
-    for (VVViewObject* item in self.subViews) {
+    for (VVBaseNode* item in self.subViews) {
         //
-        if(item.visible==GONE){
+        if(item.visible==VVVisibilityGone){
             continue;
         }
         CGSize size = CGSizeMake(item.width, item.height);//[item calculateLayoutSize:CGSizeMake(width, self.height)];
@@ -278,9 +278,9 @@
         
         pX += item.marginLeft;
         
-        if((item.layoutGravity&Gravity_V_CENTER)!=0){
+        if((item.layoutGravity&VVGravityVCenter)!=0){
             pY += item.marginTop+blanceH;
-        }else if ((item.layoutGravity&Gravity_BOTTOM)!=0){
+        }else if ((item.layoutGravity&VVGravityBottom)!=0){
             //
             pY = pY+self.height-size.height-item.marginBottom;
         }else{

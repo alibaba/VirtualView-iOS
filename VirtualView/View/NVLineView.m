@@ -28,7 +28,7 @@
     if (self) {
         self.cocoaView = [[UIView alloc] init];
         self.cocoaView.backgroundColor = [UIColor clearColor];
-        self.style = SOLID;
+        self.style = VVLineStyleSolid;
         self.lineWidth = 1.0f;
         self.lineColor = [UIColor blackColor];
         CGFloat arr[] = {3,1};
@@ -41,7 +41,7 @@
             *pFloat = arr[i];
             pFloat++;
         }
-        self.orientation = HORIZONTAL;
+        self.orientation = VVOrientationHorizontal;
     }
     return self;
 }
@@ -122,7 +122,7 @@
         switch (key) {
                 
             case STR_ID_color:
-                self.lineColor = UIColorARGBWithHexValue(value);//[UIColor colorWithHexValue:value];
+                self.lineColor = [UIColor colorWithHexValue:value];
                 break;
                 
             case STR_ID_orientation:
@@ -151,7 +151,7 @@
         switch (key) {
                 
             case STR_ID_color:
-                self.lineColor = UIColorARGBWithHexValue((int)value);//[UIColor colorWithHexValue:value];
+                self.lineColor = [UIColor colorWithHexValue:(int)value];
                 break;
                 
             case STR_ID_orientation:
@@ -180,7 +180,7 @@
     CGContextSetStrokeColorWithColor(currentContext, self.lineColor.CGColor);
     CGContextSetLineWidth(currentContext, self.lineWidth);
     
-    if(self.orientation==HORIZONTAL){
+    if(self.orientation==VVOrientationHorizontal){
         CGFloat centerY = CGRectGetHeight(layer.bounds) / 2;
         CGContextMoveToPoint(currentContext, 0, centerY);
         CGContextAddLineToPoint(currentContext, 0 + self.frame.size.width, centerY);
@@ -190,7 +190,7 @@
         CGContextAddLineToPoint(currentContext, centerX, 0+self.frame.size.height);
     }
     
-    if (self.style==DASH) {
+    if (self.style==VVLineStyleDash) {
         [self createDashLengths];
         CGContextSetLineDash(currentContext, 0, self.lengths, self.lengthsCount);
     }
@@ -238,17 +238,17 @@
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width = maxSize.width;//self.paddingRight+self.paddingLeft+self.width;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
             }
             
             break;
-        case MATCH_PARENT:
-            if (self.orientation==HORIZONTAL) {
+        case VV_MATCH_PARENT:
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width=maxSize.width;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
@@ -256,7 +256,7 @@
             
             break;
         default:
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width = self.widthModle+self.paddingRight+self.paddingLeft;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
@@ -265,17 +265,17 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = maxSize.height;
             }
             
             break;
-        case MATCH_PARENT:
-            if (self.orientation==HORIZONTAL) {
+        case VV_MATCH_PARENT:
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = maxSize.height;
@@ -283,7 +283,7 @@
             
             break;
         default:
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = self.heightModle+self.paddingTop+self.paddingBottom;;

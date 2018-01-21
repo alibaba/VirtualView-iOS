@@ -26,7 +26,7 @@
 - (id)init{
     self = [super init];
     if (self) {
-        self.style = SOLID;
+        self.style = VVLineStyleSolid;
         self.lineWidth = 1.0f;
         self.lineColor = [UIColor blackColor];
         CGFloat arr[] = {3,1};
@@ -39,7 +39,7 @@
             *pFloat = arr[i];
             pFloat++;
         }
-        self.orientation = HORIZONTAL;
+        self.orientation = VVOrientationHorizontal;
     }
     return self;
 }
@@ -184,7 +184,7 @@
     //设置虚线宽度
     CGContextSetLineWidth(currentContext, self.lineWidth);
     
-    if(self.orientation==HORIZONTAL){
+    if(self.orientation==VVOrientationHorizontal){
         //
         //设置虚线绘制起点
         CGContextMoveToPoint(currentContext, self.frame.origin.x, 1);
@@ -197,7 +197,7 @@
         CGContextAddLineToPoint(currentContext, self.frame.origin.x, self.frame.origin.y+self.frame.size.height);
     }
     
-    if (self.style==DASH) {
+    if (self.style==VVLineStyleDash) {
         //设置虚线排列的宽度间隔:下面的arr中的数字表示先绘制3个点再绘制1个点
         //下面最后一个参数“2”代表排列的个数。
         [self createDashLengths];
@@ -247,17 +247,17 @@
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     
     switch ((int)self.widthModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width = maxSize.width;//self.paddingRight+self.paddingLeft+self.width;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
             }
             
             break;
-        case MATCH_PARENT:
-            if (self.orientation==HORIZONTAL) {
+        case VV_MATCH_PARENT:
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width=maxSize.width;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
@@ -265,7 +265,7 @@
             
             break;
         default:
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.width = self.widthModle+self.paddingRight+self.paddingLeft;
             }else{
                 self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
@@ -274,17 +274,17 @@
     }
     
     switch ((int)self.heightModle) {
-        case WRAP_CONTENT:
+        case VV_WRAP_CONTENT:
             //
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = maxSize.height;
             }
             
             break;
-        case MATCH_PARENT:
-            if (self.orientation==HORIZONTAL) {
+        case VV_MATCH_PARENT:
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = maxSize.height;
@@ -292,7 +292,7 @@
             
             break;
         default:
-            if (self.orientation==HORIZONTAL) {
+            if (self.orientation==VVOrientationHorizontal) {
                 self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
                 self.height = self.heightModle+self.paddingTop+self.paddingBottom;;
