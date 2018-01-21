@@ -310,7 +310,7 @@
                 r2 = [value rangeOfString:@":" options:NSCaseInsensitiveSearch range:NSMakeRange(r1.location, value.length-r1.location)];
                 
                 if (r2.location!=NSNotFound) {
-                    r3 = [value rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(r2.location, value.length-r2.location)];
+                    r3 = [value rangeOfString:@"}" options:NSCaseInsensitiveSearch | NSBackwardsSearch range:NSMakeRange(r2.location, value.length-r2.location)];
                     
                     if (r3.location!=NSNotFound) {
                         NSString* v1 = [value substringWithRange:NSMakeRange(r1.location+1, r2.location-r1.location-1)];
