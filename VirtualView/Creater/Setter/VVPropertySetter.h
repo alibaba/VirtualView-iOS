@@ -25,6 +25,16 @@
 
 - (nonnull instancetype)initWithPropertyKey:(int)key;
 
+/**
+ If this setter is an expression setter.
+ For expression setter, you should implement and use "applyToNode:withDict:".
+ Default value is NO, subclass must override this method to return YES.
+
+ @return  YES for expression setter.
+ */
+- (BOOL)isExpression;
 - (void)applyToNode:(nullable VVBaseNode *)node;
+- (void)applyToNode:(nullable VVBaseNode *)node withDict:(nullable NSDictionary *)dict;
+
 
 @end

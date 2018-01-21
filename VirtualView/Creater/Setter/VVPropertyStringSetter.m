@@ -7,10 +7,17 @@
 
 #import "VVPropertyStringSetter.h"
 
+@interface VVPropertyStringSetter ()
+
+@property (nonatomic, copy, readwrite) NSString *value;
+
+@end
+
 @implementation VVPropertyStringSetter
 
-+ (instancetype)setterWithPropertyKey:(int)key stringValue:(NSString *)value
++ (VVPropertySetter *)setterWithPropertyKey:(int)key stringValue:(NSString *)value
 {
+#warning TODO: Add expression.
     VVPropertyStringSetter *setter = [[self alloc] initWithPropertyKey:key];
     setter.value = value;
     return setter;

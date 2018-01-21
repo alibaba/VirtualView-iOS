@@ -9,8 +9,8 @@
 
 @interface VVPropertyFloatSetter : VVPropertySetter
 
-@property (nonatomic, assign) CGFloat value;
+@property (nonatomic, assign, readonly) CGFloat value;
 
-+ (nonnull instancetype)setterWithPropertyKey:(int)key floatValue:(CGFloat)value;
++ (nonnull VVPropertySetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value;
 
 @end

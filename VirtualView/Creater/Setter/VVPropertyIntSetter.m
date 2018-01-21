@@ -7,9 +7,15 @@
 
 #import "VVPropertyIntSetter.h"
 
+@interface VVPropertyIntSetter ()
+
+@property (nonatomic, assign, readwrite) int value;
+
+@end
+
 @implementation VVPropertyIntSetter
 
-+ (instancetype)setterWithPropertyKey:(int)key intValue:(int)value
++ (VVPropertySetter *)setterWithPropertyKey:(int)key intValue:(int)value
 {
     VVPropertyIntSetter *setter = [[self alloc] initWithPropertyKey:key];
     setter.value = value;

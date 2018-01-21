@@ -43,7 +43,11 @@
     }
     
     for (VVPropertySetter *setter in self.propertySetters) {
-        [setter applyToNode:node];
+        if ([setter isExpression] == NO) {
+            [setter applyToNode:node];
+        } else {
+#warning TODO: Add expression.
+        }
     }
     
     for (VVNodeCreater *creater in self.subCreaters) {
