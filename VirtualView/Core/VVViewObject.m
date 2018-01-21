@@ -316,7 +316,7 @@
                 r2 = [strValueVar rangeOfString:@":" options:NSCaseInsensitiveSearch range:NSMakeRange(r1.location, strValueVar.length-r1.location)];
                 
                 if (r2.location!=NSNotFound) {
-                    r3 = [strValueVar rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(r2.location, strValueVar.length-r2.location)];
+                    r3 = [strValueVar rangeOfString:@"}" options:NSCaseInsensitiveSearch | NSBackwardsSearch range:NSMakeRange(r2.location, strValueVar.length-r2.location)];
                     
                     if (r3.location!=NSNotFound) {
                         NSString* v1 = [strValueVar substringWithRange:NSMakeRange(r1.location+1, r2.location-r1.location-1)];
