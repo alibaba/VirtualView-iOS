@@ -7,9 +7,15 @@
 
 #import "VVPropertyFloatSetter.h"
 
+@interface VVPropertyFloatSetter ()
+
+@property (nonatomic, assign, readwrite) CGFloat value;
+
+@end
+
 @implementation VVPropertyFloatSetter
 
-+ (instancetype)setterWithPropertyKey:(int)key floatValue:(CGFloat)value
++ (VVPropertySetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value
 {
     VVPropertyFloatSetter *setter = [[self alloc] initWithPropertyKey:key];
     setter.value = value;

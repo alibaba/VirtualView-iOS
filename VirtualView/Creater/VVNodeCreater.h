@@ -19,7 +19,7 @@
  */
 @interface VVNodeCreater : NSObject
 
-@property (nonatomic, strong, nullable) NSString *nodeClassName;
+@property (nonatomic, copy, nullable) NSString *nodeClassName;
 @property (nonatomic, strong, nonnull) NSMutableArray<VVPropertySetter *> *propertySetters;
 @property (nonatomic, strong, nonnull) NSMutableArray<VVNodeCreater *> *subCreaters;
 

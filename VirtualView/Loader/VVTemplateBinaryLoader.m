@@ -195,7 +195,7 @@
         // int properties
         int key = [self readIntLE];
         int value = [self readIntLE];
-        VVPropertyIntSetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
+        VVPropertySetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
         [creater.propertySetters addObject:setter];
     }
     
@@ -204,7 +204,7 @@
         // rp int properties
         int key = [self readIntLE];
         int value = [self readIntLE] * VVConfig.pointRatio;
-        VVPropertyIntSetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
+        VVPropertySetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
         [creater.propertySetters addObject:setter];
     }
     
@@ -213,7 +213,7 @@
         // float properties
         int key = [self readIntLE];
         float value = [self readFloatLE];
-        VVPropertyFloatSetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
+        VVPropertySetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
         [creater.propertySetters addObject:setter];
     }
     
@@ -222,7 +222,7 @@
         // rp float properties
         int key = [self readIntLE];
         float value = [self readFloatLE] * VVConfig.pointRatio;
-        VVPropertyFloatSetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
+        VVPropertySetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
         [creater.propertySetters addObject:setter];
     }
     
@@ -235,7 +235,7 @@
         if (!stringValue) {
             stringValue = [self.stringDict objectForKey:@(stringKey)] ?: @"";
         }
-        VVPropertyStringSetter *setter = [VVPropertyStringSetter setterWithPropertyKey:propertyKey stringValue:stringValue];
+        VVPropertySetter *setter = [VVPropertyStringSetter setterWithPropertyKey:propertyKey stringValue:stringValue];
         [creater.propertySetters addObject:setter];
     }
     

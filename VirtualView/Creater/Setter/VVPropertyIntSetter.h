@@ -9,8 +9,8 @@
 
 @interface VVPropertyIntSetter : VVPropertySetter
 
-@property (nonatomic, assign) int value;
+@property (nonatomic, assign, readonly) int value;
 
-+ (nonnull instancetype)setterWithPropertyKey:(int)key intValue:(int)value;
++ (nonnull VVPropertySetter *)setterWithPropertyKey:(int)key intValue:(int)value;
 
 @end
