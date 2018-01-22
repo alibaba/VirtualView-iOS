@@ -19,7 +19,7 @@
 {
     if (expressionString && expressionString.length > 0) {
         expressionString = [expressionString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (expressionString.length > 0 && ([expressionString hasPrefix:@"@"] || [expressionString hasPrefix:@"@"])) {
+        if (expressionString.length > 0 && ([expressionString hasPrefix:@"@{"] || [expressionString hasPrefix:@"${"])) {
             VVExpression *expression = [VVExpression expressionWithString:expressionString];
             if (expression && [expression isKindOfClass:[VVConstExpression class]] == NO) {
                 VVPropertyExpressionSetter *setter = [[self alloc] initWithPropertyKey:key];

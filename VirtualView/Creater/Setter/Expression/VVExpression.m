@@ -77,7 +77,7 @@
 + (VVExpression *)expressionWithString:(NSString *)string
 {
     VVVariableExpression *expression = nil;
-    if ([string hasPrefix:@"@{"] && [string hasSuffix:@"}"]) {
+    if ([string hasPrefix:@"${"] && [string hasSuffix:@"}"]) {
         string = [string substringWithRange:NSMakeRange(2, string.length - 3)];
         string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (string.length > 0) {
@@ -105,17 +105,19 @@
             expression = [VVVariableExpression new];
             expression.index = [indexString integerValue];
             string = [string substringFromIndex:range.location + 1];
+        } else {
+            string = nil;
         }
     } else if ([string hasPrefix:@"."]) {
-        NSRange range = [string rangeOfCharacterFromSet:nextCharacterSet];
+        NSRange range = [string rangeOfCharacterFromSet:nextCharacterSet options:0 range:NSMakeRange(1, string.length - 1)];
         if (range.location != NSNotFound) {
-            NSString *key = [string substringToIndex:range.location];
+            NSString *key = [string substringWithRange:NSMakeRange(1, range.location - 1)];
             expression = [VVVariableExpression new];
             expression.key = key;
             string = [string substringFromIndex:range.location];
         } else {
             expression = [VVVariableExpression new];
-            expression.key = string;
+            expression.key = [string substringFromIndex:1];
             string = nil;
         }
     }

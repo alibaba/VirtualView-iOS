@@ -39,7 +39,7 @@
     assertThat(manager.loadedTypes, hasItem(@"linear"));
     assertThat([[manager versionOfType:@"icon"] stringValue], equalTo(@"1.0.13"));
     VVVHLayout *layout = [manager createNodeTreeForType:@"NText"];
-    assertThat(layout, isA(VVVHLayout.class));
+    assertThat(layout, isA([VVVHLayout class]));
     assertThatFloat(layout.widthModle, equalToFloat(-1));
     assertThatFloat(layout.heightModle, equalToFloat(-1));
 }
