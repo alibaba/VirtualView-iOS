@@ -15,7 +15,7 @@
 
 @implementation VVPropertyFloatSetter
 
-+ (VVPropertySetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value
++ (VVPropertyFloatSetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value
 {
     VVPropertyFloatSetter *setter = [[self alloc] initWithPropertyKey:key];
     setter.value = value;

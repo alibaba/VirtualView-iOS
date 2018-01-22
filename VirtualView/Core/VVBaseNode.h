@@ -30,8 +30,6 @@
 @end
 
 
-
-@class VVExpressCode;
 @interface VVBaseNode : NSObject<VVWidgetObject>
 @property(nonatomic, readonly)NSUInteger  objectID;
 @property(nonatomic, strong)NSString      *name;
@@ -79,8 +77,9 @@
 @property(nonatomic, strong)NSMutableDictionary     *userVarDic;
 @property(nonatomic, weak)id<VVWidgetAction>      updateDelegate;
 @property(nonatomic, readonly, copy) NSArray<__kindof VVBaseNode *> *subViews;
-@property(nonatomic, strong)NSMutableDictionary      *mutablePropertyDic;
 @property(strong, nonatomic)NSMutableDictionary      *cacheInfoDic;
+
+@property (nonatomic, strong) NSMutableDictionary *expressionSetters;
 
 -(id<VVWidgetObject>)hitTest:(CGPoint)pt;
 - (VVBaseNode*)findViewByID:(int)tagid;
@@ -102,7 +101,6 @@
 - (void)didFinishBinding;
 - (void)setData:(NSData*)data;
 - (void)setDataObj:(NSObject*)obj forKey:(int)key;
-- (void)setTagsValue:(NSArray*)tags withData:(NSDictionary*)dic;
 - (BOOL)isClickable;
 - (BOOL)isLongClickable;
 - (BOOL)supportExposure;

@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong, readonly, nullable) VVExpression *expression;
 
+@property (nonatomic, assign, readonly) int valueType;
+
 /**
  Return an expression setter if the expression string is valid.
 
@@ -19,6 +21,6 @@
  @param expressionString  Expression string.
  @return                  An expression setter or nil.
  */
-+ (nullable VVPropertySetter *)setterWithPropertyKey:(int)key expressionString:(nullable NSString *)expressionString;
++ (nullable VVPropertyExpressionSetter *)setterWithPropertyKey:(int)key expressionString:(nullable NSString *)expressionString;
 
 @end

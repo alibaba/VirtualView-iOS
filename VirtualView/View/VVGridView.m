@@ -9,6 +9,7 @@
 #import "VVGridLayout.h"
 #import "VVViewContainer.h"
 #import "VVTemplateManager.h"
+#import "VVPropertyExpressionSetter.h"
 
 @interface VVGridView (){
 
@@ -143,55 +144,6 @@
     return value;
 }
 
-- (NSString*)valueForVariable:(id)obj fromJsonData:(NSDictionary*)jsonData{
-    
-    NSString* valueObj = nil;
-    
-    if ([obj isKindOfClass:NSArray.class]) {
-        NSDictionary* tmpDictionary = jsonData;
-        NSArray* varList = (NSArray*)obj;
-        for (NSDictionary* varItem in varList) {
-            NSString* varName = [varItem objectForKey:@"varName"];
-            int index = [[varItem objectForKey:@"varIndex"] intValue];
-
-            if (index>=0) {
-                NSArray* items = [tmpDictionary objectForKey:varName];
-                if (items.count>index) {
-                    valueObj = [items objectAtIndex:index];
-                }else{
-                    valueObj = @"";
-                }
-            }else{
-                valueObj = [tmpDictionary objectForKey:varName];
-            }
-
-            if ([valueObj isKindOfClass:NSDictionary.class]) {
-                tmpDictionary = (NSDictionary*)valueObj;
-            }
-
-        }
-    }else{
-        NSString* varString = (NSString*)obj;
-        NSRange startPos = [varString rangeOfString:@"${"];
-        if (startPos.location==NSNotFound) {
-            return varString;
-        }
-
-        NSRange endPos   = [varString rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(startPos.location, varString.length-startPos.location)];
-
-        if (endPos.location==NSNotFound) {
-            return varString;
-        }
-
-        if (startPos.location!=NSNotFound && endPos.location!=NSNotFound && endPos.location>startPos.location) {
-            NSString* key = [varString substringWithRange:NSMakeRange(startPos.location+2, endPos.location-startPos.length)];
-            valueObj = [jsonData objectForKey:key];
-        }
-    }
-
-    return valueObj;
-}
-
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     if (obj==nil || obj==self.updateDataObj) {
         return;
@@ -211,182 +163,62 @@
         [VVViewContainer getDataTagObjsHelper:vv collection:updateObjs];
         for (VVBaseNode* item in updateObjs) {
             [item reset];
-            for (NSNumber* key in [item.mutablePropertyDic allKeys]) {
-                NSDictionary* propertyInfo = [item.mutablePropertyDic objectForKey:key];
-                NSNumber* valueType = [propertyInfo objectForKey:@"valueType"];
-                NSArray* varObj = [propertyInfo objectForKey:@"varValues"];
-                
-                NSObject* valueObj = nil;
-                NSDictionary* tmpDictionary = jsonData;
-                NSString* varName = nil;
-                if([varObj isKindOfClass:NSArray.class]){
-                    for (NSDictionary* varItem in varObj) {
-                        NSString* var = [varItem objectForKey:@"varName"];
-                        int index = [[varItem objectForKey:@"varIndex"] intValue];
-                        if (index>=0) {
-                            NSArray* items = [tmpDictionary objectForKey:var];
-                            if (items.count>index) {
-                                valueObj = [items objectAtIndex:index];
-                            }else{
-                                valueObj = @"";
-                            }
-                        }else{
-                            valueObj = [tmpDictionary objectForKey:var];
-                        }
-
-                        if ([valueObj isKindOfClass:NSDictionary.class]) {
-                            tmpDictionary = (NSDictionary*)valueObj;
-                        }
-
-                        varName = var;
-                    }
-                }else if ([varObj isKindOfClass:NSString.class]){
-                    valueObj = [tmpDictionary objectForKey:varObj];
-                    varName = (NSString*)varObj;
+            for (VVPropertyExpressionSetter *setter in item.expressionSetters) {
+                if ([setter isKindOfClass:[VVPropertyExpressionSetter class]] == NO) {
+                    continue;
                 }
-
-                int keyValue = [key intValue];
-
-                switch ([valueType intValue]) {
+                id objectValue = [setter.expression resultWithObject:jsonData];
+                NSString *stringValue = [objectValue description];
+                switch (setter.valueType) {
                     case TYPE_INT:
                     {
-                        int value=0;
-                        if ([propertyInfo allValues].count>2) {
-                            NSObject* objValue;
-                            if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                objValue = [propertyInfo objectForKey:@"v1"];
-                            }else{
-                                objValue = [propertyInfo objectForKey:@"v2"];
-                            }
-                            value = [[self valueForVariable:objValue fromJsonData:jsonData] intValue];
-                        }else{
-                            value = [(NSNumber*)valueObj intValue];
-                        }
-                        [item setIntValue:value forKey:keyValue];
-                        
+                        [item setIntValue:[stringValue intValue] forKey:setter.key];
                     }
                         break;
                     case TYPE_FLOAT:
                     {
-                        CGFloat value=0;
-                        if ([propertyInfo allValues].count>2) {
-                            NSObject* objValue;
-                            if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                objValue = [propertyInfo objectForKey:@"v1"];
-                            }else{
-                                objValue = [propertyInfo objectForKey:@"v2"];
-                            }
-                            value = [[self valueForVariable:objValue fromJsonData:jsonData] floatValue];
-                        }else{
-                            value = [(NSNumber*)valueObj floatValue];
-                            [item setFloatValue:value forKey:keyValue];
-                        }
-                        
-                        [item setFloatValue:value forKey:keyValue];
+                        [item setFloatValue:[stringValue floatValue] forKey:setter.key];
                     }
                         break;
                     case TYPE_STRING:
-                    {
-                        NSString* value=@"";
-                        if ([propertyInfo allValues].count>2) {
-                            if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                value = [propertyInfo objectForKey:@"v1"];
-                            }else{
-                                value = [propertyInfo objectForKey:@"v2"];
-                            }
-                        }else{
-                            value = (NSString*)valueObj;
-                        }
-                        value = [self valueForVariable:value fromJsonData:jsonData];
-                        [item setStringDataValue:value forKey:keyValue];
-                    }
-                        break;
                     case TYPE_COLOR:
                     {
-                        {
-                            NSString* value=@"";
-                            if ([propertyInfo allValues].count>2) {
-                                if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                    value = [propertyInfo objectForKey:@"v1"];
-                                }else{
-                                    value = [propertyInfo objectForKey:@"v2"];
-                                }
-                            }else{
-                                value = (NSString*)valueObj;
-                            }
-                            value = [self valueForVariable:value fromJsonData:jsonData];
-                            [item setStringDataValue:value forKey:keyValue];
-                        }
+                        [item setStringDataValue:stringValue forKey:setter.key];
+                    }
                         break;
                     case TYPE_BOOLEAN:
-                        {
-                            NSString* value=@"";
-                            if ([propertyInfo allValues].count>2) {
-                                if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                    value = [propertyInfo objectForKey:@"v1"];
-                                }else{
-                                    value = [propertyInfo objectForKey:@"v2"];
-                                }
-                            }else{
-                                value = (NSString*)valueObj;
-                            }
-
-                            value = [self valueForVariable:value fromJsonData:jsonData];
-                            if ([value isEqualToString:@"true"]) {
-                                [item setIntValue:1 forKey:[key intValue]];
-                            }else{
-                                [item setIntValue:0 forKey:[key intValue]];
-                            }
+                    {
+                        if ([stringValue isEqualToString:@"true"]) {
+                            [item setIntValue:1 forKey:setter.key];
+                        }else{
+                            [item setIntValue:0 forKey:setter.key];
                         }
-
-                        break;
-                    case TYPE_VISIBILITY:
-                        {
-                            NSString* value=@"";
-                            if ([propertyInfo allValues].count>2) {
-                                if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                    value = [propertyInfo objectForKey:@"v1"];
-                                }else{
-                                    value = [propertyInfo objectForKey:@"v2"];
-                                }
-                            }else{
-                                value = (NSString*)valueObj;
-                            }
-
-                            value = [self valueForVariable:value fromJsonData:jsonData];
-                            if ([value isEqualToString:@"invisible"]) {
-                                [item setIntValue:VVVisibilityInvisible forKey:[key intValue]];
-                            }else if([value isEqualToString:@"visible"]) {
-                                [item setIntValue:VVVisibilityVisible forKey:[key intValue]];
-                            }else{
-                                [item setIntValue:VVVisibilityGone forKey:[key intValue]];
-                            }
-                        }
+                    }
                         
                         break;
-                    case TYPE_GRAVITY:
-                        {
-                            NSString* value=@"";
-                            if ([propertyInfo allValues].count>2) {
-                                if (((NSString*)valueObj).length>0 && [(NSString*)valueObj isEqualToString:@"false"]==NO) {
-                                    value = [propertyInfo objectForKey:@"v1"];
-                                }else{
-                                    value = [propertyInfo objectForKey:@"v2"];
-                                }
-                            }else{
-                                value = (NSString*)valueObj;
-                            }
-                            value = [self valueForVariable:value fromJsonData:jsonData];
-                            [item setIntValue:[self getValue4Array:[value componentsSeparatedByString:@"|"]] forKey:keyValue];
+                    case TYPE_VISIBILITY:
+                    {
+                        if ([stringValue isEqualToString:@"invisible"]) {
+                            [item setIntValue:VVVisibilityInvisible forKey:setter.key];
+                        }else if([stringValue isEqualToString:@"visible"]) {
+                            [item setIntValue:VVVisibilityVisible forKey:setter.key];
+                        }else{
+                            [item setIntValue:VVVisibilityGone forKey:setter.key];
                         }
-
+                    }
+                        break;
+                    case TYPE_GRAVITY:
+                    {
+                        [item setIntValue:[self getValue4Array:[stringValue componentsSeparatedByString:@"|"]] forKey:setter.key];
+                    }
                         break;
                     case TYPE_OBJECT:
-                        [item setDataObj:[jsonData objectForKey:varName] forKey:keyValue];
+                    {
+                        [item setDataObj:objectValue forKey:setter.key];
+                    }
                         break;
                     default:
                         break;
-                    }
                 }
             }
         }

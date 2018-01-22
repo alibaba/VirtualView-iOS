@@ -508,13 +508,4 @@
     return ret;
 }
 
-- (void)reset
-{
-    [super reset];
-    // 3556653 -> text
-    if ([self.mutablePropertyDic.allKeys containsObject:@(3556653)]) {
-        self.text = @"";
-    }
-}
-
 @end

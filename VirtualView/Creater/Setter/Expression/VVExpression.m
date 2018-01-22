@@ -28,7 +28,7 @@
     return expression;
 }
 
-- (NSString *)resultWithObject:(id)object
+- (id)resultWithObject:(id)object
 {
     // override me
     return nil;
@@ -54,7 +54,7 @@
     return expression;
 }
 
-- (NSString *)resultWithObject:(id)object
+- (id)resultWithObject:(id)object
 {
     return self.value;
 }
@@ -135,7 +135,7 @@
     return self;
 }
 
-- (NSString *)resultWithObject:(id)object
+- (id)resultWithObject:(id)object
 {
     if (object) {
         id nextObject = nil;
@@ -151,7 +151,7 @@
         if (self.nextExpression) {
             return [self.nextExpression resultWithObject:nextObject];
         } else {
-            return [nextObject description];
+            return nextObject;
         }
     }
     return nil;
@@ -197,12 +197,18 @@
     return expression;
 }
 
-- (NSString *)resultWithObject:(id)object
+- (id)resultWithObject:(id)object
 {
     if (object && ([object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSArray class]])) {
-        NSString *conditionValue = [self.conditionExpression resultWithObject:object];
-        if (conditionValue && conditionValue.length > 0 && [conditionValue isEqualToString:@"false"] == NO) {
-            return [self.trueExpression resultWithObject:object];
+        id conditionObject = [self.conditionExpression resultWithObject:object];
+        if (conditionObject) {
+            if ([conditionObject isKindOfClass:[NSString class]]
+                && [(NSString *)conditionObject length] > 0
+                && [(NSString *)conditionObject isEqualToString:@"false"]) {
+                return [self.falseExpression resultWithObject:object];
+            } else {
+                return [self.trueExpression resultWithObject:object];
+            }
         } else {
             return [self.falseExpression resultWithObject:object];
         }

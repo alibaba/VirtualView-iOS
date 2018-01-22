@@ -10,6 +10,7 @@
 #import "VVCommTools.h"
 #import "VVViewContainer.h"
 #import "VVLayout.h"
+#import "VVPropertyExpressionSetter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface NVImageView (){
@@ -35,16 +36,16 @@
         self.ratio = 0;
         self.fixBy = 0;
         self.ck    = nil;
-        self.mutablePropertyDic = [[NSMutableDictionary alloc] init];
-        NSArray* varList = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"inMainThread",@"varName",[NSNumber numberWithInt:-1],@"varIndex", nil], nil];
-        NSDictionary* propertyInfo = [NSDictionary dictionaryWithObjectsAndKeys:varList,@"varValues",[NSNumber numberWithInt:TYPE_BOOLEAN],@"valueType", nil];
-        NSNumber* propertyNum = [NSNumber numberWithUnsignedInteger:STR_ID_inmainthread];
-        [self.mutablePropertyDic setObject:propertyInfo forKey:propertyNum];
-
-        NSArray* varList2 = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"ck",@"varName",[NSNumber numberWithInt:-1],@"varIndex", nil], nil];
-        NSDictionary* propertyInfoCK = [NSDictionary dictionaryWithObjectsAndKeys:varList2,@"varValues",[NSNumber numberWithInt:TYPE_STRING],@"valueType", nil];
-        NSNumber* propertyNumCK = [NSNumber numberWithUnsignedInteger:STR_ID_ck];
-        [self.mutablePropertyDic setObject:propertyInfoCK forKey:propertyNumCK];
+#ifdef VV_ALIBABA
+        VVPropertySetter *setter = [VVPropertyExpressionSetter setterWithPropertyKey:STR_ID_inmainthread expressionString:@"${inMainThread}"];
+        if (setter) {
+            [self.expressionSetters setObject:setter forKey:setter.name];
+        }
+        setter = [VVPropertyExpressionSetter setterWithPropertyKey:STR_ID_ck expressionString:@"${ck}"];
+        if (setter) {
+            [self.expressionSetters setObject:setter forKey:setter.name];
+        }
+#endif
     }
     return self;
 }

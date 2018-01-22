@@ -15,7 +15,7 @@
 
 @implementation VVPropertyIntSetter
 
-+ (VVPropertySetter *)setterWithPropertyKey:(int)key intValue:(int)value
++ (VVPropertyIntSetter *)setterWithPropertyKey:(int)key intValue:(int)value
 {
     VVPropertyIntSetter *setter = [[self alloc] initWithPropertyKey:key];
     setter.value = value;

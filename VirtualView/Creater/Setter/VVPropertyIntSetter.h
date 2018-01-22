@@ -11,6 +11,6 @@
 
 @property (nonatomic, assign, readonly) int value;
 
-+ (nonnull VVPropertySetter *)setterWithPropertyKey:(int)key intValue:(int)value;
++ (nonnull VVPropertyIntSetter *)setterWithPropertyKey:(int)key intValue:(int)value;
 
 @end

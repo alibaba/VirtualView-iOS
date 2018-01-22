@@ -11,6 +11,6 @@
 
 @property (nonatomic, assign, readonly) CGFloat value;
 
-+ (nonnull VVPropertySetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value;
++ (nonnull VVPropertyFloatSetter *)setterWithPropertyKey:(int)key floatValue:(CGFloat)value;
 
 @end

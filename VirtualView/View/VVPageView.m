@@ -86,56 +86,6 @@
     return value;
 }
 
-- (NSString*)valueForVariable:(id)obj fromJsonData:(NSDictionary*)jsonData{
-    
-    NSString* valueObj = nil;
-    
-    if ([obj isKindOfClass:NSArray.class]) {
-        NSDictionary* tmpDictionary = jsonData;
-        //NSString* varName = nil;
-        NSArray* varList = (NSArray*)obj;
-        for (NSDictionary* varItem in varList) {
-            NSString* varName = [varItem objectForKey:@"varName"];
-            int index = [[varItem objectForKey:@"varIndex"] intValue];
-
-            if (index>=0) {
-                NSArray* items = [tmpDictionary objectForKey:varName];
-                if (items.count>index) {
-                    valueObj = [items objectAtIndex:index];
-                }else{
-                    valueObj = @"";
-                }
-            }else{
-                valueObj = [tmpDictionary objectForKey:varName];
-            }
-
-            if ([valueObj isKindOfClass:NSDictionary.class]) {
-                tmpDictionary = (NSDictionary*)valueObj;
-            }
-
-        }
-    }else{
-        NSString* varString = (NSString*)obj;
-        NSRange startPos = [varString rangeOfString:@"${"];
-        if (startPos.location==NSNotFound) {
-            return varString;
-        }
-
-        NSRange endPos   = [varString rangeOfString:@"}" options:NSCaseInsensitiveSearch range:NSMakeRange(startPos.location, varString.length-startPos.location)];
-
-        if (endPos.location==NSNotFound) {
-            return varString;
-        }
-
-        if (startPos.location!=NSNotFound && endPos.location!=NSNotFound && endPos.location>startPos.location) {
-            NSString* key = [varString substringWithRange:NSMakeRange(startPos.location+2, endPos.location-startPos.length)];
-            valueObj = [jsonData objectForKey:key];
-        }
-    }
-
-    return valueObj;
-}
-
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
     if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){

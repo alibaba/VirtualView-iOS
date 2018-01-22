@@ -24,7 +24,7 @@
  @param object  An array or dictionary.
  @return        Expression result.
  */
-- (nullable NSString *)resultWithObject:(nullable id)object;
+- (nullable id)resultWithObject:(nullable id)object;
 
 @end
 

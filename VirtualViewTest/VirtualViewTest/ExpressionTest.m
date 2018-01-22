@@ -1,5 +1,5 @@
 //
-//  StringExpressionTest.m
+//  ExpressionTest.m
 //  VirtualViewTest
 //
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
@@ -31,7 +31,7 @@
 //################################################################
 #pragma mark -
 
-@interface StringExpressionTest : XCTestCase
+@interface ExpressionTest : XCTestCase
 
 @property (nonatomic, strong) NSArray *testArray;
 @property (nonatomic, strong) NSDictionary *testDict;
@@ -39,7 +39,7 @@
 
 @end
 
-@implementation StringExpressionTest
+@implementation ExpressionTest
 
 - (void)setUp {
     [super setUp];
@@ -77,11 +77,10 @@
     assertThat([expression resultWithObject:nil], nilValue());
     assertThat([expression resultWithObject:self.testArray], nilValue());
     assertThat([expression resultWithObject:self.testDict], equalTo(@"123"));
-    NSString *result = [expression resultWithObject:self.testDataDict];
-    assertThat(result, startsWith(@"("));
-    assertThat(result, containsSubstring(@"123,"));
-    assertThat(result, containsSubstring(@"456"));
-    assertThat(result, endsWith(@")"));
+    NSArray *result = [expression resultWithObject:self.testDataDict];
+    assertThatBool([result isKindOfClass:[NSArray class]], isTrue());
+    assertThat(result, hasCountOf(2));
+    assertThat(result, containsInAnyOrderIn(@[@"123", @"456"]));
 
     expression = [VVExpression expressionWithString:@"${ a }"];
     assertThat(expression, isA([VVVariableExpression class]));
@@ -191,6 +190,10 @@
     assertThat([(VVVariableExpression *)expression.trueExpression key], equalTo(@"d"));
     assertThat([(VVVariableExpression *)expression.falseExpression key], equalTo(@"e"));
 
+    expression = [VVExpression expressionWithString:@"@{${a}?${a[0]}:${a[1]}}"];
+    assertThat(expression, isA([VVIifExpression class]));
+    assertThat([expression resultWithObject:self.testDataDict], equalTo(@"123"));
+    
     expression = [VVExpression expressionWithString:@"@{${b}?${a[0]}:${a[1]}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"123"));
