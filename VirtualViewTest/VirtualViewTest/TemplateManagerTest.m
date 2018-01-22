@@ -38,7 +38,7 @@
     assertThat(manager.loadedTypes, hasItem(@"icon"));
     assertThat(manager.loadedTypes, hasItem(@"linear"));
     assertThat([[manager versionOfType:@"icon"] stringValue], equalTo(@"1.0.13"));
-    VVVHLayout *layout = [manager createNodeTreeForType:@"NText"];
+    VVVHLayout *layout = (id)[manager createNodeTreeForType:@"NText"];
     assertThat(layout, isA([VVVHLayout class]));
     assertThatFloat(layout.widthModle, equalToFloat(-1));
     assertThatFloat(layout.heightModle, equalToFloat(-1));
@@ -56,24 +56,24 @@
     [manager loadTemplateFileAsync:[bundle pathForResource:@"RatioLayout" ofType:@"out"] forType:@"RatioLayout" completion:nil];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"VHLayout" ofType:@"out"] forType:@"linear" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
         assertThat(type, equalTo(@"linear"));
-        assertThat([version stringValue], @"1.0.1");
+        assertThat([version stringValue], equalTo(@"1.0.1"));
         [expectation fulfill];
     }];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"icon" ofType:@"out"] forType:@"icon" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
         assertThat(type, equalTo(@"icon"));
-        assertThat([version stringValue], @"1.0.13");
+        assertThat([version stringValue], equalTo(@"1.0.13"));
         [expectation fulfill];
     }];
     [manager loadTemplateFileAsync:[bundle pathForResource:@"NText" ofType:@"out"] forType:@"NText" completion:^(NSString * _Nonnull type, VVVersionModel * _Nullable version) {
         assertThat(type, equalTo(@"NText"));
-        assertThat([version stringValue], @"1.0.1");
+        assertThat([version stringValue], equalTo(@"1.0.1"));
         [expectation fulfill];
     }];
     
     assertThat(manager.loadedTypes, isNot(hasItem(@"NText")));
     
     // Try to create node immediately.
-    VVVHLayout *layout = [manager createNodeTreeForType:@"NText"];
+    VVVHLayout *layout = (id)[manager createNodeTreeForType:@"NText"];
     assertThat(layout, isA(VVVHLayout.class));
     assertThatFloat(layout.widthModle, equalToFloat(-1));
     assertThatFloat(layout.heightModle, equalToFloat(-1));

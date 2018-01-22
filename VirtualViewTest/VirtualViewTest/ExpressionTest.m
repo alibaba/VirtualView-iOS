@@ -61,7 +61,7 @@
     assertThat([VVExpression expressionWithString:@"${aaa"], isA([VVConstExpression class]));
     assertThat([VVExpression expressionWithString:@"{aaa}"], isA([VVConstExpression class]));
 
-    VVConstExpression *expression = [VVExpression expressionWithString:@"123"];
+    VVConstExpression *expression = (id)[VVExpression expressionWithString:@"123"];
     assertThat(expression, isA([VVConstExpression class]));
     assertThat([expression resultWithObject:nil], equalTo(@"123"));
     assertThat([expression resultWithObject:@{}], equalTo(@"123"));
@@ -69,7 +69,7 @@
 }
 
 - (void)testVariableExpression {
-    VVVariableExpression *expression = [VVExpression expressionWithString:@"${a}"];
+    VVVariableExpression *expression = (id)[VVExpression expressionWithString:@"${a}"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(-1));
     assertThat(expression.key, equalTo(@"a"));
@@ -82,11 +82,11 @@
     assertThat(result, hasCountOf(2));
     assertThat(result, containsInAnyOrderIn(@[@"123", @"456"]));
 
-    expression = [VVExpression expressionWithString:@"${ a }"];
+    expression = (id)[VVExpression expressionWithString:@"${ a }"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThat(expression.key, equalTo(@"a"));
     
-    expression = [VVExpression expressionWithString:@"${[1]}"];
+    expression = (id)[VVExpression expressionWithString:@"${[1]}"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(1));
     assertThat(expression.key, nilValue());
@@ -96,28 +96,28 @@
     assertThat([expression resultWithObject:self.testDict], nilValue());
     assertThat([expression resultWithObject:self.testDataDict], nilValue());
     
-    expression = [VVExpression expressionWithString:@"${a[1].b.c[2][3].d}"];
+    expression = (id)[VVExpression expressionWithString:@"${a[1].b.c[2][3].d}"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(-1));
     assertThat(expression.key, equalTo(@"a"));
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(1));
     assertThat(expression.key, nilValue());
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(-1));
     assertThat(expression.key, equalTo(@"b"));
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThat(expression.key, equalTo(@"c"));
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThatInteger(expression.index, equalToInteger(2));
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThatInteger(expression.index, equalToInteger(3));
-    expression = expression.nextExpression;
+    expression = (id)expression.nextExpression;
     assertThat(expression.key, equalTo(@"d"));
     
-    expression = [VVExpression expressionWithString:@"${a[1]}"];
+    expression = (id)[VVExpression expressionWithString:@"${a[1]}"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThat([expression resultWithObject:nil], nilValue());
     assertThat([expression resultWithObject:self.testArray], nilValue());
@@ -125,7 +125,7 @@
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"456"));
     
     // missing "]"
-    expression = [VVExpression expressionWithString:@"${a[1}"];
+    expression = (id)[VVExpression expressionWithString:@"${a[1}"];
     assertThat(expression, isA([VVVariableExpression class]));
     assertThatInteger(expression.index, equalToInteger(-1));
     assertThat(expression.key, equalTo(@"a"));
@@ -133,56 +133,56 @@
 }
 
 - (void)testIifExpression {
-    VVIifExpression *expression = [VVExpression expressionWithString:@"@{1?2:3}"];
+    VVIifExpression *expression = (id)[VVExpression expressionWithString:@"@{1?2:3}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVConstExpression class]));
     assertThat(expression.trueExpression, isA([VVConstExpression class]));
     assertThat(expression.falseExpression, isA([VVConstExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{${a}?2:3}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${a}?2:3}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVVariableExpression class]));
     assertThat(expression.trueExpression, isA([VVConstExpression class]));
     assertThat(expression.falseExpression, isA([VVConstExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{1?${a}:3}"];
+    expression = (id)[VVExpression expressionWithString:@"@{1?${a}:3}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVConstExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVConstExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{1?2:${a}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{1?2:${a}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVConstExpression class]));
     assertThat(expression.trueExpression, isA([VVConstExpression class]));
     assertThat(expression.falseExpression, isA([VVVariableExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{${a}?${b}:3}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${a}?${b}:3}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVVariableExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVConstExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{1?${a}:${b}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{1?${a}:${b}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVConstExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVVariableExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{${a}?${b}:${c}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${a}?${b}:${c}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVVariableExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVVariableExpression class]));
 
-    expression = [VVExpression expressionWithString:@"@{${a}?${b}:@{${c}?${d}:${e}}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${a}?${b}:@{${c}?${d}:${e}}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat(expression.conditionExpression, isA([VVVariableExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVIifExpression class]));
     assertThat([(VVVariableExpression *)expression.conditionExpression key], equalTo(@"a"));
     assertThat([(VVVariableExpression *)expression.trueExpression key], equalTo(@"b"));
-    expression = expression.falseExpression;
+    expression = (id)expression.falseExpression;
     assertThat(expression.conditionExpression, isA([VVVariableExpression class]));
     assertThat(expression.trueExpression, isA([VVVariableExpression class]));
     assertThat(expression.falseExpression, isA([VVVariableExpression class]));
@@ -190,19 +190,19 @@
     assertThat([(VVVariableExpression *)expression.trueExpression key], equalTo(@"d"));
     assertThat([(VVVariableExpression *)expression.falseExpression key], equalTo(@"e"));
 
-    expression = [VVExpression expressionWithString:@"@{${a}?${a[0]}:${a[1]}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${a}?${a[0]}:${a[1]}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"123"));
     
-    expression = [VVExpression expressionWithString:@"@{${b}?${a[0]}:${a[1]}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${b}?${a[0]}:${a[1]}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"123"));
     
-    expression = [VVExpression expressionWithString:@"@{${c}?${a[0]}:${a[1]}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${c}?${a[0]}:${a[1]}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"456"));
     
-    expression = [VVExpression expressionWithString:@"@{${d}?${a[0]}:${a[1]}}"];
+    expression = (id)[VVExpression expressionWithString:@"@{${d}?${a[0]}:${a[1]}}"];
     assertThat(expression, isA([VVIifExpression class]));
     assertThat([expression resultWithObject:self.testDataDict], equalTo(@"456"));
 }

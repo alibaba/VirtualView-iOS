@@ -57,11 +57,12 @@
     [self measureBlock:^{
         unsigned char bytes[] = {0x3A, 0x83, 0x12, 0x6F};
         NSData *data = [NSData dataWithBytes:bytes length:4];
+        float floatValue;
         for (NSInteger i = 0; i < 999999; i++) {
             uint32_t uintValue;
             [data getBytes:&uintValue range:NSMakeRange(0, 4)];
             uintValue = CFSwapInt32(uintValue);
-            float floatValue = *((float *)(&uintValue));
+            floatValue = *((float *)(&uintValue));
         }
     }];
 }
@@ -70,12 +71,13 @@
     [self measureBlock:^{
         unsigned char bytes[] = {0x3A, 0x83, 0x12, 0x6F};
         NSData *data = [NSData dataWithBytes:bytes length:4];
+        float floatValue;
         for (NSInteger i = 0; i < 999999; i++) {
             unsigned char buff[4];
             [data getBytes:buff range:NSMakeRange(0, 4)];
             unsigned char byte = buff[3]; buff[3] = buff[0]; buff[0] = byte; // swap buff[0] and buff[3]
             byte = buff[2]; buff[2] = buff[1]; buff[1] = byte; // swap buff[1] and buff[2]
-            float floatValue = *((float *)buff);
+            floatValue = *((float *)buff);
         }
     }];
 }
@@ -84,11 +86,12 @@
     [self measureBlock:^{
         unsigned char bytes[] = {0x3A, 0x83, 0x12, 0x6F};
         NSData *data = [NSData dataWithBytes:bytes length:4];
+        float floatValue;
         for (NSInteger i = 0; i < 999999; i++) {
             unsigned char buff[4];
             [data getBytes:buff range:NSMakeRange(0, 4)];
             uint32_t uintValue = buff[3] + (buff[2] << 8) + (buff[1] << 16) + (buff[0] << 24);
-            float floatValue = *((float *)(&uintValue));
+            floatValue = *((float *)(&uintValue));
         }
     }];
 }
