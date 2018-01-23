@@ -81,7 +81,7 @@
     
     switch (key) {
         case STR_ID_color:
-            self.lineColor = [UIColor colorWithString:value];
+            self.lineColor = [UIColor vv_colorWithString:value];
             break;
             
         case STR_ID_dashEffect:
@@ -99,7 +99,7 @@
         ret = YES;
         switch (key) {
             case STR_ID_color:
-                self.lineColor = [UIColor colorWithString:value];
+                self.lineColor = [UIColor vv_colorWithString:value];
                 break;
                 
             case STR_ID_dashEffect:
@@ -122,7 +122,7 @@
         switch (key) {
                 
             case STR_ID_color:
-                self.lineColor = [UIColor colorWithHexValue:value];
+                self.lineColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
                 
             case STR_ID_orientation:
@@ -151,7 +151,7 @@
         switch (key) {
                 
             case STR_ID_color:
-                self.lineColor = [UIColor colorWithHexValue:(int)value];
+                self.lineColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
                 
             case STR_ID_orientation:

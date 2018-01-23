@@ -206,7 +206,7 @@
                 self.disableCache = value;
                 break;
             case STR_ID_maskColor:
-                self.maskView.backgroundColor = [UIColor colorWithHexValue:value];
+                self.maskView.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
             case STR_ID_itemHeight:
                 self.height = value;
@@ -301,7 +301,7 @@
     CGImageRef imageRef = [image CGImage];
     if(!imageRef)
     {
-        return [UIColor colorWithString:@"#E1E2DF"];
+        return [UIColor vv_colorWithString:@"#E1E2DF"];
     }
     NSUInteger width = CGImageGetWidth(imageRef);
     NSUInteger height = CGImageGetHeight(imageRef);
@@ -309,7 +309,7 @@
     unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
     if (!rawData)
     {
-        return [UIColor colorWithString:@"#E1E2DF"];
+        return [UIColor vv_colorWithString:@"#E1E2DF"];
     }
     NSUInteger bytesPerPixel = 4;
     NSUInteger bytesPerRow = bytesPerPixel * width;
@@ -336,7 +336,7 @@
     }
     else
     {
-        return [UIColor colorWithString:@"#E1E2DF"];
+        return [UIColor vv_colorWithString:@"#E1E2DF"];
     }
 }
 

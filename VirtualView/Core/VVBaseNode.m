@@ -238,7 +238,7 @@
             _objectID = value;
             break;
         case STR_ID_background:
-            self.backgroundColor = [UIColor colorWithHexValue:value];
+            self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
             break;
             
         case STR_ID_gravity:
@@ -357,7 +357,7 @@
             _objectID = value;
             break;
         case STR_ID_background:
-            self.backgroundColor = [UIColor colorWithHexValue:(int)value];
+            self.backgroundColor = [UIColor vv_colorWithARGB:(int)value];
             break;
             
         case STR_ID_gravity:
@@ -461,7 +461,7 @@
             self.dataUrl = value;
             break;
         case STR_ID_background:
-            self.backgroundColor = [UIColor colorWithString:value];
+            self.backgroundColor = [UIColor vv_colorWithString:value];
             break;
         default:
             ret = NO;

@@ -42,7 +42,7 @@
 -(void)loadData:(NSDictionary *)dict
 {
     //加1很奇怪，临时先解决下向左偏移的问题
-    self.mainImageView.frame = CGRectMake(11, 10, self.width-20, self.width-20);
+    self.mainImageView.frame = CGRectMake(11, 10, self.vv_width-20, self.vv_width-20);
     NSString *urlString = [dict objectForKey:@"imgUrl"];
     if (urlString && [urlString isKindOfClass:[NSString class]] == NO) {
         urlString = @"";
@@ -112,7 +112,7 @@
         [self.subViewA.layer removeAllAnimations];
         [self.subViewB.layer removeAllAnimations];
         self.contentView.hidden = NO;
-        self.contentView.frame = CGRectMake(0 , 0, self.width ,self.height);
+        self.contentView.frame = CGRectMake(0 , 0, self.vv_width ,self.vv_height);
         self.currentItemIndex = 0;
         self.subViewA.frame = self.contentView.bounds;
         NSDictionary *dict = [self.data objectAtIndex:0];
@@ -133,13 +133,13 @@
             dict = nil;
         }
         [self.subViewB loadData:dict];
-        self.subViewA.top = self.contentView.top;
-        self.subViewB.top = -self.contentView.height;
+        self.subViewA.vv_top = self.contentView.vv_top;
+        self.subViewB.vv_top = -self.contentView.vv_height;
         [self.contentView addSubview:self.subViewA];
         [self.contentView addSubview:self.subViewB];
 
-        self.contentView.width = self.subViewA.width > self.subViewB.width ? self.subViewA.width : self.subViewB.width;
-        self.contentView.left = self.width - self.contentView.width - 1.f;
+        self.contentView.vv_width = self.subViewA.vv_width > self.subViewB.vv_width ? self.subViewA.vv_width : self.subViewB.vv_width;
+        self.contentView.vv_left = self.vv_width - self.contentView.vv_width - 1.f;
     }
     else
     {
@@ -168,24 +168,24 @@
 - (void)timerEvent:(id)sender
 {
     [UIView animateWithDuration:0.5 delay:self.animDelay options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-        if (self.subViewA.top == 0)
+        if (self.subViewA.vv_top == 0)
         {
-            self.subViewA.top = self.subViewA.height;
-            self.subViewB.top = 0;
+            self.subViewA.vv_top = self.subViewA.vv_height;
+            self.subViewB.vv_top = 0;
         }
         else
         {
-            self.subViewA.top = 0;
-            self.subViewB.top = self.subViewA.height;
+            self.subViewA.vv_top = 0;
+            self.subViewB.vv_top = self.subViewA.vv_height;
         }
     } completion:^(BOOL finished) {
-        if (self.subViewA.top == 0)
+        if (self.subViewA.vv_top == 0)
         {
-            self.subViewB.top = -self.contentView.height;
+            self.subViewB.vv_top = -self.contentView.vv_height;
         }
         else
         {
-            self.subViewA.top = -self.contentView.height;
+            self.subViewA.vv_top = -self.contentView.vv_height;
         }
         
         self.currentItemIndex += 1;
@@ -210,7 +210,7 @@
             nextIndex = 0;
         }
         
-        if (self.subViewA.top == 0)
+        if (self.subViewA.vv_top == 0)
         {
             NSDictionary *item = [self.data objectAtIndex:nextIndex];
             if (item && [item isKindOfClass:[NSDictionary class]] == NO) {

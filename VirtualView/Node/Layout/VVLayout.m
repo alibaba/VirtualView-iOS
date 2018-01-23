@@ -33,11 +33,11 @@
         case STR_ID_onClick:
             break;
         case STR_ID_borderColor:
-           self.borderColor = [UIColor colorWithString:value];
+           self.borderColor = [UIColor vv_colorWithString:value];
             break;
 
         case STR_ID_background:
-            self.backgroundColor = [UIColor colorWithString:value];
+            self.backgroundColor = [UIColor vv_colorWithString:value];
             
         default:
             ret = false;
@@ -124,7 +124,7 @@
                 self.drawLayer.vv_borderBottomRightRadius = value;
                 break;
             case STR_ID_borderColor:
-                self.borderColor = [UIColor colorWithHexValue:(NSUInteger)value];
+                self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
             default:
                 ret = false;

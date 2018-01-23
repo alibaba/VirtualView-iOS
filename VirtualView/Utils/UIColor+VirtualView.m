@@ -9,58 +9,48 @@
 
 @implementation UIColor (VirtualView)
 
-+ (UIColor *)colorWithHexValue:(NSUInteger)hexValue
++ (UIColor *)vv_colorWithRGB:(NSUInteger)rgb
 {
-    return [self colorWithHexValue:hexValue alpha:255];
+    CGFloat red = ((rgb & 0xFF0000) >> 16) / 255.0;
+    CGFloat green = ((rgb & 0xFF00) >> 8) / 255.0;
+    CGFloat blue = (rgb & 0xFF) / 255.0;
+    return [UIColor colorWithRed:red green:green blue:blue alpha:1];
 }
 
-+ (UIColor *)colorWithHexValue:(NSUInteger)hexValue alpha:(NSUInteger)alpha
++ (UIColor *)vv_colorWithARGB:(NSUInteger)argb
 {
-    CGFloat r = ((hexValue & 0x00FF0000) >> 16) / 255.0;
-    CGFloat g = ((hexValue & 0x0000FF00) >> 8) / 255.0;
-    CGFloat b = (hexValue & 0x000000FF) / 255.0;
-    CGFloat a = alpha / 255.0;
-    return [self colorWithRed:r green:g blue:b alpha:a];
+    CGFloat alpha = ((argb & 0xFF000000) >> 24) / 255.0;
+    CGFloat red = ((argb & 0xFF0000) >> 16) / 255.0;
+    CGFloat green = ((argb & 0xFF00) >> 8) / 255.0;
+    CGFloat blue = (argb & 0xFF) / 255.0;
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+ (UIColor *)colorWithString:(NSString *)string
++ (UIColor *)vv_colorWithString:(NSString *)string
 {
-    NSUInteger len = [string length];
-    NSUInteger hexValue = 0;
-    NSUInteger alpha = 1;
-    if (len == 8 || (len == 9 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:string];
-        alpha = (hexValue & 0xFF000000) >> 24;
-        hexValue = hexValue & 0x00FFFFFF;
-    } else if (len == 6 || (len == 7 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:string];
-        alpha = 255;
-    } else if (len == 3 || (len == 4 && [string characterAtIndex:0] == (unichar)'#')) {
-        hexValue = [UIColor hexValueOfString:string];
-        alpha = 255;
+    if (!string || string.length == 0) {
+        return nil;
     }
-    return [UIColor colorWithHexValue:hexValue alpha:alpha];
-}
-
-+ (NSUInteger)hexValueOfString:(NSString *)string
-{
-    NSString *newString = [string lowercaseString];
-    if ([newString hasPrefix:@"#"]) {
-        newString = [string substringFromIndex:1];
+    
+    if ([string hasPrefix:@"0x"]) {
+        string = [string substringFromIndex:2];
+    } else if ([string hasPrefix:@"#"]) {
+        string = [string substringFromIndex:1];
     }
-    if (newString.length == 3) {
-        unichar str[6] = {0};
-        for (int i = 0; i < 3; i++) {
-            unichar ch = [newString characterAtIndex:i];
-            str[i * 2] = ch;
-            str[i * 2 + 1] = ch;
+    if (string.length == 8) {
+        unsigned int argb = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:string];
+        if ([scanner scanHexInt:&argb]) {
+            return [UIColor vv_colorWithARGB:argb];
         }
-        newString = [NSString stringWithCharacters:str length:6];
+    } else if (string.length == 6) {
+        unsigned int rgb = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:string];
+        if ([scanner scanHexInt:&rgb]) {
+            return [UIColor vv_colorWithARGB:rgb];
+        }
     }
-    unsigned result = 0;
-    NSScanner *scanner = [NSScanner scannerWithString:newString];
-    [scanner scanHexInt:&result];
-    return result;
+    return nil;
 }
 
 @end

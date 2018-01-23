@@ -189,7 +189,11 @@
             self.frontSize = [(NSNumber*)obj floatValue];
             break;
         case STR_ID_textColor:
-            self.textView.textColor = [UIColor colorWithHexValue:[(NSNumber*)obj unsignedIntegerValue]];
+            if ([obj isKindOfClass:[NSString class]]) {
+                self.textView.textColor = [UIColor vv_colorWithString:(NSString *)obj];
+            } else {
+                self.textView.textColor = [UIColor vv_colorWithRGB:[[obj description] integerValue]];
+            }
             break;
         case STR_ID_textStyle:
             break;
@@ -384,16 +388,16 @@
             break;
         case STR_ID_textColor:
             if (value) {
-                self.textView.textColor = [UIColor colorWithString:value];
+                self.textView.textColor = [UIColor vv_colorWithString:value];
             }else{
                 self.textView.textColor = [UIColor blackColor];
             }
             break;
         case STR_ID_borderColor:
-            self.borderColor = [UIColor colorWithString:value];
+            self.borderColor = [UIColor vv_colorWithString:value];
             break;
         case STR_ID_background:
-            self.backgroundColor = [UIColor colorWithString:value];
+            self.backgroundColor = [UIColor vv_colorWithString:value];
             self.cocoaView.backgroundColor = self.backgroundColor;
             break;
     }
@@ -420,13 +424,13 @@
                 break;
             case STR_ID_textColor:
                 if (value) {
-                    self.textView.textColor = [UIColor colorWithString:value];
+                    self.textView.textColor = [UIColor vv_colorWithString:value];
                 }else{
                     self.textView.textColor = [UIColor blackColor];
                 }
                 break;
             case STR_ID_borderColor:
-                self.borderColor = [UIColor colorWithString:value];
+                self.borderColor = [UIColor vv_colorWithString:value];
                 break;
             default:
                 ret = false;
@@ -447,7 +451,7 @@
                 self.textView.font = [UIFont systemFontOfSize:self.frontSize];
                 break;
             case STR_ID_textColor:
-                self.textView.textColor = [UIColor colorWithHexValue:value];
+                self.textView.textColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
             case STR_ID_textStyle:
                 self.textStyle = (VVTextStyle)value;
@@ -465,7 +469,7 @@
                 ((FrameView*)self.cocoaView).lineWidth = value;
                 break;
             case STR_ID_borderColor:
-                self.borderColor = [UIColor colorWithHexValue:value];
+                self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 ((FrameView*)self.cocoaView).borderColor = self.borderColor;
                 break;
             default:
