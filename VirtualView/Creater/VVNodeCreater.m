@@ -46,7 +46,7 @@
         if ([setter isExpression] == NO) {
             [setter applyToNode:node];
         } else {
-#warning TODO: Add expression.
+            [node.expressionSetters setObject:setter forKey:setter.name];
         }
     }
     

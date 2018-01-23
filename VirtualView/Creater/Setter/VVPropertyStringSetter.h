@@ -13,7 +13,7 @@
 
 /**
  Make and return a string setter for normal string.
- Make and return a string expression setter for expression string.
+ Make and return an expression setter for expression string.
  Expression string starts with "@{" or @"${".
 
  @param key    Property key.

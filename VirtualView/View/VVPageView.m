@@ -64,28 +64,6 @@
     return ret;
 }
 
-- (int)getValue4Array:(NSArray*)arr{
-    int value=0;
-    for (NSString* item in arr) {
-        if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
-            value=value|VVGravityLeft;
-        }else if ([item compare:@"right" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityRight;
-        }else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityHCenter;
-        }else if ([item compare:@"top" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityTop;
-        }else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityBottom;
-        }else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityVCenter;
-        }else if ([item compare:@"center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityHCenter|VVGravityVCenter;
-        }
-    }
-    return value;
-}
-
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
     if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){

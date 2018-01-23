@@ -119,10 +119,81 @@
     if (self.expression) {
         id objectValue = [self.expression resultWithObject:dict];
         NSString *stringValue = [objectValue description];
-        [node setStringValue:stringValue forKey:self.key];
-    } else {
-        [node setStringValue:nil forKey:self.key];
+        switch (self.valueType) {
+            case TYPE_INT:
+            {
+                [node setIntValue:[stringValue intValue] forKey:self.key];
+            }
+                break;
+            case TYPE_FLOAT:
+            {
+                [node setFloatValue:[stringValue floatValue] forKey:self.key];
+            }
+                break;
+            case TYPE_STRING:
+            case TYPE_COLOR:
+            {
+                [node setStringDataValue:stringValue forKey:self.key];
+            }
+                break;
+            case TYPE_BOOLEAN:
+            {
+                if ([stringValue isEqualToString:@"true"]) {
+                    [node setIntValue:1 forKey:self.key];
+                } else {
+                    [node setIntValue:0 forKey:self.key];
+                }
+            }
+                break;
+            case TYPE_VISIBILITY:
+            {
+                if ([stringValue isEqualToString:@"invisible"]) {
+                    [node setIntValue:VVVisibilityInvisible forKey:self.key];
+                } else if ([stringValue isEqualToString:@"visible"]) {
+                    [node setIntValue:VVVisibilityVisible forKey:self.key];
+                } else {
+                    [node setIntValue:VVVisibilityGone forKey:self.key];
+                }
+            }
+                break;
+            case TYPE_GRAVITY:
+            {
+                [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
+            }
+                break;
+            case TYPE_OBJECT:
+            {
+                [node setDataObj:objectValue forKey:self.key];
+            }
+                break;
+            default:
+                break;
+        }
     }
+}
+
++ (int)getGravity:(NSString *)stringValue
+{
+    NSArray *array = [stringValue componentsSeparatedByString:@"|"];
+    int gravity = 0;
+    for (NSString *item in array) {
+        if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityLeft;
+        } else if ([item compare:@"right" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityRight;
+        } else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityHCenter;
+        } else if ([item compare:@"top" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityTop;
+        } else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityBottom;
+        } else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityVCenter;
+        } else if ([item compare:@"center" options:NSCaseInsensitiveSearch]) {
+            gravity |= VVGravityHCenter|VVGravityVCenter;
+        }
+    }
+    return gravity;
 }
 
 @end

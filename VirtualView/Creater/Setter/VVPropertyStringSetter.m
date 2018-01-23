@@ -6,6 +6,7 @@
 //
 
 #import "VVPropertyStringSetter.h"
+#import "VVPropertyExpressionSetter.h"
 
 @interface VVPropertyStringSetter ()
 
@@ -17,9 +18,11 @@
 
 + (VVPropertySetter *)setterWithPropertyKey:(int)key stringValue:(NSString *)value
 {
-#warning TODO: Add expression.
-    VVPropertyStringSetter *setter = [[self alloc] initWithPropertyKey:key];
-    setter.value = value;
+    VVPropertyExpressionSetter *setter = [VVPropertyExpressionSetter setterWithPropertyKey:key expressionString:value];
+    if (!setter) {
+        VVPropertyStringSetter *setter = [[self alloc] initWithPropertyKey:key];
+        setter.value = value;
+    }
     return setter;
 }
 

@@ -89,28 +89,6 @@
     }
 }
 
-- (int)getValue4Array:(NSArray*)arr{
-    int value=0;
-    for (NSString* item in arr) {
-        if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
-            value=value|VVGravityLeft;
-        }else if ([item compare:@"right" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityRight;
-        }else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityHCenter;
-        }else if ([item compare:@"top" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityTop;
-        }else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityBottom;
-        }else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityVCenter;
-        }else if ([item compare:@"center" options:NSCaseInsensitiveSearch]){
-            value=value|VVGravityHCenter|VVGravityVCenter;
-        }
-    }
-    return value;
-}
-
 - (void)update:(NSObject*)obj{
     if (obj==nil || obj==self.updateDataObj) {
         return;
@@ -122,61 +100,9 @@
     for (VVBaseNode* item in self.dataTagObjs) {
         [item reset];
 
-        for (VVPropertyExpressionSetter *setter in item.expressionSetters) {
-            if ([setter isKindOfClass:[VVPropertyExpressionSetter class]] == NO) {
-                continue;
-            }
-            id objectValue = [setter.expression resultWithObject:jsonData];
-            NSString *stringValue = [objectValue description];
-            switch (setter.valueType) {
-                case TYPE_INT:
-                {
-                    [item setIntValue:[stringValue intValue] forKey:setter.key];
-                }
-                    break;
-                case TYPE_FLOAT:
-                {
-                    [item setFloatValue:[stringValue floatValue] forKey:setter.key];
-                }
-                    break;
-                case TYPE_STRING:
-                case TYPE_COLOR:
-                {
-                    [item setStringDataValue:stringValue forKey:setter.key];
-                }
-                    break;
-                case TYPE_BOOLEAN:
-                {
-                    if ([stringValue isEqualToString:@"true"]) {
-                        [item setIntValue:1 forKey:setter.key];
-                    } else {
-                        [item setIntValue:0 forKey:setter.key];
-                    }
-                }
-                    break;
-                case TYPE_VISIBILITY:
-                {
-                    if ([stringValue isEqualToString:@"invisible"]) {
-                        [item setIntValue:VVVisibilityInvisible forKey:setter.key];
-                    } else if ([stringValue isEqualToString:@"visible"]) {
-                        [item setIntValue:VVVisibilityVisible forKey:setter.key];
-                    } else {
-                        [item setIntValue:VVVisibilityGone forKey:setter.key];
-                    }
-                }
-                    break;
-                case TYPE_GRAVITY:
-                {
-                    [item setIntValue:[self getValue4Array:[stringValue componentsSeparatedByString:@"|"]] forKey:setter.key];
-                }
-                    break;
-                case TYPE_OBJECT:
-                {
-                        [item setDataObj:objectValue forKey:setter.key];
-                }
-                    break;
-                default:
-                    break;
+        for (VVPropertyExpressionSetter *setter in item.expressionSetters.allValues) {
+            if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
+                [setter applyToNode:item withDict:jsonData];
             }
         }
         item.actionValue = [jsonData objectForKey:item.action];

@@ -16,6 +16,7 @@
 
 /**
  Return an expression setter if the expression string is valid.
+ Will return nil is expression string is a const expression.
 
  @param key               Property key.
  @param expressionString  Expression string.
