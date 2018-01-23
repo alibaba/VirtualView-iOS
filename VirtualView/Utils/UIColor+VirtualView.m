@@ -47,7 +47,7 @@
         unsigned int rgb = 0;
         NSScanner *scanner = [NSScanner scannerWithString:string];
         if ([scanner scanHexInt:&rgb]) {
-            return [UIColor vv_colorWithARGB:rgb];
+            return [UIColor vv_colorWithRGB:rgb];
         }
     }
     return nil;
