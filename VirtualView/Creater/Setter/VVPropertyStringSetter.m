@@ -18,11 +18,12 @@
 
 + (VVPropertySetter *)setterWithPropertyKey:(int)key stringValue:(NSString *)value
 {
-    VVPropertyExpressionSetter *setter = [VVPropertyExpressionSetter setterWithPropertyKey:key expressionString:value];
-    if (!setter) {
-        VVPropertyStringSetter *setter = [[self alloc] initWithPropertyKey:key];
-        setter.value = value;
+    VVPropertyExpressionSetter *expressionSetter = [VVPropertyExpressionSetter setterWithPropertyKey:key expressionString:value];
+    if (expressionSetter) {
+        return expressionSetter;
     }
+    VVPropertyStringSetter *setter = [[self alloc] initWithPropertyKey:key];
+    setter.value = value;
     return setter;
 }
 

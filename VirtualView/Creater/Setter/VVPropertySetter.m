@@ -15,6 +15,9 @@
     if (self = [super init]) {
         _key = key;
         _name = [VVBinarySringMapper stringForKey:key];
+        if (!_name) {
+            _name = [NSString stringWithFormat:@"%d", key];
+        }
     }
     return self;
 }
