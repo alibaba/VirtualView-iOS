@@ -84,8 +84,8 @@
         pX+=vvObj.marginLeft;
         CGFloat pY = self.frame.origin.y + self.paddingTop;
         
-        //CGFloat blanceW = (self.width-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
-        CGFloat blanceH = (self.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
+        CGFloat itemHeight = vvObj.heightModle == MATCH_PARENT ? self.height : vvObj.height;
+        CGFloat blanceH = (self.height-itemHeight-vvObj.marginTop-vvObj.marginBottom)/2.0;
         /*
         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
@@ -106,7 +106,7 @@
         }
         //CGFloat width = validSize*vvObj.layoutRatio/_totalRatio;
         
-        vvObj.frame = CGRectMake(pX, pY, vvObj.width, vvObj.height);
+        vvObj.frame = CGRectMake(pX, pY, vvObj.width, itemHeight);
         pX+=vvObj.width+vvObj.marginRight;
         [vvObj layoutSubviews];
         
@@ -142,7 +142,7 @@
     NSMutableArray* ratioSubViews   = [[NSMutableArray alloc] init];
     NSMutableArray* noratioSubViews = [[NSMutableArray alloc] init];
     
-    CGSize blanceSize = CGSizeMake(maxSize.width-self.marginLeft-self.marginRight, maxSize.height-self.marginTop-self.marginBottom);
+    CGSize blanceSize = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
     
     for (VVBaseNode* vvObj in self.subViews) {
         _totalRatio += vvObj.layoutRatio;
