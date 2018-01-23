@@ -84,7 +84,7 @@
         pX+=vvObj.marginLeft;
         CGFloat pY = self.frame.origin.y + self.paddingTop;
         
-        CGFloat itemHeight = vvObj.heightModle == MATCH_PARENT ? self.height : vvObj.height;
+        CGFloat itemHeight = vvObj.heightModle == VV_MATCH_PARENT ? self.height : vvObj.height;
         CGFloat blanceH = (self.height-itemHeight-vvObj.marginTop-vvObj.marginBottom)/2.0;
         /*
         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){

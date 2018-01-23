@@ -7,7 +7,6 @@
 
 #import "NVImageView.h"
 #import "UIColor+VirtualView.h"
-#import "VVCommTools.h"
 #import "VVViewContainer.h"
 #import "VVLayout.h"
 #import "VVPropertyExpressionSetter.h"
@@ -88,11 +87,7 @@
                                      completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                 __strong typeof(NVImageView*) strongSelf = weakSelf;
                 if(strongSelf.classString!=nil && self.classString.length>0){
-                    NSString* classString = @"VVCommTools";
-                    Class cls = NSClassFromString(classString);
-                    IMP imp = [cls methodForSelector:@selector(pixelColorFromImage:)];
-                    UIColor* (*func)(id, SEL, UIImage*) = (void *)imp;
-                    UIColor* color = func(strongSelf,@selector(pixelColorFromImage:),image);
+                    UIColor* color = [NVImageView pixelColorFromImage:image];
                     VVLayout* virtualView = (VVLayout*)((VVViewContainer*)strongSelf.updateDelegate).virtualView;
                     virtualView.borderColor = color;
                 }
@@ -300,4 +295,49 @@
     //self.imgUrl = @"";
     self.cocoaView.hidden = YES;
 }
+
++ (UIColor *)pixelColorFromImage:(UIImage *)image
+{
+    CGImageRef imageRef = [image CGImage];
+    if(!imageRef)
+    {
+        return [UIColor colorWithString:@"#E1E2DF"];
+    }
+    NSUInteger width = CGImageGetWidth(imageRef);
+    NSUInteger height = CGImageGetHeight(imageRef);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
+    if (!rawData)
+    {
+        return [UIColor colorWithString:@"#E1E2DF"];
+    }
+    NSUInteger bytesPerPixel = 4;
+    NSUInteger bytesPerRow = bytesPerPixel * width;
+    NSUInteger bitsPerComponent = 8;
+    CGContextRef context = CGBitmapContextCreate(rawData, width, height,
+                                                 bitsPerComponent, bytesPerRow, colorSpace,
+                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+    CGColorSpaceRelease(colorSpace);
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+    CGContextRelease(context);
+    
+    NSUInteger byteIndex = (bytesPerRow * 1) + 1 * bytesPerPixel;
+    CGFloat red   = (rawData[byteIndex]     * 1.0) / 255.0;
+    CGFloat green = (rawData[byteIndex + 1] * 1.0) / 255.0;
+    CGFloat blue  = (rawData[byteIndex + 2] * 1.0) / 255.0;
+    CGFloat alpha = (rawData[byteIndex + 3] * 1.0) / 255.0;
+    byteIndex += bytesPerPixel;
+    UIColor *acolor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    free(rawData);
+    if(acolor)
+    {
+        return acolor;
+    }
+    else
+    {
+        return [UIColor colorWithString:@"#E1E2DF"];
+    }
+}
+
 @end
