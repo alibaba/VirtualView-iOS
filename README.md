@@ -30,42 +30,41 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 
 Use VirtualView alone:
 
-    pod 'VirtualView', '~> 1.0'
+    pod 'VirtualView', '~> 1.1'
 
 Use VirtualView with [Tangram](https://github.com/alibaba/Tangram-iOS):
 
-    pod 'Tangram', '~> 2.0'
+    pod 'Tangram', '~> 2.1'
 
-CocoaPods will install VirtualView as a part of Tangram 2.0.
+CocoaPods will install VirtualView as a part of Tangram 2.x.
 
 ### Source codes
 
 Or you can download source codes from [releases page](https://github.com/alibaba/VirtualView-iOS/releases) and put them into your project.
-
-Remember to download TMUtils codes from another repo: [TMUtils](https://github.com/alibaba/LazyScrollView/tree/master/TMUtils)
 
 ## How to use
 
 1. Load component template from out file.
 
 ```objective-c
-NSString *path = [[NSBundle mainBundle] pathForResource:@"icon" ofType:@"out"];
-NSData *buffer = [NSData dataWithContentsOfFile:path];
-[[VVBinaryLoader shareInstance] loadFromBuffer:buffer];
+if (![[VVTemplateManager sharedManager].loadedTypes containsObject:@"icon"]) {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"icon" ofType:@"out"];
+    [[VVTemplateManager sharedManager] loadTemplateFile:path forType:nil];
+}
 ```
 
 2. Create component.
 
 ```objective-c
-self.container = (VVViewContainer *)[[VVViewFactory shareFactoryInstance] obtainVirtualWithKey:@"icon"];
-[self.view addSubview:self.container];
+self.viewContainer = [VVViewContainer viewContainerWithTemplateType:@"icon"];
+[self.view addSubview:self.viewContainer];
 ```
 
 3. Bind data and calc the layout.
 
 ```objective-c
-self.container.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1000);
-[self.container update:@{
+self.viewContainer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1000);
+[self.viewContainer update:@{
     @"type" : @"icon",
     @"imgUrl" : @"https://test.com/test.png"
 }];
