@@ -9,7 +9,11 @@
 
 FOUNDATION_EXTERN NSErrorDomain const VVErrorDomain;
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED <=  __IPHONE_10_2
+NS_ENUM(NSInteger) {
+#else
 NS_ERROR_ENUM(VVErrorDomain) {
+#endif
     VVUnknownError = 0,
     VVNeedToBeOverridedError,
     VVWrongHeaderError,
