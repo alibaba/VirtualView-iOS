@@ -18,4 +18,6 @@
 - (BOOL)isEqual:(nullable id)object;
 - (NSComparisonResult)compare:(nonnull VVVersionModel *)aVersion;
 
+- (nonnull NSString *)stringValue;
+
 @end

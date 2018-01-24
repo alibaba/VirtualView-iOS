@@ -7,6 +7,12 @@
 
 #import "VVVersionModel.h"
 
+@interface VVVersionModel () {
+    NSString *_stringValue;
+}
+
+@end
+
 @implementation VVVersionModel
 
 - (instancetype)initWithMajor:(NSUInteger)major minor:(NSUInteger)minor patch:(NSUInteger)patch
@@ -21,7 +27,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; version = %zd.%zd.%zd>", self.class, self, self.major, self.minor, self.patch];
+    return [NSString stringWithFormat:@"<%@: %p; version = %@>", self.class, self, self.stringValue];
 }
 
 - (BOOL)isEqual:(id)object
@@ -54,6 +60,14 @@
             }
         }
     }
+}
+
+- (NSString *)stringValue
+{
+    if (!_stringValue) {
+        _stringValue = [NSString stringWithFormat:@"%zd.%zd.%zd", self.major, self.minor, self.patch];
+    }
+    return _stringValue;
 }
 
 @end

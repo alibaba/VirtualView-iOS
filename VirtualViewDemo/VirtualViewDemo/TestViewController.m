@@ -6,7 +6,7 @@
 //
 
 #import "TestViewController.h"
-#import <VirtualView/VVBinaryLoader.h>
+#import <VirtualView/VVTemplateManager.h>
 #import <VirtualView/VVViewFactory.h>
 #import <VirtualView/VVViewContainer.h>
 
@@ -35,12 +35,11 @@
     self.scrollView = [UIScrollView new];
     [self.view addSubview:self.scrollView];
     
-    if (![[VVBinaryLoader shareInstance] getUICodeWithName:self.title]) {
+    if (![[VVTemplateManager sharedManager].loadedTypes containsObject:self.title]) {
         NSString *path = [[NSBundle mainBundle] pathForResource:self.title ofType:@"out"];
-        NSData *buffer = [NSData dataWithContentsOfFile:path];
-        [[VVBinaryLoader shareInstance] loadFromBuffer:buffer];
+        [[VVTemplateManager sharedManager] loadTemplateFile:path forType:nil];
     }
-    self.container = (VVViewContainer *)[[VVViewFactory shareFactoryInstance] obtainVirtualWithKey:self.title];
+    self.container = [VVViewContainer viewContainerWithTemplateType:self.title];
     [self.scrollView addSubview:self.container];
 }
 
