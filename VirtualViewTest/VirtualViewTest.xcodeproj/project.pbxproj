@@ -10,6 +10,7 @@
 		0F6AF8B1D68BFDFA902BA35E /* libPods-VirtualViewTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F02F4632E61BA36C34599908 /* libPods-VirtualViewTest.a */; };
 		920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B12015B704004F7966 /* ExpressionTest.m */; };
 		920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B420173E89004F7966 /* ColorUtilsTest.m */; };
+		920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8DA20184B54004F7966 /* StringMapperTest.m */; };
 		926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B40432004950B0003D88E /* BinaryReaderTest.m */; };
 		926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */; };
 		926CFAC82008BE25003C0BCE /* icon.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC72008BE25003C0BCE /* icon.out */; };
@@ -27,6 +28,7 @@
 		6EFC15229C5C269C01727023 /* Pods-VirtualViewTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualViewTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-VirtualViewTest/Pods-VirtualViewTest.debug.xcconfig"; sourceTree = "<group>"; };
 		920BF8B12015B704004F7966 /* ExpressionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpressionTest.m; sourceTree = "<group>"; };
 		920BF8B420173E89004F7966 /* ColorUtilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorUtilsTest.m; sourceTree = "<group>"; };
+		920BF8DA20184B54004F7966 /* StringMapperTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringMapperTest.m; sourceTree = "<group>"; };
 		926B40402004950B0003D88E /* VirtualViewTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualViewTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		926B40432004950B0003D88E /* BinaryReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryReaderTest.m; sourceTree = "<group>"; };
 		926B40452004950B0003D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				926B40432004950B0003D88E /* BinaryReaderTest.m */,
 				926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */,
 				920BF8B12015B704004F7966 /* ExpressionTest.m */,
+				920BF8DA20184B54004F7966 /* StringMapperTest.m */,
 				926CFAD7200CCC30003C0BCE /* TemplateManagerTest.m */,
 				926B40452004950B0003D88E /* Info.plist */,
 				920BF8B420173E89004F7966 /* ColorUtilsTest.m */,
@@ -247,6 +250,7 @@
 				920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */,
 				926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */,
 				920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */,
+				920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */,
 				926CFAD8200CCC30003C0BCE /* TemplateManagerTest.m in Sources */,
 				926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */,
 			);

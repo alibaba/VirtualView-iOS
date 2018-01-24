@@ -1,5 +1,5 @@
 //
-//  VVBinarySringMapper.h
+//  VVBinaryStringMapper.h
 //  VirtualView
 //
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
@@ -35,7 +35,7 @@
 // @"type", @"typeface", @"uuid", @"var", @"VGraph", @"VH", @"VH2Layout", @"VHLayout", @"VImage",
 // @"visibility", @"VLine", @"vList", @"VText", @"VTime", @"waterfall", @"while"
 
-@interface VVBinarySringMapper : NSObject
+@interface VVBinaryStringMapper : NSObject
 
 + (nullable NSString *)stringForKey:(int)key;
 /**

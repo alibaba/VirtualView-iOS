@@ -6,7 +6,7 @@
 //
 
 #import "VVPropertySetter.h"
-#import "VVBinarySringMapper.h"
+#import "VVBinaryStringMapper.h"
 
 @implementation VVPropertySetter
 
@@ -14,7 +14,7 @@
 {
     if (self = [super init]) {
         _key = key;
-        _name = [VVBinarySringMapper stringForKey:key];
+        _name = [VVBinaryStringMapper stringForKey:key];
         if (!_name) {
             _name = [NSString stringWithFormat:@"%d", key];
         }

@@ -1,26 +1,26 @@
 //
-//  VVBinarySringMapper.m
+//  VVBinaryStringMapper.m
 //  VirtualView
 //
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "VVBinarySringMapper.h"
+#import "VVBinaryStringMapper.h"
 
-@interface VVBinarySringMapper ()
+@interface VVBinaryStringMapper ()
 
 @property (nonatomic, strong) NSMutableDictionary *mapperDict;
 
 @end
 
-@implementation VVBinarySringMapper
+@implementation VVBinaryStringMapper
 
-+ (VVBinarySringMapper *)sharedMapper
++ (VVBinaryStringMapper *)sharedMapper
 {
-    static VVBinarySringMapper *_sharedMapper;
+    static VVBinaryStringMapper *_sharedMapper;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedMapper = [VVBinarySringMapper new];
+        _sharedMapper = [VVBinaryStringMapper new];
     });
     return _sharedMapper;
 }
@@ -56,7 +56,7 @@
         ];
         _mapperDict = [NSMutableDictionary dictionaryWithCapacity:strings.count];
         for (NSString *string in strings) {
-            [_mapperDict setObject:string forKey:@([VVBinarySringMapper hashOfString:string])];
+            [_mapperDict setObject:string forKey:@([VVBinaryStringMapper hashOfString:string])];
         }
     }
     return self;
@@ -64,13 +64,13 @@
 
 + (NSString *)stringForKey:(int)key
 {
-    return [[VVBinarySringMapper sharedMapper].mapperDict objectForKey:@(key)];
+    return [[VVBinaryStringMapper sharedMapper].mapperDict objectForKey:@(key)];
 }
 
 + (void)registerString:(NSString *)string forKey:(int)key
 {
     if (string && string.length > 0) {
-        [[VVBinarySringMapper sharedMapper].mapperDict setObject:string forKey:@(key)];
+        [[VVBinaryStringMapper sharedMapper].mapperDict setObject:string forKey:@(key)];
     }
 }
 
@@ -83,10 +83,15 @@
 
 + (int)hashOfString:(NSString *)string
 {
+    int hash = 0;
     if (string && string.length > 0) {
-        // to be implemented
+        const char *chars = [string UTF8String];
+        NSInteger length = strlen(chars);
+        for (NSInteger index = 0; index < length; index++) {
+            hash = (hash * 31) + chars[index];
+        }
     }
-    return 0;
+    return hash;
 }
 
 @end
