@@ -8,7 +8,9 @@
 #ifndef VVDefines_h
 #define VVDefines_h
 
+#ifdef DEBUG
 #define VV_DEBUG    1
+#endif
 //#define VV_ALIBABA  1
 
 /**
