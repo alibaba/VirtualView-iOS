@@ -38,6 +38,10 @@
         [_mapperDict setObject:@"NVTextView" forKey:@(VV_NODE_ID_VirtualText)];
         [_mapperDict setObject:@"NVImageView" forKey:@(VV_NODE_ID_NativeImage)];
         [_mapperDict setObject:@"NVImageView" forKey:@(VV_NODE_ID_VirtualImage)];
+#ifdef VV_ALIBABA
+        [_mapperDict setObject:@"NVImageView" forKey:@(11)];
+        [_mapperDict setObject:@"NVImageView" forKey:@(12)];
+#endif
         [_mapperDict setObject:@"NVLineView" forKey:@(VV_NODE_ID_NativeLine)];
         [_mapperDict setObject:@"NVLineView" forKey:@(VV_NODE_ID_VirtualLine)];
         [_mapperDict setObject:@"VVPageView" forKey:@(VV_NODE_ID_Page)];
