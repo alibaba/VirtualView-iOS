@@ -23,12 +23,14 @@
     CGContextClearRect(context, CGRectMake(0, 0, width, height));
     
     if (self.vv_backgroundColor) {
+        CGContextSetLineWidth(context, self.vv_borderWidth);
         CGContextSetFillColorWithColor(context, self.vv_backgroundColor.CGColor);
         [self createPath:context borderWidth:self.vv_borderWidth];
         CGContextFillPath(context);
     }
 
     if (self.vv_borderColor && self.vv_borderWidth > 0) {
+        CGContextSetLineWidth(context, self.vv_borderWidth);
         CGContextSetStrokeColorWithColor(context, self.vv_borderColor.CGColor);
         [self createPath:context borderWidth:self.vv_borderWidth];
         CGContextStrokePath(context);
