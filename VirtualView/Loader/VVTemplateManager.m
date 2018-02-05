@@ -211,9 +211,13 @@
         if (type && [type isEqualToString:loader.lastType] == NO) {
             [self didLoadType:type version:loader.lastVersion creater:loader.lastCreater];
         }
-#ifndef VV_ALIBABA
+#ifdef VV_DEBUG
+    } else {
+        NSAssert(NO, @"Cannot load template.");
+#endif
     }
-#else
+#ifdef VV_ALIBABA
+    if (loader.lastType) {
         [self.class commitAppMoniterForDidLoadTemplate:loader.lastType
                                                success:YES
                                                  error:nil];
@@ -295,9 +299,9 @@
     [self.operationQueue addOperation:opearation];
 }
 
-#ifdef VV_ALIBABA
 #pragma mark AppMoniter
 
+#ifdef VV_ALIBABA
 + (void)registerAppMoniter
 {
     AppMonitorMeasureSet *measureSet = [AppMonitorMeasureSet new];

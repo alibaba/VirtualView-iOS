@@ -40,7 +40,13 @@
 
 - (NSComparisonResult)compare:(VVVersionModel *)aVersion
 {
-    NSAssert(aVersion != nil, @"VVVersionModel - compare: aVersion should not be nil");
+    if (aVersion == nil) {
+        return NSOrderedDescending;
+#ifdef VV_DEBUG
+        NSAssert(NO, @"Input version is nil.");
+#endif
+    }
+    
     if (aVersion.major > self.major) {
         return NSOrderedAscending;
     } else if (aVersion.major < self.major) {

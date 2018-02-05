@@ -190,6 +190,10 @@
     short nodeID = [self readShortLE];
     creater.nodeClassName = [VVNodeClassMapper classNameForID:nodeID];
     
+#ifdef VV_DEBUG
+    NSAssert(creater.nodeClassName, @"Node class name is empty.");
+#endif
+    
     short count = [self readByte];
     for (short i = 0; i < count; i++) {
         // int properties

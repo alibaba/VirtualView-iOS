@@ -105,10 +105,12 @@
     }else{
         self.updateDataObj = obj;
     }
-    NSDictionary* jsonData = (NSDictionary*)obj;
+    
 #ifdef VV_ALIBABA
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
+    
+    NSDictionary* jsonData = (NSDictionary*)obj;
     for (VVBaseNode* item in self.dataTagObjs) {
         [item reset];
 
@@ -148,9 +150,9 @@
     }
 }
 
-#ifdef VV_ALIBABA
 #pragma mark AppMoniter
 
+#ifdef VV_ALIBABA
 + (void)registerAppMoniter
 {
     AppMonitorMeasureSet *measureSet = [AppMonitorMeasureSet new];

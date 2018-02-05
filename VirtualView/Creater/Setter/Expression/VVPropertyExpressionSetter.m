@@ -177,20 +177,22 @@
     NSArray *array = [stringValue componentsSeparatedByString:@"|"];
     int gravity = 0;
     for (NSString *item in array) {
-        if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
+        NSString *formattedItem = [item stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        formattedItem = [formattedItem lowercaseString];
+        if ([formattedItem isEqualToString:@"left"]) {
             gravity |= VVGravityLeft;
-        } else if ([item compare:@"right" options:NSCaseInsensitiveSearch]) {
+        } else if ([formattedItem isEqualToString:@"right"]) {
             gravity |= VVGravityRight;
-        } else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]) {
+        } else if ([formattedItem isEqualToString:@"h_center"]) {
             gravity |= VVGravityHCenter;
-        } else if ([item compare:@"top" options:NSCaseInsensitiveSearch]) {
+        } else if ([formattedItem isEqualToString:@"top"]) {
             gravity |= VVGravityTop;
-        } else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]) {
+        } else if ([formattedItem isEqualToString:@"bottom"]) {
             gravity |= VVGravityBottom;
-        } else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]) {
+        } else if ([formattedItem isEqualToString:@"v_center"]) {
             gravity |= VVGravityVCenter;
-        } else if ([item compare:@"center" options:NSCaseInsensitiveSearch]) {
-            gravity |= VVGravityHCenter|VVGravityVCenter;
+        } else if ([formattedItem isEqualToString:@"center"]) {
+            gravity |= VVGravityHCenter | VVGravityVCenter;
         }
     }
     return gravity;

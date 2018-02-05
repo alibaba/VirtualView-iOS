@@ -16,6 +16,9 @@
         _key = key;
         _name = [VVBinaryStringMapper stringForKey:key];
         if (!_name) {
+#ifdef VV_DEBUG
+            NSAssert(NO, @"Does not match a string.");
+#endif
             _name = [NSString stringWithFormat:@"%d", key];
         }
     }
