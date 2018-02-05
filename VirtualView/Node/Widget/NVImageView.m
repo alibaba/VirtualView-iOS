@@ -12,18 +12,23 @@
 #import "VVPropertyExpressionSetter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#ifdef VV_ALIBABA
+#import "TMImageView.h"
+#define VV_NImageViewType TMImageView
+#else
+#define VV_NImageViewType UIImageView
+#endif
+
 @interface NVImageView (){
     //
 }
 @property(nonatomic, assign)CGSize   imageSize;
 @property(assign, nonatomic)BOOL disableCache;
-@property(nonatomic, strong)UIImageView   *imageView;
+@property(nonatomic, strong)VV_NImageViewType   *imageView;
 @property(nonatomic, strong)UIView   *maskView;
 @property(nonatomic, strong)NSString *imgUrl;
 @property(assign, nonatomic)CGFloat   ratio;
 @property(assign, nonatomic)int       fixBy;
-@property(strong, nonatomic)NSString* ck;
-@property(assign, nonatomic)BOOL      inMainThread;
 @end
 
 @implementation NVImageView
@@ -34,17 +39,6 @@
         self.cocoaView.hidden = YES;
         self.ratio = 0;
         self.fixBy = 0;
-        self.ck    = nil;
-#ifdef VV_ALIBABA
-        VVPropertySetter *setter = [VVPropertyExpressionSetter setterWithPropertyKey:STR_ID_inmainthread expressionString:@"${inMainThread}"];
-        if (setter) {
-            [self.expressionSetters setObject:setter forKey:setter.name];
-        }
-        setter = [VVPropertyExpressionSetter setterWithPropertyKey:STR_ID_ck expressionString:@"${ck}"];
-        if (setter) {
-            [self.expressionSetters setObject:setter forKey:setter.name];
-        }
-#endif
     }
     return self;
 }
@@ -59,9 +53,9 @@
     return _maskView;
 }
 
-- (UIImageView *)imageView{
+- (VV_NImageViewType *)imageView{
     if(!_imageView){
-        _imageView = [[UIImageView alloc] init];
+        _imageView = [[VV_NImageViewType alloc] init];
         [self.cocoaView addSubview:_imageView];
         [self.cocoaView addSubview:self.maskView];
     }
@@ -109,7 +103,14 @@
 - (CGSize)calculateLayoutSize:(CGSize)maxSize{
     switch ((int)self.widthModle) {
         case VV_WRAP_CONTENT:
-            // NOT SUPPORT!
+#ifdef VV_ALIBABA
+            _imageSize.width = [TMImageView imageWidthByHeight:self.heightModle imgUrl:self.imgUrl];
+            self.width = self.paddingRight+self.paddingLeft+_imageSize.width;
+            if (self.width>maxSize.width) {
+                self.width = maxSize.width;
+                _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
+            }
+#endif
             break;
         case VV_MATCH_PARENT:
             if (self.superview.widthModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
@@ -133,13 +134,26 @@
     
     switch ((int)self.heightModle) {
         case VV_WRAP_CONTENT:
-            // NOT SUPPORT
+#ifdef VV_ALIBABA
+            _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
+            self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
+            if (self.height>maxSize.height) {
+                self.height = maxSize.height;
+                _imageSize.height = self.height - self.paddingTop - self.paddingBottom;
+            }
+#endif
             break;
         case VV_MATCH_PARENT:
             if (self.superview.heightModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
-                // NOT SUPPORT
-            } else
-            {
+#ifdef VV_ALIBABA
+                _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
+                self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
+                if (self.height>maxSize.height) {
+                    self.height = maxSize.height;
+                    _imageSize.height = self.height - self.paddingTop - self.paddingBottom;
+                }
+#endif
+            } else {
                 self.height=maxSize.height;
                 _imageSize.height = self.height-self.paddingTop-self.paddingBottom;
             }
@@ -188,9 +202,6 @@
             case STR_ID_src:
                 self.imgUrl = value;
                 break;
-            case STR_ID_ck:
-                self.ck = value;
-                break;
             default:
                 break;
         }
@@ -213,9 +224,6 @@
                 break;
             case STR_ID_fixBy:
                 self.fixBy = value;
-                break;
-            case STR_ID_inmainthread:
-                self.inMainThread = value>0?YES:NO;
                 break;
             default:
                 break;
@@ -246,10 +254,6 @@
         case STR_ID_src:
             self.imgUrl = value;
             break;
-
-        case STR_ID_ck:
-            self.ck = value;
-            break;
     }
     return YES;
 }
@@ -264,9 +268,6 @@
     switch (key) {
         case STR_ID_src:
             self.imgUrl = (NSString*)obj;
-            break;
-        case STR_ID_inmainthread:
-            self.inMainThread = [(NSNumber*)obj boolValue];
             break;
         default:
             break;

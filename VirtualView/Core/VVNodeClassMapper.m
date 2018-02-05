@@ -38,10 +38,6 @@
         [_mapperDict setObject:@"NVTextView" forKey:@(VV_NODE_ID_VirtualText)];
         [_mapperDict setObject:@"NVImageView" forKey:@(VV_NODE_ID_NativeImage)];
         [_mapperDict setObject:@"NVImageView" forKey:@(VV_NODE_ID_VirtualImage)];
-#ifdef VV_ALIBABA
-        [_mapperDict setObject:@"NVImageView" forKey:@(11)];
-        [_mapperDict setObject:@"NVImageView" forKey:@(12)];
-#endif
         [_mapperDict setObject:@"NVLineView" forKey:@(VV_NODE_ID_NativeLine)];
         [_mapperDict setObject:@"NVLineView" forKey:@(VV_NODE_ID_VirtualLine)];
         [_mapperDict setObject:@"VVPageView" forKey:@(VV_NODE_ID_Page)];
@@ -59,6 +55,20 @@
         [_mapperDict setObject:@"NVLineView" forKey:VV_NODE_TYPE_VirtualLine];
         [_mapperDict setObject:@"VVPageView" forKey:VV_NODE_TYPE_Page];
         [_mapperDict setObject:@"VVGridView" forKey:VV_NODE_TYPE_Grid];
+#ifdef VV_ALIBABA
+        [_mapperDict setObject:@"TMNVImageView" forKey:@(11)];
+        [_mapperDict setObject:@"TMNVImageView" forKey:@(12)];
+        [_mapperDict setObject:@"NVTextView" forKey:@(1001)];
+        [_mapperDict setObject:@"TMVVRecommendSubView" forKey:@(1003)];
+        [_mapperDict setObject:@"TMVVRecommendImageView" forKey:@(1005)];
+        [_mapperDict setObject:@"TMVVRecommendBenefitView" forKey:@(1008)];
+        [_mapperDict setObject:@"TMVVRecommendPriceView" forKey:@(1009)];
+        [_mapperDict setObject:@"VVNavtiveViewContainer" forKey:@(1010)];
+        [_mapperDict setObject:@"TMVVSelectedRecommendMagicStick" forKey:@(1011)];
+        [_mapperDict setObject:@"TMVVSelectedCountDown" forKey:@(1012)];
+        [_mapperDict setObject:@"TMVVVideoView" forKey:@(1014)];
+        [_mapperDict setObject:@"TMVVVideoView" forKey:@"TMMediaPlayerContainer"];
+#endif
     }
     return self;
 }

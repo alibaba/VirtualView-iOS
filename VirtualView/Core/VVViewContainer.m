@@ -9,6 +9,9 @@
 #import "VVLayout.h"
 #import "VVTemplateManager.h"
 #import "VVPropertyExpressionSetter.h"
+#ifdef VV_ALIBABA
+#import <UT/AppMonitor.h>
+#endif
 
 @interface VVViewContainer()<VVWidgetAction>{
     UILongPressGestureRecognizer* _pressRecognizer;
@@ -57,7 +60,14 @@
     }
 }
 
-- (id)initWithVirtualView:(VVBaseNode*)virtualView{
+- (id)initWithVirtualView:(VVBaseNode*)virtualView
+{
+#ifdef VV_ALIBABA
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [VVViewContainer registerAppMoniter];
+    });
+#endif
     self = [super init];
     if (self) {
         self.virtualView = virtualView;
@@ -96,7 +106,9 @@
         self.updateDataObj = obj;
     }
     NSDictionary* jsonData = (NSDictionary*)obj;
-
+#ifdef VV_ALIBABA
+    NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
+#endif
     for (VVBaseNode* item in self.dataTagObjs) {
         [item reset];
 
@@ -114,7 +126,11 @@
     
     [self.virtualView layoutSubviews];
     [self setNeedsDisplay];
-
+    
+#ifdef VV_ALIBABA
+    NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
+    [self.class commitAppMoniterForBindData:[jsonData objectForKey:@"type"] costTime:costTime];
+#endif
 }
 
 - (VVBaseNode*)findObjectByID:(int)tagid{
@@ -131,5 +147,33 @@
         [self getDataTagObjsHelper:subNode collection:dataTagObjs];
     }
 }
+
+#ifdef VV_ALIBABA
+#pragma mark AppMoniter
+
++ (void)registerAppMoniter
+{
+    AppMonitorMeasureSet *measureSet = [AppMonitorMeasureSet new];
+    [measureSet addMeasureWithName:@"costTime"];
+    AppMonitorDimensionSet *dimensionSet = [AppMonitorDimensionSet new];
+    [dimensionSet addDimensionWithName:@"type"];
+    [AppMonitorStat registerWithModule:@"VirtualView"
+                          monitorPoint:@"bindData"
+                            measureSet:measureSet
+                          dimensionSet:dimensionSet];
+}
+
++ (void)commitAppMoniterForBindData:(NSString *)type costTime:(NSTimeInterval)costTime
+{
+    AppMonitorDimensionValueSet *dValueSet = [AppMonitorDimensionValueSet new];
+    [dValueSet setValue:(type ?: @"unknown") forName:@"type"];
+    AppMonitorMeasureValueSet *mValueSet = [AppMonitorMeasureValueSet new];
+    [mValueSet setDoubleValue:costTime forName:@"costTime"];
+    [AppMonitorStat commitWithModule:@"VirtualView"
+                        monitorPoint:@"bindData"
+                   dimensionValueSet:dValueSet
+                     measureValueSet:mValueSet];
+}
+#endif
 
 @end

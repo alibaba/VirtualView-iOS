@@ -258,6 +258,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define  STR_ID_ck     3176
 #define  STR_ID_inmainthread  999999
 #define  STR_ID_NativeContainer     -1052618729
+#define  STR_ID_videoInfo     1332623305
 
 #define TYPE_INT         0
 #define TYPE_FLOAT       1

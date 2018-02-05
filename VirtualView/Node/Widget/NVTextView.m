@@ -83,20 +83,12 @@
     CGSize _maxSize;
 }
 @property(nonatomic, assign)CGSize  textSize;
-@property(nonatomic, strong)UILabel* textView;
 @property(nonatomic, assign)CGFloat lineSpace;
 @property(nonatomic, strong)NSMutableAttributedString* attStr;
 @end
 
 @implementation NVTextView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 - (id)init{
     self = [super init];
     if (self) {
@@ -113,19 +105,54 @@
     return self;
 }
 
-- (BOOL)bold
-{
-    return (self.textStyle & VVTextStyleBold) == VVTextStyleBold;
-}
-
 - (UIFont *)vv_font
 {
-    if (self.bold) {
-        return [UIFont boldSystemFontOfSize:self.frontSize<=0?14:self.frontSize];
-    } else if ((self.textStyle & VVTextStyleItalic) == VVTextStyleItalic) {
-        return [UIFont italicSystemFontOfSize:self.frontSize<=0?14:self.frontSize];
+    if ((self.textStyle & VVTextStyleBold) > 0) {
+        return [UIFont boldSystemFontOfSize:self.frontSize];
+    } else if ((self.textStyle & VVTextStyleItalic) > 0) {
+        return [UIFont italicSystemFontOfSize:self.frontSize];
     } else {
-        return [UIFont systemFontOfSize:self.frontSize<=0?14:self.frontSize];
+        return [UIFont systemFontOfSize:self.frontSize];
+    }
+}
+
+- (void)setTextStyle:(VVTextStyle)textStyle
+{
+    _textStyle = textStyle;
+    self.textView.font = [self vv_font];
+}
+
+- (void)setFrontSize:(CGFloat)frontSize
+{
+    if (frontSize > 0) {
+        _frontSize = frontSize;
+        self.textView.font = [self vv_font];
+    }
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.cocoaView.backgroundColor = backgroundColor;
+}
+
+- (void)setBorderColor:(UIColor *)borderColor
+{
+    _borderColor = borderColor;
+    [(FrameView *)self.cocoaView setBorderColor:borderColor];
+}
+
+- (void)setText:(NSString *)text
+{
+    _text = text;
+    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                       attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)}];
+    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
+        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                       attributes:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
+    } else {
+        self.textView.text = text;
     }
 }
 
@@ -148,9 +175,6 @@
     }else{
         pX = self.paddingLeft;
     }
-    UIFont *font = [self vv_font];
-    self.textView.font = font;
-    self.cocoaView.backgroundColor = self.backgroundColor;
     self.cocoaView.frame = self.frame;
     self.textView.frame = CGRectMake(pX, pY, _textSize.width, _textSize.height);
 
@@ -185,7 +209,6 @@
         case STR_ID_typeface:
             break;
         case STR_ID_textSize:
-            self.textView.font = [UIFont systemFontOfSize:[(NSNumber *)obj floatValue]];
             self.frontSize = [(NSNumber*)obj floatValue];
             break;
         case STR_ID_textColor:
@@ -225,7 +248,7 @@
             //CGSize textMaxRT = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
             //CGSize textSize = CGSizeZero;
             
-            UIFont *font = [self vv_font];;
+            UIFont *font = self.textView.font;
 
             CGFloat fTextRealHeight=0.0f;
             NSInteger lines = self.textView.numberOfLines;
@@ -317,7 +340,7 @@
     }else{
         CGSize textMaxRT = CGSizeMake(_maxSize.width-self.paddingLeft-self.paddingRight, _maxSize.height-self.paddingTop-self.paddingBottom);
         
-        UIFont *font = [self vv_font];;
+        UIFont *font = self.textView.font;
         if(self.lineSpace <= 0)
         {
             textSize = [self.text boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
@@ -348,19 +371,6 @@
     [super dataUpdateFinished];
 }
 
-- (void)setText:(NSString *)text{
-    _text = text;
-    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
-                                                                       attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)}];
-    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:text
-                                                                       attributes:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
-    } else {
-        self.textView.text = text;
-    }
-}
-
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
     
     switch (key) {
@@ -383,7 +393,6 @@
         case STR_ID_typeface:
             break;
         case STR_ID_textSize:
-            self.textView.font = [UIFont systemFontOfSize:[value floatValue]];
             self.frontSize = [value floatValue];
             break;
         case STR_ID_textColor:
@@ -398,7 +407,6 @@
             break;
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithString:value];
-            self.cocoaView.backgroundColor = self.backgroundColor;
             break;
     }
     return YES;
@@ -419,7 +427,6 @@
                 break;
                 
             case STR_ID_textSize:
-                self.textView.font = [UIFont systemFontOfSize:[value floatValue]];
                 self.frontSize = [value floatValue];
                 break;
             case STR_ID_textColor:
@@ -448,7 +455,6 @@
         switch (key) {
             case STR_ID_textSize:
                 self.frontSize = value;
-                self.textView.font = [UIFont systemFontOfSize:self.frontSize];
                 break;
             case STR_ID_textColor:
                 self.textView.textColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
@@ -470,14 +476,11 @@
                 break;
             case STR_ID_borderColor:
                 self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
-                ((FrameView*)self.cocoaView).borderColor = self.borderColor;
                 break;
             default:
                 ret = false;
                 break;
         }
-    }else if (key==STR_ID_background){
-        self.cocoaView.backgroundColor = self.backgroundColor;
     }
     return ret;
 }
@@ -494,14 +497,11 @@
                 break;
             case STR_ID_textSize:
                 self.frontSize = value;
-                self.textView.font = [UIFont systemFontOfSize:self.frontSize];
                 break;
             case STR_ID_borderWidth:
-                //self.textView.lineWidth = value;
                 ((FrameView*)self.cocoaView).lineWidth = value;
                 break;
             case STR_ID_borderRadius:
-                //self.textView.lineWidth = value;
                 ((FrameView*)self.cocoaView).borderRadius = value;
                 break;
             default:
