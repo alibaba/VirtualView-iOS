@@ -122,24 +122,33 @@
             break;
         }else{
             obj = [item findViewByID:tagid];
-            break;
+            if(obj.objectID==tagid)
+            {
+                break;
+            }
         }
     }
     return obj;
 }
 
 - (void)addSubview:(VVBaseNode*)view{
-    [_subViews addObject:view];
-    view.superview = self;
+    if (nil != view) {
+        [_subViews addObject:view];
+        view.superview = self;
+    }
 }
 
 - (void)removeSubView:(VVBaseNode*)view{
-    [_subViews removeObject:view];
+    if (nil != view && [_subViews containsObject:view]) {
+        [_subViews removeObject:view];
+    }
 }
 
 - (void)removeFromSuperview{
-    [self.superview removeSubView:self];
-    self.superview = nil;
+    if (nil != self.superview) {
+        [self.superview removeSubView:self];
+        self.superview = nil;
+    }
 }
 
 - (void)setNeedsLayout{
