@@ -8,6 +8,12 @@
 #import "VVLayout.h"
 #import "UIColor+VirtualView.h"
 
+@interface VVLayout () {
+    VVLayer *_privateLayer;
+}
+
+@end
+
 @implementation VVLayout
 @synthesize frame = _frame;
 
@@ -16,15 +22,31 @@
     if (self) {
         self.borderColor=[UIColor clearColor];
         self.backgroundColor=[UIColor clearColor];
+        _privateLayer = [VVLayer layer];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    if (self.drawLayer) {
-        self.drawLayer.delegate = nil;
+    _privateLayer.delegate = nil;
+}
+
+- (BOOL)needDrawLayer
+{
+    if (self.borderColor && [self.borderColor isEqual:[UIColor clearColor]] == NO) {
+        return YES;
     }
+    if ([self.expressionSetters.allKeys containsObject:@"borderColor"]) {
+        return YES;
+    }
+    if (self.backgroundColor && [self.backgroundColor isEqual:[UIColor clearColor]] == NO) {
+        return YES;
+    }
+    if ([self.expressionSetters.allKeys containsObject:@"background"]) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
@@ -65,7 +87,10 @@
 }
 
 - (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    if (!self.drawLayer.superlayer) {
+    if (self.drawLayer==nil && [self needDrawLayer]) {
+        self.drawLayer = _privateLayer;
+        self.drawLayer.drawsAsynchronously = YES;
+        self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         [((UIView*)delegate).layer addSublayer:self.drawLayer];
     }
     [super setUpdateDelegate:delegate];
@@ -75,28 +100,22 @@
     [self.drawLayer setNeedsDisplay];
 }
 
-- (VVLayer *)drawLayer
-{
-    if (_drawLayer == nil) {
-        _drawLayer = [VVLayer layer];
-        _drawLayer.drawsAsynchronously = YES;
-        _drawLayer.contentsScale = [[UIScreen mainScreen] scale];
-    }
-    return _drawLayer;
-}
-
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
     [super setBackgroundColor:backgroundColor];
-    self.drawLayer.vv_backgroundColor = backgroundColor;
-    [self.drawLayer setNeedsDisplay];
+    _privateLayer.vv_backgroundColor = backgroundColor;
+    if (self.drawLayer) {
+        [self.drawLayer setNeedsDisplay];
+    }
 }
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
     _borderColor = borderColor;
-    self.drawLayer.vv_borderColor = borderColor;
-    [self.drawLayer setNeedsDisplay];
+    _privateLayer.vv_borderColor = borderColor;
+    if (self.drawLayer) {
+        [self.drawLayer setNeedsDisplay];
+    }
 }
 
 - (BOOL)setIntValue:(int)value forKey:(int)key{
@@ -106,22 +125,22 @@
         ret = true;
         switch (key) {
             case STR_ID_borderWidth:
-                self.drawLayer.vv_borderWidth = value;
+                _privateLayer.vv_borderWidth = value;
                 break;
             case STR_ID_borderRadius:
-                self.drawLayer.vv_borderRadius = value;
+                _privateLayer.vv_borderRadius = value;
                 break;
             case STR_ID_borderTopLeftRadius:
-                self.drawLayer.vv_borderTopLeftRadius = value;
+                _privateLayer.vv_borderTopLeftRadius = value;
                 break;
             case STR_ID_borderTopRightRadius:
-                self.drawLayer.vv_borderTopRightRadius = value;
+                _privateLayer.vv_borderTopRightRadius = value;
                 break;
             case STR_ID_borderBottomLeftRadius:
-                self.drawLayer.vv_borderBottomLeftRadius = value;
+                _privateLayer.vv_borderBottomLeftRadius = value;
                 break;
             case STR_ID_borderBottomRightRadius:
-                self.drawLayer.vv_borderBottomRightRadius = value;
+                _privateLayer.vv_borderBottomRightRadius = value;
                 break;
             case STR_ID_borderColor:
                 self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
@@ -141,22 +160,22 @@
         ret = true;
         switch (key) {
             case STR_ID_borderWidth:
-                self.drawLayer.vv_borderWidth = value;
+                _privateLayer.vv_borderWidth = value;
                 break;
             case STR_ID_borderRadius:
-                self.drawLayer.vv_borderRadius = value;
+                _privateLayer.vv_borderRadius = value;
                 break;
             case STR_ID_borderTopLeftRadius:
-                self.drawLayer.vv_borderTopLeftRadius = value;
+                _privateLayer.vv_borderTopLeftRadius = value;
                 break;
             case STR_ID_borderTopRightRadius:
-                self.drawLayer.vv_borderTopRightRadius = value;
+                _privateLayer.vv_borderTopRightRadius = value;
                 break;
             case STR_ID_borderBottomLeftRadius:
-                self.drawLayer.vv_borderBottomLeftRadius = value;
+                _privateLayer.vv_borderBottomLeftRadius = value;
                 break;
             case STR_ID_borderBottomRightRadius:
-                self.drawLayer.vv_borderBottomRightRadius = value;
+                _privateLayer.vv_borderBottomRightRadius = value;
                 break;
 
             default:
