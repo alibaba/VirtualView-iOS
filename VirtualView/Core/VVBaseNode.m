@@ -24,7 +24,6 @@
 - (id)init{
     self = [super init];
     if (self) {
-        self.alpha = 1.0f;
         self.hidden = NO;
         _subViews = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor clearColor];
@@ -66,38 +65,17 @@
     }
 
 }
--(BOOL)pointInside:(CGPoint)point withView:(VVBaseNode*)vvobj{
-    CGFloat x =vvobj.nodeFrame.origin.x;
-    CGFloat y =vvobj.nodeFrame.origin.y;
-    CGFloat w =vvobj.nodeFrame.size.width;
-    CGFloat h =vvobj.nodeFrame.size.height;
-    if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
--(BOOL)pointInside:(CGPoint)point{
-    CGFloat x =self.nodeFrame.origin.x;
-    CGFloat y =self.nodeFrame.origin.y;
-    CGFloat w =self.nodeFrame.size.width;
-    CGFloat h =self.nodeFrame.size.height;
-    if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
 
 - (VVBaseNode *)hitTest:(CGPoint)point
 {
-    if (self.visibility == VVVisibilityVisible && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
+    if (self.visibility == VVVisibilityVisible
+        && self.hidden == NO
+        && CGRectContainsPoint(self.nodeFrame, point)) {
         if (self.subViews.count > 0) {
-            for (VVBaseNode* item in [self.subViews reverseObjectEnumerator]) {
-                VVBaseNode *obj = [item hitTest:point];
-                if (obj) {
-                    return obj;
+            for (VVBaseNode* subnode in [self.subViews reverseObjectEnumerator]) {
+                VVBaseNode *hitNode = [subnode hitTest:point];
+                if (hitNode) {
+                    return hitNode;
                 }
             }
         }

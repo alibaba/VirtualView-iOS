@@ -50,7 +50,6 @@
 @property(nonatomic, strong)UIView        *cocoaView;
 @property(nonatomic, assign)int           childrenWidth;
 @property(nonatomic, assign)int           childrenHeight;
-@property(nonatomic, assign)CGFloat       alpha;
 @property(nonatomic, assign)BOOL          hidden;
 @property(nonatomic, copy) UIColor        *backgroundColor;
 
@@ -67,7 +66,8 @@
 @property (nonatomic, weak) CALayer *rootCanvasLayer;
 @property (nonatomic, weak) UIView *rootCocoaView;
 
-- (VVBaseNode *)hitTest:(CGPoint)pt;
+- (VVBaseNode *)hitTest:(CGPoint)point;
+
 - (VVBaseNode *)findViewByID:(int)tagid;
 - (void)addSubview:(VVBaseNode *)view;
 - (void)removeSubView:(VVBaseNode *)view;
