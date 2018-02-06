@@ -207,16 +207,22 @@
     [self.drawLayer setNeedsDisplay];
 }
 
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    if (self.drawLayer==nil) {
+- (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
+{
+    if (self.drawLayer == nil) {
         self.drawLayer = [CALayer layer];
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.drawLayer.delegate = self;
         [self.drawLayer setNeedsDisplay];
-        [((UIView*)self.cocoaView).layer addSublayer:self.drawLayer];
     }
-    [super setUpdateDelegate:delegate];
+    if (self.drawLayer) {
+        if (self.drawLayer.superlayer) {
+            [self.drawLayer removeFromSuperlayer];
+        }
+        [rootCanvasLayer addSublayer:self.drawLayer];
+    }
+    [super setRootCanvasLayer:rootCanvasLayer];
 }
 
 - (void)setData:(NSData*)data{

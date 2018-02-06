@@ -82,7 +82,7 @@
                 __strong typeof(NVImageView*) strongSelf = weakSelf;
                 if(strongSelf.classString!=nil && self.classString.length>0){
                     UIColor* color = [NVImageView pixelColorFromImage:image];
-                    VVLayout* virtualView = (VVLayout*)((VVViewContainer*)strongSelf.updateDelegate).virtualView;
+                    VVLayout* virtualView = (VVLayout*)((VVViewContainer*)strongSelf.rootCocoaView).virtualView;
                     virtualView.borderColor = color;
                 }
             }];

@@ -66,22 +66,17 @@
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
-    if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){
-        vvContainer = (VVViewContainer*)[self superview].updateDelegate;
+    if([[self superview].rootCocoaView isKindOfClass:[VVViewContainer class]]){
+        vvContainer = (VVViewContainer*)[self superview].rootCocoaView;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
     self.data = dataArray;
-    self.updateDelegate = (id<VVWidgetAction>)vvContainer;
+    self.rootCocoaView = self.scrollView;
+    self.rootCanvasLayer = self.scrollView.layer;
     [self attachCocoaViews:self];
-    if (self.scrollView.superview==nil) {
+    if (self.scrollView.superview == nil) {
         [vvContainer addSubview:self.scrollView];
-    }
-}
-
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    for (VVBaseNode* subObj in self.subViews) {
-        subObj.updateDelegate = (id<VVWidgetAction>)self.scrollView;
     }
 }
 

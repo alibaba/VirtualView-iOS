@@ -194,7 +194,7 @@
     if (self.cocoaView.superview && self.visible==VVVisibilityGone) {
         [self.cocoaView removeFromSuperview];
     }else if(self.cocoaView.superview==nil && self.visible!=VVVisibilityGone){
-        [(UIView*)self.updateDelegate addSubview:self.cocoaView];
+        [self.rootCocoaView addSubview:self.cocoaView];
     }
 }
 
@@ -513,10 +513,19 @@
 
 }
 
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    _updateDelegate = delegate;
-    for (VVBaseNode* subObj in self.subViews) {
-        subObj.updateDelegate = delegate;
+- (void)setRootCocoaView:(UIView *)rootCocoaView
+{
+    _rootCocoaView = rootCocoaView;
+    for (VVBaseNode *subNode in self.subViews) {
+        subNode.rootCocoaView = rootCocoaView;
+    }
+}
+
+- (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
+{
+    _rootCanvasLayer = rootCanvasLayer;
+    for (VVBaseNode *subNode in self.subViews) {
+        subNode.rootCanvasLayer = rootCanvasLayer;
     }
 }
 

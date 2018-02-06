@@ -77,14 +77,20 @@
     }
 }
 
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    if (self.drawLayer==nil && [self needDrawLayer]) {
+- (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
+{
+    if (self.drawLayer == nil && [self needDrawLayer]) {
         self.drawLayer = _privateLayer;
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
-        [((UIView*)delegate).layer addSublayer:self.drawLayer];
     }
-    [super setUpdateDelegate:delegate];
+    if (self.drawLayer) {
+        if (self.drawLayer.superlayer) {
+            [self.drawLayer removeFromSuperlayer];
+        }
+        [rootCanvasLayer addSublayer:self.drawLayer];
+    }
+    [super setRootCanvasLayer:rootCanvasLayer];
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor

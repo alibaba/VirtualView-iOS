@@ -5,9 +5,7 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
 
 @protocol NativeViewObject <NSObject>
 - (void)setDataObject:(NSObject*)obj forKey:(int)key;
@@ -22,12 +20,6 @@
 @property(nonatomic, strong)NSString* action;
 @property(nonatomic, strong)NSString* actionValue;
 @end
-
-@protocol VVWidgetAction <NSObject>
-- (void)updateDisplayRect:(CGRect)rect;
-//-(id<VVWidgetObject>)hitTest:(CGPoint)point;
-@end
-
 
 @interface VVBaseNode : NSObject<VVWidgetObject>
 @property(nonatomic, readonly)NSUInteger  objectID;
@@ -74,11 +66,13 @@
 @property(nonatomic, assign)int           marginTop;
 @property(nonatomic, assign)int           marginBottom;
 @property(nonatomic, strong)NSMutableDictionary     *userVarDic;
-@property(nonatomic, weak)id<VVWidgetAction>      updateDelegate;
 @property(nonatomic, readonly, copy) NSArray<__kindof VVBaseNode *> *subViews;
 @property(strong, nonatomic)NSMutableDictionary      *cacheInfoDic;
 
 @property (nonatomic, strong) NSMutableDictionary *expressionSetters;
+
+@property (nonatomic, weak) CALayer *rootCanvasLayer;
+@property (nonatomic, weak) UIView *rootCocoaView;
 
 -(id<VVWidgetObject>)hitTest:(CGPoint)pt;
 - (VVBaseNode*)findViewByID:(int)tagid;

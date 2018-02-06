@@ -129,8 +129,8 @@
         self.updateDataObj = obj;
     }
     VVViewContainer* vvContainer = nil;
-    if([[self superview].updateDelegate isKindOfClass:VVViewContainer.class]){
-        vvContainer = (VVViewContainer*)[self superview].updateDelegate;
+    if([self.superview.rootCocoaView isKindOfClass:[VVViewContainer class]]){
+        vvContainer = (VVViewContainer*)self.superview.rootCocoaView;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
@@ -151,24 +151,29 @@
         [self addSubview:vv];
 
     }
-    self.updateDelegate = (id<VVWidgetAction>)vvContainer;
+    self.rootCocoaView = self.gridContainer;
+    self.rootCanvasLayer = self.gridContainer.layer;
     [self attachCocoaViews:self];
-    if (self.gridContainer.superview==nil) {
+    if (self.gridContainer.superview == nil) {
         [vvContainer addSubview:self.gridContainer];
     }
 }
 
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    if (self.drawLayer==nil) {
+- (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
+{
+    if (self.drawLayer == nil) {
         self.drawLayer = [VVLayer layer];
         self.drawLayer.drawsAsynchronously = YES;
         self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.drawLayer.delegate =  (id<CALayerDelegate>)self;
-        [self.gridContainer.layer addSublayer:self.drawLayer];
     }
-    for (VVBaseNode* subObj in self.subViews) {
-        subObj.updateDelegate = (id<VVWidgetAction>)self.gridContainer;
+    if (self.drawLayer) {
+        if (self.drawLayer.superlayer) {
+            [self.drawLayer removeFromSuperlayer];
+        }
+        [rootCanvasLayer addSublayer:self.drawLayer];
     }
+    [super setRootCanvasLayer:rootCanvasLayer];
 }
 
 - (void)attachCocoaViews:(VVBaseNode*)vvObj{

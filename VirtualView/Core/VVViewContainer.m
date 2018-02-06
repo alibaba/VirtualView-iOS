@@ -13,7 +13,7 @@
 #import <UT/AppMonitor.h>
 #endif
 
-@interface VVViewContainer()<VVWidgetAction>{
+@interface VVViewContainer() {
     UILongPressGestureRecognizer* _pressRecognizer;
 }
 @property(nonatomic, strong)NSMutableArray *dataTagObjs;
@@ -71,7 +71,8 @@
     self = [super init];
     if (self) {
         self.virtualView = virtualView;
-        self.virtualView.updateDelegate = self;
+        self.virtualView.rootCocoaView = self;
+        self.virtualView.rootCanvasLayer = self.layer;
         self.backgroundColor = [UIColor clearColor];
         _dataTagObjs = [NSMutableArray array];
         [VVViewContainer getDataTagObjsHelper:virtualView collection:_dataTagObjs];
