@@ -6,7 +6,6 @@
 //
 
 #import "VVLayout.h"
-#import "UIColor+VirtualView.h"
 
 @interface VVLayout () {
     VVLayer *_privateLayer;

@@ -6,8 +6,6 @@
 //
 
 #import "VVSystemKey.h"
-#import <UIKit/UIKit.h>
-#import "VVNodeClassMapper.h"
 #import "VVConfig.h"
 
 @implementation VVSystemKey

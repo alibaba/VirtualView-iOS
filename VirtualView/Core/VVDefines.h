@@ -16,6 +16,10 @@
 
 // #define VV_ALIBABA  1
 
+#import "NSObject+VVObserver.h"
+#import "UIColor+VirtualView.h"
+#import "UIView+VirtualView.h"
+
 /**
  * Special value for height or width.
  * VV_MATCH_PARENT means that the node wants to be as big as its container,

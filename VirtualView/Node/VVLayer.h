@@ -5,7 +5,6 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 
 @interface VVLayer : CALayer

@@ -38,6 +38,7 @@
 @interface VVBinaryStringMapper : NSObject
 
 + (nullable NSString *)stringForKey:(int)key;
+
 /**
  DO NOT use this method unless you know what you are doing.
  Please use "registerString:" to register new custom string.
@@ -53,6 +54,7 @@
  @param string  The string to be resistered.
  */
 + (void)registerString:(nonnull NSString *)string;
+
 + (int)hashOfString:(nonnull NSString *)string;
 
 @end

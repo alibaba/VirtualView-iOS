@@ -6,6 +6,7 @@
 //
 
 #import "VVLayer.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface VVLayer () {
     CGFloat width;

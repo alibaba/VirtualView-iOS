@@ -6,7 +6,6 @@
 //
 
 #import "VVBaseNode.h"
-#import "UIColor+VirtualView.h"
 
 @interface VVBaseNode () {
     NSMutableArray*   _subViews;
