@@ -190,10 +190,6 @@
     }
 }
 
-- (void)drawRect:(CGRect)rect{
-
-}
-
 - (void)changeCocoaViewSuperView{
     if (self.cocoaView.superview && self.visible==VVVisibilityGone) {
         [self.cocoaView removeFromSuperview];

@@ -67,15 +67,6 @@
     return ret;
 }
 
-- (void)drawRect:(CGRect)rect{
-    for (VVBaseNode* item in self.subViews) {
-        if(item.visible==VVVisibilityGone){
-            continue;
-        }
-        [item drawRect:rect];
-    }
-}
-
 - (void)setFrame:(CGRect)frame{
     _frame = frame;
     if (self.drawLayer) {
