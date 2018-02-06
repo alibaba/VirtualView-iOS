@@ -188,10 +188,6 @@
     return size;
 }
 
-- (void)dataUpdateFinished{
-    [self showImage];
-}
-
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key
 {
     BOOL ret  = [super setStringValue:value forKey:key];

@@ -18,7 +18,6 @@
 - (CGSize)nativeContentSize;
 - (void)layoutSubviews;
 - (CGSize)calculateLayoutSize:(CGSize)maxSize;
-- (void)dataUpdateFinished;
 @property(nonatomic, assign)CGSize   maxSize;
 @property(nonatomic, strong)NSString* action;
 @property(nonatomic, strong)NSString* actionValue;

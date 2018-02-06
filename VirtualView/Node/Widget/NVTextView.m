@@ -366,11 +366,6 @@
     //self.cocoaView.frame = CGRectMake(self.cocoaView.frame.origin.x, self.cocoaView.frame.origin.y, _textSize.width, _textSize.height);
 }
 
-- (void)dataUpdateFinished{
-    [self updateTextFrameSize];
-    [super dataUpdateFinished];
-}
-
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
     
     switch (key) {

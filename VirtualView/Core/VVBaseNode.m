@@ -509,10 +509,6 @@
     
 }
 
-- (void)dataUpdateFinished{
-    [self layoutSubviews];
-}
-
 - (void)setData:(NSData*)data{
 
 }

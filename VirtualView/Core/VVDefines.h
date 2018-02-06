@@ -13,7 +13,8 @@
 #ifdef DEBUG
 #define VV_DEBUG    1
 #endif
-//#define VV_ALIBABA  1
+
+// #define VV_ALIBABA  1
 
 /**
  * Special value for height or width.

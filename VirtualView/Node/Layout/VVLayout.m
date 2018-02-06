@@ -96,10 +96,6 @@
     [super setUpdateDelegate:delegate];
 }
 
-- (void)dataUpdateFinished{
-    [self.drawLayer setNeedsDisplay];
-}
-
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
     [super setBackgroundColor:backgroundColor];
