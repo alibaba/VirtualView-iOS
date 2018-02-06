@@ -6,6 +6,9 @@
 //
 
 #import "VVLayout.h"
+
 @interface VVVHLayout : VVLayout
-@property(nonatomic, assign)int    orientation;
+
+@property (nonatomic, assign) VVOrientation orientation;
+
 @end

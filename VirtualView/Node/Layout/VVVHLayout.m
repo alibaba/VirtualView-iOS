@@ -8,30 +8,13 @@
 #import "VVVHLayout.h"
 
 @implementation VVVHLayout
--(id)init{
-    self = [super init];
-    if (self) {
+
+- (instancetype)init
+{
+    if (self = [super init]) {
         self.orientation = VVOrientationHorizontal;
     }
     return self;
-}
-
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = [ super setIntValue:value forKey:key];
-    
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_orientation:
-                self.orientation = value;
-                break;
-                
-            default:
-                ret = false;
-                break;
-        }
-    }
-    return ret;
 }
 
 - (void)layoutSubnodes{
@@ -296,4 +279,23 @@
         width -= size.width + item.layoutMarginLeft + item.layoutMarginRight;
     }
 }
+
+- (BOOL)setIntValue:(int)value forKey:(int)key{
+    BOOL ret = [ super setIntValue:value forKey:key];
+    
+    if (!ret) {
+        ret = true;
+        switch (key) {
+            case STR_ID_orientation:
+                self.orientation = value;
+                break;
+                
+            default:
+                ret = false;
+                break;
+        }
+    }
+    return ret;
+}
+
 @end

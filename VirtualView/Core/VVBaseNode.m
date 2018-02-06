@@ -8,11 +8,11 @@
 #import "VVBaseNode.h"
 #import "UIColor+VirtualView.h"
 
-@interface VVBaseNode ()
-{
+@interface VVBaseNode () {
     NSMutableArray*   _subViews;
     NSUInteger        _nodeID;
     int _align, _flag, _minWidth, _minHeight;
+    BOOL needsLayout;
 }
 
 @end
@@ -31,6 +31,7 @@
         self.visibility = VVVisibilityVisible;
         self.layoutDirection = VVDirectionLeft;
         self.autoDimDirection = VVAutoDimDirectionNone;
+        [self setNeedsLayout];
     }
     return self;
 }
@@ -129,40 +130,70 @@
     }
 }
 
-- (void)setNeedsLayout{
+- (BOOL)isMatchParent
+{
+    return self.layoutWidth == VV_MATCH_PARENT || self.layoutHeight == VV_MATCH_PARENT;
+}
 
+- (BOOL)isWarpContent
+{
+    return self.layoutWidth == VV_WRAP_CONTENT || self.layoutHeight == VV_WRAP_CONTENT;
+}
+
+- (void)applyAutoDim
+{
+    if (self.autoDimX > 0 && self.autoDimY > 0) {
+        if (self.autoDimDirection == VVAutoDimDirectionX) {
+            self.nodeHeight = self.nodeWidth / self.autoDimX * self.autoDimY;
+        } else if (self.autoDimDirection == VVAutoDimDirectionY) {
+            self.nodeWidth = self.nodeHeight / self.autoDimY * self.autoDimX;
+        }
+    }
+}
+
+- (void)setNeedsLayout
+{
+    needsLayout = YES;
+    self.nodeWidth = -1;
+    self.nodeHeight = -1;
+}
+
+- (void)layoutIfNeeded
+{
+    if (needsLayout) {
+        [self layoutSubnodes];
+        needsLayout = NO;
+    }
 }
 
 - (void)layoutSubnodes
 {
-    CGFloat x = self.nodeFrame.origin.x;
-    CGFloat y = self.nodeFrame.origin.y;
-    _nodeWidth = _nodeWidth<0?self.superview.nodeFrame.size.width:_nodeWidth;
-    _nodeHeight = _nodeHeight<0?self.superview.nodeFrame.size.height:_nodeHeight;
-    CGFloat a1,a2,w,h;
-    a1 = (int)x*1;
-    a2 = (int)y*1;
-    w = (int)_nodeWidth*1;
-    h = (int)_nodeHeight*1;
-    self.nodeFrame = CGRectMake(a1, a2, w, h);
+    // override me
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize
 {
-    return CGSizeZero;
+    if (self.nodeWidth < 0 || self.nodeHeight < 0) {
+        self.nodeWidth = 0;
+        if (self.layoutWidth == VV_MATCH_PARENT) {
+            self.nodeWidth = maxSize.width;
+        } else if (self.layoutWidth > 0) {
+            self.nodeWidth = self.layoutWidth;
+        }
+        
+        self.nodeHeight = 0;
+        if (self.layoutHeight == VV_MATCH_PARENT) {
+            self.nodeHeight = maxSize.height;
+        } else if (self.layoutHeight > 0) {
+            self.nodeHeight = self.layoutHeight;
+        }
+        
+        [self applyAutoDim];
+    }
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
-- (void)autoDim{
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-            self.nodeHeight = self.nodeWidth*(self.autoDimY/self.autoDimX);
-            break;
-        case VVAutoDimDirectionY:
-            self.nodeWidth = self.nodeHeight*(self.autoDimX/self.autoDimY);
-        default:
-            break;
-    }
-}
+
 
 - (void)changeCocoaViewSuperView{
     if (self.cocoaView.superview && self.visibility==VVVisibilityGone) {
@@ -177,13 +208,9 @@
     switch (key) {
         case STR_ID_layoutWidth:
             _layoutWidth = value;
-            _nodeWidth = value>0?value:0;
-            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_layoutHeight:
             _layoutHeight = value;
-            _nodeHeight = value>0?value:0;
-            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_paddingLeft:
             _paddingLeft = value;
@@ -296,13 +323,9 @@
 
         case STR_ID_layoutWidth:
             _layoutWidth = value;
-            _nodeWidth = value>0?value:0;
-            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_layoutHeight:
             _layoutHeight = value;
-            _nodeHeight = value>0?value:0;
-            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_paddingLeft:
             _paddingLeft = value;

@@ -27,11 +27,11 @@
 @property (nonatomic, assign) CGFloat paddingBottom;
 
 // self position in parent layout
+@property (nonatomic, assign) VVGravity layoutGravity;
 @property (nonatomic, assign) CGFloat layoutMarginLeft;
 @property (nonatomic, assign) CGFloat layoutMarginRight;
 @property (nonatomic, assign) CGFloat layoutMarginTop;
 @property (nonatomic, assign) CGFloat layoutMarginBottom;
-@property (nonatomic, assign) VVGravity layoutGravity;
 
 // calculated result
 @property (nonatomic, assign) CGFloat nodeWidth;
@@ -68,14 +68,19 @@
 
 - (VVBaseNode *)hitTest:(CGPoint)point;
 
+- (BOOL)isMatchParent;
+- (BOOL)isWarpContent;
+- (void)applyAutoDim;
+
+- (void)setNeedsLayout;
+- (void)layoutIfNeeded;
+- (void)layoutSubnodes;
+- (CGSize)calculateSize:(CGSize)maxSize;
+
 - (VVBaseNode *)findViewByID:(int)tagid;
 - (void)addSubview:(VVBaseNode *)view;
 - (void)removeSubView:(VVBaseNode *)view;
 - (void)removeFromSuperview;
-- (void)setNeedsLayout;
-- (void)layoutSubnodes;
-- (CGSize)calculateSize:(CGSize)maxSize;
-- (void)autoDim;
 - (BOOL)setIntValue:(int)value forKey:(int)key;
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key;

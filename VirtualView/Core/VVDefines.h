@@ -38,9 +38,11 @@ typedef NS_ENUM(NSUInteger, VVGravity) {
     VVGravityLeft = 1,
     VVGravityRight = 2,
     VVGravityHCenter = 4,
+    VVGravityX = 7, // VVGravityLeft | VVGravityHCenter | VVGravityHCenter
     VVGravityTop = 8,
     VVGravityBottom = 16,
-    VVGravityVCenter = 32
+    VVGravityVCenter = 32,
+    VVGravityY = 56 // VVGravityTop | VVGravityVCenter | VVGravityBottom
 };
 
 typedef NS_ENUM(NSUInteger, VVAutoDimDirection) {

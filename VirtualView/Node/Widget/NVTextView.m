@@ -327,7 +327,7 @@
             self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
     }
-    [self autoDim];
+    [self applyAutoDim];
     CGSize size = CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
     return size;
 }

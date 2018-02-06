@@ -172,7 +172,7 @@
         default:
             break;
     }
-    [self autoDim];
+    [self applyAutoDim];
     
     if (self.ratio>0) {
         if (self.fixBy==0) {

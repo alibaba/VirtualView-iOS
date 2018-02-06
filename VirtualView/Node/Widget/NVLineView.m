@@ -296,7 +296,7 @@
             }
             break;
     }
-    [self autoDim];
+    [self applyAutoDim];
     return CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
     
 }

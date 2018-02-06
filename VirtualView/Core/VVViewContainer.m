@@ -124,9 +124,7 @@
         
         [item didFinishBinding];
     }
-
-    [self.virtualView calculateSize:self.frame.size];
-    
+    self.virtualView.nodeFrame = self.bounds;
     [self.virtualView layoutSubnodes];
     [self setNeedsDisplay];
     
