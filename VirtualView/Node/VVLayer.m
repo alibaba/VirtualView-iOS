@@ -22,14 +22,16 @@
     height = CGRectGetHeight(self.bounds);
     CGContextClearRect(context, CGRectMake(0, 0, width, height));
     
-    if (self.vv_backgroundColor) {
-        CGContextSetLineWidth(context, self.vv_borderWidth);
+    if (self.vv_backgroundColor
+        && [self.vv_backgroundColor isEqual:[UIColor clearColor]] == NO) {
         CGContextSetFillColorWithColor(context, self.vv_backgroundColor.CGColor);
         [self createPath:context borderWidth:self.vv_borderWidth];
         CGContextFillPath(context);
     }
 
-    if (self.vv_borderColor && self.vv_borderWidth > 0) {
+    if (self.vv_borderWidth > 0
+        && self.vv_borderColor
+        && [self.vv_borderColor isEqual:[UIColor clearColor]] == NO) {
         CGContextSetLineWidth(context, self.vv_borderWidth);
         CGContextSetStrokeColorWithColor(context, self.vv_borderColor.CGColor);
         [self createPath:context borderWidth:self.vv_borderWidth];
@@ -99,32 +101,5 @@
 {
     _vv_borderRadius = vv_borderRadius > 0 ? vv_borderRadius : 0;
 }
-
-- (void)setVv_borderColor:(UIColor *)vv_borderColor
-{
-    UIColor *resultColor = nil;
-    if (vv_borderColor) {
-        CGFloat alpha = 0;
-        [vv_borderColor getWhite:nil alpha:&alpha];
-        if (alpha >= 1 / 255.0) {
-            resultColor = vv_borderColor;
-        }
-    }
-    _vv_borderColor = resultColor;
-}
-
-- (void)setVv_backgroundColor:(UIColor *)vv_backgroundColor
-{
-    UIColor *resultColor = nil;
-    if (vv_backgroundColor) {
-        CGFloat alpha = 0;
-        [vv_backgroundColor getWhite:nil alpha:&alpha];
-        if (alpha >= 1 / 255.0) {
-            resultColor = vv_backgroundColor;
-        }
-    }
-    _vv_backgroundColor = resultColor;
-}
-
 
 @end
