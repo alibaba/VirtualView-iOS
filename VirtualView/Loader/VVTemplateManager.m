@@ -120,8 +120,8 @@
     }
     
     void (^action)(void) = ^{
-        if (_operationQueue) {
-            for (NSOperation *operation in _operationQueue.operations) {
+        if (self->_operationQueue) {
+            for (NSOperation *operation in self->_operationQueue.operations) {
                 if ([operation.name isEqualToString:type]) {
                     [operation cancel];
                     operation.completionBlock = nil;
