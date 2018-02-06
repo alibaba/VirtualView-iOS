@@ -15,7 +15,7 @@
 @end
 
 @implementation VVLayout
-@synthesize frame = _frame;
+@synthesize nodeFrame = _nodeFrame;
 
 - (id)init{
     self = [super init];
@@ -67,8 +67,8 @@
     return ret;
 }
 
-- (void)setFrame:(CGRect)frame{
-    _frame = frame;
+- (void)setNodeFrame:(CGRect)frame{
+    _nodeFrame = frame;
     if (self.drawLayer) {
         self.drawLayer.bounds=CGRectMake(0, 0, frame.size.width, frame.size.height);
         self.drawLayer.anchorPoint=CGPointMake(0,0);

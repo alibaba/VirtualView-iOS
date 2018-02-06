@@ -8,15 +8,15 @@
 #import "VVFrameLayout.h"
 
 @implementation VVFrameLayout
-- (void)layoutSubviews{
-    [super layoutSubviews];
+- (void)layoutSubnodes{
+    [super layoutSubnodes];
     for (VVBaseNode* vvObj in self.subViews) {
-        if(vvObj.visible==VVVisibilityGone){
+        if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
-        CGFloat pX=self.frame.origin.x+self.paddingLeft,pY=self.frame.origin.y+self.paddingTop;
-        CGFloat blanceW = (self.width-self.paddingLeft-self.paddingRight-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
-        CGFloat blanceH = (self.height-self.paddingTop-self.paddingBottom-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
+        CGFloat pX=self.nodeFrame.origin.x+self.paddingLeft,pY=self.nodeFrame.origin.y+self.paddingTop;
+        CGFloat blanceW = (self.nodeWidth-self.paddingLeft-self.paddingRight-vvObj.nodeWidth-vvObj.layoutMarginLeft-vvObj.layoutMarginRight)/2.0;
+        CGFloat blanceH = (self.nodeHeight-self.paddingTop-self.paddingBottom-vvObj.nodeHeight-vvObj.layoutMarginTop-vvObj.layoutMarginBottom)/2.0;
         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
             pX += blanceW<0?0:blanceW;
@@ -34,21 +34,21 @@
         }else{
             pY += 0;
         }
-        vvObj.frame = CGRectMake(pX+vvObj.marginLeft, pY+vvObj.marginTop, vvObj.width, vvObj.height);
-        [vvObj layoutSubviews];
+        vvObj.nodeFrame = CGRectMake(pX+vvObj.layoutMarginLeft, pY+vvObj.layoutMarginTop, vvObj.nodeWidth, vvObj.nodeHeight);
+        [vvObj layoutSubnodes];
         
     }
 }
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
+- (CGSize)calculateSize:(CGSize)maxSize{
     CGFloat maxWidth=0,maxHeight=0;
     CGSize contentSize = maxSize;
     
-    if (self.heightModle!=VV_MATCH_PARENT && self.heightModle!=VV_WRAP_CONTENT) {
-        contentSize.height = self.height;
+    if (self.layoutHeight!=VV_MATCH_PARENT && self.layoutHeight!=VV_WRAP_CONTENT) {
+        contentSize.height = self.nodeHeight;
     }
     
-    if (self.widthModle!=VV_MATCH_PARENT && self.widthModle!=VV_WRAP_CONTENT) {
-        contentSize.width = self.width;
+    if (self.layoutWidth!=VV_MATCH_PARENT && self.layoutWidth!=VV_WRAP_CONTENT) {
+        contentSize.width = self.nodeWidth;
     }
     
     switch (self.autoDimDirection) {
@@ -68,59 +68,59 @@
     
     NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
     for (VVBaseNode* vvObj in self.subViews) {
-        if (vvObj.visible==VVVisibilityGone) {
+        if (vvObj.visibility==VVVisibilityGone) {
             continue;
-        }else if(self.widthModle==VV_WRAP_CONTENT && vvObj.widthModle==VV_MATCH_PARENT) {
+        }else if(self.layoutWidth==VV_WRAP_CONTENT && vvObj.layoutWidth==VV_MATCH_PARENT) {
             [tmpArray addObject:vvObj];
             continue;
         }
-        CGSize itemSize = [vvObj calculateLayoutSize:CGSizeMake(contentSize.width-vvObj.marginLeft-vvObj.marginRight, contentSize.height-vvObj.marginTop-vvObj.marginBottom)];
-        itemSize.width+=vvObj.marginLeft+vvObj.marginRight;
-        itemSize.height+=vvObj.marginTop+vvObj.marginBottom;
+        CGSize itemSize = [vvObj calculateSize:CGSizeMake(contentSize.width-vvObj.layoutMarginLeft-vvObj.layoutMarginRight, contentSize.height-vvObj.layoutMarginTop-vvObj.layoutMarginBottom)];
+        itemSize.width+=vvObj.layoutMarginLeft+vvObj.layoutMarginRight;
+        itemSize.height+=vvObj.layoutMarginTop+vvObj.layoutMarginBottom;
         maxWidth = maxWidth<itemSize.width?itemSize.width:maxWidth;
         maxHeight= maxHeight<itemSize.height?itemSize.height:maxHeight;
     }
     
-    switch ((int)self.widthModle) {
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
             //
-            self.width = self.paddingRight+self.paddingLeft+maxWidth;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+maxWidth;
             break;
         case VV_MATCH_PARENT:
-            self.width = maxSize.width;
+            self.nodeWidth = maxSize.width;
             
             break;
         default:
-            self.width = self.widthModle;
+            self.nodeWidth = self.layoutWidth;
             break;
     }
     
-    self.width = self.width<maxSize.width?self.width:maxSize.width;
+    self.nodeWidth = self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width;
     
     
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
             //
-            self.height = self.paddingTop+self.paddingBottom+maxHeight;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+maxHeight;
             break;
         case VV_MATCH_PARENT:
-            self.height = maxSize.height;
+            self.nodeHeight = maxSize.height;
             
             break;
         default:
-            self.height = self.heightModle;
+            self.nodeHeight = self.layoutHeight;
             break;
     }
     
-    self.height = self.height<maxSize.height?self.height:maxSize.height;
+    self.nodeHeight = self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height;
     
     
     switch (self.autoDimDirection) {
         case VVAutoDimDirectionX:
-            self.height = self.width*(self.autoDimY/self.autoDimX);
+            self.nodeHeight = self.nodeWidth*(self.autoDimY/self.autoDimX);
             break;
         case VVAutoDimDirectionY:
-            self.width = self.height*(self.autoDimX/self.autoDimY);
+            self.nodeWidth = self.nodeHeight*(self.autoDimX/self.autoDimY);
             break;
         default:
             break;
@@ -128,11 +128,11 @@
 
     //[self autoDim];
     
-    CGSize tmpSize = CGSizeMake(self.width, self.height);
+    CGSize tmpSize = CGSizeMake(self.nodeWidth, self.nodeHeight);
     for (VVBaseNode* vvObj in tmpArray) {
-        [vvObj calculateLayoutSize:tmpSize];
+        [vvObj calculateSize:tmpSize];
     }
-    return CGSizeMake(self.width, self.height);
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
     
 }
 

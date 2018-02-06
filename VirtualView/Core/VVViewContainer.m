@@ -36,8 +36,8 @@
 
 - (void)handleLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
     CGPoint pt =[gestureRecognizer locationInView:self];
-    id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [(VVBaseNode*)vvobj isLongClickable]) {
+    VVBaseNode *vvobj=[self.virtualView hitTest:pt];
+    if (vvobj!=nil && [vvobj isLongClickable]) {
         [self.delegate subViewLongPressed:vvobj.action andValue:vvobj.actionValue gesture:gestureRecognizer];
     }
 }
@@ -45,8 +45,8 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     UITouch *touch =  [touches anyObject];
     CGPoint pt = [touch locationInView:self];
-    id<VVWidgetObject> vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [(VVBaseNode*)vvobj isClickable]) {
+    VVBaseNode *vvobj=[self.virtualView hitTest:pt];
+    if (vvobj!=nil && [vvobj isClickable]) {
         if([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)])
         {
             [self.delegate subView:vvobj clicked:vvobj.action andValue:vvobj.actionValue];
@@ -95,7 +95,7 @@
         for (VVLayout* item in virtualView.subViews) {
             [self attachViews:item];
         }
-    } else if(virtualView.cocoaView && virtualView.visible!=VVVisibilityGone) {
+    } else if(virtualView.cocoaView && virtualView.visibility!=VVVisibilityGone) {
         [self addSubview:virtualView.cocoaView];
     }
 }
@@ -125,9 +125,9 @@
         [item didFinishBinding];
     }
 
-    [self.virtualView calculateLayoutSize:self.frame.size];
+    [self.virtualView calculateSize:self.frame.size];
     
-    [self.virtualView layoutSubviews];
+    [self.virtualView layoutSubnodes];
     [self setNeedsDisplay];
     
 #ifdef VV_ALIBABA

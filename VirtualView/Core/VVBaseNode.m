@@ -11,7 +11,7 @@
 @interface VVBaseNode ()
 {
     NSMutableArray*   _subViews;
-    NSUInteger        _objectID;
+    NSUInteger        _nodeID;
     int _align, _flag, _minWidth, _minHeight;
 }
 
@@ -19,7 +19,7 @@
 
 @implementation VVBaseNode
 @synthesize subViews = _subViews;
-@synthesize objectID   = _objectID;
+@synthesize nodeID   = _nodeID;
 
 - (id)init{
     self = [super init];
@@ -29,7 +29,7 @@
         _subViews = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor clearColor];
         self.gravity = VVGravityLeft|VVGravityTop;
-        self.visible = VVVisibilityVisible;
+        self.visibility = VVVisibilityVisible;
         self.layoutDirection = VVDirectionLeft;
         self.autoDimDirection = VVAutoDimDirectionNone;
     }
@@ -67,10 +67,10 @@
 
 }
 -(BOOL)pointInside:(CGPoint)point withView:(VVBaseNode*)vvobj{
-    CGFloat x =vvobj.frame.origin.x;
-    CGFloat y =vvobj.frame.origin.y;
-    CGFloat w =vvobj.frame.size.width;
-    CGFloat h =vvobj.frame.size.height;
+    CGFloat x =vvobj.nodeFrame.origin.x;
+    CGFloat y =vvobj.nodeFrame.origin.y;
+    CGFloat w =vvobj.nodeFrame.size.width;
+    CGFloat h =vvobj.nodeFrame.size.height;
     if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
         return YES;
     }else{
@@ -79,10 +79,10 @@
 }
 
 -(BOOL)pointInside:(CGPoint)point{
-    CGFloat x =self.frame.origin.x;
-    CGFloat y =self.frame.origin.y;
-    CGFloat w =self.frame.size.width;
-    CGFloat h =self.frame.size.height;
+    CGFloat x =self.nodeFrame.origin.x;
+    CGFloat y =self.nodeFrame.origin.y;
+    CGFloat w =self.nodeFrame.size.width;
+    CGFloat h =self.nodeFrame.size.height;
     if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
         return YES;
     }else{
@@ -90,12 +90,12 @@
     }
 }
 
-- (id<VVWidgetObject>)hitTest:(CGPoint)point
+- (VVBaseNode *)hitTest:(CGPoint)point
 {
-    if (self.visible == VVVisibilityVisible && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
+    if (self.visibility == VVVisibilityVisible && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
         if (self.subViews.count > 0) {
             for (VVBaseNode* item in [self.subViews reverseObjectEnumerator]) {
-                id<VVWidgetObject> obj = [item hitTest:point];
+                VVBaseNode *obj = [item hitTest:point];
                 if (obj) {
                     return obj;
                 }
@@ -110,19 +110,19 @@
 
 - (VVBaseNode*)findViewByID:(int)tagid{
 
-    if (self.objectID==tagid) {
+    if (self.nodeID==tagid) {
         return self;
     }
 
     VVBaseNode* obj = nil;
 
     for (VVBaseNode* item in self.subViews) {
-        if (item.objectID==tagid) {
+        if (item.nodeID==tagid) {
             obj = item;
             break;
         }else{
             obj = [item findViewByID:tagid];
-            if(obj.objectID==tagid)
+            if(obj.nodeID==tagid)
             {
                 break;
             }
@@ -155,45 +155,41 @@
 
 }
 
-- (CGSize)nativeContentSize{
-    return CGSizeZero;
-}
-
-- (void)layoutSubviews
+- (void)layoutSubnodes
 {
-    CGFloat x = self.frame.origin.x;
-    CGFloat y = self.frame.origin.y;
-    _width = _width<0?self.superview.frame.size.width:_width;
-    _height = _height<0?self.superview.frame.size.height:_height;
+    CGFloat x = self.nodeFrame.origin.x;
+    CGFloat y = self.nodeFrame.origin.y;
+    _nodeWidth = _nodeWidth<0?self.superview.nodeFrame.size.width:_nodeWidth;
+    _nodeHeight = _nodeHeight<0?self.superview.nodeFrame.size.height:_nodeHeight;
     CGFloat a1,a2,w,h;
     a1 = (int)x*1;
     a2 = (int)y*1;
-    w = (int)_width*1;
-    h = (int)_height*1;
-    self.frame = CGRectMake(a1, a2, w, h);
+    w = (int)_nodeWidth*1;
+    h = (int)_nodeHeight*1;
+    self.nodeFrame = CGRectMake(a1, a2, w, h);
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
-    CGSize size={0,0};
-    return size;
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    return CGSizeZero;
 }
 
 - (void)autoDim{
     switch (self.autoDimDirection) {
         case VVAutoDimDirectionX:
-            self.height = self.width*(self.autoDimY/self.autoDimX);
+            self.nodeHeight = self.nodeWidth*(self.autoDimY/self.autoDimX);
             break;
         case VVAutoDimDirectionY:
-            self.width = self.height*(self.autoDimX/self.autoDimY);
+            self.nodeWidth = self.nodeHeight*(self.autoDimX/self.autoDimY);
         default:
             break;
     }
 }
 
 - (void)changeCocoaViewSuperView{
-    if (self.cocoaView.superview && self.visible==VVVisibilityGone) {
+    if (self.cocoaView.superview && self.visibility==VVVisibilityGone) {
         [self.cocoaView removeFromSuperview];
-    }else if(self.cocoaView.superview==nil && self.visible!=VVVisibilityGone){
+    }else if(self.cocoaView.superview==nil && self.visibility!=VVVisibilityGone){
         [self.rootCocoaView addSubview:self.cocoaView];
     }
 }
@@ -201,16 +197,15 @@
 - (BOOL)setIntValue:(int)value forKey:(int)key{
     BOOL ret = YES;
     switch (key) {
-
         case STR_ID_layoutWidth:
-            _widthModle = value;
-            _width = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            _layoutWidth = value;
+            _nodeWidth = value>0?value:0;
+            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_layoutHeight:
-            _heightModle = value;
-            _height = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            _layoutHeight = value;
+            _nodeHeight = value>0?value:0;
+            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_paddingLeft:
             _paddingLeft = value;
@@ -225,22 +220,22 @@
             _paddingBottom = value;
             break;
         case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
+            _layoutMarginLeft = value;
             break;
         case STR_ID_layoutMarginTop:
-            _marginTop = value;
+            _layoutMarginTop = value;
             break;
         case STR_ID_layoutMarginRight:
-            _marginRight = value;
+            _layoutMarginRight = value;
             break;
         case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
+            _layoutMarginBottom = value;
             break;
         case STR_ID_layoutGravity:
             _layoutGravity = value;
             break;
         case STR_ID_id:
-            _objectID = value;
+            _nodeID = value;
             break;
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
@@ -291,8 +286,8 @@
             self.layoutRatio = value;
             break;
         case STR_ID_visibility:
-            self.visible = value;
-            switch (self.visible) {
+            self.visibility = value;
+            switch (self.visibility) {
                 case VVVisibilityInvisible:
                     self.hidden = YES;
                     self.cocoaView.hidden = YES;
@@ -322,14 +317,14 @@
     switch (key) {
 
         case STR_ID_layoutWidth:
-            _widthModle = value;
-            _width = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            _layoutWidth = value;
+            _nodeWidth = value>0?value:0;
+            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_layoutHeight:
-            _heightModle = value;
-            _height = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            _layoutHeight = value;
+            _nodeHeight = value>0?value:0;
+            self.nodeFrame = CGRectMake(0, 0, _nodeWidth, _nodeHeight);
             break;
         case STR_ID_paddingLeft:
             _paddingLeft = value;
@@ -344,22 +339,22 @@
             _paddingBottom = value;
             break;
         case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
+            _layoutMarginLeft = value;
             break;
         case STR_ID_layoutMarginTop:
-            _marginTop = value;
+            _layoutMarginTop = value;
             break;
         case STR_ID_layoutMarginRight:
-            _marginRight = value;
+            _layoutMarginRight = value;
             break;
         case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
+            _layoutMarginBottom = value;
             break;
         case STR_ID_layoutGravity:
             _layoutGravity = value;
             break;
         case STR_ID_id:
-            _objectID = value;
+            _nodeID = value;
             break;
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithARGB:(int)value];
@@ -410,8 +405,8 @@
             self.layoutRatio = value;
             break;
         case STR_ID_visibility:
-            self.visible = value;
-            switch (self.visible) {
+            self.visibility = value;
+            switch (self.visibility) {
                 case VVVisibilityInvisible:
                     self.hidden = YES;
                     self.cocoaView.hidden = YES;

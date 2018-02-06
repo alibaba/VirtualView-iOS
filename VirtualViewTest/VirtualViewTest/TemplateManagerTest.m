@@ -40,8 +40,8 @@
     assertThat([[manager versionOfType:@"icon"] stringValue], equalTo(@"1.0.13"));
     VVVHLayout *layout = (id)[manager createNodeTreeForType:@"NText"];
     assertThat(layout, isA([VVVHLayout class]));
-    assertThatFloat(layout.widthModle, equalToFloat(-1));
-    assertThatFloat(layout.heightModle, equalToFloat(-1));
+    assertThatFloat(layout.layoutWidth, equalToFloat(-1));
+    assertThatFloat(layout.layoutHeight, equalToFloat(-1));
 }
 
 - (void)testLoadTemplateAsync {
@@ -75,8 +75,8 @@
     // Try to create node immediately.
     VVVHLayout *layout = (id)[manager createNodeTreeForType:@"NText"];
     assertThat(layout, isA(VVVHLayout.class));
-    assertThatFloat(layout.widthModle, equalToFloat(-1));
-    assertThatFloat(layout.heightModle, equalToFloat(-1));
+    assertThatFloat(layout.layoutWidth, equalToFloat(-1));
+    assertThatFloat(layout.layoutHeight, equalToFloat(-1));
     
     assertThat(manager.loadedTypes, hasItem(@"NText"));
 

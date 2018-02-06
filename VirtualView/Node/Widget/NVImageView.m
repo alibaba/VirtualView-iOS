@@ -92,16 +92,16 @@
     }
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubnodes{
 
-    self.cocoaView.frame = self.frame;
+    self.cocoaView.frame = self.nodeFrame;
     self.imageView.frame = CGRectMake(self.paddingLeft, self.paddingTop, self.imageSize.width, self.imageSize.height);
     self.maskView.frame = self.cocoaView.bounds;
     [self showImage];
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
-    switch ((int)self.widthModle) {
+- (CGSize)calculateSize:(CGSize)maxSize{
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
 #ifdef VV_ALIBABA
             _imageSize.width = [TMImageView imageWidthByHeight:self.heightModle imgUrl:self.imgUrl];
@@ -113,26 +113,26 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.widthModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.superview.layoutWidth==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
                 //_imageSize.width = maxSize.width;
-                self.width = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
-                _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
+                self.nodeWidth = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
+                _imageSize.width = self.nodeWidth - self.paddingLeft - self.paddingRight;
                 /*if (self.width>maxSize.width) {
                     self.width = maxSize.width;
                     _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
                 }*/
             }else{
-                self.width=maxSize.width;
-                _imageSize.width = self.width-self.paddingRight-self.paddingLeft;
+                self.nodeWidth=maxSize.width;
+                _imageSize.width = self.nodeWidth-self.paddingRight-self.paddingLeft;
             }
             break;
         default:
-            _imageSize.width = self.widthModle-self.paddingRight-self.paddingLeft;
-            self.width = self.widthModle;
+            _imageSize.width = self.layoutWidth-self.paddingRight-self.paddingLeft;
+            self.nodeWidth = self.layoutWidth;
             break;
     }
     
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
 #ifdef VV_ALIBABA
             _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
@@ -144,7 +144,7 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.heightModle==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.superview.layoutHeight==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
 #ifdef VV_ALIBABA
                 _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
                 self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
@@ -154,13 +154,13 @@
                 }
 #endif
             } else {
-                self.height=maxSize.height;
-                _imageSize.height = self.height-self.paddingTop-self.paddingBottom;
+                self.nodeHeight=maxSize.height;
+                _imageSize.height = self.nodeHeight-self.paddingTop-self.paddingBottom;
             }
             break;
         default:
-            _imageSize.height = self.heightModle-self.paddingTop-self.paddingBottom;
-            self.height = self.heightModle;
+            _imageSize.height = self.layoutHeight-self.paddingTop-self.paddingBottom;
+            self.nodeHeight = self.layoutHeight;
             break;
     }
     switch (self.autoDimDirection) {
@@ -176,15 +176,15 @@
     
     if (self.ratio>0) {
         if (self.fixBy==0) {
-            self.height = self.width*self.ratio;
+            self.nodeHeight = self.nodeWidth*self.ratio;
             _imageSize.height = _imageSize.width*self.ratio;
         }else{
-            self.width = self.height*self.ratio;
+            self.nodeWidth = self.nodeHeight*self.ratio;
             _imageSize.width = _imageSize.height*self.ratio;
         }
     }
     
-    CGSize size = CGSizeMake(self.width<maxSize.width?self.width:maxSize.width, self.height<maxSize.height?self.height:maxSize.height);
+    CGSize size = CGSizeMake(self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
     return size;
 }
 
@@ -216,7 +216,7 @@
                 self.maskView.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
                 break;
             case STR_ID_itemHeight:
-                self.height = value;
+                self.nodeHeight = value;
                 break;
             case STR_ID_fixBy:
                 self.fixBy = value;
@@ -233,7 +233,7 @@
     if (!ret) {
         switch (key) {
             case STR_ID_itemHeight:
-                self.height = value;
+                self.nodeHeight = value;
                 break;
             case STR_ID_ratio:
                 self.ratio = value;

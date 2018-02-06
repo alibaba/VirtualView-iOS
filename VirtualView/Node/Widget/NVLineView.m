@@ -183,11 +183,11 @@
     if(self.orientation==VVOrientationHorizontal){
         CGFloat centerY = CGRectGetHeight(layer.bounds) / 2;
         CGContextMoveToPoint(currentContext, 0, centerY);
-        CGContextAddLineToPoint(currentContext, 0 + self.frame.size.width, centerY);
+        CGContextAddLineToPoint(currentContext, 0 + self.nodeFrame.size.width, centerY);
     }else{
         CGFloat centerX = CGRectGetWidth(layer.bounds) / 2;
         CGContextMoveToPoint(currentContext, centerX, 0);
-        CGContextAddLineToPoint(currentContext, centerX, 0+self.frame.size.height);
+        CGContextAddLineToPoint(currentContext, centerX, 0+self.nodeFrame.size.height);
     }
     
     if (self.style==VVLineStyleDash) {
@@ -198,8 +198,8 @@
     CGContextDrawPath(currentContext, kCGPathStroke);
 }
 
-- (void)setFrame:(CGRect)frame{
-    super.frame = frame;
+- (void)setNodeFrame:(CGRect)frame{
+    super.nodeFrame = frame;
     self.cocoaView.frame = frame;
     self.drawLayer.bounds=CGRectMake(0, 0, frame.size.width, frame.size.height);
     self.drawLayer.anchorPoint=CGPointMake(0,0);
@@ -237,67 +237,67 @@
     });
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubnodes{
 
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
+- (CGSize)calculateSize:(CGSize)maxSize{
     
-    switch ((int)self.widthModle) {
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
             //
             if (self.orientation==VVOrientationHorizontal) {
-                self.width = maxSize.width;//self.paddingRight+self.paddingLeft+self.width;
+                self.nodeWidth = maxSize.width;//self.paddingRight+self.paddingLeft+self.width;
             }else{
-                self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
+                self.nodeWidth = self.lineWidth+self.paddingRight+self.paddingLeft;
             }
             
             break;
         case VV_MATCH_PARENT:
             if (self.orientation==VVOrientationHorizontal) {
-                self.width=maxSize.width;
+                self.nodeWidth=maxSize.width;
             }else{
-                self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
+                self.nodeWidth = self.lineWidth+self.paddingRight+self.paddingLeft;
             }
             
             break;
         default:
             if (self.orientation==VVOrientationHorizontal) {
-                self.width = self.widthModle+self.paddingRight+self.paddingLeft;
+                self.nodeWidth = self.layoutWidth+self.paddingRight+self.paddingLeft;
             }else{
-                self.width = self.lineWidth+self.paddingRight+self.paddingLeft;
+                self.nodeWidth = self.lineWidth+self.paddingRight+self.paddingLeft;
             }
             break;
     }
     
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
             //
             if (self.orientation==VVOrientationHorizontal) {
-                self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
+                self.nodeHeight = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
-                self.height = maxSize.height;
+                self.nodeHeight = maxSize.height;
             }
             
             break;
         case VV_MATCH_PARENT:
             if (self.orientation==VVOrientationHorizontal) {
-                self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
+                self.nodeHeight = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
-                self.height = maxSize.height;
+                self.nodeHeight = maxSize.height;
             }
             
             break;
         default:
             if (self.orientation==VVOrientationHorizontal) {
-                self.height = self.lineWidth+self.paddingTop+self.paddingBottom;
+                self.nodeHeight = self.lineWidth+self.paddingTop+self.paddingBottom;
             }else{
-                self.height = self.heightModle+self.paddingTop+self.paddingBottom;;
+                self.nodeHeight = self.layoutHeight+self.paddingTop+self.paddingBottom;;
             }
             break;
     }
     [self autoDim];
-    return CGSizeMake(self.width=self.width<maxSize.width?self.width:maxSize.width, self.height=self.height<maxSize.height?self.height:maxSize.height);
+    return CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
     
 }
 @end

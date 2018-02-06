@@ -33,26 +33,26 @@
 }
 
 - (void)vertical{
-    CGFloat pY = self.frame.origin.y + self.paddingTop ;
+    CGFloat pY = self.nodeFrame.origin.y + self.paddingTop ;
     //CGFloat validSize = self.height-_invalidHSize-self.paddingTop-self.paddingBottom;
     
     for (VVBaseNode* vvObj in self.subViews) {
-        if(vvObj.visible==VVVisibilityGone){
+        if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
-        pY+=vvObj.marginTop;
-        CGFloat pX = self.frame.origin.x + self.paddingLeft;
+        pY+=vvObj.layoutMarginTop;
+        CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft;
         
-        CGFloat blanceW = (self.width-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
+        CGFloat blanceW = (self.nodeWidth-vvObj.nodeWidth-vvObj.layoutMarginLeft-vvObj.layoutMarginRight)/2.0;
         //CGFloat blanceH = (self.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
         
          if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
          //
-         pX += vvObj.marginLeft+blanceW;
+         pX += vvObj.layoutMarginLeft+blanceW;
          }else if((vvObj.layoutGravity&VVGravityRight)!=0){
-         pX += vvObj.marginLeft+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
+         pX += vvObj.layoutMarginLeft+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
          }else{
-         pX += vvObj.marginLeft;
+         pX += vvObj.layoutMarginLeft;
          }
         /*
         if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
@@ -65,27 +65,27 @@
         }*/
         //CGFloat height = validSize*vvObj.layoutRatio/_totalRatio;
         
-        vvObj.frame = CGRectMake(pX, pY, vvObj.width, vvObj.height);
-        pY+=vvObj.height+vvObj.marginBottom;
-        [vvObj layoutSubviews];
+        vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+        pY+=vvObj.nodeHeight+vvObj.layoutMarginBottom;
+        [vvObj layoutSubnodes];
         
     }
 }
 
 - (void)horizontal{
     //
-    CGFloat pX = self.frame.origin.x + self.paddingLeft ;
+    CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft ;
     //CGFloat validSize = self.width-_invalidHSize-self.paddingLeft-self.paddingRight;
     
     for (VVBaseNode* vvObj in self.subViews) {
-        if(vvObj.visible==VVVisibilityGone){
+        if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
-        pX+=vvObj.marginLeft;
-        CGFloat pY = self.frame.origin.y + self.paddingTop;
+        pX+=vvObj.layoutMarginLeft;
+        CGFloat pY = self.nodeFrame.origin.y + self.paddingTop;
         
-        CGFloat itemHeight = vvObj.heightModle == VV_MATCH_PARENT ? self.height : vvObj.height;
-        CGFloat blanceH = (self.height-itemHeight-vvObj.marginTop-vvObj.marginBottom)/2.0;
+        CGFloat itemHeight = vvObj.layoutHeight == VV_MATCH_PARENT ? self.nodeHeight : vvObj.nodeHeight;
+        CGFloat blanceH = (self.nodeHeight-itemHeight-vvObj.layoutMarginTop-vvObj.layoutMarginBottom)/2.0;
         /*
         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
@@ -98,23 +98,23 @@
         
         if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
             //
-            pY += vvObj.marginTop+blanceH;
+            pY += vvObj.layoutMarginTop+blanceH;
         }else if((vvObj.layoutGravity&VVGravityBottom)!=0){
-            pY += vvObj.marginTop+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
+            pY += vvObj.layoutMarginTop+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
         }else{
-            pY += vvObj.marginTop;
+            pY += vvObj.layoutMarginTop;
         }
         //CGFloat width = validSize*vvObj.layoutRatio/_totalRatio;
         
-        vvObj.frame = CGRectMake(pX, pY, vvObj.width, itemHeight);
-        pX+=vvObj.width+vvObj.marginRight;
-        [vvObj layoutSubviews];
+        vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, itemHeight);
+        pX+=vvObj.nodeWidth+vvObj.layoutMarginRight;
+        [vvObj layoutSubnodes];
         
     }
 }
 
-- (void)layoutSubviews{
-    [super layoutSubviews];
+- (void)layoutSubnodes{
+    [super layoutSubnodes];
     
     switch (self.orientation) {
         case VVOrientationVertical:
@@ -126,7 +126,7 @@
     }
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
+- (CGSize)calculateSize:(CGSize)maxSize{
     _totalRatio = 0;
     CGSize itemSize = {0,0};
     switch (self.autoDimDirection) {
@@ -151,13 +151,13 @@
         }else{
             [noratioSubViews addObject:vvObj];
         }
-        _invalidHSize+= vvObj.marginLeft+vvObj.marginRight;
-        _invalidVSize+= vvObj.marginTop+vvObj.marginBottom;
+        _invalidHSize+= vvObj.layoutMarginLeft+vvObj.layoutMarginRight;
+        _invalidVSize+= vvObj.layoutMarginTop+vvObj.layoutMarginBottom;
     }
     
     for (VVBaseNode* vvObj in noratioSubViews) {
         //
-        CGSize size = [vvObj calculateLayoutSize:blanceSize];
+        CGSize size = [vvObj calculateSize:blanceSize];
         if (self.orientation==VVOrientationHorizontal) {
             blanceSize.width = blanceSize.width - size.width;
         }else{
@@ -179,11 +179,11 @@
             size.width  = blanceSize.width;
         }
         
-        [vvObj calculateLayoutSize:size];
+        [vvObj calculateSize:size];
         if (self.orientation==VVOrientationHorizontal) {
-            vvObj.width = size.width;
+            vvObj.nodeWidth = size.width;
         }else{
-            vvObj.height = size.height;
+            vvObj.nodeHeight = size.height;
         }
         
         itemSize.width  += size.width;
@@ -197,51 +197,51 @@
 //        CGSize itemSize = [vvObj calculateLayoutSize:maxSize];
 //    }
     
-    switch ((int)self.widthModle) {
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
             //
-            self.width = self.paddingRight+self.paddingLeft+itemSize.width;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+itemSize.width;
             break;
         case VV_MATCH_PARENT:
-            self.width=maxSize.width;
+            self.nodeWidth=maxSize.width;
             
             break;
         default:
-            self.width = self.paddingRight+self.paddingLeft+self.width;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
             break;
     }
-    self.width = self.width<maxSize.width?self.width:maxSize.width;
+    self.nodeWidth = self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width;
     
     
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
             //
-            self.height = self.paddingTop+self.paddingBottom+itemSize.height;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+itemSize.height;
             break;
         case VV_MATCH_PARENT:
-            self.height=maxSize.height;
+            self.nodeHeight=maxSize.height;
             
             break;
         default:
-            self.height = self.paddingTop+self.paddingBottom+self.height;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
     }
-    self.height = self.height<maxSize.height?self.height:maxSize.height;
+    self.nodeHeight = self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height;
     
     switch (self.autoDimDirection) {
         case VVAutoDimDirectionX:
-            self.height = self.width*(self.autoDimY/self.autoDimX);
+            self.nodeHeight = self.nodeWidth*(self.autoDimY/self.autoDimX);
             
             break;
         case VVAutoDimDirectionY:
-            self.width = self.height*(self.autoDimX/self.autoDimY);
+            self.nodeWidth = self.nodeHeight*(self.autoDimX/self.autoDimY);
             break;
         default:
             break;
     }
             
     //[self autoDim];
-    return CGSizeMake(self.width, self.height);
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 
 }
 @end

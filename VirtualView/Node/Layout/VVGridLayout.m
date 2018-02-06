@@ -61,21 +61,21 @@
     return ret;
 }
 
-- (void)layoutSubviews{
-    [super layoutSubviews];
+- (void)layoutSubnodes{
+    [super layoutSubnodes];
     int index = 0;
     for (int row=0; row<_rowCount; row++) {
         for (int col=0; col<_colCount; col++) {
             if (index<self.subViews.count) {
                 VVBaseNode* vvObj = [self.subViews objectAtIndex:index];
-                if(vvObj.visible==VVVisibilityGone){
+                if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
-                CGFloat pX = self.frame.origin.x+(vvObj.width+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
-                CGFloat pY = self.frame.origin.y+(vvObj.height+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
+                CGFloat pX = self.nodeFrame.origin.x+(vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.layoutMarginLeft;
+                CGFloat pY = self.nodeFrame.origin.y+(vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.layoutMarginTop;
                 
-                vvObj.frame = CGRectMake(pX, pY, vvObj.width, vvObj.height);
-                [vvObj layoutSubviews];
+                vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+                [vvObj layoutSubnodes];
                 index++;
             }else{
                 break;
@@ -84,7 +84,7 @@
     }
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
+- (CGSize)calculateSize:(CGSize)maxSize{
     
     if (_colCount<1) {
         return CGSizeZero;
@@ -92,12 +92,12 @@
     
     CGSize contentSize = maxSize;
     
-    if (self.heightModle!=VV_MATCH_PARENT && self.heightModle!=VV_WRAP_CONTENT) {
-        contentSize.height = self.heightModle;
+    if (self.layoutHeight!=VV_MATCH_PARENT && self.layoutHeight!=VV_WRAP_CONTENT) {
+        contentSize.height = self.layoutHeight;
     }
     
-    if (self.widthModle!=VV_MATCH_PARENT && self.widthModle!=VV_WRAP_CONTENT) {
-        contentSize.width = self.widthModle;
+    if (self.layoutWidth!=VV_MATCH_PARENT && self.layoutWidth!=VV_WRAP_CONTENT) {
+        contentSize.width = self.layoutWidth;
     }
     
     switch (self.autoDimDirection) {
@@ -151,7 +151,7 @@
                 break;
             }
             VVBaseNode* vvObj = [self.subViews objectAtIndex:index+j];
-            CGSize itemSize = [vvObj calculateLayoutSize:_itemMaxSize];
+            CGSize itemSize = [vvObj calculateSize:_itemMaxSize];
             #ifdef VV_DEBUG
                 NSLog(@"h:%f,w:%f",itemSize.height,itemSize.width);
             #endif
@@ -165,35 +165,35 @@
     }
     maxWidth += self.itemHorizontalMargin*(_colCount-1);
     maxHeight += self.itemVerticalMargin*(_rowCount-1);
-    switch ((int)self.widthModle) {
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
             //
-            self.width = self.paddingRight+self.paddingLeft+maxWidth;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+maxWidth;
             break;
         case VV_MATCH_PARENT:
-            self.width = maxSize.width - self.marginLeft - self.marginRight;
+            self.nodeWidth = maxSize.width - self.layoutMarginLeft - self.layoutMarginRight;
             
             break;
         default:
-            self.width = self.widthModle;
+            self.nodeWidth = self.layoutWidth;
             break;
     }
     
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
             //
-            self.height = self.paddingTop+self.paddingBottom+maxHeight;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+maxHeight;
             break;
         case VV_MATCH_PARENT:
-            self.height = maxSize.height - self.marginTop - self.marginBottom;
+            self.nodeHeight = maxSize.height - self.layoutMarginTop - self.layoutMarginBottom;
             
             break;
         default:
-            self.height = self.heightModle;
+            self.nodeHeight = self.layoutHeight;
             break;
     }
     //[self autoDim];
     //return CGSizeMake(self.width, self.height);
-    return CGSizeMake(self.width=self.width<maxSize.width?self.width:maxSize.width, self.height=self.height<maxSize.height?self.height:maxSize.height);
+    return CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
 }
 @end

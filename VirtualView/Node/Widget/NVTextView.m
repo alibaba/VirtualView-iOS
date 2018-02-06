@@ -156,26 +156,26 @@
     }
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubnodes{
     
     
     CGFloat pY =0, pX=0;
     if ((self.gravity & VVGravityBottom)==VVGravityBottom) {
-        pY = pY+self.frame.size.height-self.paddingBottom-self.textSize.height;
+        pY = pY+self.nodeFrame.size.height-self.paddingBottom-self.textSize.height;
     }else if ((self.gravity & VVGravityVCenter)==VVGravityVCenter){
-        pY += (self.frame.size.height-self.paddingTop-self.paddingBottom-self.textSize.height)/2.0;
+        pY += (self.nodeFrame.size.height-self.paddingTop-self.paddingBottom-self.textSize.height)/2.0;
     }else{
         pY += self.paddingTop;
     }
     
     if ((self.gravity & VVGravityRight)==VVGravityRight) {
-        pX += self.frame.size.width-self.paddingRight-self.textSize.width;
+        pX += self.nodeFrame.size.width-self.paddingRight-self.textSize.width;
     }else if ((self.gravity & VVGravityHCenter)==VVGravityHCenter){
-        pX += (self.frame.size.width-self.paddingLeft-self.paddingRight-self.textSize.width)/2.0;
+        pX += (self.nodeFrame.size.width-self.paddingLeft-self.paddingRight-self.textSize.width)/2.0;
     }else{
         pX = self.paddingLeft;
     }
-    self.cocoaView.frame = self.frame;
+    self.cocoaView.frame = self.nodeFrame;
     self.textView.frame = CGRectMake(pX, pY, _textSize.width, _textSize.height);
 
     switch (self.gravity) {
@@ -230,11 +230,11 @@
     }
 }
 
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
+- (CGSize)calculateSize:(CGSize)maxSize{
     _maxSize = maxSize;
     CGSize textSize = CGSizeZero;
-    CGFloat width = self.widthModle > 0 ? self.widthModle : maxSize.width-self.paddingLeft-self.paddingRight;
-    CGFloat height = self.heightModle > 0 ? self.heightModle : maxSize.height-self.paddingTop-self.paddingBottom;
+    CGFloat width = self.layoutWidth > 0 ? self.layoutWidth : maxSize.width-self.paddingLeft-self.paddingRight;
+    CGFloat height = self.layoutHeight > 0 ? self.layoutHeight : maxSize.height-self.paddingTop-self.paddingBottom;
     CGSize textMaxRT = CGSizeMake(width, height);
     
     StringInfo* info =[[StringCache sharedCache] getDrawStringInfo:self.text andFrontSize:self.frontSize maxWidth:width];
@@ -288,47 +288,47 @@
     _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
     _textSize.height = _textSize.height>textMaxRT.height?textMaxRT.height:_textSize.height;
 
-    switch ((int)self.widthModle) {
+    switch ((int)self.layoutWidth) {
         case VV_WRAP_CONTENT:
             //
-            self.width = _textSize.width;
-            self.width = self.paddingRight+self.paddingLeft+self.width;
+            self.nodeWidth = _textSize.width;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.widthModle==VV_WRAP_CONTENT) {
-                self.width = self.paddingRight+self.paddingLeft+_textSize.width;
+            if (self.superview.layoutWidth==VV_WRAP_CONTENT) {
+                self.nodeWidth = self.paddingRight+self.paddingLeft+_textSize.width;
             }else{
-                self.width=maxSize.width;
+                self.nodeWidth=maxSize.width;
             }
             //_textSize.width = self.width;
             break;
         default:
             //_textSize.width = self.width;
-            self.width = self.paddingRight+self.paddingLeft+self.width;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
             break;
     }
 
-    switch ((int)self.heightModle) {
+    switch ((int)self.layoutHeight) {
         case VV_WRAP_CONTENT:
             //
-            self.height= _textSize.height;
-            self.height = self.paddingTop+self.paddingBottom+self.height;
+            self.nodeHeight= _textSize.height;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.heightModle==VV_WRAP_CONTENT){
-                self.height = self.paddingTop+self.paddingBottom+_textSize.height;
+            if (self.superview.layoutHeight==VV_WRAP_CONTENT){
+                self.nodeHeight = self.paddingTop+self.paddingBottom+_textSize.height;
             }else{
-                self.height=maxSize.height;
+                self.nodeHeight=maxSize.height;
             }
             //_textSize.height = self.height;
             break;
         default:
             //_textSize.height = self.height;
-            self.height = self.paddingTop+self.paddingBottom+self.height;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
     }
     [self autoDim];
-    CGSize size = CGSizeMake(self.width=self.width<maxSize.width?self.width:maxSize.width, self.height=self.height<maxSize.height?self.height:maxSize.height);
+    CGSize size = CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
     return size;
 }
 

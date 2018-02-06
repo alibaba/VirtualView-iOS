@@ -36,34 +36,34 @@
     }
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubnodes{
     
     
-    CGFloat x = self.frame.origin.x;
-    CGFloat y = self.frame.origin.y;
-    self.width = self.width<0?self.superview.frame.size.width:self.width;
-    self.height = self.height<0?self.superview.frame.size.height:self.height;
+    CGFloat x = self.nodeFrame.origin.x;
+    CGFloat y = self.nodeFrame.origin.y;
+    self.nodeWidth = self.nodeWidth<0?self.superview.nodeFrame.size.width:self.nodeWidth;
+    self.nodeHeight = self.nodeHeight<0?self.superview.nodeFrame.size.height:self.nodeHeight;
     CGFloat a1,a2,w,h;
     a1 = (int)x*1;
     a2 = (int)y*1;
-    w = (int)self.width*1;
-    h = (int)self.height*1;
-    self.frame = CGRectMake(a1, a2, w, h);
+    w = (int)self.nodeWidth*1;
+    h = (int)self.nodeHeight*1;
+    self.nodeFrame = CGRectMake(a1, a2, w, h);
     
-    self.gridContainer.frame = self.frame;
+    self.gridContainer.frame = self.nodeFrame;
     int index = 0;
     for (int row=0; row<self.rowCount; row++) {
         for (int col=0; col<self.colCount; col++) {
             if (index<self.subViews.count) {
                 VVBaseNode* vvObj = [self.subViews objectAtIndex:index];
-                if(vvObj.visible==VVVisibilityGone){
+                if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
-                CGFloat pX = (vvObj.width+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
-                CGFloat pY = (vvObj.height+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
+                CGFloat pX = (vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.layoutMarginLeft;
+                CGFloat pY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.layoutMarginTop;
                 
-                vvObj.frame = CGRectMake(pX, pY, vvObj.width, vvObj.height);
-                [vvObj layoutSubviews];
+                vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+                [vvObj layoutSubnodes];
                 index++;
             }else{
                 break;
@@ -179,7 +179,7 @@
 - (void)attachCocoaViews:(VVBaseNode*)vvObj{
     for (VVBaseNode* subView in vvObj.subViews) {
         [self attachCocoaViews:subView];
-        if (subView.cocoaView && subView.visible!=VVVisibilityGone) {
+        if (subView.cocoaView && subView.visibility!=VVVisibilityGone) {
             [self.gridContainer addSubview:subView.cocoaView];
         }
     }
