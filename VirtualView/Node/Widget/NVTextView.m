@@ -196,7 +196,6 @@
 }
 
 - (void)setData:(NSData*)data{
-    //
     self.text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
 }
@@ -240,107 +239,18 @@
     StringInfo* info =[[StringCache sharedCache] getDrawStringInfo:self.text andFrontSize:self.frontSize maxWidth:width];
     if(info){
         self.textSize = info.drawRect;
-        //self.textView.frame = CGRectMake(0, 0, info.drawRect.width, info.drawRect.height);
     }else if(self.text && self.text.length>0){
-        if (0/*[self.cacheInfoDic objectForKey:@"cached"]*/) {
-            //textSize = CGSizeMake([[self.cacheInfoDic objectForKey:@"width"] floatValue], [[self.cacheInfoDic objectForKey:@"height"] floatValue]);
-        }else{
-            //CGSize textMaxRT = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
-            //CGSize textSize = CGSizeZero;
-            
-            UIFont *font = self.textView.font;
-
-            CGFloat fTextRealHeight=0.0f;
-            NSInteger lines = self.textView.numberOfLines;
-            if (lines>0) {
-                fTextRealHeight = font.lineHeight*lines;
-                if(textMaxRT.height<fTextRealHeight){
-                    textMaxRT.height = fTextRealHeight;
-                }
-            }
-
-            if(self.lineSpace <= 0)
-            {
-                textSize = [self.text boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
-                            NSStringDrawingUsesLineFragmentOrigin |
-                            NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font} context:nil].size;
-            }
-            else
-            {
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
-                style.lineSpacing = self.lineSpace;
-                textSize = [self.text boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
-                            NSStringDrawingUsesLineFragmentOrigin |
-                            NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font,NSParagraphStyleAttributeName:style} context:nil].size;
-            }
-            
-            if (textSize.height > fTextRealHeight) {
-                textSize.height=fTextRealHeight;
-            }
-         }
-        StringInfo* info = [[StringInfo alloc] init];
-        info.drawRect = textSize;
-        self.textSize = textSize;
-        [[StringCache sharedCache] setDrawStringInfo:info forString:self.text frontSize:self.frontSize maxWidth:width];
-
-    }
-
-    _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
-    _textSize.height = _textSize.height>textMaxRT.height?textMaxRT.height:_textSize.height;
-
-    switch ((int)self.layoutWidth) {
-        case VV_WRAP_CONTENT:
-            //
-            self.nodeWidth = _textSize.width;
-            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
-            break;
-        case VV_MATCH_PARENT:
-            if (self.superview.layoutWidth==VV_WRAP_CONTENT) {
-                self.nodeWidth = self.paddingRight+self.paddingLeft+_textSize.width;
-            }else{
-                self.nodeWidth=maxSize.width;
-            }
-            //_textSize.width = self.width;
-            break;
-        default:
-            //_textSize.width = self.width;
-            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
-            break;
-    }
-
-    switch ((int)self.layoutHeight) {
-        case VV_WRAP_CONTENT:
-            //
-            self.nodeHeight= _textSize.height;
-            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
-            break;
-        case VV_MATCH_PARENT:
-            if (self.superview.layoutHeight==VV_WRAP_CONTENT){
-                self.nodeHeight = self.paddingTop+self.paddingBottom+_textSize.height;
-            }else{
-                self.nodeHeight=maxSize.height;
-            }
-            //_textSize.height = self.height;
-            break;
-        default:
-            //_textSize.height = self.height;
-            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
-            break;
-    }
-    [self applyAutoDim];
-    CGSize size = CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
-    return size;
-}
-
-- (void)updateTextFrameSize{
-    CGSize textSize = CGSizeZero;
-    
-    if ([self.cacheInfoDic objectForKey:@"cached"]) {
-        textSize = CGSizeMake([[self.cacheInfoDic objectForKey:@"width"] floatValue], [[self.cacheInfoDic objectForKey:@"height"] floatValue]);
-    }else{
-        CGSize textMaxRT = CGSizeMake(_maxSize.width-self.paddingLeft-self.paddingRight, _maxSize.height-self.paddingTop-self.paddingBottom);
-        
         UIFont *font = self.textView.font;
+
+        CGFloat fTextRealHeight=0.0f;
+        NSInteger lines = self.textView.numberOfLines;
+        if (lines>0) {
+            fTextRealHeight = font.lineHeight*lines;
+            if(textMaxRT.height<fTextRealHeight){
+                textMaxRT.height = fTextRealHeight;
+            }
+        }
+
         if(self.lineSpace <= 0)
         {
             textSize = [self.text boundingRectWithSize:textMaxRT options:NSStringDrawingTruncatesLastVisibleLine |
@@ -355,15 +265,57 @@
                         NSStringDrawingUsesLineFragmentOrigin |
                         NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:font,NSParagraphStyleAttributeName:style} context:nil].size;
         }
-        [self.cacheInfoDic setObject:[NSNumber numberWithBool:YES] forKey:@"cached"];
-        [self.cacheInfoDic setObject:[NSNumber numberWithFloat:textSize.width] forKey:@"width"];
-        [self.cacheInfoDic setObject:[NSNumber numberWithFloat:textSize.height] forKey:@"height"];
+        
+        if (textSize.height > fTextRealHeight) {
+            textSize.height=fTextRealHeight;
+        }
+        
+        StringInfo* info = [[StringInfo alloc] init];
+        info.drawRect = textSize;
+        self.textSize = textSize;
+        [[StringCache sharedCache] setDrawStringInfo:info forString:self.text frontSize:self.frontSize maxWidth:width];
+
     }
-    self.textView.frame = CGRectMake(self.cocoaView.frame.origin.x, self.cocoaView.frame.origin.y, textSize.width, textSize.height);
-    [self.textView sizeToFit];
-    _textSize.width = self.textView.frame.size.width;
-    _textSize.height = self.textView.frame.size.height;
-    //self.cocoaView.frame = CGRectMake(self.cocoaView.frame.origin.x, self.cocoaView.frame.origin.y, _textSize.width, _textSize.height);
+
+    _textSize.width  = _textSize.width>textMaxRT.width?textMaxRT.width:_textSize.width;
+    _textSize.height = _textSize.height>textMaxRT.height?textMaxRT.height:_textSize.height;
+
+    switch ((int)self.layoutWidth) {
+        case VV_WRAP_CONTENT:
+            self.nodeWidth = _textSize.width;
+            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
+            break;
+        case VV_MATCH_PARENT:
+            if (self.superview.layoutWidth==VV_WRAP_CONTENT) {
+                self.nodeWidth = self.paddingRight+self.paddingLeft+_textSize.width;
+            }else{
+                self.nodeWidth=maxSize.width;
+            }
+            break;
+        default:
+            self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
+            break;
+    }
+
+    switch ((int)self.layoutHeight) {
+        case VV_WRAP_CONTENT:
+            self.nodeHeight= _textSize.height;
+            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
+            break;
+        case VV_MATCH_PARENT:
+            if (self.superview.layoutHeight==VV_WRAP_CONTENT){
+                self.nodeHeight = self.paddingTop+self.paddingBottom+_textSize.height;
+            }else{
+                self.nodeHeight=maxSize.height;
+            }
+            break;
+        default:
+            self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
+            break;
+    }
+    [self applyAutoDim];
+    CGSize size = CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
+    return size;
 }
 
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{

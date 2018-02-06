@@ -34,32 +34,28 @@
 @property (nonatomic, assign) CGFloat layoutMarginBottom;
 
 // calculated result
+// DO NOT modify these properties unless you know what you are doing.
 @property (nonatomic, assign) CGFloat nodeWidth;
 @property (nonatomic, assign) CGFloat nodeHeight;
 @property (nonatomic, assign) CGRect nodeFrame;
 
 @property(nonatomic, strong)NSString      *name;
 @property(nonatomic, assign)int           flag;
-@property(nonatomic, strong)NSString      *dataUrl;
 @property(nonatomic, strong)NSString      *dataTag;
 @property(nonatomic, strong)NSString      *action;
 @property(nonatomic, strong)NSString      *actionValue;
-@property(nonatomic, strong)NSString      *actionParam;
 @property(nonatomic, strong)NSString      *classString;
 @property(nonatomic, weak)  VVBaseNode  *superview;
 @property(nonatomic, strong)UIView        *cocoaView;
 @property(nonatomic, assign)int           childrenWidth;
 @property(nonatomic, assign)int           childrenHeight;
-@property(nonatomic, assign)BOOL          hidden;
 @property(nonatomic, copy) UIColor        *backgroundColor;
 
 @property(nonatomic, assign)int           gravity;
 @property(nonatomic, assign)CGFloat       layoutRatio;
 @property(nonatomic, assign)int           layoutDirection;
 
-@property(nonatomic, strong)NSMutableDictionary     *userVarDic;
 @property(nonatomic, readonly, copy) NSArray<__kindof VVBaseNode *> *subViews;
-@property(strong, nonatomic)NSMutableDictionary      *cacheInfoDic;
 
 @property (nonatomic, strong) NSMutableDictionary *expressionSetters;
 

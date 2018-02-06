@@ -24,7 +24,6 @@
 - (id)init{
     self = [super init];
     if (self) {
-        self.hidden = NO;
         _subViews = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor clearColor];
         self.gravity = VVGravityLeft|VVGravityTop;
@@ -70,7 +69,6 @@
 - (VVBaseNode *)hitTest:(CGPoint)point
 {
     if (self.visibility == VVVisibilityVisible
-        && self.hidden == NO
         && CGRectContainsPoint(self.nodeFrame, point)) {
         if (self.subViews.count > 0) {
             for (VVBaseNode* subnode in [self.subViews reverseObjectEnumerator]) {
@@ -294,15 +292,12 @@
             self.visibility = value;
             switch (self.visibility) {
                 case VVVisibilityInvisible:
-                    self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
                 case VVVisibilityVisible:
-                    self.hidden = NO;
                     self.cocoaView.hidden = NO;
                     break;
                 case VVVisibilityGone:
-                    self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
             }
@@ -409,11 +404,9 @@
             self.visibility = value;
             switch (self.visibility) {
                 case VVVisibilityInvisible:
-                    self.hidden = YES;
                     self.cocoaView.hidden = YES;
                     break;
                 case VVVisibilityVisible:
-                    self.hidden = NO;
                     self.cocoaView.hidden = NO;
                     break;
                 case VVVisibilityGone:
@@ -446,20 +439,12 @@
             self.action = value;
             break;
 
-        case STR_ID_actionParam:
-            self.actionParam = value;
-            break;
-
         case STR_ID_class:
             self.classString = value;
             break;
 
         case STR_ID_name:
             self.name = value;
-            break;
-
-        case STR_ID_dataUrl:
-            self.dataUrl = value;
             break;
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithString:value];

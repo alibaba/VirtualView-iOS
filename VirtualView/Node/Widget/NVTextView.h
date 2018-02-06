@@ -16,5 +16,4 @@
 @property(assign, nonatomic)CGFloat frontSize;
 @property(assign, nonatomic)VVTextStyle textStyle;
 @property(strong, nonatomic)UIColor*   borderColor;
-- (void)updateTextFrameSize;
 @end
