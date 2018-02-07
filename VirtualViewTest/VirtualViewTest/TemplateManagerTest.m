@@ -8,6 +8,7 @@
 #import <XCTest/XCTest.h>
 #import <OCHamcrest/OCHamcrest.h>
 #import <VirtualView/VVTemplateManager.h>
+#import <VirtualView/VVNodeClassMapper.h>
 #import <VirtualView/VVVHLayout.h>
 
 @interface TemplateManagerTest : XCTestCase
@@ -18,6 +19,7 @@
 
 - (void)setUp {
     [super setUp];
+    [VVNodeClassMapper registerClassName:@"VVBaseNode" forID:21];
 }
 
 - (void)tearDown {
