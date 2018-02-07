@@ -57,7 +57,7 @@
     
     int matchWidthType=0,matchHeightType=0;
     NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         if(item.visibility==VVVisibilityGone){
             continue;
         }else if(self.layoutWidth==VV_WRAP_CONTENT && item.layoutWidth==VV_MATCH_PARENT) {
@@ -186,7 +186,7 @@
         pY += self.paddingTop;
     }
     
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         //
         if(item.visibility==VVVisibilityGone){
             continue;
@@ -239,7 +239,7 @@
         pX += self.paddingLeft;
     }
     
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         //
         if(item.visibility==VVVisibilityGone){
             continue;

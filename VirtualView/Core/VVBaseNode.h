@@ -26,7 +26,7 @@
 @property (nonatomic, assign) CGFloat paddingTop;
 @property (nonatomic, assign) CGFloat paddingBottom;
 
-// self position in parent layout
+// self position
 @property (nonatomic, assign) VVGravity layoutGravity;
 @property (nonatomic, assign) CGFloat layoutMarginLeft;
 @property (nonatomic, assign) CGFloat layoutMarginRight;
@@ -39,28 +39,30 @@
 @property (nonatomic, assign) CGFloat nodeHeight;
 @property (nonatomic, assign) CGRect nodeFrame;
 
-@property(nonatomic, strong)NSString      *name;
-@property(nonatomic, assign)int           flag;
-@property(nonatomic, strong)NSString      *dataTag;
-@property(nonatomic, strong)NSString      *action;
-@property(nonatomic, strong)NSString      *actionValue;
-@property(nonatomic, strong)NSString      *classString;
-@property(nonatomic, weak)  VVBaseNode  *superview;
-@property(nonatomic, strong)UIView        *cocoaView;
-@property(nonatomic, assign)int           childrenWidth;
-@property(nonatomic, assign)int           childrenHeight;
-@property(nonatomic, copy) UIColor        *backgroundColor;
+// for specicied nodes
+// Need to be moved to those nodes.
+@property (nonatomic, assign) VVGravity gravity;
+@property (nonatomic, assign) CGFloat layoutRatio;
+@property (nonatomic, assign) VVDirection layoutDirection;
 
-@property(nonatomic, assign)int           gravity;
-@property(nonatomic, assign)CGFloat       layoutRatio;
-@property(nonatomic, assign)int           layoutDirection;
-
-@property(nonatomic, readonly, copy) NSArray<__kindof VVBaseNode *> *subViews;
+@property (nonatomic, weak, readonly) VVBaseNode  *supernode;
+@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subnodes;
+@property (nonatomic, strong, readonly) UIView *cocoaView;
 
 @property (nonatomic, strong) NSMutableDictionary *expressionSetters;
 
 @property (nonatomic, weak) CALayer *rootCanvasLayer;
 @property (nonatomic, weak) UIView *rootCocoaView;
+
+@property (nonatomic, assign) VVFlag flag;
+@property (nonatomic, strong) NSString *dataTag;
+@property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *actionValue;
+@property (nonatomic, strong) NSString *className;
+@property (nonatomic, strong) UIColor *backgroundColor;
+
+@property (nonatomic, assign) int childrenWidth;
+@property (nonatomic, assign) int childrenHeight;
 
 - (VVBaseNode *)hitTest:(CGPoint)point;
 

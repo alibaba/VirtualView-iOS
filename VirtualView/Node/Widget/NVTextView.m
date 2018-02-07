@@ -82,12 +82,14 @@
 @interface NVTextView (){
     CGSize _maxSize;
 }
+@property (nonatomic, strong, readwrite) UIView *cocoaView;
 @property(nonatomic, assign)CGSize  textSize;
 @property(nonatomic, assign)CGFloat lineSpace;
 @property(nonatomic, strong)NSMutableAttributedString* attStr;
 @end
 
 @implementation NVTextView
+@synthesize cocoaView;
 
 - (id)init{
     self = [super init];
@@ -286,7 +288,7 @@
             self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.layoutWidth==VV_WRAP_CONTENT) {
+            if (self.supernode.layoutWidth==VV_WRAP_CONTENT) {
                 self.nodeWidth = self.paddingRight+self.paddingLeft+_textSize.width;
             }else{
                 self.nodeWidth=maxSize.width;
@@ -303,7 +305,7 @@
             self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.layoutHeight==VV_WRAP_CONTENT){
+            if (self.supernode.layoutHeight==VV_WRAP_CONTENT){
                 self.nodeHeight = self.paddingTop+self.paddingBottom+_textSize.height;
             }else{
                 self.nodeHeight=maxSize.height;

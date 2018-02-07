@@ -22,6 +22,7 @@
 @interface NVImageView (){
     //
 }
+@property (nonatomic, strong, readwrite) UIView *cocoaView;
 @property(nonatomic, assign)CGSize   imageSize;
 @property(assign, nonatomic)BOOL disableCache;
 @property(nonatomic, strong)VV_NImageViewType   *imageView;
@@ -32,6 +33,7 @@
 @end
 
 @implementation NVImageView
+@synthesize cocoaView;
 - (id)init{
     self = [super init];
     if (self) {
@@ -75,17 +77,7 @@
         [self.imageView sd_cancelCurrentAnimationImagesLoad];
         if ([self.imgUrl isKindOfClass:[NSString class]] && self.imgUrl.length > 0) {
             self.cocoaView.hidden = NO;
-            __weak typeof(NVImageView*) weakSelf = self;
-
-            [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.imgUrl]
-                                     completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                __strong typeof(NVImageView*) strongSelf = weakSelf;
-                if(strongSelf.classString!=nil && self.classString.length>0){
-                    UIColor* color = [NVImageView pixelColorFromImage:image];
-                    VVLayout* virtualView = (VVLayout*)((VVViewContainer*)strongSelf.rootCocoaView).virtualView;
-                    virtualView.borderColor = color;
-                }
-            }];
+            [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.imgUrl]];
         }else{
             self.cocoaView.hidden = YES;
         }
@@ -113,7 +105,7 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.layoutWidth==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.supernode.layoutWidth==VV_WRAP_CONTENT && self.supernode.autoDimDirection==VVAutoDimDirectionNone) {
                 //_imageSize.width = maxSize.width;
                 self.nodeWidth = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
                 _imageSize.width = self.nodeWidth - self.paddingLeft - self.paddingRight;
@@ -144,7 +136,7 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.superview.layoutHeight==VV_WRAP_CONTENT && self.superview.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.supernode.layoutHeight==VV_WRAP_CONTENT && self.supernode.autoDimDirection==VVAutoDimDirectionNone) {
 #ifdef VV_ALIBABA
                 _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
                 self.height = self.paddingTop+self.paddingBottom+_imageSize.height;

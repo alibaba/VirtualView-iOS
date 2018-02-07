@@ -66,8 +66,8 @@
     int index = 0;
     for (int row=0; row<_rowCount; row++) {
         for (int col=0; col<_colCount; col++) {
-            if (index<self.subViews.count) {
-                VVBaseNode* vvObj = [self.subViews objectAtIndex:index];
+            if (index<self.subnodes.count) {
+                VVBaseNode* vvObj = [self.subnodes objectAtIndex:index];
                 if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
@@ -116,8 +116,8 @@
     CGFloat itemMaxHeight = _itemHeight;
     CGFloat itemMaxWidth = 0;
     CGFloat maxWidth=0,maxHeight=0;
-    _rowCount = self.subViews.count/_colCount;
-    if (self.subViews.count%_colCount>0) {
+    _rowCount = self.subnodes.count/_colCount;
+    if (self.subnodes.count%_colCount>0) {
         _rowCount++;
     }
     //contentSize.width -= self.marginLeft+self.marginRight;
@@ -144,13 +144,13 @@
     
     _itemMaxSize = CGSizeMake(itemMaxWidth, itemMaxHeight);
     
-    for (int index =0; index<self.subViews.count; index+=_colCount) {
+    for (int index =0; index<self.subnodes.count; index+=_colCount) {
         CGFloat tmpWidth=0,tmpHeight=0;
         for (int j=0; j<_colCount; j++) {
-            if (index+j==self.subViews.count) {
+            if (index+j==self.subnodes.count) {
                 break;
             }
-            VVBaseNode* vvObj = [self.subViews objectAtIndex:index+j];
+            VVBaseNode* vvObj = [self.subnodes objectAtIndex:index+j];
             CGSize itemSize = [vvObj calculateSize:_itemMaxSize];
             #ifdef VV_DEBUG
                 NSLog(@"h:%f,w:%f",itemSize.height,itemSize.width);

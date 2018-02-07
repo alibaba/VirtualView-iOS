@@ -36,7 +36,7 @@
     CGFloat pY = self.nodeFrame.origin.y + self.paddingTop ;
     //CGFloat validSize = self.height-_invalidHSize-self.paddingTop-self.paddingBottom;
     
-    for (VVBaseNode* vvObj in self.subViews) {
+    for (VVBaseNode* vvObj in self.subnodes) {
         if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
@@ -77,7 +77,7 @@
     CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft ;
     //CGFloat validSize = self.width-_invalidHSize-self.paddingLeft-self.paddingRight;
     
-    for (VVBaseNode* vvObj in self.subViews) {
+    for (VVBaseNode* vvObj in self.subnodes) {
         if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
@@ -144,7 +144,7 @@
     
     CGSize blanceSize = CGSizeMake(maxSize.width-self.paddingLeft-self.paddingRight, maxSize.height-self.paddingTop-self.paddingBottom);
     
-    for (VVBaseNode* vvObj in self.subViews) {
+    for (VVBaseNode* vvObj in self.subnodes) {
         _totalRatio += vvObj.layoutRatio;
         if (vvObj.layoutRatio>0) {
             [ratioSubViews addObject:vvObj];

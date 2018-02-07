@@ -17,12 +17,14 @@
 {
     //CGRect _frame;
 }
+@property (nonatomic, strong, readwrite) UIView *cocoaView;
 @property(assign, nonatomic)NSUInteger lengthsCount;
 @property(strong, nonatomic)NSString*  dashEffectString;
 @property(strong, nonatomic)CALayer*   drawLayer;
 @end
 
 @implementation NVLineView
+@synthesize cocoaView;
 - (id)init{
     self = [super init];
     if (self) {

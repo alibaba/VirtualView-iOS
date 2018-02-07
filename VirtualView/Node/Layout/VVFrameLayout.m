@@ -12,10 +12,10 @@
 - (void)setNodeFrame:(CGRect)nodeFrame
 {
     if (CGSizeEqualToSize(nodeFrame.size, self.nodeFrame.size) == NO) {
-        if (self.superview && [self.superview isWarpContent]) {
-            [self.superview setNeedsLayout];
+        if (self.supernode && [self.supernode isWarpContent]) {
+            [self.supernode setNeedsLayout];
         }
-        for (VVBaseNode *subnode in self.subViews) {
+        for (VVBaseNode *subnode in self.subnodes) {
             if ([subnode isMatchParent]) {
                 [subnode setNeedsLayout];
             }
@@ -29,7 +29,7 @@
     CGSize contentSize = self.nodeFrame.size;
     contentSize.width -= self.paddingLeft + self.paddingRight;
     contentSize.height -= self.paddingTop + self.paddingBottom;
-    for (VVBaseNode *subnode in self.subViews) {
+    for (VVBaseNode *subnode in self.subnodes) {
         if (subnode.visibility == VVVisibilityGone) {
             continue;
         }
@@ -73,7 +73,7 @@
         contentSize.width -= self.paddingLeft + self.paddingRight;
         contentSize.height -= self.paddingTop + self.paddingBottom;
         CGFloat maxContentWidth = 0, maxContentHeight = 0;
-        for (VVBaseNode *subnode in self.subViews) {
+        for (VVBaseNode *subnode in self.subnodes) {
             if (subnode.visibility == VVVisibilityGone) {
                 continue;
             }

@@ -8,22 +8,20 @@
 #import "VVBaseNode.h"
 
 @interface VVBaseNode () {
-    NSMutableArray*   _subViews;
-    NSUInteger        _nodeID;
-    int _align, _flag, _minWidth, _minHeight;
+    NSMutableArray *_subnodes;
+    int _align, _minWidth, _minHeight;
     BOOL needsLayout;
 }
 
 @end
 
 @implementation VVBaseNode
-@synthesize subViews = _subViews;
-@synthesize nodeID   = _nodeID;
+@synthesize subnodes = _subnodes;
 
 - (id)init{
     self = [super init];
     if (self) {
-        _subViews = [[NSMutableArray alloc] init];
+        _subnodes = [[NSMutableArray alloc] init];
         self.backgroundColor = [UIColor clearColor];
         self.gravity = VVGravityLeft|VVGravityTop;
         self.visibility = VVVisibilityVisible;
@@ -69,8 +67,8 @@
 {
     if (self.visibility == VVVisibilityVisible
         && CGRectContainsPoint(self.nodeFrame, point)) {
-        if (self.subViews.count > 0) {
-            for (VVBaseNode* subnode in [self.subViews reverseObjectEnumerator]) {
+        if (self.subnodes.count > 0) {
+            for (VVBaseNode* subnode in [self.subnodes reverseObjectEnumerator]) {
                 VVBaseNode *hitNode = [subnode hitTest:point];
                 if (hitNode) {
                     return hitNode;
@@ -92,7 +90,7 @@
 
     VVBaseNode* obj = nil;
 
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         if (item.nodeID==tagid) {
             obj = item;
             break;
@@ -109,21 +107,21 @@
 
 - (void)addSubview:(VVBaseNode*)view{
     if (nil != view) {
-        [_subViews addObject:view];
-        view.superview = self;
+        [_subnodes addObject:view];
+        view->_supernode = self;
     }
 }
 
 - (void)removeSubView:(VVBaseNode*)view{
-    if (nil != view && [_subViews containsObject:view]) {
-        [_subViews removeObject:view];
+    if (nil != view && [_subnodes containsObject:view]) {
+        [_subnodes removeObject:view];
     }
 }
 
 - (void)removeFromSuperview{
-    if (nil != self.superview) {
-        [self.superview removeSubView:self];
-        self.superview = nil;
+    if (nil != self.supernode) {
+        [self.supernode removeSubView:self];
+        self->_supernode = nil;
     }
 }
 
@@ -439,12 +437,9 @@
             break;
 
         case STR_ID_class:
-            self.classString = value;
+            self.className = value;
             break;
 
-        case STR_ID_name:
-            self.name = value;
-            break;
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithString:value];
             break;
@@ -496,7 +491,7 @@
 - (void)setRootCocoaView:(UIView *)rootCocoaView
 {
     _rootCocoaView = rootCocoaView;
-    for (VVBaseNode *subNode in self.subViews) {
+    for (VVBaseNode *subNode in self.subnodes) {
         subNode.rootCocoaView = rootCocoaView;
     }
 }
@@ -504,7 +499,7 @@
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
     _rootCanvasLayer = rootCanvasLayer;
-    for (VVBaseNode *subNode in self.subViews) {
+    for (VVBaseNode *subNode in self.subnodes) {
         subNode.rootCanvasLayer = rootCanvasLayer;
     }
 }

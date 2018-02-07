@@ -77,7 +77,7 @@
     CGFloat blanceWidthRight = blanceWidthLeft, blanceHeightBottom=blanceHeightTop;
 
     NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         if (item.visibility==VVVisibilityGone) {
             continue;
         }else if(self.layoutWidth==VV_WRAP_CONTENT && item.layoutWidth==VV_MATCH_PARENT) {
@@ -221,7 +221,7 @@
 
     CGFloat topStart = pY;
     CGFloat bottomStart = height - self.paddingBottom;
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
 
         if(item.visibility==VVVisibilityGone){
             continue;
@@ -282,7 +282,7 @@
     
     CGFloat leftStart = pX;
     CGFloat rightStart = pX + width - self.paddingRight;
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         //
         if(item.visibility==VVVisibilityGone){
             continue;

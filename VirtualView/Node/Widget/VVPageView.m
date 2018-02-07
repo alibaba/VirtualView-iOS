@@ -10,6 +10,7 @@
 #import "NVCarouselPageView.h"
 
 @interface VVPageView ()<UIScrollViewDelegate>
+@property (nonatomic, strong, readwrite) UIView *cocoaView;
 @property(strong, nonatomic)CALayer*   drawLayer;
 @property(strong, nonatomic)NVCarouselPageView * scrollView;
 
@@ -18,6 +19,7 @@
 
 
 @implementation VVPageView
+@synthesize cocoaView;
 
 - (id)init{
     self = [super init];
@@ -66,8 +68,8 @@
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
-    if([[self superview].rootCocoaView isKindOfClass:[VVViewContainer class]]){
-        vvContainer = (VVViewContainer*)[self superview].rootCocoaView;
+    if([[self supernode].rootCocoaView isKindOfClass:[VVViewContainer class]]){
+        vvContainer = (VVViewContainer*)[self supernode].rootCocoaView;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
@@ -120,7 +122,7 @@
     
     int matchWidthType=0,matchHeightType=0;
     
-    for (VVBaseNode* item in self.subViews) {
+    for (VVBaseNode* item in self.subnodes) {
         if(item.visibility==VVVisibilityGone){
             continue;
         }
