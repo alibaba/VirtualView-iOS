@@ -97,13 +97,11 @@
     assertThatInteger(times, equalToInteger(2));
 }
 
-- (CGSize)sizeValue
-{
+- (CGSize)sizeValue {
     return _rectValue.size;
 }
 
-- (void)setRectValue:(CGRect)rectValue
-{
+- (void)setRectValue:(CGRect)rectValue {
     [self willChangeValueForKey:@"sizeValue"];
     _rectValue = rectValue;
     [self didChangeValueForKey:@"sizeValue"];
@@ -122,6 +120,17 @@
     self.stringValue = @"10";
     assertThat(result1, equalTo(@"=10"));
     assertThatInteger(result2, equalToInteger(10));
+}
+
+- (void)testSelectorWithoutParam {
+    [self vv_addObserverForKeyPath:@"stringValue" selector:@selector(updateIntValue)];
+    
+    self.stringValue = @"10";
+    assertThatInteger(self.intValue, equalToInteger(-1));
+}
+
+- (void)updateIntValue {
+    self.intValue = -1;
 }
 
 @end
