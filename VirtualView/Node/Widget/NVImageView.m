@@ -90,6 +90,7 @@
     self.imageView.frame = CGRectMake(self.paddingLeft, self.paddingTop, self.imageSize.width, self.imageSize.height);
     self.maskView.frame = self.cocoaView.bounds;
     [self showImage];
+    [super layoutSubnodes];
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize{

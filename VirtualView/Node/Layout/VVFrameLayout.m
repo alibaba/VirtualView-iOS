@@ -60,6 +60,7 @@
         subnode.nodeFrame = CGRectMake(itemX, itemY, nodeSize.width, nodeSize.height);
         [subnode layoutSubnodes];
     }
+    [super layoutSubnodes];
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize

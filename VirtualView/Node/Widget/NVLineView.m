@@ -239,10 +239,6 @@
     });
 }
 
-- (void)layoutSubnodes{
-
-}
-
 - (CGSize)calculateSize:(CGSize)maxSize{
     
     switch ((int)self.layoutWidth) {

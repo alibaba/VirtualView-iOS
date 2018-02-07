@@ -195,6 +195,7 @@
             self.textView.textAlignment = NSTextAlignmentLeft;
             break;
     }
+    [super layoutSubnodes];
 }
 
 - (void)setData:(NSData*)data{

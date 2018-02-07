@@ -239,6 +239,7 @@
     pageView.data = self.data;
     pageView.pageView = self;
     [pageView calculateLayout];
+    [super layoutSubnodes];
 }
 
 

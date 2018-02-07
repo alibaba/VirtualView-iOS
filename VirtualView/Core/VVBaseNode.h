@@ -8,6 +8,14 @@
 #import <UIKit/UIKit.h>
 #import "VVDefines.h"
 
+#define VVKeyPath(PATH) ((void)self.PATH, @#PATH)
+#define VVNeedsLayoutObserve(PATH) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setNeedsLayout)];
+#define VVSubnodeNeedsLayoutObserve(PATH) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSubnodeNeedsLayout)];
+#define VVSupernodeNeedsLayoutObserve(PATH) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSupernodeNeedsLayout)];
+
 @interface VVBaseNode : NSObject
 
 @property (nonatomic, readonly) NSInteger nodeID;
@@ -21,29 +29,31 @@
 @property (nonatomic, assign) CGFloat autoDimX;
 @property (nonatomic, assign) CGFloat autoDimY;
 @property (nonatomic, assign) VVAutoDimDirection autoDimDirection;
+
+// content layout
 @property (nonatomic, assign) CGFloat paddingLeft;
 @property (nonatomic, assign) CGFloat paddingRight;
 @property (nonatomic, assign) CGFloat paddingTop;
 @property (nonatomic, assign) CGFloat paddingBottom;
+@property (nonatomic, assign) VVGravity gravity;
 
-// self position
-@property (nonatomic, assign) VVGravity layoutGravity;
+// container layout
 @property (nonatomic, assign) CGFloat marginLeft;
 @property (nonatomic, assign) CGFloat marginRight;
 @property (nonatomic, assign) CGFloat marginTop;
 @property (nonatomic, assign) CGFloat marginBottom;
+@property (nonatomic, assign) VVGravity layoutGravity;
+@property (nonatomic, assign) CGFloat layoutRatio;
+@property (nonatomic, assign) VVDirection layoutDirection;
 
 // calculated result
 // DO NOT modify these properties unless you know what you are doing.
 @property (nonatomic, assign) CGFloat nodeWidth;
 @property (nonatomic, assign) CGFloat nodeHeight;
 @property (nonatomic, assign) CGRect nodeFrame;
-
-// for specicied nodes
-// Need to be moved to those nodes.
-@property (nonatomic, assign) VVGravity gravity;
-@property (nonatomic, assign) CGFloat layoutRatio;
-@property (nonatomic, assign) VVDirection layoutDirection;
+@property (nonatomic, assign, readonly) CGSize nodeSize; // helper method to get nodeFrame.size
+@property (nonatomic, assign, readonly) CGSize contentSize; // the content maximun size = nodeSize - padding
+@property (nonatomic, assign, readonly) CGSize containerSize; // the size in container = nodeSize + margin
 
 // other
 @property (nonatomic, assign) VVFlag flag;
@@ -75,9 +85,15 @@
 - (void)removeSubnode:(VVBaseNode *)node;
 - (void)removeFromSupernode;
 
-- (void)setNeedsLayout;
+- (BOOL)needsLayoutIfSupernodeLayout;
+- (BOOL)needsLayoutIfSubnodeLayout;
+- (void)setSupernodeNeedsLayout;
+- (void)setSubnodeNeedsLayout;
+- (void)setNeedsLayout; // Will set supernode and subnodes is it is necessary.
+- (void)setNeedsLayoutNotRecursively; // Will set this node only.
+- (void)setNeedsLayoutRecursively; // Will set whole node tree, please call this method with root node.
 - (void)layoutIfNeeded;
-- (void)layoutSubnodes;
+- (void)layoutSubnodes NS_REQUIRES_SUPER;
 - (void)layoutSubviews __deprecated_msg("use layoutSubnodes");
 - (void)applyAutoDim;
 - (CGSize)calculateSize:(CGSize)maxSize;

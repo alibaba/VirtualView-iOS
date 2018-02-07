@@ -26,14 +26,31 @@
         _layoutGravity = VVGravityLeft | VVGravityTop;
         _gravity = VVGravityLeft | VVGravityTop;
         _visibility = VVVisibilityVisible;
-        _layoutDirection = VVDirectionLeft;
+        _layoutDirection = VVDirectionLeft | VVDirectionTop;
         _autoDimDirection = VVAutoDimDirectionNone;
-        [self setNeedsLayout];
+        [self setNeedsLayoutNotRecursively];
     }
     return self;
 }
 
 #pragma mark Properties
+
+- (CGSize)nodeSize
+{
+    return _nodeFrame.size;
+}
+
+- (CGSize)contentSize
+{
+    return CGSizeMake(_nodeFrame.size.width - _paddingLeft - _paddingRight,
+                      _nodeFrame.size.height - _paddingTop - _paddingBottom);
+}
+
+- (CGSize)containerSize
+{
+    return CGSizeMake(_nodeFrame.size.width + _marginLeft + _marginRight,
+                      _nodeFrame.size.height + _marginTop + _marginBottom);
+}
 
 - (void)setRootCocoaView:(UIView *)rootCocoaView
 {
@@ -136,18 +153,103 @@
 
 #pragma mark Layout
 
+- (void)setupObserver
+{
+    VVNeedsLayoutObserve(layoutWidth);
+    VVNeedsLayoutObserve(layoutHeight);
+    VVNeedsLayoutObserve(autoDimX);
+    VVNeedsLayoutObserve(autoDimY);
+    VVNeedsLayoutObserve(autoDimDirection);
+    VVSubnodeNeedsLayoutObserve(paddingTop);
+    VVSubnodeNeedsLayoutObserve(paddingLeft);
+    VVSubnodeNeedsLayoutObserve(paddingRight);
+    VVSubnodeNeedsLayoutObserve(paddingBottom);
+    VVSupernodeNeedsLayoutObserve(marginTop);
+    VVSupernodeNeedsLayoutObserve(marginLeft);
+    VVSupernodeNeedsLayoutObserve(marginRight);
+    VVSupernodeNeedsLayoutObserve(marginBottom);
+    VVSupernodeNeedsLayoutObserve(layoutRatio);
+    __weak VVBaseNode *weakSelf = self;
+    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id  _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        [strongSelf setNeedsLayoutNotRecursively];
+    }];
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutGravity) block:^(id  _Nonnull value) {
+        __strong VVBaseNode *strongSupernode = weakSelf.supernode;
+        [strongSupernode setNeedsLayoutNotRecursively];
+    }];
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id  _Nonnull value) {
+        __strong VVBaseNode *strongSupernode = weakSelf.supernode;
+        [strongSupernode setNeedsLayoutNotRecursively];
+    }];
+}
+
+- (BOOL)needsLayoutIfSubnodeLayout
+{
+    return self.layoutWidth == VV_WRAP_CONTENT || self.layoutHeight == VV_WRAP_CONTENT;
+}
+
+- (BOOL)needsLayoutIfSupernodeLayout
+{
+    return self.layoutWidth == VV_MATCH_PARENT || self.layoutHeight == VV_MATCH_PARENT;
+}
+
+- (void)setSubnodeNeedsLayout
+{
+    for (VVBaseNode *subnode in self.subnodes) {
+        if ([subnode needsLayoutIfSupernodeLayout]) {
+            [subnode setNeedsLayout];
+        }
+    }
+}
+
+- (void)setSupernodeNeedsLayout
+{
+    if (self.supernode && [self.supernode needsLayoutIfSubnodeLayout]) {
+        [self.supernode setNeedsLayout];
+    }
+}
+
 - (void)setNeedsLayout
 {
+    BOOL updated = NO;
+    if (needsLayout == NO) {
+        needsLayout = YES;
+        updated = YES;
+    }
+    if (_nodeWidth >= 0) {
+        _nodeWidth = -1;
+        updated = YES;
+    }
+    if (_nodeHeight > 0) {
+        _nodeHeight = -1;
+        updated = YES;
+    }
+    if (updated) {
+        [self setSupernodeNeedsLayout];
+        [self setSubnodeNeedsLayout];
+    }
+}
+
+- (void)setNeedsLayoutNotRecursively
+{
     needsLayout = YES;
-    self.nodeWidth = -1;
-    self.nodeHeight = -1;
+    _nodeWidth = -1;
+    _nodeHeight = -1;
+}
+
+- (void)setNeedsLayoutRecursively
+{
+    [self setNeedsLayoutNotRecursively];
+    for (VVBaseNode *subnode in self.subnodes) {
+        [subnode setNeedsLayoutRecursively];
+    }
 }
 
 - (void)layoutIfNeeded
 {
     if (needsLayout) {
         [self layoutSubnodes];
-        needsLayout = NO;
     }
 }
 
@@ -159,6 +261,7 @@
 - (void)layoutSubnodes
 {
     // override me
+    needsLayout = NO;
 }
 
 - (void)applyAutoDim

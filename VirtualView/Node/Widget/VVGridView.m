@@ -70,7 +70,7 @@
             }
         }
     }
-
+    [super layoutSubnodes];
 }
 
 - (BOOL)setFloatValue:(float)value forKey:(int)key{
