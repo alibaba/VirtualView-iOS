@@ -40,19 +40,19 @@
         if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
-        pY+=vvObj.layoutMarginTop;
+        pY+=vvObj.marginTop;
         CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft;
         
-        CGFloat blanceW = (self.nodeWidth-vvObj.nodeWidth-vvObj.layoutMarginLeft-vvObj.layoutMarginRight)/2.0;
+        CGFloat blanceW = (self.nodeWidth-vvObj.nodeWidth-vvObj.marginLeft-vvObj.marginRight)/2.0;
         //CGFloat blanceH = (self.height-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
         
          if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
          //
-         pX += vvObj.layoutMarginLeft+blanceW;
+         pX += vvObj.marginLeft+blanceW;
          }else if((vvObj.layoutGravity&VVGravityRight)!=0){
-         pX += vvObj.layoutMarginLeft+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
+         pX += vvObj.marginLeft+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
          }else{
-         pX += vvObj.layoutMarginLeft;
+         pX += vvObj.marginLeft;
          }
         /*
         if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
@@ -66,7 +66,7 @@
         //CGFloat height = validSize*vvObj.layoutRatio/_totalRatio;
         
         vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
-        pY+=vvObj.nodeHeight+vvObj.layoutMarginBottom;
+        pY+=vvObj.nodeHeight+vvObj.marginBottom;
         [vvObj layoutSubnodes];
         
     }
@@ -81,11 +81,11 @@
         if(vvObj.visibility==VVVisibilityGone){
             continue;
         }
-        pX+=vvObj.layoutMarginLeft;
+        pX+=vvObj.marginLeft;
         CGFloat pY = self.nodeFrame.origin.y + self.paddingTop;
         
         CGFloat itemHeight = vvObj.layoutHeight == VV_MATCH_PARENT ? self.nodeHeight : vvObj.nodeHeight;
-        CGFloat blanceH = (self.nodeHeight-itemHeight-vvObj.layoutMarginTop-vvObj.layoutMarginBottom)/2.0;
+        CGFloat blanceH = (self.nodeHeight-itemHeight-vvObj.marginTop-vvObj.marginBottom)/2.0;
         /*
         if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
@@ -98,16 +98,16 @@
         
         if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
             //
-            pY += vvObj.layoutMarginTop+blanceH;
+            pY += vvObj.marginTop+blanceH;
         }else if((vvObj.layoutGravity&VVGravityBottom)!=0){
-            pY += vvObj.layoutMarginTop+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
+            pY += vvObj.marginTop+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
         }else{
-            pY += vvObj.layoutMarginTop;
+            pY += vvObj.marginTop;
         }
         //CGFloat width = validSize*vvObj.layoutRatio/_totalRatio;
         
         vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, itemHeight);
-        pX+=vvObj.nodeWidth+vvObj.layoutMarginRight;
+        pX+=vvObj.nodeWidth+vvObj.marginRight;
         [vvObj layoutSubnodes];
         
     }
@@ -151,8 +151,8 @@
         }else{
             [noratioSubViews addObject:vvObj];
         }
-        _invalidHSize+= vvObj.layoutMarginLeft+vvObj.layoutMarginRight;
-        _invalidVSize+= vvObj.layoutMarginTop+vvObj.layoutMarginBottom;
+        _invalidHSize+= vvObj.marginLeft+vvObj.marginRight;
+        _invalidVSize+= vvObj.marginTop+vvObj.marginBottom;
     }
     
     for (VVBaseNode* vvObj in noratioSubViews) {

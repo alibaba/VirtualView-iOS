@@ -25,7 +25,7 @@
 - (void)attachViews;
 - (void) attachViews:(VVBaseNode*)virtualView;
 - (void)update:(NSObject*)obj;
-- (VVBaseNode*)findObjectByID:(int)tagid;
+- (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
 
 + (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs;
 

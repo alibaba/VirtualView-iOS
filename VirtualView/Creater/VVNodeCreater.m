@@ -52,7 +52,7 @@
     
     for (VVNodeCreater *creater in self.subCreaters) {
         VVBaseNode *subNode = [creater createNodeTree];
-        [node addSubview:subNode];
+        [node addSubnode:subNode];
     }
     
     return node;

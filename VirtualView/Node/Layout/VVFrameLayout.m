@@ -9,20 +9,20 @@
 
 @implementation VVFrameLayout
 
-- (void)setNodeFrame:(CGRect)nodeFrame
-{
-    if (CGSizeEqualToSize(nodeFrame.size, self.nodeFrame.size) == NO) {
-        if (self.supernode && [self.supernode isWarpContent]) {
-            [self.supernode setNeedsLayout];
-        }
-        for (VVBaseNode *subnode in self.subnodes) {
-            if ([subnode isMatchParent]) {
-                [subnode setNeedsLayout];
-            }
-        }
-    }
-    [super setNodeFrame:nodeFrame];
-}
+//- (void)setNodeFrame:(CGRect)nodeFrame
+//{
+//    if (CGSizeEqualToSize(nodeFrame.size, self.nodeFrame.size) == NO) {
+//        if (self.supernode && [self.supernode isWarpContent]) {
+//            [self.supernode setNeedsLayout];
+//        }
+//        for (VVBaseNode *subnode in self.subnodes) {
+//            if ([subnode isMatchParent]) {
+//                [subnode setNeedsLayout];
+//            }
+//        }
+//    }
+//    [super setNodeFrame:nodeFrame];
+//}
 
 - (void)layoutSubnodes
 {
@@ -33,28 +33,28 @@
         if (subnode.visibility == VVVisibilityGone) {
             continue;
         }
-        CGSize nodeSize = CGSizeMake(contentSize.width - subnode.layoutMarginLeft - subnode.layoutMarginRight,
-                                     contentSize.height - subnode.layoutMarginTop - subnode.layoutMarginBottom);
+        CGSize nodeSize = CGSizeMake(contentSize.width - subnode.marginLeft - subnode.marginRight,
+                                     contentSize.height - subnode.marginTop - subnode.marginBottom);
         nodeSize = [subnode calculateSize:nodeSize];
 
         CGFloat itemX;
         if ((subnode.layoutGravity & VVGravityHCenter) > 0) {
-            CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subnode.layoutMarginLeft - subnode.layoutMarginRight - self.paddingRight) / 2;
+            CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subnode.marginLeft - subnode.marginRight - self.paddingRight) / 2;
             itemX = midX - nodeSize.width / 2;
         } else if((subnode.layoutGravity & VVGravityRight) > 0) {
-            itemX = self.nodeFrame.size.width - self.paddingRight - subnode.layoutMarginRight - nodeSize.width;
+            itemX = self.nodeFrame.size.width - self.paddingRight - subnode.marginRight - nodeSize.width;
         } else {
-            itemX = self.paddingLeft + subnode.layoutMarginLeft;
+            itemX = self.paddingLeft + subnode.marginLeft;
         }
         
         CGFloat itemY;
         if ((subnode.layoutGravity & VVGravityVCenter) > 0) {
-            CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subnode.layoutMarginTop - subnode.layoutMarginBottom - self.paddingBottom) / 2;
+            CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subnode.marginTop - subnode.marginBottom - self.paddingBottom) / 2;
             itemY = midY - nodeSize.height / 2;
         } else if ((subnode.layoutGravity & VVGravityBottom) > 0) {
-            itemY = self.nodeFrame.size.height - self.paddingBottom - subnode.layoutMarginBottom - nodeSize.height;
+            itemY = self.nodeFrame.size.height - self.paddingBottom - subnode.marginBottom - nodeSize.height;
         } else {
-            itemY = self.paddingTop + subnode.layoutMarginTop;
+            itemY = self.paddingTop + subnode.marginTop;
         }
         
         subnode.nodeFrame = CGRectMake(itemX, itemY, nodeSize.width, nodeSize.height);
@@ -89,11 +89,11 @@
 #endif
                 subnode.layoutGravity = (subnode.layoutGravity & VVGravityX) | VVGravityTop;
             }
-            CGSize nodeSize = CGSizeMake(contentSize.width - subnode.layoutMarginLeft - subnode.layoutMarginRight,
-                                         contentSize.height - subnode.layoutMarginTop - subnode.layoutMarginBottom);
+            CGSize nodeSize = CGSizeMake(contentSize.width - subnode.marginLeft - subnode.marginRight,
+                                         contentSize.height - subnode.marginTop - subnode.marginBottom);
             nodeSize = [subnode calculateSize:nodeSize];
-            nodeSize.width += subnode.layoutMarginLeft + subnode.layoutMarginRight;
-            nodeSize.height += subnode.layoutMarginTop + subnode.layoutMarginBottom;
+            nodeSize.width += subnode.marginLeft + subnode.marginRight;
+            nodeSize.height += subnode.marginTop + subnode.marginBottom;
             if (nodeSize.width > maxContentWidth) {
                 maxContentWidth = nodeSize.width;
             }

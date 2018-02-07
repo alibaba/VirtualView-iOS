@@ -122,7 +122,7 @@
         }
         item.actionValue = [jsonData objectForKey:item.action];
         
-        [item didFinishBinding];
+        [item didUpdated];
     }
     self.virtualView.nodeFrame = self.bounds;
     [self.virtualView layoutSubnodes];
@@ -134,9 +134,9 @@
 #endif
 }
 
-- (VVBaseNode*)findObjectByID:(int)tagid{
-    VVBaseNode* obj=[self.virtualView findViewByID:tagid];
-    return obj;
+- (VVBaseNode *)nodeWithID:(NSInteger)nodeID
+{
+    return [self.virtualView nodeWithID:nodeID];
 }
 
 + (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs

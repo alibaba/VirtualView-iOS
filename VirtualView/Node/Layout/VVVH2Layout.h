@@ -8,5 +8,9 @@
 #import "VVLayout.h"
 
 @interface VVVH2Layout : VVLayout
+
 @property(nonatomic, assign)int    orientation;
+@property (nonatomic, assign) int childrenWidth;
+@property (nonatomic, assign) int childrenHeight;
+
 @end

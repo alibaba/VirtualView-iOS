@@ -10,7 +10,7 @@
 
 @interface VVBaseNode : NSObject
 
-@property (nonatomic, readonly) NSUInteger nodeID;
+@property (nonatomic, readonly) NSInteger nodeID;
 
 // self visibility
 @property (nonatomic, assign) VVVisibility visibility;
@@ -28,10 +28,10 @@
 
 // self position
 @property (nonatomic, assign) VVGravity layoutGravity;
-@property (nonatomic, assign) CGFloat layoutMarginLeft;
-@property (nonatomic, assign) CGFloat layoutMarginRight;
-@property (nonatomic, assign) CGFloat layoutMarginTop;
-@property (nonatomic, assign) CGFloat layoutMarginBottom;
+@property (nonatomic, assign) CGFloat marginLeft;
+@property (nonatomic, assign) CGFloat marginRight;
+@property (nonatomic, assign) CGFloat marginTop;
+@property (nonatomic, assign) CGFloat marginBottom;
 
 // calculated result
 // DO NOT modify these properties unless you know what you are doing.
@@ -45,15 +45,7 @@
 @property (nonatomic, assign) CGFloat layoutRatio;
 @property (nonatomic, assign) VVDirection layoutDirection;
 
-@property (nonatomic, weak, readonly) VVBaseNode  *supernode;
-@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subnodes;
-@property (nonatomic, strong, readonly) UIView *cocoaView;
-
-@property (nonatomic, strong) NSMutableDictionary *expressionSetters;
-
-@property (nonatomic, weak) CALayer *rootCanvasLayer;
-@property (nonatomic, weak) UIView *rootCocoaView;
-
+// other
 @property (nonatomic, assign) VVFlag flag;
 @property (nonatomic, strong) NSString *dataTag;
 @property (nonatomic, strong) NSString *action;
@@ -61,35 +53,42 @@
 @property (nonatomic, strong) NSString *className;
 @property (nonatomic, strong) UIColor *backgroundColor;
 
-@property (nonatomic, assign) int childrenWidth;
-@property (nonatomic, assign) int childrenHeight;
+// node tree & native view
+@property (nonatomic, weak, readonly) VVBaseNode  *supernode;
+@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subnodes;
+@property (nonatomic, strong, readonly) UIView *cocoaView;
 
+// root canvas & native view
+@property (nonatomic, weak) CALayer *rootCanvasLayer;
+@property (nonatomic, weak) UIView *rootCocoaView;
+
+// expression setters
+@property (nonatomic, strong) NSMutableDictionary *expressionSetters;
+
+- (BOOL)isClickable;
+- (BOOL)isLongClickable;
+- (BOOL)supportExposure;
 - (VVBaseNode *)hitTest:(CGPoint)point;
 
-- (BOOL)isMatchParent;
-- (BOOL)isWarpContent;
-- (void)applyAutoDim;
+- (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
+- (void)addSubnode:(VVBaseNode *)node;
+- (void)removeSubnode:(VVBaseNode *)node;
+- (void)removeFromSupernode;
 
 - (void)setNeedsLayout;
 - (void)layoutIfNeeded;
 - (void)layoutSubnodes;
+- (void)layoutSubviews __deprecated_msg("use layoutSubnodes");
+- (void)applyAutoDim;
 - (CGSize)calculateSize:(CGSize)maxSize;
+- (CGSize)calculateLayoutSize:(CGSize)maxSize __deprecated_msg("use calculateSize");
 
-- (VVBaseNode *)findViewByID:(int)tagid;
-- (void)addSubview:(VVBaseNode *)view;
-- (void)removeSubView:(VVBaseNode *)view;
-- (void)removeFromSuperview;
 - (BOOL)setIntValue:(int)value forKey:(int)key;
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key;
 - (BOOL)setStringDataValue:(NSString *)value forKey:(int)key;
-
-- (void)reset;
-- (void)didFinishBinding;
-- (void)setData:(NSData *)data;
 - (void)setDataObj:(NSObject *)obj forKey:(int)key;
-- (BOOL)isClickable;
-- (BOOL)isLongClickable;
-- (BOOL)supportExposure;
+- (void)reset;
+- (void)didUpdated;
 
 @end

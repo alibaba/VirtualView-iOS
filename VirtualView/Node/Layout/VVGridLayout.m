@@ -71,8 +71,8 @@
                 if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
-                CGFloat pX = self.nodeFrame.origin.x+(vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.layoutMarginLeft;
-                CGFloat pY = self.nodeFrame.origin.y+(vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.layoutMarginTop;
+                CGFloat pX = self.nodeFrame.origin.x+(vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
+                CGFloat pY = self.nodeFrame.origin.y+(vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
                 
                 vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
                 [vvObj layoutSubnodes];
@@ -171,7 +171,7 @@
             self.nodeWidth = self.paddingRight+self.paddingLeft+maxWidth;
             break;
         case VV_MATCH_PARENT:
-            self.nodeWidth = maxSize.width - self.layoutMarginLeft - self.layoutMarginRight;
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
             
             break;
         default:
@@ -185,7 +185,7 @@
             self.nodeHeight = self.paddingTop+self.paddingBottom+maxHeight;
             break;
         case VV_MATCH_PARENT:
-            self.nodeHeight = maxSize.height - self.layoutMarginTop - self.layoutMarginBottom;
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
             
             break;
         default:

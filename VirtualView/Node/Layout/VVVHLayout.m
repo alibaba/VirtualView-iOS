@@ -87,12 +87,12 @@
                 toItemSize.width = blanceWidth;
                 break;
         }
-        toItemSize.height-=item.layoutMarginTop+item.layoutMarginBottom;
-        toItemSize.width -=item.layoutMarginLeft+item.layoutMarginRight;
+        toItemSize.height-=item.marginTop+item.marginBottom;
+        toItemSize.width -=item.marginLeft+item.marginRight;
         CGSize size = [item calculateSize:toItemSize];
         if (self.orientation==VVOrientationVertical) {
-            blanceHeight -= size.height+item.layoutMarginTop+item.layoutMarginBottom;
-            itemsSize.height+=size.height+item.layoutMarginTop+item.layoutMarginBottom;
+            blanceHeight -= size.height+item.marginTop+item.marginBottom;
+            itemsSize.height+=size.height+item.marginTop+item.marginBottom;
             self.childrenHeight = itemsSize.height;
             
             if (matchWidthType==VV_WRAP_CONTENT) {
@@ -104,8 +104,8 @@
                 self.childrenWidth = maxWidth =maxWidth<size.width?size.width:maxWidth;
             }
         }else{
-            blanceWidth -= size.width+item.layoutMarginLeft+item.layoutMarginRight;
-            itemsSize.width+=size.width+item.layoutMarginLeft+item.layoutMarginRight;
+            blanceWidth -= size.width+item.marginLeft+item.marginRight;
+            itemsSize.width+=size.width+item.marginLeft+item.marginRight;
             self.childrenWidth = itemsSize.width;
             
             if (matchHeightType==VV_WRAP_CONTENT) {
@@ -196,34 +196,34 @@
         
         CGFloat marginY = 0;
         CGFloat marginX = 0;
-        int w = item.layoutMarginRight==0?0:(self.nodeWidth - item.layoutMarginRight - size.width);
-        int h = -item.layoutMarginBottom;
+        int w = item.marginRight==0?0:(self.nodeWidth - item.marginRight - size.width);
+        int h = -item.marginBottom;
         //NSLog(@"V>>>>marginX:%d,marginY:%d",w,h);
-        marginY += item.layoutMarginTop==0?h:item.layoutMarginTop;
-        marginX += item.layoutMarginLeft==0?w:item.layoutMarginLeft;
+        marginY += item.marginTop==0?h:item.marginTop;
+        marginX += item.marginLeft==0?w:item.marginLeft;
         
         
-        CGFloat blanceW = (self.nodeWidth-size.width-item.layoutMarginLeft-item.layoutMarginRight)/2.0;
+        CGFloat blanceW = (self.nodeWidth-size.width-item.marginLeft-item.marginRight)/2.0;
         //CGFloat blanceH = (self.height- size.height)/2.0;
         CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft;
         
         
-        pY += item.layoutMarginTop;
+        pY += item.marginTop;
         
         if((item.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
             //
-            pX += item.layoutMarginLeft+blanceW;
+            pX += item.marginLeft+blanceW;
         }else if((item.layoutGravity&VVGravityRight)!=0){
-            pX = pX+self.nodeWidth-size.width-item.layoutMarginRight;//(blanceW<0?0:blanceW)*2.0;
+            pX = pX+self.nodeWidth-size.width-item.marginRight;//(blanceW<0?0:blanceW)*2.0;
         }else{
-            pX += item.layoutMarginLeft;
+            pX += item.marginLeft;
         }
         
         item.nodeFrame = CGRectMake(pX, pY, size.width, size.height);//CGRectOffset(frame, self.frame.origin.x, pY);
         [item layoutSubnodes];
         
-        pY+=size.height + item.layoutMarginBottom;
-        height -= size.height + item.layoutMarginTop + item.layoutMarginBottom;
+        pY+=size.height + item.marginBottom;
+        height -= size.height + item.marginTop + item.marginBottom;
     }
 }
 
@@ -248,26 +248,26 @@
         CGFloat pY = self.nodeFrame.origin.y + self.paddingTop;
                 CGFloat marginY = 0;
         CGFloat marginX = 0;
-        int w = -item.layoutMarginRight;
-        int h = item.layoutMarginBottom==0?0:(self.nodeHeight - item.layoutMarginBottom - size.height);
+        int w = -item.marginRight;
+        int h = item.marginBottom==0?0:(self.nodeHeight - item.marginBottom - size.height);
         //NSLog(@"H>>>>marginX:%d,marginY:%d",w,h);
 
-        marginY += item.layoutMarginTop==0?h:item.layoutMarginTop;
-        marginX += item.layoutMarginLeft==0?w:item.layoutMarginLeft;
+        marginY += item.marginTop==0?h:item.marginTop;
+        marginX += item.marginLeft==0?w:item.marginLeft;
         
 
         //CGFloat blanceW = (self.width-size.width)/2.0;
-        CGFloat blanceH = (self.nodeHeight-size.height-item.layoutMarginTop-item.layoutMarginBottom)/2.0;
+        CGFloat blanceH = (self.nodeHeight-size.height-item.marginTop-item.marginBottom)/2.0;
         
-        pX += item.layoutMarginLeft;
+        pX += item.marginLeft;
         
         if((item.layoutGravity&VVGravityVCenter)!=0){
-            pY += item.layoutMarginTop+blanceH;
+            pY += item.marginTop+blanceH;
         }else if ((item.layoutGravity&VVGravityBottom)!=0){
             //
-            pY = pY+self.nodeHeight-size.height-item.layoutMarginBottom;
+            pY = pY+self.nodeHeight-size.height-item.marginBottom;
         }else{
-            pY += item.layoutMarginTop;
+            pY += item.marginTop;
         }
         
 
@@ -275,8 +275,8 @@
         [item layoutSubnodes];
         
         
-        pX+= size.width + item.layoutMarginRight;
-        width -= size.width + item.layoutMarginLeft + item.layoutMarginRight;
+        pX+= size.width + item.marginRight;
+        width -= size.width + item.marginLeft + item.marginRight;
     }
 }
 

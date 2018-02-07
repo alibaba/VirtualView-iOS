@@ -149,12 +149,12 @@
                 toItemSize.width = blanceWidth;
                 break;
         }
-        toItemSize.height-=item.layoutMarginTop+item.layoutMarginBottom;
-        toItemSize.width -=item.layoutMarginLeft+item.layoutMarginRight;
+        toItemSize.height-=item.marginTop+item.marginBottom;
+        toItemSize.width -=item.marginLeft+item.marginRight;
         CGSize size = [item calculateSize:toItemSize];
         if (self.orientation==VVOrientationVertical) {
             //blanceHeight -= size.height;
-            itemsSize.height+=size.height+item.layoutMarginTop+item.layoutMarginBottom;
+            itemsSize.height+=size.height+item.marginTop+item.marginBottom;
             self.childrenHeight = itemsSize.height;
             
             if (matchWidthType==VV_WRAP_CONTENT) {
@@ -167,7 +167,7 @@
             }
         }else{
             //blanceWidth -= size.width;
-            itemsSize.width+=size.width+item.layoutMarginLeft+item.layoutMarginRight;
+            itemsSize.width+=size.width+item.marginLeft+item.marginRight;
             self.childrenWidth = itemsSize.width;
             
             if (matchHeightType==VV_WRAP_CONTENT) {
