@@ -25,6 +25,7 @@
     VVObserver *observer = [[VVObserver alloc] initWithBlock:block];
     observer.name = keyPath;
     [self addObserver:observer forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:VVObserverContext];
+    [self.vv_observers addObject:observer];
 }
 
 - (void)vv_addObserverForKeyPath:(NSString *)keyPath selector:(SEL)selector

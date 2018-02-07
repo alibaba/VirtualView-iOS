@@ -11,6 +11,7 @@
 		920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B12015B704004F7966 /* ExpressionTest.m */; };
 		920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B420173E89004F7966 /* ColorUtilsTest.m */; };
 		920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8DA20184B54004F7966 /* StringMapperTest.m */; };
+		921CB845202AB0A4000F9B5E /* ObserverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB844202AB0A4000F9B5E /* ObserverTest.m */; };
 		926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B40432004950B0003D88E /* BinaryReaderTest.m */; };
 		926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */; };
 		926CFAC82008BE25003C0BCE /* icon.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC72008BE25003C0BCE /* icon.out */; };
@@ -29,6 +30,7 @@
 		920BF8B12015B704004F7966 /* ExpressionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpressionTest.m; sourceTree = "<group>"; };
 		920BF8B420173E89004F7966 /* ColorUtilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorUtilsTest.m; sourceTree = "<group>"; };
 		920BF8DA20184B54004F7966 /* StringMapperTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringMapperTest.m; sourceTree = "<group>"; };
+		921CB844202AB0A4000F9B5E /* ObserverTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObserverTest.m; sourceTree = "<group>"; };
 		926B40402004950B0003D88E /* VirtualViewTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualViewTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		926B40432004950B0003D88E /* BinaryReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryReaderTest.m; sourceTree = "<group>"; };
 		926B40452004950B0003D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,11 +91,12 @@
 				926CFAB1200760B4003C0BCE /* Resources */,
 				926B40432004950B0003D88E /* BinaryReaderTest.m */,
 				926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */,
+				920BF8B420173E89004F7966 /* ColorUtilsTest.m */,
 				920BF8B12015B704004F7966 /* ExpressionTest.m */,
+				921CB844202AB0A4000F9B5E /* ObserverTest.m */,
 				920BF8DA20184B54004F7966 /* StringMapperTest.m */,
 				926CFAD7200CCC30003C0BCE /* TemplateManagerTest.m */,
 				926B40452004950B0003D88E /* Info.plist */,
-				920BF8B420173E89004F7966 /* ColorUtilsTest.m */,
 			);
 			path = VirtualViewTest;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */,
 				926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */,
 				920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */,
+				921CB845202AB0A4000F9B5E /* ObserverTest.m in Sources */,
 				920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */,
 				926CFAD8200CCC30003C0BCE /* TemplateManagerTest.m in Sources */,
 				926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */,
