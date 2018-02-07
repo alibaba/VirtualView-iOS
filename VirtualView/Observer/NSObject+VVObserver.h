@@ -10,8 +10,9 @@
 
 @interface NSObject (VVObserver)
 
-- (VVObserver *)vv_addObserverForKey:(NSString *)key block:(void (^)(void))block;
-- (void)vv_removeObserverForKey:(NSString *)key;
+- (void)vv_addObserverForKeyPath:(nonnull NSString *)keyPath block:(nonnull VVObserverBlock)block;
+- (void)vv_addObserverForKeyPath:(nonnull NSString *)keyPath selector:(nonnull SEL)selector;
+- (void)vv_removeObserverForKeyPath:(nonnull NSString *)keyPath;
 - (void)vv_removeAllObservers;
 
 @end

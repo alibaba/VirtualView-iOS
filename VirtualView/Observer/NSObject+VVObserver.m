@@ -20,19 +20,41 @@
     return observers;
 }
 
-- (VVObserver *)vv_addObserverForKey:(NSString *)key block:(void (^)(void))block
+- (void)vv_addObserverForKeyPath:(NSString *)keyPath block:(nonnull VVObserverBlock)block
 {
-    return nil;
+    VVObserver *observer = [[VVObserver alloc] initWithBlock:block];
+    observer.name = keyPath;
+    [self addObserver:observer forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:VVObserverContext];
 }
 
-- (void)vv_removeObserverForKey:(NSString *)key
+- (void)vv_addObserverForKeyPath:(NSString *)keyPath selector:(SEL)selector
 {
-    
+    VVObserver *observer = [[VVObserver alloc] initWithTarget:self selector:selector];
+    observer.name = keyPath;
+    [self addObserver:observer forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:VVObserverContext];
+    [self.vv_observers addObject:observer];
+}
+
+- (void)vv_removeObserverForKeyPath:(NSString *)keyPath
+{
+    NSMutableSet *toBeRemoved = [NSMutableSet set];
+    for (VVObserver *observer in self.vv_observers) {
+        if ([observer.name isEqualToString:keyPath]) {
+            [toBeRemoved addObject:observer];
+        }
+    }
+    for (VVObserver *observer in toBeRemoved) {
+        [self removeObserver:observer forKeyPath:keyPath context:VVObserverContext];
+        [self.vv_observers removeObject:observer];
+    }
 }
 
 - (void)vv_removeAllObservers
 {
-    
+    for (VVObserver *observer in self.vv_observers) {
+        [self removeObserver:observer forKeyPath:observer.name context:VVObserverContext];
+    }
+    [self.vv_observers removeAllObjects];
 }
 
 @end
