@@ -158,7 +158,7 @@
     }
 }
 
-- (void)layoutSubnodes{
+- (void)layoutSubNodes{
     
     
     CGFloat pY =0, pX=0;
@@ -195,7 +195,7 @@
             self.textView.textAlignment = NSTextAlignmentLeft;
             break;
     }
-    [super layoutSubnodes];
+    [super layoutSubNodes];
 }
 
 - (void)setData:(NSData*)data{
@@ -289,7 +289,7 @@
             self.nodeWidth = self.paddingRight+self.paddingLeft+self.nodeWidth;
             break;
         case VV_MATCH_PARENT:
-            if (self.supernode.layoutWidth==VV_WRAP_CONTENT) {
+            if (self.superNode.layoutWidth==VV_WRAP_CONTENT) {
                 self.nodeWidth = self.paddingRight+self.paddingLeft+_textSize.width;
             }else{
                 self.nodeWidth=maxSize.width;
@@ -306,7 +306,7 @@
             self.nodeHeight = self.paddingTop+self.paddingBottom+self.nodeHeight;
             break;
         case VV_MATCH_PARENT:
-            if (self.supernode.layoutHeight==VV_WRAP_CONTENT){
+            if (self.superNode.layoutHeight==VV_WRAP_CONTENT){
                 self.nodeHeight = self.paddingTop+self.paddingBottom+_textSize.height;
             }else{
                 self.nodeHeight=maxSize.height;

@@ -8,7 +8,7 @@
 #import "VVBaseNode.h"
 
 @interface VVBaseNode () {
-    NSMutableArray *_subnodes;
+    NSMutableArray *_subNodes;
     BOOL needsLayout;
     BOOL updatingNeedsLayout; // to avoid infinite loop
 }
@@ -17,12 +17,12 @@
 
 @implementation VVBaseNode
 
-@synthesize subnodes = _subnodes;
+@synthesize subNodes = _subNodes;
 
 - (id)init{
     self = [super init];
     if (self) {
-        _subnodes = [[NSMutableArray alloc] init];
+        _subNodes = [[NSMutableArray alloc] init];
         _backgroundColor = [UIColor clearColor];
         _layoutGravity = VVGravityLeft | VVGravityTop;
         _gravity = VVGravityLeft | VVGravityTop;
@@ -56,7 +56,7 @@
 - (void)setRootCocoaView:(UIView *)rootCocoaView
 {
     _rootCocoaView = rootCocoaView;
-    for (VVBaseNode *subNode in self.subnodes) {
+    for (VVBaseNode *subNode in self.subNodes) {
         subNode.rootCocoaView = rootCocoaView;
     }
 }
@@ -64,7 +64,7 @@
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
     _rootCanvasLayer = rootCanvasLayer;
-    for (VVBaseNode *subNode in self.subnodes) {
+    for (VVBaseNode *subNode in self.subNodes) {
         subNode.rootCanvasLayer = rootCanvasLayer;
     }
 }
@@ -98,9 +98,9 @@
 {
     if (self.visibility == VVVisibilityVisible
         && CGRectContainsPoint(self.nodeFrame, point)) {
-        if (self.subnodes.count > 0) {
-            for (VVBaseNode* subnode in [self.subnodes reverseObjectEnumerator]) {
-                VVBaseNode *hitNode = [subnode hitTest:point];
+        if (self.subNodes.count > 0) {
+            for (VVBaseNode* subNode in [self.subNodes reverseObjectEnumerator]) {
+                VVBaseNode *hitNode = [subNode hitTest:point];
                 if (hitNode) {
                     return hitNode;
                 }
@@ -120,8 +120,8 @@
     if (self.nodeID == nodeID) {
         return self;
     }
-    for (VVBaseNode *subnode in self.subnodes) {
-        VVBaseNode *targetNode = [subnode nodeWithID:nodeID];
+    for (VVBaseNode *subNode in self.subNodes) {
+        VVBaseNode *targetNode = [subNode nodeWithID:nodeID];
         if (targetNode) {
             return targetNode;
         }
@@ -129,26 +129,26 @@
     return nil;
 }
 
-- (void)addSubnode:(VVBaseNode *)node
+- (void)addSubNode:(VVBaseNode *)node
 {
     if (nil != node) {
-        [_subnodes addObject:node];
-        node->_supernode = self;
+        [_subNodes addObject:node];
+        node->_superNode = self;
     }
 }
 
-- (void)removeSubnode:(VVBaseNode*)node
+- (void)removeSubNode:(VVBaseNode*)node
 {
-    if (nil != node && [_subnodes containsObject:node]) {
-        [_subnodes removeObject:node];
-        node->_supernode = nil;
+    if (nil != node && [_subNodes containsObject:node]) {
+        [_subNodes removeObject:node];
+        node->_superNode = nil;
     }
 }
 
-- (void)removeFromSupernode
+- (void)removeFromSuperNode
 {
-    if (nil != self.supernode) {
-        [self.supernode removeSubnode:self];
+    if (nil != self.superNode) {
+        [self.superNode removeSubNode:self];
     }
 }
 
@@ -161,56 +161,56 @@
     VVNeedsLayoutObserve(autoDimX);
     VVNeedsLayoutObserve(autoDimY);
     VVNeedsLayoutObserve(autoDimDirection);
-    VVSubnodeNeedsLayoutObserve(paddingTop);
-    VVSubnodeNeedsLayoutObserve(paddingLeft);
-    VVSubnodeNeedsLayoutObserve(paddingRight);
-    VVSubnodeNeedsLayoutObserve(paddingBottom);
-    VVSupernodeNeedsLayoutObserve(marginTop);
-    VVSupernodeNeedsLayoutObserve(marginLeft);
-    VVSupernodeNeedsLayoutObserve(marginRight);
-    VVSupernodeNeedsLayoutObserve(marginBottom);
-    VVSupernodeNeedsLayoutObserve(layoutRatio);
+    VVSubNodeNeedsLayoutObserve(paddingTop);
+    VVSubNodeNeedsLayoutObserve(paddingLeft);
+    VVSubNodeNeedsLayoutObserve(paddingRight);
+    VVSubNodeNeedsLayoutObserve(paddingBottom);
+    VVSuperNodeNeedsLayoutObserve(marginTop);
+    VVSuperNodeNeedsLayoutObserve(marginLeft);
+    VVSuperNodeNeedsLayoutObserve(marginRight);
+    VVSuperNodeNeedsLayoutObserve(marginBottom);
+    VVSuperNodeNeedsLayoutObserve(layoutRatio);
     __weak VVBaseNode *weakSelf = self;
     [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
         [strongSelf setNeedsLayoutNotRecursively];
     }];
     [self vv_addObserverForKeyPath:VVKeyPath(layoutGravity) block:^(id _Nonnull value) {
-        __strong VVBaseNode *strongSupernode = weakSelf.supernode;
-        [strongSupernode setNeedsLayoutNotRecursively];
+        __strong VVBaseNode *strongSuperNode = weakSelf.superNode;
+        [strongSuperNode setNeedsLayoutNotRecursively];
     }];
     [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id _Nonnull value) {
-        __strong VVBaseNode *strongSupernode = weakSelf.supernode;
-        [strongSupernode setNeedsLayoutNotRecursively];
+        __strong VVBaseNode *strongSuperNode = weakSelf.superNode;
+        [strongSuperNode setNeedsLayoutNotRecursively];
     }];
 }
 
-- (BOOL)needsLayoutIfSubnodeLayout
+- (BOOL)needsLayoutIfSubNodeLayout
 {
     return self.layoutWidth == VV_WRAP_CONTENT || self.layoutHeight == VV_WRAP_CONTENT;
 }
 
-- (BOOL)needsLayoutIfSupernodeLayout
+- (BOOL)needsLayoutIfSuperNodeLayout
 {
     return self.layoutWidth == VV_MATCH_PARENT || self.layoutHeight == VV_MATCH_PARENT;
 }
 
-- (void)setSubnodeNeedsLayout
+- (void)setSubNodeNeedsLayout
 {
     updatingNeedsLayout = YES;
-    for (VVBaseNode *subnode in self.subnodes) {
-        if ([subnode needsLayoutIfSupernodeLayout]) {
-            [subnode setNeedsLayout];
+    for (VVBaseNode *subNode in self.subNodes) {
+        if ([subNode needsLayoutIfSuperNodeLayout]) {
+            [subNode setNeedsLayout];
         }
     }
     updatingNeedsLayout = NO;
 }
 
-- (void)setSupernodeNeedsLayout
+- (void)setSuperNodeNeedsLayout
 {
     updatingNeedsLayout = YES;
-    if (self.supernode && [self.supernode needsLayoutIfSubnodeLayout]) {
-        [self.supernode setNeedsLayout];
+    if (self.superNode && [self.superNode needsLayoutIfSubNodeLayout]) {
+        [self.superNode setNeedsLayout];
     }
     updatingNeedsLayout = NO;
 }
@@ -221,8 +221,8 @@
         return;
     }
     [self setNeedsLayoutNotRecursively];
-    [self setSupernodeNeedsLayout];
-    [self setSubnodeNeedsLayout];
+    [self setSuperNodeNeedsLayout];
+    [self setSubNodeNeedsLayout];
 }
 
 - (void)setNeedsLayoutNotRecursively
@@ -235,24 +235,24 @@
 - (void)setNeedsLayoutRecursively
 {
     [self setNeedsLayoutNotRecursively];
-    for (VVBaseNode *subnode in self.subnodes) {
-        [subnode setNeedsLayoutRecursively];
+    for (VVBaseNode *subNode in self.subNodes) {
+        [subNode setNeedsLayoutRecursively];
     }
 }
 
 - (void)layoutIfNeeded
 {
     if (needsLayout) {
-        [self layoutSubnodes];
+        [self layoutSubNodes];
     }
 }
 
 - (void)layoutSubviews
 {
-    [self layoutSubnodes];
+    [self layoutSubNodes];
 }
 
-- (void)layoutSubnodes
+- (void)layoutSubNodes
 {
     // override me
     needsLayout = NO;

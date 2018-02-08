@@ -68,8 +68,8 @@
 
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
-    if([[self supernode].rootCocoaView isKindOfClass:[VVViewContainer class]]){
-        vvContainer = (VVViewContainer*)[self supernode].rootCocoaView;
+    if([[self superNode].rootCocoaView isKindOfClass:[VVViewContainer class]]){
+        vvContainer = (VVViewContainer*)[self superNode].rootCocoaView;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
@@ -122,7 +122,7 @@
     
     int matchWidthType=0,matchHeightType=0;
     
-    for (VVBaseNode* item in self.subnodes) {
+    for (VVBaseNode* item in self.subNodes) {
         if(item.visibility==VVVisibilityGone){
             continue;
         }
@@ -233,13 +233,13 @@
     return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
-- (void)layoutSubnodes{
+- (void)layoutSubNodes{
     NVCarouselPageView *pageView = (NVCarouselPageView*)self.cocoaView;
     pageView.frame = CGRectMake(0, 0, self.nodeWidth, self.nodeWidth);
     pageView.data = self.data;
     pageView.pageView = self;
     [pageView calculateLayout];
-    [super layoutSubnodes];
+    [super layoutSubNodes];
 }
 
 

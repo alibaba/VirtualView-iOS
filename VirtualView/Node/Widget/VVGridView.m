@@ -36,13 +36,13 @@
     }
 }
 
-- (void)layoutSubnodes{
+- (void)layoutSubNodes{
     
     
     CGFloat x = self.nodeFrame.origin.x;
     CGFloat y = self.nodeFrame.origin.y;
-    self.nodeWidth = self.nodeWidth<0?self.supernode.nodeFrame.size.width:self.nodeWidth;
-    self.nodeHeight = self.nodeHeight<0?self.supernode.nodeFrame.size.height:self.nodeHeight;
+    self.nodeWidth = self.nodeWidth<0?self.superNode.nodeFrame.size.width:self.nodeWidth;
+    self.nodeHeight = self.nodeHeight<0?self.superNode.nodeFrame.size.height:self.nodeHeight;
     CGFloat a1,a2,w,h;
     a1 = (int)x*1;
     a2 = (int)y*1;
@@ -54,8 +54,8 @@
     int index = 0;
     for (int row=0; row<self.rowCount; row++) {
         for (int col=0; col<self.colCount; col++) {
-            if (index<self.subnodes.count) {
-                VVBaseNode* vvObj = [self.subnodes objectAtIndex:index];
+            if (index<self.subNodes.count) {
+                VVBaseNode* vvObj = [self.subNodes objectAtIndex:index];
                 if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
@@ -63,14 +63,14 @@
                 CGFloat pY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
                 
                 vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
-                [vvObj layoutSubnodes];
+                [vvObj layoutSubNodes];
                 index++;
             }else{
                 break;
             }
         }
     }
-    [super layoutSubnodes];
+    [super layoutSubNodes];
 }
 
 - (BOOL)setFloatValue:(float)value forKey:(int)key{
@@ -129,8 +129,8 @@
         self.updateDataObj = obj;
     }
     VVViewContainer* vvContainer = nil;
-    if([self.supernode.rootCocoaView isKindOfClass:[VVViewContainer class]]){
-        vvContainer = (VVViewContainer*)self.supernode.rootCocoaView;
+    if([self.superNode.rootCocoaView isKindOfClass:[VVViewContainer class]]){
+        vvContainer = (VVViewContainer*)self.superNode.rootCocoaView;
     }
     [self resetObj];
     NSArray* dataArray = (NSArray*)obj;
@@ -148,7 +148,7 @@
             }
         }
         vv.actionValue = [jsonData objectForKey:vv.action];
-        [self addSubnode:vv];
+        [self addSubNode:vv];
 
     }
     self.rootCocoaView = self.gridContainer;
@@ -177,7 +177,7 @@
 }
 
 - (void)attachCocoaViews:(VVBaseNode*)vvObj{
-    for (VVBaseNode* subView in vvObj.subnodes) {
+    for (VVBaseNode* subView in vvObj.subNodes) {
         [self attachCocoaViews:subView];
         if (subView.cocoaView && subView.visibility!=VVVisibilityGone) {
             [self.gridContainer addSubview:subView.cocoaView];
@@ -187,7 +187,7 @@
 
 - (void)removeCocoaView:(VVBaseNode*)vvObj{
 
-    NSArray* subViews = [NSArray arrayWithArray:vvObj.subnodes];
+    NSArray* subViews = [NSArray arrayWithArray:vvObj.subNodes];
     for (VVBaseNode* item in subViews) {
         [self removeCocoaView:item];
     }
@@ -198,10 +198,10 @@
 }
 
 - (void)resetObj{
-    NSArray* subViews = [NSArray arrayWithArray:self.subnodes];
+    NSArray* subViews = [NSArray arrayWithArray:self.subNodes];
     for (VVBaseNode* subView in subViews) {
         [self removeCocoaView:subView];
-        [subView removeFromSupernode];
+        [subView removeFromSuperNode];
     }
 
 }

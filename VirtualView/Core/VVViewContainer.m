@@ -92,7 +92,7 @@
 - (void) attachViews:(VVBaseNode*)virtualView {
     
     if ([virtualView isKindOfClass:VVLayout.class]) {
-        for (VVLayout* item in virtualView.subnodes) {
+        for (VVLayout* item in virtualView.subNodes) {
             [self attachViews:item];
         }
     } else if(virtualView.cocoaView && virtualView.visibility!=VVVisibilityGone) {
@@ -146,7 +146,7 @@
     if (node.expressionSetters.count > 0) {
         [dataTagObjs addObject:node];
     }
-    for (VVBaseNode *subNode in node.subnodes) {
+    for (VVBaseNode *subNode in node.subNodes) {
         [self getDataTagObjsHelper:subNode collection:dataTagObjs];
     }
 }

@@ -84,13 +84,13 @@
     }
 }
 
-- (void)layoutSubnodes{
+- (void)layoutSubNodes{
 
     self.cocoaView.frame = self.nodeFrame;
     self.imageView.frame = CGRectMake(self.paddingLeft, self.paddingTop, self.imageSize.width, self.imageSize.height);
     self.maskView.frame = self.cocoaView.bounds;
     [self showImage];
-    [super layoutSubnodes];
+    [super layoutSubNodes];
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize{
@@ -106,7 +106,7 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.supernode.layoutWidth==VV_WRAP_CONTENT && self.supernode.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.superNode.layoutWidth==VV_WRAP_CONTENT && self.superNode.autoDimDirection==VVAutoDimDirectionNone) {
                 //_imageSize.width = maxSize.width;
                 self.nodeWidth = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
                 _imageSize.width = self.nodeWidth - self.paddingLeft - self.paddingRight;
@@ -137,7 +137,7 @@
 #endif
             break;
         case VV_MATCH_PARENT:
-            if (self.supernode.layoutHeight==VV_WRAP_CONTENT && self.supernode.autoDimDirection==VVAutoDimDirectionNone) {
+            if (self.superNode.layoutHeight==VV_WRAP_CONTENT && self.superNode.autoDimDirection==VVAutoDimDirectionNone) {
 #ifdef VV_ALIBABA
                 _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
                 self.height = self.paddingTop+self.paddingBottom+_imageSize.height;

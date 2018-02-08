@@ -11,10 +11,10 @@
 #define VVKeyPath(PATH) ((void)self.PATH, @#PATH)
 #define VVNeedsLayoutObserve(PATH) \
     [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setNeedsLayout)];
-#define VVSubnodeNeedsLayoutObserve(PATH) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSubnodeNeedsLayout)];
-#define VVSupernodeNeedsLayoutObserve(PATH) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSupernodeNeedsLayout)];
+#define VVSubNodeNeedsLayoutObserve(PATH) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSubNodeNeedsLayout)];
+#define VVSuperNodeNeedsLayoutObserve(PATH) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSuperNodeNeedsLayout)];
 
 @interface VVBaseNode : NSObject
 
@@ -73,8 +73,8 @@
 @property (nonatomic, strong) UIColor *backgroundColor;
 
 // node tree & native view
-@property (nonatomic, weak, readonly) VVBaseNode  *supernode;
-@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subnodes;
+@property (nonatomic, weak, readonly) VVBaseNode  *superNode;
+@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subNodes;
 @property (nonatomic, strong, readonly) UIView *cocoaView;
 
 // root canvas & native view
@@ -90,16 +90,16 @@
 - (VVBaseNode *)hitTest:(CGPoint)point;
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
-- (void)addSubnode:(VVBaseNode *)node;
-- (void)removeSubnode:(VVBaseNode *)node;
-- (void)removeFromSupernode;
+- (void)addSubNode:(VVBaseNode *)node;
+- (void)removeSubNode:(VVBaseNode *)node;
+- (void)removeFromSuperNode;
 
-- (BOOL)needsLayoutIfSupernodeLayout;
-- (BOOL)needsLayoutIfSubnodeLayout;
-- (void)setSupernodeNeedsLayout;
-- (void)setSubnodeNeedsLayout;
+- (BOOL)needsLayoutIfSuperNodeLayout;
+- (BOOL)needsLayoutIfSubNodeLayout;
+- (void)setSuperNodeNeedsLayout;
+- (void)setSubNodeNeedsLayout;
 /**
- Will set supernode and subnodes is it is necessary.
+ Will set superNode and subNodes is it is necessary.
  */
 - (void)setNeedsLayout;
 /**
@@ -111,8 +111,8 @@
  */
 - (void)setNeedsLayoutRecursively;
 - (void)layoutIfNeeded;
-- (void)layoutSubnodes NS_REQUIRES_SUPER;
-- (void)layoutSubviews __deprecated_msg("use layoutSubnodes");
+- (void)layoutSubNodes NS_REQUIRES_SUPER;
+- (void)layoutSubviews __deprecated_msg("use layoutSubNodes");
 - (void)applyAutoDim;
 - (CGSize)calculateSize:(CGSize)maxSize;
 - (CGSize)calculateLayoutSize:(CGSize)maxSize __deprecated_msg("use calculateSize");

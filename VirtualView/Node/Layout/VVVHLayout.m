@@ -17,8 +17,8 @@
     return self;
 }
 
-- (void)layoutSubnodes{
-    [super layoutSubnodes];
+- (void)layoutSubNodes{
+    [super layoutSubNodes];
     switch (self.orientation) {
         case VVOrientationVertical:
             [self vertical];
@@ -57,7 +57,7 @@
     
     int matchWidthType=0,matchHeightType=0;
     NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
-    for (VVBaseNode* item in self.subnodes) {
+    for (VVBaseNode* item in self.subNodes) {
         if(item.visibility==VVVisibilityGone){
             continue;
         }else if(self.layoutWidth==VV_WRAP_CONTENT && item.layoutWidth==VV_MATCH_PARENT) {
@@ -186,7 +186,7 @@
         pY += self.paddingTop;
     }
     
-    for (VVBaseNode* item in self.subnodes) {
+    for (VVBaseNode* item in self.subNodes) {
         //
         if(item.visibility==VVVisibilityGone){
             continue;
@@ -220,7 +220,7 @@
         }
         
         item.nodeFrame = CGRectMake(pX, pY, size.width, size.height);//CGRectOffset(frame, self.frame.origin.x, pY);
-        [item layoutSubnodes];
+        [item layoutSubNodes];
         
         pY+=size.height + item.marginBottom;
         height -= size.height + item.marginTop + item.marginBottom;
@@ -239,7 +239,7 @@
         pX += self.paddingLeft;
     }
     
-    for (VVBaseNode* item in self.subnodes) {
+    for (VVBaseNode* item in self.subNodes) {
         //
         if(item.visibility==VVVisibilityGone){
             continue;
@@ -272,7 +272,7 @@
         
 
         item.nodeFrame = CGRectMake(pX, pY, size.width, size.height);//CGRectOffset(frame, pX, self.frame.origin.y);
-        [item layoutSubnodes];
+        [item layoutSubNodes];
         
         
         pX+= size.width + item.marginRight;

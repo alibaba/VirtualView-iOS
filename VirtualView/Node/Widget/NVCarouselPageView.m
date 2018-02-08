@@ -202,7 +202,7 @@
             string = nil;
         }
         self.pageView.actionValue = string;
-        self.pageView.supernode.supernode.actionValue = self.pageView.actionValue;
+        self.pageView.superNode.superNode.actionValue = self.pageView.actionValue;
         
         NSUInteger nextIndex = self.currentItemIndex + 1;
         if (nextIndex >= self.data.count)
