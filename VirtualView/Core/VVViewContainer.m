@@ -124,6 +124,8 @@
         
         [item didUpdated];
     }
+    self.virtualView.nodeWidth = self.bounds.size.width;
+    self.virtualView.nodeHeight = self.bounds.size.height;
     self.virtualView.nodeFrame = self.bounds;
     [self.virtualView layoutIfNeeded];
     [self setNeedsDisplay];

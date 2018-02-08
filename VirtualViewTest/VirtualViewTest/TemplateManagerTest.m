@@ -19,7 +19,6 @@
 
 - (void)setUp {
     [super setUp];
-    [VVNodeClassMapper registerClassName:@"VVBaseNode" forID:21];
 }
 
 - (void)tearDown {

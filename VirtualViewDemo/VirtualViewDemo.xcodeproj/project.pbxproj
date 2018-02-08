@@ -14,12 +14,10 @@
 		926B4018200396DB0003D88E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B4017200396DB0003D88E /* main.m */; };
 		926B402B200397AB0003D88E /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B4020200397AA0003D88E /* TestViewController.m */; };
 		926B402C200397AB0003D88E /* NImage.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4022200397AA0003D88E /* NImage.out */; };
-		926B402D200397AB0003D88E /* nimage.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4023200397AA0003D88E /* nimage.xml */; };
 		926B402E200397AB0003D88E /* NText.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4024200397AA0003D88E /* NText.out */; };
-		926B402F200397AB0003D88E /* ntext.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4025200397AA0003D88E /* ntext.xml */; };
-		926B4032200397AB0003D88E /* tmall_component_2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 926B4028200397AB0003D88E /* tmall_component_2.xml */; };
 		926B4033200397AB0003D88E /* TmallComponent2.out in Resources */ = {isa = PBXBuildFile; fileRef = 926B4029200397AB0003D88E /* TmallComponent2.out */; };
 		926B4034200397AB0003D88E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B402A200397AB0003D88E /* MainViewController.m */; };
+		9299D6C3202C13B0008117DC /* FrameLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9299D6C1202C13B0008117DC /* FrameLayout.out */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +41,8 @@
 		926B4028200397AB0003D88E /* tmall_component_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tmall_component_2.xml; sourceTree = "<group>"; };
 		926B4029200397AB0003D88E /* TmallComponent2.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = TmallComponent2.out; sourceTree = "<group>"; };
 		926B402A200397AB0003D88E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		9299D6C0202C13B0008117DC /* framelayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = framelayout.xml; sourceTree = "<group>"; };
+		9299D6C1202C13B0008117DC /* FrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = FrameLayout.out; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,10 +104,12 @@
 		926B4021200397AA0003D88E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				926B4022200397AA0003D88E /* NImage.out */,
+				9299D6C0202C13B0008117DC /* framelayout.xml */,
+				9299D6C1202C13B0008117DC /* FrameLayout.out */,
 				926B4023200397AA0003D88E /* nimage.xml */,
-				926B4024200397AA0003D88E /* NText.out */,
+				926B4022200397AA0003D88E /* NImage.out */,
 				926B4025200397AA0003D88E /* ntext.xml */,
+				926B4024200397AA0003D88E /* NText.out */,
 				926B4028200397AB0003D88E /* tmall_component_2.xml */,
 				926B4029200397AB0003D88E /* TmallComponent2.out */,
 			);
@@ -184,14 +186,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				926B402D200397AB0003D88E /* nimage.xml in Resources */,
-				926B402F200397AB0003D88E /* ntext.xml in Resources */,
 				926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */,
 				926B402E200397AB0003D88E /* NText.out in Resources */,
 				926B402C200397AB0003D88E /* NImage.out in Resources */,
 				926B4012200396DB0003D88E /* Assets.xcassets in Resources */,
 				926B4033200397AB0003D88E /* TmallComponent2.out in Resources */,
-				926B4032200397AB0003D88E /* tmall_component_2.xml in Resources */,
+				9299D6C3202C13B0008117DC /* FrameLayout.out in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

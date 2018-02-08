@@ -38,7 +38,10 @@
             itemY = self.paddingTop + subnode.marginTop;
         }
         
-        subnode.nodeFrame = CGRectMake(itemX, itemY, subnodeSize.width, subnodeSize.height);
+        subnode.nodeFrame = CGRectMake(itemX + self.nodeFrame.origin.x,
+                                       itemY + self.nodeFrame.origin.y,
+                                       subnodeSize.width,
+                                       subnodeSize.height);
         [subnode layoutIfNeeded];
     }
     [super layoutSubnodes];
