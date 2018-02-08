@@ -10,6 +10,7 @@
 @interface VVBaseNode () {
     NSMutableArray *_subnodes;
     BOOL needsLayout;
+    BOOL updatingNeedsLayout; // to avoid infinite loop
 }
 
 @end
@@ -212,23 +213,14 @@
 
 - (void)setNeedsLayout
 {
-    BOOL updated = NO;
-    if (needsLayout == NO) {
-        needsLayout = YES;
-        updated = YES;
+    if (updatingNeedsLayout) {
+        return;
     }
-    if (_nodeWidth >= 0) {
-        _nodeWidth = -1;
-        updated = YES;
-    }
-    if (_nodeHeight > 0) {
-        _nodeHeight = -1;
-        updated = YES;
-    }
-    if (updated) {
-        [self setSupernodeNeedsLayout];
-        [self setSubnodeNeedsLayout];
-    }
+    updatingNeedsLayout = YES;
+    [self setNeedsLayoutNotRecursively];
+    [self setSupernodeNeedsLayout];
+    [self setSubnodeNeedsLayout];
+    updatingNeedsLayout = NO;
 }
 
 - (void)setNeedsLayoutNotRecursively
