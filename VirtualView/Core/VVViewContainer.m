@@ -124,10 +124,11 @@
         
         [item didUpdated];
     }
+    self.virtualView.nodeX = self.virtualView.nodeY = 0;
     self.virtualView.nodeWidth = self.bounds.size.width;
     self.virtualView.nodeHeight = self.bounds.size.height;
-    self.virtualView.nodeFrame = self.bounds;
-    [self.virtualView layoutIfNeeded];
+    [self.virtualView updateFrame];
+    [self.virtualView layoutSubNodes];
     [self setNeedsDisplay];
     
 #ifdef VV_ALIBABA

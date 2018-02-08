@@ -6,12 +6,13 @@
 //
 
 #import "VVBaseNode.h"
+#import "VVVH2Layout.h"
 
 @interface VVBaseNode () {
     NSMutableArray *_subNodes;
-    BOOL needsLayout;
-    BOOL updatingNeedsLayout; // to avoid infinite loop
 }
+
+@property (nonatomic, assign) BOOL updatingNeedsResize; // to avoid infinite loop
 
 @end
 
@@ -24,12 +25,14 @@
     if (self) {
         _subNodes = [[NSMutableArray alloc] init];
         _backgroundColor = [UIColor clearColor];
-        _layoutGravity = VVGravityLeft | VVGravityTop;
-        _gravity = VVGravityLeft | VVGravityTop;
+        _layoutGravity = VVGravityDefault;
+        _gravity = VVGravityDefault;
         _visibility = VVVisibilityVisible;
-        _layoutDirection = VVDirectionLeft | VVDirectionTop;
+        _layoutDirection = VVDirectionDefault;
         _autoDimDirection = VVAutoDimDirectionNone;
-        [self setNeedsLayoutNotRecursively];
+        [self setNeedsResizeNonRecursively];
+        [self setNeedsLayout];
+        [self setupObserver];
     }
     return self;
 }
@@ -150,150 +153,6 @@
     if (nil != self.superNode) {
         [self.superNode removeSubNode:self];
     }
-}
-
-#pragma mark Layout
-
-- (void)setupObserver
-{
-    VVNeedsLayoutObserve(layoutWidth);
-    VVNeedsLayoutObserve(layoutHeight);
-    VVNeedsLayoutObserve(autoDimX);
-    VVNeedsLayoutObserve(autoDimY);
-    VVNeedsLayoutObserve(autoDimDirection);
-    VVSubNodeNeedsLayoutObserve(paddingTop);
-    VVSubNodeNeedsLayoutObserve(paddingLeft);
-    VVSubNodeNeedsLayoutObserve(paddingRight);
-    VVSubNodeNeedsLayoutObserve(paddingBottom);
-    VVSuperNodeNeedsLayoutObserve(marginTop);
-    VVSuperNodeNeedsLayoutObserve(marginLeft);
-    VVSuperNodeNeedsLayoutObserve(marginRight);
-    VVSuperNodeNeedsLayoutObserve(marginBottom);
-    VVSuperNodeNeedsLayoutObserve(layoutRatio);
-    __weak VVBaseNode *weakSelf = self;
-    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
-        __strong VVBaseNode *strongSelf = weakSelf;
-        [strongSelf setNeedsLayoutNotRecursively];
-    }];
-    [self vv_addObserverForKeyPath:VVKeyPath(layoutGravity) block:^(id _Nonnull value) {
-        __strong VVBaseNode *strongSuperNode = weakSelf.superNode;
-        [strongSuperNode setNeedsLayoutNotRecursively];
-    }];
-    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id _Nonnull value) {
-        __strong VVBaseNode *strongSuperNode = weakSelf.superNode;
-        [strongSuperNode setNeedsLayoutNotRecursively];
-    }];
-}
-
-- (BOOL)needsLayoutIfSubNodeLayout
-{
-    return self.layoutWidth == VV_WRAP_CONTENT || self.layoutHeight == VV_WRAP_CONTENT;
-}
-
-- (BOOL)needsLayoutIfSuperNodeLayout
-{
-    return self.layoutWidth == VV_MATCH_PARENT || self.layoutHeight == VV_MATCH_PARENT;
-}
-
-- (void)setSubNodeNeedsLayout
-{
-    updatingNeedsLayout = YES;
-    for (VVBaseNode *subNode in self.subNodes) {
-        if ([subNode needsLayoutIfSuperNodeLayout]) {
-            [subNode setNeedsLayout];
-        }
-    }
-    updatingNeedsLayout = NO;
-}
-
-- (void)setSuperNodeNeedsLayout
-{
-    updatingNeedsLayout = YES;
-    if (self.superNode && [self.superNode needsLayoutIfSubNodeLayout]) {
-        [self.superNode setNeedsLayout];
-    }
-    updatingNeedsLayout = NO;
-}
-
-- (void)setNeedsLayout
-{
-    if (updatingNeedsLayout) {
-        return;
-    }
-    [self setNeedsLayoutNotRecursively];
-    [self setSuperNodeNeedsLayout];
-    [self setSubNodeNeedsLayout];
-}
-
-- (void)setNeedsLayoutNotRecursively
-{
-    needsLayout = YES;
-    _nodeWidth = -1;
-    _nodeHeight = -1;
-}
-
-- (void)setNeedsLayoutRecursively
-{
-    [self setNeedsLayoutNotRecursively];
-    for (VVBaseNode *subNode in self.subNodes) {
-        [subNode setNeedsLayoutRecursively];
-    }
-}
-
-- (void)layoutIfNeeded
-{
-    if (needsLayout) {
-        [self layoutSubNodes];
-    }
-}
-
-- (void)layoutSubviews
-{
-    [self layoutSubNodes];
-}
-
-- (void)layoutSubNodes
-{
-    // override me
-    needsLayout = NO;
-}
-
-- (void)applyAutoDim
-{
-    if (self.autoDimX > 0 && self.autoDimY > 0) {
-        if (self.autoDimDirection == VVAutoDimDirectionX) {
-            self.nodeHeight = self.nodeWidth / self.autoDimX * self.autoDimY;
-        } else if (self.autoDimDirection == VVAutoDimDirectionY) {
-            self.nodeWidth = self.nodeHeight / self.autoDimY * self.autoDimX;
-        }
-    }
-}
-
-- (CGSize)calculateLayoutSize:(CGSize)maxSize
-{
-    return [self calculateSize:maxSize];
-}
-
-- (CGSize)calculateSize:(CGSize)maxSize
-{
-    if (self.nodeWidth < 0 || self.nodeHeight < 0) {
-        self.nodeWidth = 0;
-        if (self.layoutWidth == VV_MATCH_PARENT) {
-            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
-        } else if (self.layoutWidth > 0) {
-            self.nodeWidth = self.layoutWidth;
-        }
-        
-        self.nodeHeight = 0;
-        if (self.layoutHeight == VV_MATCH_PARENT) {
-            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
-        } else if (self.layoutHeight > 0) {
-            self.nodeHeight = self.layoutHeight;
-        }
-        
-        [self applyAutoDim];
-    }
-    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
 #pragma mark Update
@@ -581,6 +440,173 @@
 - (void)didUpdated
 {
     // override me
+}
+
+#pragma mark Layout
+
+- (void)setupObserver
+{
+    VVSetNeedsResizeObserve(layoutWidth);
+    VVSetNeedsResizeObserve(layoutHeight);
+    VVSetNeedsResizeObserve(autoDimX);
+    VVSetNeedsResizeObserve(autoDimY);
+    VVSetNeedsResizeObserve(autoDimDirection);
+    __weak VVBaseNode *weakSelf = self;
+    VVObserverBlock paddingChangedBlock = ^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        for (VVBaseNode *subNode in strongSelf.subNodes) {
+            [subNode setNeedsLayout];
+            if ([subNode needResizeIfSuperNodeResize]) {
+                [subNode setNeedsResize];
+            }
+        }
+    };
+    VVBlockObserve(paddingTop, paddingChangedBlock);
+    VVBlockObserve(paddingLeft, paddingChangedBlock);
+    VVBlockObserve(paddingRight, paddingChangedBlock);
+    VVBlockObserve(paddingBottom, paddingChangedBlock);
+    VVObserverBlock marginChangedBlock = ^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        [strongSelf setNeedsLayout];
+        [strongSelf setNeedsResize];
+    };
+    VVBlockObserve(marginTop, marginChangedBlock);
+    VVBlockObserve(marginLeft, marginChangedBlock);
+    VVBlockObserve(marginRight, marginChangedBlock);
+    VVBlockObserve(marginBottom, marginChangedBlock);
+    VVBlockObserve(visibility, marginChangedBlock);
+    VVBlockObserve(layoutRatio, marginChangedBlock);
+    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        for (VVBaseNode *subNode in strongSelf.subNodes) {
+            [subNode setNeedsLayout];
+        }
+    }];
+    VVSelectorObserve(layoutGravity, setNeedsLayout);
+}
+
+- (BOOL)needLayout
+{
+    return _nodeX == CGFLOAT_MIN || _nodeY == CGFLOAT_MIN;
+}
+
+- (BOOL)needResize
+{
+    return _nodeWidth == CGFLOAT_MIN || _nodeHeight == CGFLOAT_MIN;
+}
+
+- (void)setNeedsLayout
+{
+    _nodeX = _nodeY = CGFLOAT_MIN;
+}
+
+- (BOOL)needLayoutIfSuperNodeResize
+{
+    return (_layoutGravity & VVGravityNotDefault) > 0;
+}
+
+- (BOOL)needResizeIfSuperNodeResize
+{
+    return _layoutWidth == VV_MATCH_PARENT || _layoutHeight == VV_MATCH_PARENT;
+}
+
+- (BOOL)needResizeIfSubNodeResize
+{
+    return _layoutWidth == VV_WRAP_CONTENT || _layoutHeight == VV_WRAP_CONTENT;
+}
+
+- (void)setNeedsResize
+{
+    if (_updatingNeedsResize) {
+        return;
+    }
+    _updatingNeedsResize = YES;
+    [self setNeedsResizeNonRecursively];
+    if (_superNode && [_superNode needResizeIfSubNodeResize]) {
+        [_superNode setNeedsResize];
+    }
+    for (VVBaseNode *subNode in _subNodes) {
+        if ([subNode needResizeIfSuperNodeResize]) {
+            [subNode setNeedsResize];
+        }
+        if ([subNode needLayoutIfSuperNodeResize]) {
+            [subNode setNeedsLayout];
+        }
+    }
+    _updatingNeedsResize = NO;
+}
+
+- (void)setNeedsResizeNonRecursively
+{
+    _nodeWidth = _nodeHeight = CGFLOAT_MIN;
+}
+
+- (void)setNeedsLayoutAndResizeRecursively
+{
+    [self setNeedsLayout];
+    [self setNeedsResizeNonRecursively];
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode setNeedsLayoutAndResizeRecursively];
+    }
+}
+
+- (CGRect)updateFrame
+{
+    CGFloat x = 0, y = 0;
+    if (_superNode) {
+        x = _superNode.nodeFrame.origin.x;
+        y = _superNode.nodeFrame.origin.y;
+    }
+    _nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
+    return _nodeFrame;
+}
+
+- (void)layoutSubviews
+{
+    [self layoutSubNodes];
+}
+
+- (void)layoutSubNodes
+{
+    // override me
+}
+
+- (void)applyAutoDim
+{
+    if (_autoDimX > 0 && _autoDimY > 0) {
+        if (_autoDimDirection == VVAutoDimDirectionX) {
+            _nodeHeight = _nodeWidth / _autoDimX * _autoDimY;
+        } else if (_autoDimDirection == VVAutoDimDirectionY) {
+            _nodeWidth = _nodeHeight / _autoDimY * _autoDimX;
+        }
+    }
+}
+
+- (CGSize)calculateLayoutSize:(CGSize)maxSize
+{
+    return [self calculateSize:maxSize];
+}
+
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    if ([self needResize]) {
+        _nodeWidth = 0;
+        if (_layoutWidth == VV_MATCH_PARENT) {
+            _nodeWidth = maxSize.width - _marginLeft - _marginRight;
+        } else if (_layoutWidth > 0) {
+            _nodeWidth = _layoutWidth;
+        }
+        
+        _nodeHeight = 0;
+        if (_layoutHeight == VV_MATCH_PARENT) {
+            _nodeHeight = maxSize.height - _marginTop - _marginBottom;
+        } else if (_layoutHeight > 0) {
+            _nodeHeight = _layoutHeight;
+        }
+        
+        [self applyAutoDim];
+    }
+    return CGSizeMake(_nodeWidth, _nodeHeight);
 }
 
 @end

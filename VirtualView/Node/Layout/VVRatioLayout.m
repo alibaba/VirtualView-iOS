@@ -65,7 +65,9 @@
         }*/
         //CGFloat height = validSize*vvObj.layoutRatio/_totalRatio;
         
-        vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+        self.nodeX = pX;
+        self.nodeY = pY;
+        [vvObj updateFrame];
         pY+=vvObj.nodeHeight+vvObj.marginBottom;
         [vvObj layoutSubNodes];
         
@@ -74,7 +76,7 @@
 
 - (void)horizontal{
     //
-    CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft ;
+    CGFloat pX = self.paddingLeft ;
     //CGFloat validSize = self.width-_invalidHSize-self.paddingLeft-self.paddingRight;
     
     for (VVBaseNode* vvObj in self.subNodes) {
@@ -82,7 +84,7 @@
             continue;
         }
         pX+=vvObj.marginLeft;
-        CGFloat pY = self.nodeFrame.origin.y + self.paddingTop;
+        CGFloat pY = self.paddingTop;
         
         CGFloat itemHeight = vvObj.layoutHeight == VV_MATCH_PARENT ? self.nodeHeight : vvObj.nodeHeight;
         CGFloat blanceH = (self.nodeHeight-itemHeight-vvObj.marginTop-vvObj.marginBottom)/2.0;
@@ -106,7 +108,9 @@
         }
         //CGFloat width = validSize*vvObj.layoutRatio/_totalRatio;
         
-        vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, itemHeight);
+        self.nodeX = pX;
+        self.nodeY = pY;
+        [vvObj updateFrame];
         pX+=vvObj.nodeWidth+vvObj.marginRight;
         [vvObj layoutSubNodes];
         

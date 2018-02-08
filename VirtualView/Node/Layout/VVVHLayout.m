@@ -175,7 +175,7 @@
 }
 
 - (void)vertical{
-    float pY = self.nodeFrame.origin.y;
+    float pY = 0;
     float height = self.nodeHeight;
     
     if ((self.gravity & VVGravityBottom)==VVGravityBottom) {
@@ -205,7 +205,7 @@
         
         CGFloat blanceW = (self.nodeWidth-size.width-item.marginLeft-item.marginRight)/2.0;
         //CGFloat blanceH = (self.height- size.height)/2.0;
-        CGFloat pX = self.nodeFrame.origin.x + self.paddingLeft;
+        CGFloat pX = self.paddingLeft;
         
         
         pY += item.marginTop;
@@ -219,7 +219,9 @@
             pX += item.marginLeft;
         }
         
-        item.nodeFrame = CGRectMake(pX, pY, size.width, size.height);//CGRectOffset(frame, self.frame.origin.x, pY);
+        self.nodeX = pX;
+        self.nodeY = pY;
+        [item updateFrame];
         [item layoutSubNodes];
         
         pY+=size.height + item.marginBottom;
@@ -228,7 +230,7 @@
 }
 
 - (void)horizontal{
-    float pX = self.nodeFrame.origin.x;
+    float pX = 0;
     float width = self.nodeWidth;
     
     if ((self.gravity & VVGravityRight)==VVGravityRight) {
@@ -245,7 +247,7 @@
             continue;
         }
         CGSize size = CGSizeMake(item.nodeWidth, item.nodeHeight);//[item calculateLayoutSize:CGSizeMake(width, self.height)];
-        CGFloat pY = self.nodeFrame.origin.y + self.paddingTop;
+        CGFloat pY = self.paddingTop;
                 CGFloat marginY = 0;
         CGFloat marginX = 0;
         int w = -item.marginRight;
@@ -270,8 +272,9 @@
             pY += item.marginTop;
         }
         
-
-        item.nodeFrame = CGRectMake(pX, pY, size.width, size.height);//CGRectOffset(frame, pX, self.frame.origin.y);
+        self.nodeX = pX;
+        self.nodeY = pY;
+        [item updateFrame];
         [item layoutSubNodes];
         
         

@@ -71,10 +71,9 @@
                 if(vvObj.visibility==VVVisibilityGone){
                     continue;
                 }
-                CGFloat pX = self.nodeFrame.origin.x+(vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
-                CGFloat pY = self.nodeFrame.origin.y+(vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
-                
-                vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+                vvObj.nodeX = (vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
+                vvObj.nodeY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
+                [vvObj updateFrame];
                 [vvObj layoutSubNodes];
                 index++;
             }else{

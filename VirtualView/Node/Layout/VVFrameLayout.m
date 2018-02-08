@@ -7,6 +7,12 @@
 
 #import "VVFrameLayout.h"
 
+@interface VVFrameLayout ()
+
+@property (nonatomic, assign) BOOL updatingNeedsResize;
+
+@end
+
 @implementation VVFrameLayout
 
 - (void)layoutSubNodes
@@ -16,35 +22,30 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
-        CGSize subNodeSize = [subNode calculateSize:contentSize];
+        if ([subNode needLayout]) {
+            CGSize subNodeSize = [subNode calculateSize:contentSize];
 
-        CGFloat itemX;
-        if ((subNode.layoutGravity & VVGravityHCenter) > 0) {
-            CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
-            itemX = midX - subNodeSize.width / 2;
-        } else if((subNode.layoutGravity & VVGravityRight) > 0) {
-            itemX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
-        } else {
-            itemX = self.paddingLeft + subNode.marginLeft;
+            if ((subNode.layoutGravity & VVGravityHCenter) > 0) {
+                CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
+                subNode.nodeX = midX - subNodeSize.width / 2;
+            } else if((subNode.layoutGravity & VVGravityRight) > 0) {
+                subNode.nodeX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
+            } else {
+                subNode.nodeX = self.paddingLeft + subNode.marginLeft;
+            }
+            
+            if ((subNode.layoutGravity & VVGravityVCenter) > 0) {
+                CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
+                subNode.nodeY = midY - subNodeSize.height / 2;
+            } else if ((subNode.layoutGravity & VVGravityBottom) > 0) {
+                subNode.nodeY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
+            } else {
+                subNode.nodeY = self.paddingTop + subNode.marginTop;
+            }
         }
-        
-        CGFloat itemY;
-        if ((subNode.layoutGravity & VVGravityVCenter) > 0) {
-            CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
-            itemY = midY - subNodeSize.height / 2;
-        } else if ((subNode.layoutGravity & VVGravityBottom) > 0) {
-            itemY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
-        } else {
-            itemY = self.paddingTop + subNode.marginTop;
-        }
-        
-        subNode.nodeFrame = CGRectMake(itemX + self.nodeFrame.origin.x,
-                                       itemY + self.nodeFrame.origin.y,
-                                       subNodeSize.width,
-                                       subNodeSize.height);
-        [subNode layoutIfNeeded];
+        [subNode updateFrame];
+        [subNode layoutSubNodes];
     }
-    [super layoutSubNodes];
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize
@@ -77,8 +78,14 @@
         }
         [self applyAutoDim];
         
-        // Need to relayout subNodes.
-        [self setSubNodeNeedsLayout];
+        // Need to resize subNodes.
+        self.updatingNeedsResize = YES;
+        for (VVBaseNode *subNodes in self.subNodes) {
+            if ([subNodes needResizeIfSuperNodeResize]) {
+                [subNodes setNeedsResize];
+            }
+        }
+        self.updatingNeedsResize = NO;
     }
     return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }

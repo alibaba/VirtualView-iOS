@@ -65,15 +65,14 @@
     return ret;
 }
 
-- (void)setNodeFrame:(CGRect)frame
+- (CGRect)updateFrame
 {
-    [super setNodeFrame:frame];
+    CGRect frame = [super updateFrame];
     if (self.drawLayer) {
-        self.drawLayer.bounds=CGRectMake(0, 0, frame.size.width, frame.size.height);
-        self.drawLayer.anchorPoint=CGPointMake(0,0);
-        self.drawLayer.position=CGPointMake(frame.origin.x,frame.origin.y);
+        self.drawLayer.frame = self.nodeFrame;
         [self.drawLayer setNeedsDisplay];
     }
+    return frame;
 }
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer

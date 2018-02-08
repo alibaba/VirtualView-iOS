@@ -9,12 +9,11 @@
 #import "VVDefines.h"
 
 #define VVKeyPath(PATH) ((void)self.PATH, @#PATH)
-#define VVNeedsLayoutObserve(PATH) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setNeedsLayout)];
-#define VVSubNodeNeedsLayoutObserve(PATH) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSubNodeNeedsLayout)];
-#define VVSuperNodeNeedsLayoutObserve(PATH) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(setSuperNodeNeedsLayout)];
+#define VVSelectorObserve(PATH, SELECTOR) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(SELECTOR)]
+#define VVBlockObserve(PATH, BLOCK) \
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) block:BLOCK]
+#define VVSetNeedsResizeObserve(PATH) VVSelectorObserve(PATH, setNeedsResize)
 
 @interface VVBaseNode : NSObject
 
@@ -46,24 +45,6 @@
 @property (nonatomic, assign) CGFloat layoutRatio;
 @property (nonatomic, assign) VVDirection layoutDirection;
 
-// calculated result
-// DO NOT modify these properties unless you know what you are doing.
-@property (nonatomic, assign) CGFloat nodeWidth;
-@property (nonatomic, assign) CGFloat nodeHeight;
-@property (nonatomic, assign) CGRect nodeFrame;
-/**
- helper method to get CGSizeMake(nodeWidth, nodeHeight)
- */
-@property (nonatomic, assign, readonly) CGSize nodeSize;
-/**
- the content maximun size = nodeSize - padding
- */
-@property (nonatomic, assign, readonly) CGSize contentSize;
-/**
- the size in container = nodeSize + margin
- */
-@property (nonatomic, assign, readonly) CGSize containerSize;
-
 // other
 @property (nonatomic, assign) VVFlag flag;
 @property (nonatomic, strong) NSString *dataTag;
@@ -94,29 +75,6 @@
 - (void)removeSubNode:(VVBaseNode *)node;
 - (void)removeFromSuperNode;
 
-- (BOOL)needsLayoutIfSuperNodeLayout;
-- (BOOL)needsLayoutIfSubNodeLayout;
-- (void)setSuperNodeNeedsLayout;
-- (void)setSubNodeNeedsLayout;
-/**
- Will set superNode and subNodes is it is necessary.
- */
-- (void)setNeedsLayout;
-/**
- Will set this node only.
- */
-- (void)setNeedsLayoutNotRecursively;
-/**
- Will set whole node tree, please call this method with root node.
- */
-- (void)setNeedsLayoutRecursively;
-- (void)layoutIfNeeded;
-- (void)layoutSubNodes NS_REQUIRES_SUPER;
-- (void)layoutSubviews __deprecated_msg("use layoutSubNodes");
-- (void)applyAutoDim;
-- (CGSize)calculateSize:(CGSize)maxSize;
-- (CGSize)calculateLayoutSize:(CGSize)maxSize __deprecated_msg("use calculateSize");
-
 - (BOOL)setIntValue:(int)value forKey:(int)key;
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key;
@@ -124,5 +82,64 @@
 - (void)setDataObj:(NSObject *)obj forKey:(int)key;
 - (void)reset;
 - (void)didUpdated;
+
+#pragma mark Layout
+
+// calculated result
+// DO NOT modify these properties unless you know what you are doing.
+@property (nonatomic, assign) CGFloat nodeX;
+@property (nonatomic, assign) CGFloat nodeY;
+@property (nonatomic, assign) CGFloat nodeWidth;
+@property (nonatomic, assign) CGFloat nodeHeight;
+/**
+ absolute frame relative to root
+ = CGRectMake(superNodeFrameX + nodeX, superNodeFrameY + nodeY, nodeWidth, nodeHeight)
+ Will be updated in layoutSubNodes method of superNode.
+ */
+@property (nonatomic, assign, readonly) CGRect nodeFrame;
+/**
+ helper method to get node size = CGSizeMake(nodeWidth, nodeHeight)
+ */
+@property (nonatomic, assign, readonly) CGSize nodeSize;
+/**
+ the content maximun size = nodeSize - padding
+ */
+@property (nonatomic, assign, readonly) CGSize contentSize;
+/**
+ the size in container = nodeSize + margin
+ */
+@property (nonatomic, assign, readonly) CGSize containerSize;
+
+- (BOOL)needLayout;
+- (BOOL)needResize;
+/**
+ Will set this node only.
+ */
+- (void)setNeedsLayout;
+// used by setNeedsResize method
+- (BOOL)needLayoutIfSuperNodeResize;
+- (BOOL)needResizeIfSuperNodeResize;
+- (BOOL)needResizeIfSubNodeResize;
+/**
+ Will set this node.
+ Will affect superNode & subNodes if it is necessary.
+ */
+- (void)setNeedsResize;
+/**
+ Will set this node only.
+ */
+- (void)setNeedsResizeNonRecursively;
+/**
+ Will set whole node tree, please call this method with root node.
+ */
+- (void)setNeedsLayoutAndResizeRecursively;
+
+- (CGRect)updateFrame;
+- (void)layoutSubNodes;
+- (void)layoutSubviews __deprecated_msg("use layoutSubNodes");
+
+- (void)applyAutoDim;
+- (CGSize)calculateSize:(CGSize)maxSize;
+- (CGSize)calculateLayoutSize:(CGSize)maxSize __deprecated_msg("use calculateSize:");
 
 @end

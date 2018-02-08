@@ -43,12 +43,9 @@
     CGFloat y = self.nodeFrame.origin.y;
     self.nodeWidth = self.nodeWidth<0?self.superNode.nodeFrame.size.width:self.nodeWidth;
     self.nodeHeight = self.nodeHeight<0?self.superNode.nodeFrame.size.height:self.nodeHeight;
-    CGFloat a1,a2,w,h;
-    a1 = (int)x*1;
-    a2 = (int)y*1;
-    w = (int)self.nodeWidth*1;
-    h = (int)self.nodeHeight*1;
-    self.nodeFrame = CGRectMake(a1, a2, w, h);
+    self.nodeX = x;
+    self.nodeY = y;
+    [self updateFrame];
     
     self.gridContainer.frame = self.nodeFrame;
     int index = 0;
@@ -62,7 +59,9 @@
                 CGFloat pX = (vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
                 CGFloat pY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
                 
-                vvObj.nodeFrame = CGRectMake(pX, pY, vvObj.nodeWidth, vvObj.nodeHeight);
+                self.nodeX = pX;
+                self.nodeY = pY;
+                [vvObj updateFrame];
                 [vvObj layoutSubNodes];
                 index++;
             }else{
