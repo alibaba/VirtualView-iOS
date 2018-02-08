@@ -51,9 +51,18 @@
 @property (nonatomic, assign) CGFloat nodeWidth;
 @property (nonatomic, assign) CGFloat nodeHeight;
 @property (nonatomic, assign) CGRect nodeFrame;
-@property (nonatomic, assign, readonly) CGSize nodeSize; // helper method to get nodeFrame.size
-@property (nonatomic, assign, readonly) CGSize contentSize; // the content maximun size = nodeSize - padding
-@property (nonatomic, assign, readonly) CGSize containerSize; // the size in container = nodeSize + margin
+/**
+ helper method to get CGSizeMake(nodeWidth, nodeHeight)
+ */
+@property (nonatomic, assign, readonly) CGSize nodeSize;
+/**
+ the content maximun size = nodeSize - padding
+ */
+@property (nonatomic, assign, readonly) CGSize contentSize;
+/**
+ the size in container = nodeSize + margin
+ */
+@property (nonatomic, assign, readonly) CGSize containerSize;
 
 // other
 @property (nonatomic, assign) VVFlag flag;
@@ -89,9 +98,18 @@
 - (BOOL)needsLayoutIfSubnodeLayout;
 - (void)setSupernodeNeedsLayout;
 - (void)setSubnodeNeedsLayout;
-- (void)setNeedsLayout; // Will set supernode and subnodes is it is necessary.
-- (void)setNeedsLayoutNotRecursively; // Will set this node only.
-- (void)setNeedsLayoutRecursively; // Will set whole node tree, please call this method with root node.
+/**
+ Will set supernode and subnodes is it is necessary.
+ */
+- (void)setNeedsLayout;
+/**
+ Will set this node only.
+ */
+- (void)setNeedsLayoutNotRecursively;
+/**
+ Will set whole node tree, please call this method with root node.
+ */
+- (void)setNeedsLayoutRecursively;
 - (void)layoutIfNeeded;
 - (void)layoutSubnodes NS_REQUIRES_SUPER;
 - (void)layoutSubviews __deprecated_msg("use layoutSubnodes");

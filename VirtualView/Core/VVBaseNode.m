@@ -38,19 +38,19 @@
 
 - (CGSize)nodeSize
 {
-    return _nodeFrame.size;
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
 - (CGSize)contentSize
 {
-    return CGSizeMake(_nodeFrame.size.width - _paddingLeft - _paddingRight,
-                      _nodeFrame.size.height - _paddingTop - _paddingBottom);
+    return CGSizeMake(self.nodeWidth - _paddingLeft - _paddingRight,
+                      self.nodeHeight - _paddingTop - _paddingBottom);
 }
 
 - (CGSize)containerSize
 {
-    return CGSizeMake(_nodeFrame.size.width + _marginLeft + _marginRight,
-                      _nodeFrame.size.height + _marginTop + _marginBottom);
+    return CGSizeMake(self.nodeWidth + _marginLeft + _marginRight,
+                      self.nodeHeight + _marginTop + _marginBottom);
 }
 
 - (void)setRootCocoaView:(UIView *)rootCocoaView
@@ -171,15 +171,15 @@
     VVSupernodeNeedsLayoutObserve(marginBottom);
     VVSupernodeNeedsLayoutObserve(layoutRatio);
     __weak VVBaseNode *weakSelf = self;
-    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id  _Nonnull value) {
+    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
         [strongSelf setNeedsLayoutNotRecursively];
     }];
-    [self vv_addObserverForKeyPath:VVKeyPath(layoutGravity) block:^(id  _Nonnull value) {
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutGravity) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSupernode = weakSelf.supernode;
         [strongSupernode setNeedsLayoutNotRecursively];
     }];
-    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id  _Nonnull value) {
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSupernode = weakSelf.supernode;
         [strongSupernode setNeedsLayoutNotRecursively];
     }];
@@ -197,18 +197,22 @@
 
 - (void)setSubnodeNeedsLayout
 {
+    updatingNeedsLayout = YES;
     for (VVBaseNode *subnode in self.subnodes) {
         if ([subnode needsLayoutIfSupernodeLayout]) {
             [subnode setNeedsLayout];
         }
     }
+    updatingNeedsLayout = NO;
 }
 
 - (void)setSupernodeNeedsLayout
 {
+    updatingNeedsLayout = YES;
     if (self.supernode && [self.supernode needsLayoutIfSubnodeLayout]) {
         [self.supernode setNeedsLayout];
     }
+    updatingNeedsLayout = NO;
 }
 
 - (void)setNeedsLayout
@@ -216,11 +220,9 @@
     if (updatingNeedsLayout) {
         return;
     }
-    updatingNeedsLayout = YES;
     [self setNeedsLayoutNotRecursively];
     [self setSupernodeNeedsLayout];
     [self setSubnodeNeedsLayout];
-    updatingNeedsLayout = NO;
 }
 
 - (void)setNeedsLayoutNotRecursively
@@ -277,14 +279,14 @@
     if (self.nodeWidth < 0 || self.nodeHeight < 0) {
         self.nodeWidth = 0;
         if (self.layoutWidth == VV_MATCH_PARENT) {
-            self.nodeWidth = maxSize.width;
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
         } else if (self.layoutWidth > 0) {
             self.nodeWidth = self.layoutWidth;
         }
         
         self.nodeHeight = 0;
         if (self.layoutHeight == VV_MATCH_PARENT) {
-            self.nodeHeight = maxSize.height;
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
         } else if (self.layoutHeight > 0) {
             self.nodeHeight = self.layoutHeight;
         }
