@@ -550,7 +550,7 @@
     }
 }
 
-- (CGRect)updateFrame
+- (void)updateFrame
 {
     CGFloat x = 0, y = 0;
     if (_superNode) {
@@ -558,7 +558,6 @@
         y = _superNode.nodeFrame.origin.y;
     }
     _nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
-    return _nodeFrame;
 }
 
 - (void)layoutSubviews

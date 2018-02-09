@@ -134,7 +134,7 @@
  */
 - (void)setNeedsLayoutAndResizeRecursively;
 
-- (CGRect)updateFrame;
+- (void)updateFrame NS_REQUIRES_SUPER;
 - (void)layoutSubNodes;
 - (void)layoutSubviews __deprecated_msg("use layoutSubNodes");
 

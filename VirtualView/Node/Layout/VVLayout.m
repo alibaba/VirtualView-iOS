@@ -65,14 +65,13 @@
     return ret;
 }
 
-- (CGRect)updateFrame
+- (void)updateFrame
 {
-    CGRect frame = [super updateFrame];
+    [super updateFrame];
     if (self.drawLayer) {
         self.drawLayer.frame = self.nodeFrame;
         [self.drawLayer setNeedsDisplay];
     }
-    return frame;
 }
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer

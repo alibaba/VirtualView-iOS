@@ -200,15 +200,14 @@
     CGContextDrawPath(currentContext, kCGPathStroke);
 }
 
-- (CGRect)updateFrame
+- (void)updateFrame
 {
-    CGRect frame = [super updateFrame];
+    [super updateFrame];
     self.cocoaView.frame = self.nodeFrame;
     self.drawLayer.bounds=CGRectMake(0, 0, self.nodeFrame.size.width, self.nodeFrame.size.height);
     self.drawLayer.anchorPoint=CGPointMake(0,0);
     //self.drawLayer.position=CGPointMake(0,frame.origin.y);
     [self.drawLayer setNeedsDisplay];
-    return frame;
 }
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
