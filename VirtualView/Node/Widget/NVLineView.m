@@ -228,10 +228,6 @@
     [super setRootCanvasLayer:rootCanvasLayer];
 }
 
-- (void)setData:(NSData*)data{
-    //
-}
-
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     //
     //[dic objectForKey:self.dataTag];

@@ -247,11 +247,6 @@
     return YES;
 }
 
-- (void)setData:(NSData*)data{
-    //
-    ((UIImageView*)self.cocoaView).image = [UIImage imageWithData:data];
-}
-
 - (void)setDataObj:(NSObject*)obj forKey:(int)key{
     //
     switch (key) {

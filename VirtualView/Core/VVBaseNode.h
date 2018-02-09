@@ -8,13 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "VVDefines.h"
 
-#define VVKeyPath(PATH) ((void)self.PATH, @#PATH)
-#define VVSelectorObserve(PATH, SELECTOR) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(SELECTOR)]
-#define VVBlockObserve(PATH, BLOCK) \
-    [self vv_addObserverForKeyPath:VVKeyPath(PATH) block:BLOCK]
-#define VVSetNeedsResizeObserve(PATH) VVSelectorObserve(PATH, setNeedsResize)
-
 @interface VVBaseNode : NSObject
 
 @property (nonatomic, readonly) NSInteger nodeID;
@@ -52,6 +45,8 @@
 @property (nonatomic, strong) NSString *actionValue;
 @property (nonatomic, strong) NSString *className;
 @property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, assign) CGFloat borderWidth;
 
 // node tree & native view
 @property (nonatomic, weak, readonly) VVBaseNode  *superNode;

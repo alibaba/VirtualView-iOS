@@ -25,6 +25,7 @@
     if (self) {
         _subNodes = [[NSMutableArray alloc] init];
         _backgroundColor = [UIColor clearColor];
+        _borderColor = [UIColor clearColor];
         _layoutGravity = VVGravityDefault;
         _gravity = VVGravityDefault;
         _visibility = VVVisibilityVisible;
@@ -32,7 +33,7 @@
         _autoDimDirection = VVAutoDimDirectionNone;
         [self setNeedsResizeNonRecursively];
         [self setNeedsLayout];
-        [self setupObserver];
+        [self setupLayoutAndResizeObserver];
     }
     return self;
 }
@@ -84,17 +85,17 @@
 
 - (BOOL)isClickable
 {
-    return (self.flag & VVFlagClickable) > 0;
+    return self.flag & VVFlagClickable;
 }
 
 - (BOOL)isLongClickable
 {
-    return (self.flag & VVFlagLongClickable) > 0;
+    return self.flag & VVFlagLongClickable;
 }
 
 - (BOOL)supportExposure
 {
-    return (self.flag & VVFlagExposure) > 0;
+    return self.flag & VVFlagExposure;
 }
 
 - (VVBaseNode *)hitTest:(CGPoint)point
@@ -156,117 +157,44 @@
 }
 
 #pragma mark Update
-
-- (void)changeCocoaViewSuperView{
-    if (self.cocoaView.superview && self.visibility==VVVisibilityGone) {
-        [self.cocoaView removeFromSuperview];
-    }else if(self.cocoaView.superview==nil && self.visibility!=VVVisibilityGone){
-        [self.rootCocoaView addSubview:self.cocoaView];
-    }
-}
-
 - (BOOL)setIntValue:(int)value forKey:(int)key
 {
-    BOOL ret = YES;
-    switch (key) {
-        case STR_ID_layoutWidth:
-            _layoutWidth = value;
-            break;
-        case STR_ID_layoutHeight:
-            _layoutHeight = value;
-            break;
-        case STR_ID_paddingLeft:
-            _paddingLeft = value;
-            break;
-        case STR_ID_paddingTop:
-            _paddingTop = value;
-            break;
-        case STR_ID_paddingRight:
-            _paddingRight = value;
-            break;
-        case STR_ID_paddingBottom:
-            _paddingBottom = value;
-            break;
-        case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
-            break;
-        case STR_ID_layoutMarginTop:
-            _marginTop = value;
-            break;
-        case STR_ID_layoutMarginRight:
-            _marginRight = value;
-            break;
-        case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
-            break;
-        case STR_ID_layoutGravity:
-            _layoutGravity = value;
-            break;
-        case STR_ID_id:
-            _nodeID = value;
-            break;
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
-            break;
-            
-        case STR_ID_gravity:
-            self.gravity = value;
-            break;
-            
-        case STR_ID_flag:
-            _flag = value;
-            break;
-            
-        case STR_ID_uuid:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_uuid:%d",value);
-            #endif
-            break;
-            
-        case STR_ID_autoDimDirection:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimDirection:%d",value);
-            #endif
-            _autoDimDirection = value;
-            break;
-            
-        case STR_ID_autoDimX:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimX:%d",value);
-            #endif
-            _autoDimX = value;
-            break;
-            
-        case STR_ID_autoDimY:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimY:%d",value);
-            #endif
-            _autoDimY = value;
-            break;
-        case STR_ID_layoutRatio:
-            self.layoutRatio = value;
-            break;
-        case STR_ID_visibility:
-            self.visibility = value;
-            switch (self.visibility) {
-                case VVVisibilityInvisible:
-                    self.cocoaView.hidden = YES;
-                    break;
-                case VVVisibilityVisible:
-                    self.cocoaView.hidden = NO;
-                    break;
-                case VVVisibilityGone:
-                    self.cocoaView.hidden = YES;
-                    break;
-            }
-            [self changeCocoaViewSuperView];
-            break;
-        case STR_ID_layoutDirection:
-            self.layoutDirection = value;
-        default:
-            ret = false;
+    BOOL ret = [self setFloatValue:value forKey:key];
+    if (!ret) {
+        ret = YES;
+        switch (key) {
+            case STR_ID_id:
+                _nodeID = value;
+                break;
+            case STR_ID_visibility:
+                self.visibility = value;
+                break;
+            case STR_ID_autoDimDirection:
+                _autoDimDirection = value;
+                break;
+            case STR_ID_gravity:
+                self.gravity = value;
+                break;
+            case STR_ID_layoutGravity:
+                _layoutGravity = value;
+                break;
+            case STR_ID_layoutDirection:
+                self.layoutDirection = value;
+                break;
+            case STR_ID_background:
+                self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
+                break;
+            case STR_ID_borderColor:
+                self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
+                break;
+            case STR_ID_flag:
+                _flag = value;
+                break;
+            default:
+                ret = NO;
+                break;
+        }
     }
-
     return ret;
 }
 
@@ -274,12 +202,17 @@
 {
     BOOL ret = YES;
     switch (key) {
-
         case STR_ID_layoutWidth:
             _layoutWidth = value;
             break;
         case STR_ID_layoutHeight:
             _layoutHeight = value;
+            break;
+        case STR_ID_autoDimX:
+            _autoDimX = value;
+            break;
+        case STR_ID_autoDimY:
+            _autoDimY = value;
             break;
         case STR_ID_paddingLeft:
             _paddingLeft = value;
@@ -305,73 +238,16 @@
         case STR_ID_layoutMarginBottom:
             _marginBottom = value;
             break;
-        case STR_ID_layoutGravity:
-            _layoutGravity = value;
-            break;
-        case STR_ID_id:
-            _nodeID = value;
-            break;
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithARGB:(int)value];
-            break;
-            
-        case STR_ID_gravity:
-            self.gravity = value;
-            break;
-            
-        case STR_ID_flag:
-            _flag = value;
-            break;
-            
-        case STR_ID_uuid:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_uuid:%f",value);
-            #endif
-            break;
-            
-        case STR_ID_autoDimDirection:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimDirection:%f",value);
-            #endif
-            _autoDimDirection = value;
-            break;
-            
-        case STR_ID_autoDimX:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimX:%f",value);
-            #endif
-            _autoDimX = value;
-            break;
-            
-        case STR_ID_autoDimY:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimY:%f",value);
-            #endif
-            _autoDimY = value;
-            break;
         case STR_ID_layoutRatio:
             self.layoutRatio = value;
             break;
-        case STR_ID_visibility:
-            self.visibility = value;
-            switch (self.visibility) {
-                case VVVisibilityInvisible:
-                    self.cocoaView.hidden = YES;
-                    break;
-                case VVVisibilityVisible:
-                    self.cocoaView.hidden = NO;
-                    break;
-                case VVVisibilityGone:
-                    //
-                    break;
-            }
-            [self changeCocoaViewSuperView];
+        case STR_ID_borderWidth:
+            self.borderWidth = value;
             break;
         default:
-            ret = false;
+            ret = NO;
             break;
     }
-    
     return ret;
 }
 
@@ -379,51 +255,36 @@
 {
     BOOL ret = YES;
     switch (key) {
-
-        case STR_ID_data:
-            break;
-
         case STR_ID_dataTag:
             self.dataTag = value;
             break;
-
         case STR_ID_action:
             self.action = value;
             break;
-
         case STR_ID_class:
             self.className = value;
             break;
-
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithString:value];
-            break;
         default:
             ret = NO;
+            break;
     }
     return ret;
 }
 
 - (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
 {
-    BOOL ret = true;
+    BOOL ret = YES;
     switch (key) {
-        case STR_ID_onClick:
+        case STR_ID_borderColor:
+            self.borderColor = [UIColor vv_colorWithString:value];
             break;
-            
-        case STR_ID_onBeforeDataLoad:
+        case STR_ID_background:
+            self.backgroundColor = [UIColor vv_colorWithString:value];
             break;
-            
-        case STR_ID_onAfterDataLoad:
-            break;
-            
-        case STR_ID_onSetData:
-            break;
-            
         default:
-            ret = false;
+            ret = NO;
+            break;
     }
-    
     return ret;
 }
 
@@ -444,7 +305,7 @@
 
 #pragma mark Layout
 
-- (void)setupObserver
+- (void)setupLayoutAndResizeObserver
 {
     VVSetNeedsResizeObserve(layoutWidth);
     VVSetNeedsResizeObserve(layoutHeight);
@@ -502,7 +363,7 @@
 
 - (BOOL)needLayoutIfSuperNodeResize
 {
-    return (_layoutGravity & VVGravityNotDefault) > 0;
+    return _layoutGravity & VVGravityNotDefault;
 }
 
 - (BOOL)needResizeIfSuperNodeResize

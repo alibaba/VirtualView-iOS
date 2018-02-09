@@ -15,11 +15,10 @@
 
 @implementation VVLayout
 
-- (id)init{
+- (id)init
+{
     self = [super init];
     if (self) {
-        self.borderColor=[UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
         _privateLayer = [VVLayer layer];
     }
     return self;
@@ -47,33 +46,6 @@
     return NO;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
-    BOOL ret = true;
-    switch (key) {
-        case STR_ID_onClick:
-            break;
-        case STR_ID_borderColor:
-           self.borderColor = [UIColor vv_colorWithString:value];
-            break;
-
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithString:value];
-            
-        default:
-            ret = false;
-    }
-    return ret;
-}
-
-- (void)updateFrame
-{
-    [super updateFrame];
-    if (self.drawLayer) {
-        self.drawLayer.frame = self.nodeFrame;
-        [self.drawLayer setNeedsDisplay];
-    }
-}
-
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
     if (self.drawLayer == nil && [self needDrawLayer]) {
@@ -90,33 +62,42 @@
     [super setRootCanvasLayer:rootCanvasLayer];
 }
 
+- (void)updateFrame
+{
+    [super updateFrame];
+    _privateLayer.frame = self.nodeFrame;
+}
+
+- (void)setVisibility:(VVVisibility)visibility
+{
+    [super setVisibility:visibility];
+    _privateLayer.hidden = !(visibility == VVVisibilityVisible);
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
     [super setBackgroundColor:backgroundColor];
     _privateLayer.vv_backgroundColor = backgroundColor;
-    if (self.drawLayer) {
-        [self.drawLayer setNeedsDisplay];
-    }
 }
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
-    _borderColor = borderColor;
+    [super setBorderColor:borderColor];
     _privateLayer.vv_borderColor = borderColor;
-    if (self.drawLayer) {
-        [self.drawLayer setNeedsDisplay];
-    }
 }
 
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = [ super setIntValue:value forKey:key];
-    
+- (void)setBorderWidth:(CGFloat)borderWidth
+{
+    [super setBorderWidth:borderWidth];
+    _privateLayer.vv_borderWidth = borderWidth;
+}
+
+- (BOOL)setFloatValue:(float)value forKey:(int)key
+{
+    BOOL ret = [super setFloatValue:value forKey:key];
     if (!ret) {
-        ret = true;
+        ret = YES;
         switch (key) {
-            case STR_ID_borderWidth:
-                _privateLayer.vv_borderWidth = value;
-                break;
             case STR_ID_borderRadius:
                 _privateLayer.vv_borderRadius = value;
                 break;
@@ -132,44 +113,8 @@
             case STR_ID_borderBottomRightRadius:
                 _privateLayer.vv_borderBottomRightRadius = value;
                 break;
-            case STR_ID_borderColor:
-                self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
-                break;
             default:
-                ret = false;
-                break;
-        }
-    }
-    return ret;
-}
-
-- (BOOL)setFloatValue:(float)value forKey:(int)key{
-    BOOL ret = [ super setFloatValue:value forKey:key];
-    
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_borderWidth:
-                _privateLayer.vv_borderWidth = value;
-                break;
-            case STR_ID_borderRadius:
-                _privateLayer.vv_borderRadius = value;
-                break;
-            case STR_ID_borderTopLeftRadius:
-                _privateLayer.vv_borderTopLeftRadius = value;
-                break;
-            case STR_ID_borderTopRightRadius:
-                _privateLayer.vv_borderTopRightRadius = value;
-                break;
-            case STR_ID_borderBottomLeftRadius:
-                _privateLayer.vv_borderBottomLeftRadius = value;
-                break;
-            case STR_ID_borderBottomRightRadius:
-                _privateLayer.vv_borderBottomRightRadius = value;
-                break;
-
-            default:
-                ret = false;
+                ret = NO;
                 break;
         }
     }

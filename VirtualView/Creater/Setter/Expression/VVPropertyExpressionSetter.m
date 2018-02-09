@@ -94,8 +94,6 @@
                 _valueType = TYPE_GRAVITY;
                 break;
             case STR_ID_dataTag:
-                _valueType = TYPE_OBJECT;
-                break;
             default:
                 _valueType = TYPE_OBJECT;
                 break;
@@ -177,21 +175,20 @@
     NSArray *array = [stringValue componentsSeparatedByString:@"|"];
     int gravity = 0;
     for (NSString *item in array) {
-        NSString *formattedItem = [item stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        formattedItem = [formattedItem lowercaseString];
-        if ([formattedItem isEqualToString:@"left"]) {
+        NSString *trimmedItem = [item stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([trimmedItem isEqualToString:@"left"]) {
             gravity |= VVGravityLeft;
-        } else if ([formattedItem isEqualToString:@"right"]) {
+        } else if ([trimmedItem isEqualToString:@"right"]) {
             gravity |= VVGravityRight;
-        } else if ([formattedItem isEqualToString:@"h_center"]) {
+        } else if ([trimmedItem isEqualToString:@"h_center"]) {
             gravity |= VVGravityHCenter;
-        } else if ([formattedItem isEqualToString:@"top"]) {
+        } else if ([trimmedItem isEqualToString:@"top"]) {
             gravity |= VVGravityTop;
-        } else if ([formattedItem isEqualToString:@"bottom"]) {
+        } else if ([trimmedItem isEqualToString:@"bottom"]) {
             gravity |= VVGravityBottom;
-        } else if ([formattedItem isEqualToString:@"v_center"]) {
+        } else if ([trimmedItem isEqualToString:@"v_center"]) {
             gravity |= VVGravityVCenter;
-        } else if ([formattedItem isEqualToString:@"center"]) {
+        } else if ([trimmedItem isEqualToString:@"center"]) {
             gravity |= VVGravityHCenter | VVGravityVCenter;
         }
     }

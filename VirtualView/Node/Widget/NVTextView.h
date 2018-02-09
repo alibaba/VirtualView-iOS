@@ -7,13 +7,26 @@
 
 #import <UIKit/UIKit.h>
 #import "VVBaseNode.h"
-#import "VVDefines.h"
+
+@interface VVLabel : UILabel
+
+@property (nonatomic, assign) CGFloat paddingLeft;
+@property (nonatomic, assign) CGFloat paddingTop;
+@property (nonatomic, assign) CGFloat paddingRight;
+@property (nonatomic, assign) CGFloat paddingBottom;
+
+@end
 
 @interface NVTextView : VVBaseNode
-@property(strong, nonatomic)NSString* text;
-@property(strong, nonatomic)NSAttributedString *attributedText;
-@property(nonatomic, strong)UILabel* textView;
-@property(assign, nonatomic)CGFloat frontSize;
-@property(assign, nonatomic)VVTextStyle textStyle;
-@property(strong, nonatomic)UIColor*   borderColor;
+
+@property (nonatomic, strong) NSString *text;
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, assign) CGFloat textSize;
+@property (nonatomic, assign) VVTextStyle textStyle;
+@property (nonatomic, assign) VVEllipsize ellipsize;
+@property (nonatomic, assign) int lines;
+@property (nonatomic, assign) int maxLines;
+//@property (nonatomic, assign) CGFloat lineSpaceMultiplier;
+//@property (nonatomic, assign) CGFloat lineSpaceExtra;
+
 @end

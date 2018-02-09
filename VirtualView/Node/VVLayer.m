@@ -17,27 +17,50 @@
 
 @implementation VVLayer
 
-- (void)drawInContext:(CGContextRef)context
+- (instancetype)init
 {
-    width = CGRectGetWidth(self.bounds);
-    height = CGRectGetHeight(self.bounds);
-    CGContextClearRect(context, CGRectMake(0, 0, width, height));
-    
-    if (self.vv_backgroundColor
-        && [self.vv_backgroundColor isEqual:[UIColor clearColor]] == NO) {
-        CGContextSetFillColorWithColor(context, self.vv_backgroundColor.CGColor);
-        [self createPath:context borderWidth:self.vv_borderWidth];
-        CGContextFillPath(context);
+    if (self = [super init]) {
+        VVSetNeedsDisplayObserve(frame);
+        VVSetNeedsDisplayObserve(vv_borderWidth);
+        VVSetNeedsDisplayObserve(vv_borderColor);
+        VVSetNeedsDisplayObserve(vv_borderRadius);
+        VVSetNeedsDisplayObserve(vv_borderTopLeftRadius);
+        VVSetNeedsDisplayObserve(vv_borderBottomLeftRadius);
+        VVSetNeedsDisplayObserve(vv_borderTopRightRadius);
+        VVSetNeedsDisplayObserve(vv_borderBottomRightRadius);
+        VVSetNeedsDisplayObserve(vv_backgroundColor);
     }
+    return self;
+}
 
-    if (self.vv_borderWidth > 0
-        && self.vv_borderColor
-        && [self.vv_borderColor isEqual:[UIColor clearColor]] == NO) {
-        CGContextSetLineWidth(context, self.vv_borderWidth);
-        CGContextSetStrokeColorWithColor(context, self.vv_borderColor.CGColor);
-        [self createPath:context borderWidth:self.vv_borderWidth];
-        CGContextStrokePath(context);
-    }
+- (void)setVv_borderWidth:(CGFloat)vv_borderWidth
+{
+    _vv_borderWidth = vv_borderWidth > 0 ? vv_borderWidth : 0;
+}
+
+- (void)setVv_borderTopLeftRadius:(CGFloat)vv_borderTopLeftRadius
+{
+    _vv_borderTopLeftRadius = vv_borderTopLeftRadius > 0 ? vv_borderTopLeftRadius : 0;
+}
+
+- (void)setVv_borderTopRightRadius:(CGFloat)vv_borderTopRightRadius
+{
+    _vv_borderTopRightRadius = vv_borderTopRightRadius > 0 ? vv_borderTopRightRadius : 0;
+}
+
+- (void)setVv_borderBottomLeftRadius:(CGFloat)vv_borderBottomLeftRadius
+{
+    _vv_borderBottomLeftRadius = vv_borderBottomLeftRadius > 0 ? vv_borderBottomLeftRadius : 0;
+}
+
+- (void)setVv_borderBottomRightRadius:(CGFloat)vv_borderBottomRightRadius
+{
+    _vv_borderBottomRightRadius = vv_borderBottomRightRadius > 0 ? vv_borderBottomRightRadius : 0;
+}
+
+- (void)setVv_borderRadius:(CGFloat)vv_borderRadius
+{
+    _vv_borderRadius = vv_borderRadius > 0 ? vv_borderRadius : 0;
 }
 
 - (void)createPath:(CGContextRef)context borderWidth:(CGFloat)borderWidth
@@ -73,34 +96,27 @@
     CGContextClosePath(context);
 }
 
-- (void)setVv_borderWidth:(CGFloat)vv_borderWidth
+- (void)drawInContext:(CGContextRef)context
 {
-    _vv_borderWidth = vv_borderWidth > 0 ? vv_borderWidth : 0;
-}
+    width = CGRectGetWidth(self.bounds);
+    height = CGRectGetHeight(self.bounds);
+    CGContextClearRect(context, CGRectMake(0, 0, width, height));
+    
+    if (self.vv_backgroundColor
+        && [self.vv_backgroundColor isEqual:[UIColor clearColor]] == NO) {
+        CGContextSetFillColorWithColor(context, self.vv_backgroundColor.CGColor);
+        [self createPath:context borderWidth:self.vv_borderWidth];
+        CGContextFillPath(context);
+    }
 
-- (void)setVv_borderTopLeftRadius:(CGFloat)vv_borderTopLeftRadius
-{
-    _vv_borderTopLeftRadius = vv_borderTopLeftRadius > 0 ? vv_borderTopLeftRadius : 0;
-}
-
-- (void)setVv_borderTopRightRadius:(CGFloat)vv_borderTopRightRadius
-{
-    _vv_borderTopRightRadius = vv_borderTopRightRadius > 0 ? vv_borderTopRightRadius : 0;
-}
-
-- (void)setVv_borderBottomLeftRadius:(CGFloat)vv_borderBottomLeftRadius
-{
-    _vv_borderBottomLeftRadius = vv_borderBottomLeftRadius > 0 ? vv_borderBottomLeftRadius : 0;
-}
-
-- (void)setVv_borderBottomRightRadius:(CGFloat)vv_borderBottomRightRadius
-{
-    _vv_borderBottomRightRadius = vv_borderBottomRightRadius > 0 ? vv_borderBottomRightRadius : 0;
-}
-
-- (void)setVv_borderRadius:(CGFloat)vv_borderRadius
-{
-    _vv_borderRadius = vv_borderRadius > 0 ? vv_borderRadius : 0;
+    if (self.vv_borderWidth > 0
+        && self.vv_borderColor
+        && [self.vv_borderColor isEqual:[UIColor clearColor]] == NO) {
+        CGContextSetLineWidth(context, self.vv_borderWidth);
+        CGContextSetStrokeColorWithColor(context, self.vv_borderColor.CGColor);
+        [self createPath:context borderWidth:self.vv_borderWidth];
+        CGContextStrokePath(context);
+    }
 }
 
 @end

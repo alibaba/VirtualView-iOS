@@ -207,8 +207,8 @@
     for (short i = 0; i < count; i++) {
         // rp int properties
         int key = [self readIntLE];
-        int value = [self readIntLE] * VVConfig.pointRatio;
-        VVPropertySetter *setter = [VVPropertyIntSetter setterWithPropertyKey:key intValue:value];
+        float value = [self readIntLE] * VVConfig.pointRatio;
+        VVPropertySetter *setter = [VVPropertyFloatSetter setterWithPropertyKey:key floatValue:value];
         [creater.propertySetters addObject:setter];
     }
     

@@ -25,19 +25,19 @@
         if ([subNode needLayout]) {
             CGSize subNodeSize = [subNode calculateSize:contentSize];
 
-            if ((subNode.layoutGravity & VVGravityHCenter) > 0) {
+            if (subNode.layoutGravity & VVGravityHCenter) {
                 CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
                 subNode.nodeX = midX - subNodeSize.width / 2;
-            } else if((subNode.layoutGravity & VVGravityRight) > 0) {
+            } else if (subNode.layoutGravity & VVGravityRight) {
                 subNode.nodeX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
             } else {
                 subNode.nodeX = self.paddingLeft + subNode.marginLeft;
             }
             
-            if ((subNode.layoutGravity & VVGravityVCenter) > 0) {
+            if (subNode.layoutGravity & VVGravityVCenter) {
                 CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
                 subNode.nodeY = midY - subNodeSize.height / 2;
-            } else if ((subNode.layoutGravity & VVGravityBottom) > 0) {
+            } else if (subNode.layoutGravity & VVGravityBottom) {
                 subNode.nodeY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
             } else {
                 subNode.nodeY = self.paddingTop + subNode.marginTop;
@@ -60,6 +60,8 @@
             self.nodeHeight = maxSize.height;
         }
         CGSize contentSize = self.contentSize;
+        
+        // Calculate size of subNodes.
         CGFloat maxSubNodeWidth = 0, maxSubNodeHeight = 0; // maximum container size of subNodes
         for (VVBaseNode *subNode in self.subNodes) {
             if (subNode.visibility == VVVisibilityGone) {
@@ -70,6 +72,7 @@
             maxSubNodeWidth = MAX(maxSubNodeWidth, subNodeContainerSize.width);
             maxSubNodeHeight = MAX(maxSubNodeHeight, subNodeContainerSize.height);
         }
+        
         if (self.layoutWidth == VV_WRAP_CONTENT) {
             self.nodeWidth = maxSubNodeWidth + self.paddingLeft + self.paddingRight;
         }
