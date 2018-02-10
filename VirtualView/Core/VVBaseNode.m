@@ -170,13 +170,13 @@
                 self.visibility = value;
                 break;
             case STR_ID_autoDimDirection:
-                _autoDimDirection = value;
+                self.autoDimDirection = value;
                 break;
             case STR_ID_gravity:
                 self.gravity = value;
                 break;
             case STR_ID_layoutGravity:
-                _layoutGravity = value;
+                self.layoutGravity = value;
                 break;
             case STR_ID_layoutDirection:
                 self.layoutDirection = value;
@@ -203,40 +203,40 @@
     BOOL ret = YES;
     switch (key) {
         case STR_ID_layoutWidth:
-            _layoutWidth = value;
+            self.layoutWidth = value;
             break;
         case STR_ID_layoutHeight:
-            _layoutHeight = value;
+            self.layoutHeight = value;
             break;
         case STR_ID_autoDimX:
-            _autoDimX = value;
+            self.autoDimX = value;
             break;
         case STR_ID_autoDimY:
-            _autoDimY = value;
+            self.autoDimY = value;
             break;
         case STR_ID_paddingLeft:
-            _paddingLeft = value;
+            self.paddingLeft = value;
             break;
         case STR_ID_paddingTop:
-            _paddingTop = value;
+            self.paddingTop = value;
             break;
         case STR_ID_paddingRight:
-            _paddingRight = value;
+            self.paddingRight = value;
             break;
         case STR_ID_paddingBottom:
-            _paddingBottom = value;
+            self.paddingBottom = value;
             break;
         case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
+            self.marginLeft = value;
             break;
         case STR_ID_layoutMarginTop:
-            _marginTop = value;
+            self.marginTop = value;
             break;
         case STR_ID_layoutMarginRight:
-            _marginRight = value;
+            self.marginRight = value;
             break;
         case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
+            self.marginBottom = value;
             break;
         case STR_ID_layoutRatio:
             self.layoutRatio = value;
@@ -256,13 +256,13 @@
     BOOL ret = YES;
     switch (key) {
         case STR_ID_dataTag:
-            self.dataTag = value;
+            _dataTag = value;
             break;
         case STR_ID_action:
-            self.action = value;
+            _action = value;
             break;
         case STR_ID_class:
-            self.className = value;
+            _className = value;
             break;
         default:
             ret = NO;
