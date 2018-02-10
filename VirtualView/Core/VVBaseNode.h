@@ -87,6 +87,12 @@
 @property (nonatomic, assign) CGFloat nodeWidth;
 @property (nonatomic, assign) CGFloat nodeHeight;
 /**
+ hidden state
+ Will be YES if superNode is hidden.
+ Will be updated in layoutSubNodes method of superNode.
+ */
+@property (nonatomic, assign, readonly) BOOL hidden;
+/**
  absolute frame relative to root
  = CGRectMake(superNodeFrameX + nodeX, superNodeFrameY + nodeY, nodeWidth, nodeHeight)
  Will be updated in layoutSubNodes method of superNode.
@@ -129,6 +135,7 @@
  */
 - (void)setNeedsLayoutAndResizeRecursively;
 
+- (void)updateHidden NS_REQUIRES_SUPER;
 - (void)updateFrame NS_REQUIRES_SUPER;
 - (void)layoutSubNodes;
 - (void)layoutSubviews __deprecated_msg("use layoutSubNodes");

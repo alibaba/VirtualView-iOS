@@ -43,6 +43,7 @@
                 subNode.nodeY = self.paddingTop + subNode.marginTop;
             }
         }
+        [subNode updateHidden];
         [subNode updateFrame];
         [subNode layoutSubNodes];
     }

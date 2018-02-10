@@ -10,6 +10,6 @@
 
 @interface VVLayout : VVBaseNode
 
-@property (nonatomic, strong) VVLayer *drawLayer;
+@property (nonatomic, strong) VVLayer *canvasLayer;
 
 @end

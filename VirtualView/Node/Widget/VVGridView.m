@@ -31,8 +31,8 @@
 
 - (void)dealloc
 {
-    if (self.drawLayer) {
-        self.drawLayer.delegate = nil;
+    if (self.canvasLayer) {
+        self.canvasLayer.delegate = nil;
     }
 }
 
@@ -160,17 +160,17 @@
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
-    if (self.drawLayer == nil) {
-        self.drawLayer = [VVLayer layer];
-        self.drawLayer.drawsAsynchronously = YES;
-        self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
-        self.drawLayer.delegate =  (id<CALayerDelegate>)self;
+    if (self.canvasLayer == nil) {
+        self.canvasLayer = [VVLayer layer];
+        self.canvasLayer.drawsAsynchronously = YES;
+        self.canvasLayer.contentsScale = [[UIScreen mainScreen] scale];
+        self.canvasLayer.delegate =  (id<CALayerDelegate>)self;
     }
-    if (self.drawLayer) {
-        if (self.drawLayer.superlayer) {
-            [self.drawLayer removeFromSuperlayer];
+    if (self.canvasLayer) {
+        if (self.canvasLayer.superlayer) {
+            [self.canvasLayer removeFromSuperlayer];
         }
-        [rootCanvasLayer addSublayer:self.drawLayer];
+        [rootCanvasLayer addSublayer:self.canvasLayer];
     }
     [super setRootCanvasLayer:rootCanvasLayer];
 }

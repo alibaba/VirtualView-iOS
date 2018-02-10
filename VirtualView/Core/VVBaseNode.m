@@ -411,6 +411,14 @@
     }
 }
 
+- (void)updateHidden
+{
+    _hidden = _visibility != VVVisibilityVisible;
+    if (_superNode) {
+        _hidden |= _superNode.hidden;
+    }
+}
+
 - (void)updateFrame
 {
     CGFloat x = 0, y = 0;

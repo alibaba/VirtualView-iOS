@@ -48,30 +48,30 @@
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
-    if (self.drawLayer == nil && [self needDrawLayer]) {
-        self.drawLayer = _privateLayer;
-        self.drawLayer.drawsAsynchronously = YES;
-        self.drawLayer.contentsScale = [[UIScreen mainScreen] scale];
+    if (self.canvasLayer == nil && [self needDrawLayer]) {
+        self.canvasLayer = _privateLayer;
+        self.canvasLayer.drawsAsynchronously = YES;
+        self.canvasLayer.contentsScale = [[UIScreen mainScreen] scale];
     }
-    if (self.drawLayer) {
-        if (self.drawLayer.superlayer) {
-            [self.drawLayer removeFromSuperlayer];
+    if (self.canvasLayer) {
+        if (self.canvasLayer.superlayer) {
+            [self.canvasLayer removeFromSuperlayer];
         }
-        [rootCanvasLayer addSublayer:self.drawLayer];
+        [rootCanvasLayer addSublayer:self.canvasLayer];
     }
     [super setRootCanvasLayer:rootCanvasLayer];
+}
+
+- (void)updateHidden
+{
+    [super updateHidden];
+    _privateLayer.hidden = self.hidden;
 }
 
 - (void)updateFrame
 {
     [super updateFrame];
     _privateLayer.frame = self.nodeFrame;
-}
-
-- (void)setVisibility:(VVVisibility)visibility
-{
-    [super setVisibility:visibility];
-    _privateLayer.hidden = !(visibility == VVVisibilityVisible);
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor

@@ -50,7 +50,6 @@
         VVSelectorObserve(lines, updateNumberOfLines);
         VVSelectorObserve(textStyle, updateAttributedText);
         VVSelectorObserve(text, updateAttributedText);
-        VVSelectorObserve(gravity, updateTextAlignment);
 //        VVSelectorObserve(lineSpaceMultiplier, updateAttributedText);
 //        VVSelectorObserve(lineSpaceExtra, updateAttributedText);
     }
@@ -121,6 +120,30 @@
     self.textView.paddingRight = paddingRight;
 }
 
+- (void)setGravity:(VVGravity)gravity
+{
+    [super setGravity:gravity];
+    if (self.gravity & VVGravityRight) {
+        self.textView.textAlignment = NSTextAlignmentRight;
+    } else if (self.gravity & VVGravityHCenter) {
+        self.textView.textAlignment = NSTextAlignmentCenter;
+    } else {
+        self.textView.textAlignment = NSTextAlignmentLeft;
+    }
+}
+
+- (void)updateHidden
+{
+    [super updateHidden];
+    self.textView.hidden = self.hidden;
+}
+
+- (void)updateFrame
+{
+    [super updateFrame];
+    self.textView.frame = self.nodeFrame;
+}
+
 - (void)updateFont
 {
     if (self.textStyle & VVTextStyleBold) {
@@ -174,23 +197,6 @@
         self.textView.text = self.text;
     }
     [self setNeedsResize];
-}
-
-- (void)updateTextAlignment
-{
-    if (self.gravity & VVGravityRight) {
-        self.textView.textAlignment = NSTextAlignmentRight;
-    } else if (self.gravity & VVGravityHCenter) {
-        self.textView.textAlignment = NSTextAlignmentCenter;
-    } else {
-        self.textView.textAlignment = NSTextAlignmentLeft;
-    }
-}
-
-- (void)updateFrame
-{
-    [super updateFrame];
-    self.textView.frame = self.nodeFrame;
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize
@@ -305,7 +311,7 @@
             self.text = value;
             break;
         case STR_ID_textColor:
-            self.textView.textColor = [UIColor vv_colorWithString:value] ?: [UIColor blackColor];
+            self.textColor = [UIColor vv_colorWithString:value] ?: [UIColor blackColor];
             break;
     }
     return YES;
