@@ -14,7 +14,7 @@
 #define VV_DEBUG    1
 #endif
 
-// #define VV_ALIBABA  1
+//#define VV_ALIBABA  1
 
 #import "NSObject+VVObserver.h"
 #import "UIColor+VirtualView.h"

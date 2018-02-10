@@ -117,56 +117,61 @@
     if (self.expression) {
         id objectValue = [self.expression resultWithObject:dict];
         NSString *stringValue = [objectValue description];
+        BOOL handled = NO;
         switch (self.valueType) {
             case TYPE_INT:
             {
-                [node setIntValue:[stringValue intValue] forKey:self.key];
+                handled = [node setIntValue:[stringValue intValue] forKey:self.key];
             }
                 break;
             case TYPE_FLOAT:
             {
-                [node setFloatValue:[stringValue floatValue] forKey:self.key];
+                handled = [node setFloatValue:[stringValue floatValue] forKey:self.key];
             }
                 break;
             case TYPE_STRING:
             case TYPE_COLOR:
             {
-                [node setStringDataValue:stringValue forKey:self.key];
+                handled = [node setStringDataValue:stringValue forKey:self.key];
             }
                 break;
             case TYPE_BOOLEAN:
             {
+                BOOL boolValue = 0;
                 if ([stringValue isEqualToString:@"true"]) {
-                    [node setIntValue:1 forKey:self.key];
-                } else {
-                    [node setIntValue:0 forKey:self.key];
+                    boolValue = 1;
                 }
+                handled = [node setIntValue:boolValue forKey:self.key];
             }
                 break;
             case TYPE_VISIBILITY:
             {
+                int visibilityValue = VVVisibilityGone;
                 if ([stringValue isEqualToString:@"invisible"]) {
-                    [node setIntValue:VVVisibilityInvisible forKey:self.key];
+                    visibilityValue = VVVisibilityInvisible;
                 } else if ([stringValue isEqualToString:@"visible"]) {
-                    [node setIntValue:VVVisibilityVisible forKey:self.key];
-                } else {
-                    [node setIntValue:VVVisibilityGone forKey:self.key];
+                    visibilityValue = VVVisibilityVisible;
                 }
+                handled = [node setIntValue:visibilityValue forKey:self.key];
             }
                 break;
             case TYPE_GRAVITY:
             {
-                [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
+                handled = [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
             }
                 break;
             case TYPE_OBJECT:
             {
                 [node setDataObj:objectValue forKey:self.key];
+                handled = YES;
             }
                 break;
             default:
                 break;
         }
+#ifdef VV_DEBUG
+        NSAssert(handled == YES, @"Property is not handled.");
+#endif
     }
 }
 
