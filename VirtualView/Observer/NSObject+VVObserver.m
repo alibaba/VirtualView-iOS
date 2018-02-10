@@ -30,7 +30,12 @@
 
 - (void)vv_addObserverForKeyPath:(NSString *)keyPath selector:(SEL)selector
 {
-    VVObserver *observer = [[VVObserver alloc] initWithTarget:self selector:selector];
+    [self vv_addObserverForKeyPath:keyPath target:self selector:selector];
+}
+
+- (void)vv_addObserverForKeyPath:(NSString *)keyPath target:(nonnull id)target selector:(nonnull SEL)selector
+{
+    VVObserver *observer = [[VVObserver alloc] initWithTarget:target selector:selector];
     observer.name = keyPath;
     [self addObserver:observer forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:VVObserverContext];
     [self.vv_observers addObject:observer];

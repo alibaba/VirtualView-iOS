@@ -12,6 +12,7 @@
 
 - (void)vv_addObserverForKeyPath:(nonnull NSString *)keyPath block:(nonnull VVObserverBlock)block;
 - (void)vv_addObserverForKeyPath:(nonnull NSString *)keyPath selector:(nonnull SEL)selector;
+- (void)vv_addObserverForKeyPath:(nonnull NSString *)keyPath target:(nonnull id)target selector:(nonnull SEL)selector;
 - (void)vv_removeObserverForKeyPath:(nonnull NSString *)keyPath;
 - (void)vv_removeAllObservers;
 

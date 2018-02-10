@@ -22,9 +22,9 @@
 
 #define VVKeyPath(PATH) ((void)self.PATH, @#PATH)
 #define VVSelectorObserve(PATH, SELECTOR) \
-[self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(SELECTOR)]
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) selector:@selector(SELECTOR)]
 #define VVBlockObserve(PATH, BLOCK) \
-[self vv_addObserverForKeyPath:VVKeyPath(PATH) block:BLOCK]
+    [self vv_addObserverForKeyPath:VVKeyPath(PATH) block:BLOCK]
 #define VVSetNeedsResizeObserve(PATH) VVSelectorObserve(PATH, setNeedsResize)
 #define VVSetNeedsDisplayObserve(PATH) VVSelectorObserve(PATH, setNeedsDisplay)
 
