@@ -11,7 +11,4 @@
 
 @property (nonatomic, assign) VVOrientation orientation;
 
-@property (nonatomic, assign) int childrenWidth;
-@property (nonatomic, assign) int childrenHeight;
-
 @end

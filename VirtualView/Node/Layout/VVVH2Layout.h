@@ -9,8 +9,6 @@
 
 @interface VVVH2Layout : VVLayout
 
-@property(nonatomic, assign)int    orientation;
-@property (nonatomic, assign) int childrenWidth;
-@property (nonatomic, assign) int childrenHeight;
+@property (nonatomic, assign) VVOrientation orientation;
 
 @end
