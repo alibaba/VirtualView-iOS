@@ -56,6 +56,8 @@
     return self;
 }
 
+#pragma mark Properties
+
 - (UIView *)cocoaView
 {
     return _textView;
@@ -132,17 +134,22 @@
     }
 }
 
-- (void)updateHidden
+- (void)setTextSize:(CGFloat)textSize
 {
-    [super updateHidden];
-    self.textView.hidden = self.hidden;
+    if (textSize > 0) _textSize = textSize;
 }
 
-- (void)updateFrame
+- (void)setLines:(int)lines
 {
-    [super updateFrame];
-    self.textView.frame = self.nodeFrame;
+    if (lines >= 0) _lines = lines;
 }
+
+- (void)setMaxLines:(int)maxLines
+{
+    if (maxLines >= 0) _maxLines = maxLines;
+}
+
+#pragma mark Observers
 
 - (void)updateFont
 {
@@ -199,41 +206,7 @@
     [self setNeedsResize];
 }
 
-- (CGSize)calculateSize:(CGSize)maxSize
-{
-    [super calculateSize:maxSize];
-    if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && self.lines > 0) {
-        self.nodeHeight = self.lines * self.textView.font.lineHeight;
-        [self applyAutoDim];
-    }
-    if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
-        || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
-        if (self.nodeWidth <= 0) {
-            self.nodeWidth = maxSize.width;
-        }
-        if (self.nodeHeight <= 0) {
-            if (self.maxLines > 0) {
-                self.nodeHeight = MIN(maxSize.height, self.maxLines * self.textView.font.lineHeight);
-            } else {
-                self.nodeHeight = maxSize.height;
-            }
-        }
-        CGSize contentSize = self.contentSize;
-        
-        // Calculate text size.
-        self.textView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-        [self.textView sizeToFit];
-        
-        if (self.layoutWidth == VV_WRAP_CONTENT) {
-            self.nodeWidth = self.textView.frame.size.width + self.paddingLeft + self.paddingRight;
-        }
-        if (self.layoutHeight == VV_WRAP_CONTENT) {
-            self.nodeHeight = self.textView.frame.size.height + self.paddingTop + self.paddingBottom;
-        }
-        [self applyAutoDim];
-    }
-    return CGSizeMake(self.nodeWidth, self.nodeHeight);
-}
+#pragma mark Update
 
 - (BOOL)setIntValue:(int)value forKey:(int)key
 {
@@ -322,4 +295,53 @@
     return YES;
 }
 
+#pragma mark Layout
+
+- (void)updateHidden
+{
+    [super updateHidden];
+    self.textView.hidden = self.hidden;
+}
+
+- (void)updateFrame
+{
+    [super updateFrame];
+    self.textView.frame = self.nodeFrame;
+}
+
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    [super calculateSize:maxSize];
+    if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && _lines > 0) {
+        self.nodeHeight = _lines * self.textView.font.lineHeight + self.paddingTop + self.paddingBottom;
+        [self applyAutoDim];
+    }
+    if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
+        || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
+        if (self.nodeWidth <= 0) {
+            self.nodeWidth = maxSize.width;
+        }
+        if (self.nodeHeight <= 0) {
+            if (self.maxLines > 0) {
+                self.nodeHeight = MIN(maxSize.height, self.maxLines * self.textView.font.lineHeight);
+            } else {
+                self.nodeHeight = maxSize.height;
+            }
+        }
+        CGSize contentSize = self.contentSize;
+        
+        // Calculate text size.
+        self.textView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+        [self.textView sizeToFit];
+        
+        if (self.layoutWidth == VV_WRAP_CONTENT) {
+            self.nodeWidth = self.textView.frame.size.width + self.paddingLeft + self.paddingRight;
+        }
+        if (self.layoutHeight == VV_WRAP_CONTENT) {
+            self.nodeHeight = self.textView.frame.size.height + self.paddingTop + self.paddingBottom;
+        }
+        [self applyAutoDim];
+    }
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
+}
 @end

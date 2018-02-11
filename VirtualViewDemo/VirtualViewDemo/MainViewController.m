@@ -20,7 +20,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[ @"FrameLayout", @"VHLayout", @"VH2Layout", @"NText", @"NImage", @"TmallComponent2"];
+        self.demoArray = @[ @"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"NText", @"NImage", @"TmallComponent2"];
     }
     return self;
 }

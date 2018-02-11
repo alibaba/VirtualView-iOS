@@ -19,6 +19,7 @@
 @implementation VVBaseNode
 
 @synthesize subNodes = _subNodes;
+@dynamic nodeSize, contentSize, containerSize;
 
 - (id)init{
     self = [super init];
@@ -313,7 +314,7 @@
     VVSetNeedsResizeObserve(autoDimY);
     VVSetNeedsResizeObserve(autoDimDirection);
     __weak VVBaseNode *weakSelf = self;
-    VVObserverBlock paddingChangedBlock = ^(id _Nonnull value) {
+    VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
         for (VVBaseNode *subNode in strongSelf.subNodes) {
             [subNode setNeedsLayout];
@@ -322,21 +323,21 @@
             }
         }
     };
-    VVBlockObserve(paddingTop, paddingChangedBlock);
-    VVBlockObserve(paddingLeft, paddingChangedBlock);
-    VVBlockObserve(paddingRight, paddingChangedBlock);
-    VVBlockObserve(paddingBottom, paddingChangedBlock);
-    VVObserverBlock marginChangedBlock = ^(id _Nonnull value) {
+    VVBlockObserve(paddingTop, contentChangedBlock);
+    VVBlockObserve(paddingLeft, contentChangedBlock);
+    VVBlockObserve(paddingRight, contentChangedBlock);
+    VVBlockObserve(paddingBottom, contentChangedBlock);
+    VVObserverBlock selfChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
         [strongSelf setNeedsLayout];
         [strongSelf setNeedsResize];
     };
-    VVBlockObserve(marginTop, marginChangedBlock);
-    VVBlockObserve(marginLeft, marginChangedBlock);
-    VVBlockObserve(marginRight, marginChangedBlock);
-    VVBlockObserve(marginBottom, marginChangedBlock);
-    VVBlockObserve(visibility, marginChangedBlock);
-    VVBlockObserve(layoutRatio, marginChangedBlock);
+    VVBlockObserve(marginTop, selfChangedBlock);
+    VVBlockObserve(marginLeft, selfChangedBlock);
+    VVBlockObserve(marginRight, selfChangedBlock);
+    VVBlockObserve(marginBottom, selfChangedBlock);
+    VVBlockObserve(visibility, selfChangedBlock);
+    VVBlockObserve(layoutRatio, selfChangedBlock);
     [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
         for (VVBaseNode *subNode in strongSelf.subNodes) {
@@ -378,10 +379,10 @@
 
 - (void)setNeedsResize
 {
-    if (_updatingNeedsResize) {
+    if (self.updatingNeedsResize) {
         return;
     }
-    _updatingNeedsResize = YES;
+    self.updatingNeedsResize = YES;
     [self setNeedsResizeNonRecursively];
     if (_superNode && [_superNode needResizeIfSubNodeResize]) {
         [_superNode setNeedsResize];
@@ -394,7 +395,7 @@
             [subNode setNeedsLayout];
         }
     }
-    _updatingNeedsResize = NO;
+    self.updatingNeedsResize = NO;
 }
 
 - (void)setNeedsResizeNonRecursively

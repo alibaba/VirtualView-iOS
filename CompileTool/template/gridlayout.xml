@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        layoutWidth="750rp"
+        layoutHeight="match_parent"
+        background="#FFFFFF"
+        orientation="V">
+
+    <VText
+            text="colCount = 3"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <GridLayout
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            colCount="3"
+            paddingLeft="5"
+            paddingTop="5"
+            paddingRight="5"
+            paddingBottom="5"
+            itemHorizontalMargin="10"
+            itemVerticalMargin="15"
+            borderColor="#ff0000"
+            borderWidth="1">
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="100"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="90"
+                background="#0080FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="80"
+                background="#8080FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="100"
+                background="#80FF80"
+                textSize="12"
+                gravity="h_center"
+                text="4" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="90"
+                background="#80FF00"
+                textSize="12"
+                gravity="h_center"
+                layoutGravity="bottom"
+                text="5" />
+
+    </GridLayout>
+
+    <VText
+            text="itemHeight = 80"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <GridLayout
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            colCount="3"
+            itemHeight="80"
+            paddingLeft="5"
+            paddingTop="5"
+            paddingRight="5"
+            paddingBottom="5"
+            itemHorizontalMargin="10"
+            itemVerticalMargin="15"
+            borderColor="#ff0000"
+            borderWidth="1">
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="100"
+                background="#800000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="90"
+                background="#800080FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="80"
+                background="#808080FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="100"
+                background="#80FF8080"
+                textSize="12"
+                gravity="h_center"
+                text="4" />
+        <VText
+                layoutWidth="match_parent"
+                layoutHeight="90"
+                background="#8080FF00"
+                textSize="12"
+                gravity="h_center"
+                layoutGravity="bottom"
+                text="5" />
+    </GridLayout>
+
+    <VText
+            text="square item"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <GridLayout
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            paddingLeft="5"
+            paddingTop="5"
+            paddingRight="5"
+            paddingBottom="5"
+            itemHorizontalMargin="10"
+            itemVerticalMargin="15"
+            borderColor="#ff0000"
+            borderWidth="1">
+        <VText
+                layoutWidth="match_parent"
+                autoDimX="1"
+                autoDimY="1"
+                autoDimDirection="X"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="match_parent"
+                autoDimX="1"
+                autoDimY="1"
+                autoDimDirection="X"
+                background="#0080FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="match_parent"
+                autoDimX="1"
+                autoDimY="1"
+                autoDimDirection="X"
+                background="#8080FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+    </GridLayout>
+
+</VHLayout>

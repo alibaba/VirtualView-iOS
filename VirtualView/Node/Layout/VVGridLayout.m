@@ -6,193 +6,187 @@
 //
 
 #import "VVGridLayout.h"
-@interface VVGridLayout (){
 
-}
-@end;
+@interface VVGridLayout ()
+
+@property (nonatomic, assign) BOOL updatingNeedsResize;
+
+@end
 
 @implementation VVGridLayout
-- (BOOL)setFloatValue:(float)value forKey:(int)key{
-    BOOL ret = [ super setFloatValue:value forKey:key];
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_itemHeight:
-                _itemHeight = value;
-                break;
-            case STR_ID_itemHorizontalMargin:
-                _itemHorizontalMargin = value;
-                break;
-            case STR_ID_itemVerticalMargin:
-                _itemVerticalMargin = value;
-                break;
-            default:
-                ret = false;
-                break;
-        }
+
+@dynamic rowCount;
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _colCount = 2;
+        __weak VVBaseNode *weakSelf = self;
+        VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
+            __strong VVBaseNode *strongSelf = weakSelf;
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+                if ([subNode needResizeIfSuperNodeResize]) {
+                    [subNode setNeedsResize];
+                }
+            }
+        };
+        VVBlockObserve(colCount, contentChangedBlock);
+        VVBlockObserve(itemHeight, contentChangedBlock);
+        VVBlockObserve(itemVerticalMargin, contentChangedBlock);
+        VVBlockObserve(itemHorizontalMargin, contentChangedBlock);
     }
-    return ret;
+    return self;
 }
 
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = [ super setIntValue:value forKey:key];
-    
+- (void)setColCount:(int)colCount
+{
+    if (colCount > 0) _colCount = colCount;
+}
+
+- (int)rowCount
+{
+    return ((int)self.subNodes.count + 1) / _colCount;
+}
+
+- (void)setItemHeight:(CGFloat)itemHeight
+{
+    if (itemHeight >= 0) _itemHeight = itemHeight;
+}
+
+- (BOOL)setIntValue:(int)value forKey:(int)key
+{
+    BOOL ret = [super setIntValue:value forKey:key];
     if (!ret) {
-        ret = true;
+        ret = YES;
         switch (key) {
             case STR_ID_colCount:
-                _colCount = value;
-                break;
-
-            case STR_ID_itemHeight:
-                _itemHeight = value;
-                break;
-            case STR_ID_itemHorizontalMargin:
-                _itemHorizontalMargin = value;
-                break;
-            case STR_ID_itemVerticalMargin:
-                _itemVerticalMargin = value;
+                self.colCount = value;
                 break;
             default:
-                ret = false;
+                ret = NO;
                 break;
         }
     }
     return ret;
 }
 
-- (void)layoutSubNodes{
-    [super layoutSubNodes];
-    int index = 0;
-    for (int row=0; row<_rowCount; row++) {
-        for (int col=0; col<_colCount; col++) {
-            if (index<self.subNodes.count) {
-                VVBaseNode* vvObj = [self.subNodes objectAtIndex:index];
-                if(vvObj.visibility==VVVisibilityGone){
-                    continue;
-                }
-                vvObj.nodeX = (vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
-                vvObj.nodeY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
-                [vvObj updateFrame];
-                [vvObj layoutSubNodes];
-                index++;
-            }else{
+- (BOOL)setFloatValue:(float)value forKey:(int)key
+{
+    BOOL ret = [ super setFloatValue:value forKey:key];
+    if (!ret) {
+        ret = YES;
+        switch (key) {
+            case STR_ID_itemHeight:
+                self.itemHeight = value;
                 break;
+            case STR_ID_itemHorizontalMargin:
+                self.itemHorizontalMargin = value;
+                break;
+            case STR_ID_itemVerticalMargin:
+                self.itemVerticalMargin = value;
+                break;
+            default:
+                ret = NO;
+                break;
+        }
+    }
+    return ret;
+}
+
+- (void)layoutSubNodes
+{
+    [super layoutSubNodes];
+    CGSize contentSize = self.contentSize;
+    CGSize gridSizeWithMargin = CGSizeMake((contentSize.width + _itemHorizontalMargin) / _colCount,
+                                           (contentSize.height + _itemVerticalMargin) / self.rowCount);
+    CGSize gridSize = CGSizeMake(gridSizeWithMargin.width - _itemHorizontalMargin,
+                                 gridSizeWithMargin.height - _itemVerticalMargin);
+    int index = 0, col, row;
+    for (VVBaseNode *subNode in self.subNodes) {
+        if (subNode.visibility == VVVisibilityGone) {
+            continue;
+        }
+        if ([subNode needLayout]) {
+            col = index % _colCount;
+            row = index / _colCount;
+            CGSize subNodeSize = [subNode calculateSize:gridSize];
+            
+            if (subNode.layoutGravity & VVGravityHCenter) {
+                CGFloat midX = self.paddingLeft + gridSizeWithMargin.width * (col + 0.5);
+                subNode.nodeX = midX - subNodeSize.width / 2;
+            } else if (subNode.layoutGravity & VVGravityRight) {
+                subNode.nodeX = self.paddingLeft + gridSizeWithMargin.width * (col + 1) - _itemHorizontalMargin - subNode.marginRight - subNodeSize.width;
+            } else {
+                subNode.nodeX = self.paddingLeft + gridSizeWithMargin.width * col + subNode.marginLeft;
+            }
+            
+            if (subNode.layoutGravity & VVGravityVCenter) {
+                CGFloat midY = self.paddingTop + gridSizeWithMargin.height * (row + 0.5);
+                subNode.nodeY = midY - subNodeSize.height / 2;
+            } else if (subNode.layoutGravity & VVGravityBottom) {
+                subNode.nodeY = self.paddingTop + gridSizeWithMargin.height * (row + 1) - _itemVerticalMargin - subNode.marginBottom - subNodeSize.height;
+            } else {
+                subNode.nodeY = self.paddingTop + gridSizeWithMargin.height * row + subNode.marginTop;
             }
         }
+        [subNode updateHidden];
+        [subNode updateFrame];
+        [subNode layoutSubNodes];
+        index++;
     }
 }
 
-- (CGSize)calculateSize:(CGSize)maxSize{
-    
-    if (_colCount<1) {
-        return CGSizeZero;
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    [super calculateSize:maxSize];
+    if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && _itemHeight > 0) {
+        self.nodeHeight = self.rowCount * (_itemHeight + _itemVerticalMargin) - _itemVerticalMargin + self.paddingTop + self.paddingBottom;
+        [self applyAutoDim];
     }
-    
-    CGSize contentSize = maxSize;
-    
-    if (self.layoutHeight!=VV_MATCH_PARENT && self.layoutHeight!=VV_WRAP_CONTENT) {
-        contentSize.height = self.layoutHeight;
-    }
-    
-    if (self.layoutWidth!=VV_MATCH_PARENT && self.layoutWidth!=VV_WRAP_CONTENT) {
-        contentSize.width = self.layoutWidth;
-    }
-    
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-             contentSize.height = contentSize.width*(self.autoDimY/self.autoDimX);
-            
-            break;
-        case VVAutoDimDirectionY:
-             contentSize.width = contentSize.height*(self.autoDimX/self.autoDimY);
-            break;
-        default:
-            break;
-    }
-    
-    //CGFloat itemWidth = maxSize.width;
-    CGFloat itemMaxHeight = _itemHeight;
-    CGFloat itemMaxWidth = 0;
-    CGFloat maxWidth=0,maxHeight=0;
-    _rowCount = self.subNodes.count/_colCount;
-    if (self.subNodes.count%_colCount>0) {
-        _rowCount++;
-    }
-    //contentSize.width -= self.marginLeft+self.marginRight;
-    //contentSize.height-= self.marginTop +self.marginBottom;
-    if (_colCount>0) {
-        itemMaxWidth = (contentSize.width-self.paddingLeft-self.paddingRight-self.itemHorizontalMargin*(_colCount-1))/_colCount;
-//        if (self.widthModle==VV_WRAP_CONTENT || self.widthModle==VV_MATCH_PARENT) {
-//            itemMaxWidth = (contentSize.width-self.paddingLeft-self.paddingRight)/_colCount;
-//        }else{
-//            itemMaxWidth = (self.widthModle-self.paddingLeft-self.paddingRight)/_colCount;
-//        }
-    }else{
-        return CGSizeZero;
-    }
-    
-    if (_itemHeight==0 && _rowCount>0) {
-        _itemHeight = itemMaxHeight = (contentSize.height-self.paddingTop-self.paddingBottom-self.itemVerticalMargin*(_rowCount-1))/_rowCount;
-//        if (self.heightModle==VV_WRAP_CONTENT || self.heightModle==VV_MATCH_PARENT){
-//            itemMaxHeight = (maxSize.height-self.paddingTop-self.paddingBottom)/_rowCount;
-//        }else{
-//            itemMaxHeight = (self.heightModle-self.paddingTop-self.paddingBottom)/_rowCount;
-//        }
-    }
-    
-    _itemMaxSize = CGSizeMake(itemMaxWidth, itemMaxHeight);
-    
-    for (int index =0; index<self.subNodes.count; index+=_colCount) {
-        CGFloat tmpWidth=0,tmpHeight=0;
-        for (int j=0; j<_colCount; j++) {
-            if (index+j==self.subNodes.count) {
-                break;
-            }
-            VVBaseNode* vvObj = [self.subNodes objectAtIndex:index+j];
-            CGSize itemSize = [vvObj calculateSize:_itemMaxSize];
-            #ifdef VV_DEBUG
-                NSLog(@"h:%f,w:%f",itemSize.height,itemSize.width);
-            #endif
-            tmpWidth+=itemSize.width;
-            tmpHeight=itemSize.height;
+    if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
+        || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
+        if (self.nodeWidth <= 0) {
+            self.nodeWidth = maxSize.width;
         }
-//        maxWidth = maxWidth<tmpWidth?tmpWidth:maxWidth;
-//        maxHeight= maxHeight<tmpHeight?tmpHeight:maxHeight;
-        maxWidth = tmpWidth;
-        maxHeight += tmpHeight;
+        if (self.nodeHeight <= 0) {
+            self.nodeHeight = maxSize.height;
+        }
+        CGSize contentSize = self.contentSize;
+        CGSize gridSize = CGSizeMake((contentSize.width + _itemHorizontalMargin) / _colCount - _itemHorizontalMargin,
+                                     (contentSize.height + _itemVerticalMargin) / self.rowCount - _itemVerticalMargin);
+        
+        // Calculate size of subNodes.
+        CGFloat maxSubNodeWidth = 0, maxSubNodeHeight = 0; // maximum container size of subNodes
+        for (VVBaseNode *subNode in self.subNodes) {
+            if (subNode.visibility == VVVisibilityGone) {
+                continue;
+            }
+            [subNode calculateSize:gridSize];
+            CGSize subNodeContainerSize = subNode.containerSize;
+            maxSubNodeWidth = MAX(maxSubNodeWidth, subNodeContainerSize.width);
+            maxSubNodeHeight = MAX(maxSubNodeHeight, subNodeContainerSize.height);
+        }
+        
+        if (self.layoutWidth == VV_WRAP_CONTENT) {
+            self.nodeWidth = (maxSubNodeWidth + _itemHorizontalMargin) * _colCount - _itemHorizontalMargin;
+            self.nodeWidth += self.paddingLeft + self.paddingRight;
+        }
+        if (self.layoutHeight == VV_WRAP_CONTENT) {
+            self.nodeHeight = (maxSubNodeHeight + _itemVerticalMargin) * self.rowCount - _itemVerticalMargin;
+            self.nodeHeight += self.paddingTop + self.paddingBottom;
+        }
+        [self applyAutoDim];
+        
+        // Need to resize subNodes.
+        self.updatingNeedsResize = YES;
+        for (VVBaseNode *subNodes in self.subNodes) {
+            if ([subNodes needResizeIfSuperNodeResize]) {
+                [subNodes setNeedsResize];
+            }
+        }
+        self.updatingNeedsResize = NO;
     }
-    maxWidth += self.itemHorizontalMargin*(_colCount-1);
-    maxHeight += self.itemVerticalMargin*(_rowCount-1);
-    switch ((int)self.layoutWidth) {
-        case VV_WRAP_CONTENT:
-            //
-            self.nodeWidth = self.paddingRight+self.paddingLeft+maxWidth;
-            break;
-        case VV_MATCH_PARENT:
-            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
-            
-            break;
-        default:
-            self.nodeWidth = self.layoutWidth;
-            break;
-    }
-    
-    switch ((int)self.layoutHeight) {
-        case VV_WRAP_CONTENT:
-            //
-            self.nodeHeight = self.paddingTop+self.paddingBottom+maxHeight;
-            break;
-        case VV_MATCH_PARENT:
-            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
-            
-            break;
-        default:
-            self.nodeHeight = self.layoutHeight;
-            break;
-    }
-    //[self autoDim];
-    //return CGSizeMake(self.width, self.height);
-    return CGSizeMake(self.nodeWidth=self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight=self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 @end
