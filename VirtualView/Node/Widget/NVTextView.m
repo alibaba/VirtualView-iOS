@@ -256,6 +256,8 @@
             case STR_ID_maxLines:
                 self.maxLines = value;
                 break;
+            case STR_ID_supportHTMLStyle:
+                break;
             default:
                 ret = NO;
                 break;
@@ -273,12 +275,15 @@
             case STR_ID_textSize:
                 self.textSize = value;
                 break;
-//            case STR_ID_lineSpaceMultiplier:
+            case STR_ID_lineSpaceMultiplier:
 //                self.lineSpaceMultiplier = value;
-//                break;
-//            case STR_ID_lineSpaceExtra:
+                break;
+            case STR_ID_lineSpaceExtra:
 //                self.lineSpaceExtra = value;
-//                break;
+                break;
+            case STR_ID_borderRadius:
+                self.textView.layer.cornerRadius = value;
+                break;
             default:
                 ret = NO;
                 break;
