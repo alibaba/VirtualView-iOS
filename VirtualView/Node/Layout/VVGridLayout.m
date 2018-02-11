@@ -94,6 +94,14 @@
     return ret;
 }
 
+- (BOOL)needResizeIfSubNodeResize
+{
+    for (VVBaseNode *subNode in self.subNodes) {
+        [subNode setNeedsLayout];
+    }
+    return [super needResizeIfSubNodeResize];
+}
+
 - (void)layoutSubNodes
 {
     [super layoutSubNodes];

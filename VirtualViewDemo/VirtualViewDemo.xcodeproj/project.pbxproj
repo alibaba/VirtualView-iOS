@@ -21,6 +21,8 @@
 		92D80CEC2030228100398A2B /* VH2Layout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE62030228100398A2B /* VH2Layout.out */; };
 		92D80CED2030228100398A2B /* VHLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE72030228100398A2B /* VHLayout.out */; };
 		92D80CEF20303F3800398A2B /* GridLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CEE20303F3800398A2B /* GridLayout.out */; };
+		92D80CF120305DFB00398A2B /* RatioLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CF020305DFB00398A2B /* RatioLayout.out */; };
+		92D80CF32030646900398A2B /* CompileTool in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CF22030646900398A2B /* CompileTool */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +40,6 @@
 		926B401F200397AA0003D88E /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		926B4020200397AA0003D88E /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		926B402A200397AB0003D88E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		92D80CCC2030119D00398A2B /* template */ = {isa = PBXFileReference; lastKnownFileType = folder; name = template; path = ../../CompileTool/template; sourceTree = "<group>"; };
 		92D80CE22030228100398A2B /* FrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = FrameLayout.out; sourceTree = "<group>"; };
 		92D80CE32030228100398A2B /* NImage.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NImage.out; sourceTree = "<group>"; };
 		92D80CE42030228100398A2B /* NText.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NText.out; sourceTree = "<group>"; };
@@ -46,6 +47,8 @@
 		92D80CE62030228100398A2B /* VH2Layout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = VH2Layout.out; sourceTree = "<group>"; };
 		92D80CE72030228100398A2B /* VHLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = VHLayout.out; sourceTree = "<group>"; };
 		92D80CEE20303F3800398A2B /* GridLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = GridLayout.out; sourceTree = "<group>"; };
+		92D80CF020305DFB00398A2B /* RatioLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = RatioLayout.out; sourceTree = "<group>"; };
+		92D80CF22030646900398A2B /* CompileTool */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CompileTool; path = ../../CompileTool; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +92,7 @@
 		926B4007200396DB0003D88E /* VirtualViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				92D80CCC2030119D00398A2B /* template */,
+				92D80CF22030646900398A2B /* CompileTool */,
 				92D80CE12030228100398A2B /* Resources */,
 				926B4008200396DB0003D88E /* AppDelegate.h */,
 				926B4009200396DB0003D88E /* AppDelegate.m */,
@@ -108,13 +111,14 @@
 		92D80CE12030228100398A2B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				92D80CEE20303F3800398A2B /* GridLayout.out */,
 				92D80CE22030228100398A2B /* FrameLayout.out */,
+				92D80CE72030228100398A2B /* VHLayout.out */,
+				92D80CE62030228100398A2B /* VH2Layout.out */,
+				92D80CEE20303F3800398A2B /* GridLayout.out */,
+				92D80CF020305DFB00398A2B /* RatioLayout.out */,
 				92D80CE32030228100398A2B /* NImage.out */,
 				92D80CE42030228100398A2B /* NText.out */,
 				92D80CE52030228100398A2B /* TmallComponent2.out */,
-				92D80CE62030228100398A2B /* VH2Layout.out */,
-				92D80CE72030228100398A2B /* VHLayout.out */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -192,6 +196,7 @@
 			files = (
 				92D80CEF20303F3800398A2B /* GridLayout.out in Resources */,
 				92D80CEB2030228100398A2B /* TmallComponent2.out in Resources */,
+				92D80CF120305DFB00398A2B /* RatioLayout.out in Resources */,
 				92D80CEA2030228100398A2B /* NText.out in Resources */,
 				926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */,
 				92D80CEC2030228100398A2B /* VH2Layout.out in Resources */,
@@ -199,6 +204,7 @@
 				92D80CE82030228100398A2B /* FrameLayout.out in Resources */,
 				92D80CED2030228100398A2B /* VHLayout.out in Resources */,
 				926B4012200396DB0003D88E /* Assets.xcassets in Resources */,
+				92D80CF32030646900398A2B /* CompileTool in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

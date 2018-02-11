@@ -8,5 +8,7 @@
 #import "VVLayout.h"
 
 @interface VVRatioLayout : VVLayout
-@property(nonatomic, assign)int    orientation;
+
+@property (nonatomic, assign) VVOrientation orientation;
+
 @end

@@ -369,7 +369,7 @@
 
 - (BOOL)needResizeIfSuperNodeResize
 {
-    return _layoutWidth == VV_MATCH_PARENT || _layoutHeight == VV_MATCH_PARENT;
+    return _layoutWidth == VV_MATCH_PARENT || _layoutHeight == VV_MATCH_PARENT || _layoutRatio > 0;
 }
 
 - (BOOL)needResizeIfSubNodeResize

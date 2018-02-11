@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        orientation="V"
+        layoutWidth="750rp"
+        layoutHeight="match_parent"
+        background="#FFFFFF">
+
+    <VText
+            text="orientation = H"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <RatioLayout
+            orientation="H"
+            layoutWidth="match_parent"
+            layoutHeight="100"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1">
+        <VText
+                layoutHeight="98"
+                background="#0000FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+
+        <VText
+                layoutHeight="98"
+                background="#0088FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+
+        <VText
+                layoutHeight="98"
+                background="#8888FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+    </RatioLayout>
+
+    <RatioLayout
+            orientation="H"
+            layoutWidth="match_parent"
+            layoutHeight="100"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            layoutMarginTop="5">
+        <VText
+                layoutHeight="98"
+                background="#0000FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+
+        <VText
+                layoutHeight="98"
+                background="#0088FF"
+                textSize="12"
+                layoutRatio="2"
+                gravity="h_center"
+                text="ratio = 2" />
+
+        <VText
+                layoutHeight="98"
+                background="#8888FF"
+                textSize="12"
+                layoutRatio="3"
+                gravity="h_center"
+                text="ratio = 3" />
+
+    </RatioLayout>
+
+    <RatioLayout
+            orientation="H"
+            layoutWidth="match_parent"
+            layoutHeight="100"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            layoutMarginTop="5">
+        <VText
+                layoutHeight="98"
+                background="#0000FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+
+        <VText
+                layoutHeight="98"
+                background="#0088FF"
+                textSize="12"
+                layoutWidth="200"
+                gravity="h_center"
+                text="ratio = 0, width = 200" />
+
+        <VText
+                layoutHeight="98"
+                background="#8888FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+    </RatioLayout>
+
+    <RatioLayout
+            orientation="H"
+            layoutWidth="match_parent"
+            layoutHeight="100"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            layoutMarginTop="5">
+        <VText
+                layoutHeight="98"
+                background="#0000FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+
+        <VText
+                layoutHeight="98"
+                background="#0088FF"
+                textSize="12"
+                layoutWidth="wrap_content"
+                paddingLeft="5"
+                paddingRight="5"
+                text="ratio = 0, width = wrap_content" />
+
+        <VText
+                layoutHeight="98"
+                background="#8888FF"
+                textSize="12"
+                layoutRatio="1"
+                gravity="h_center"
+                text="ratio = 1" />
+    </RatioLayout>
+
+    <VText
+            text="orientation = V"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <RatioLayout orientation="H"
+                 layoutWidth="match_parent"
+                 layoutHeight="wrap_content">
+
+        <RatioLayout
+                orientation="V"
+                layoutRatio="1"
+                layoutHeight="300"
+                borderWidth="1"
+                borderColor="#FF0000"
+                paddingTop="1"
+                paddingLeft="1"
+                paddingRight="1"
+                paddingBottom="1">
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0000FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0088FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#8888FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+        </RatioLayout>
+
+        <RatioLayout
+                orientation="V"
+                layoutRatio="1"
+                layoutHeight="300"
+                borderWidth="1"
+                borderColor="#FF0000"
+                paddingTop="1"
+                paddingLeft="1"
+                paddingRight="1"
+                paddingBottom="1"
+                layoutMarginLeft="5">
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0000FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0088FF"
+                    textSize="12"
+                    layoutRatio="2"
+                    gravity="h_center"
+                    text="ratio = 2" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#8888FF"
+                    textSize="12"
+                    layoutRatio="3"
+                    gravity="h_center"
+                    text="ratio = 3" />
+        </RatioLayout>
+
+        <RatioLayout
+                orientation="V"
+                layoutRatio="1"
+                layoutHeight="300"
+                borderWidth="1"
+                borderColor="#FF0000"
+                paddingTop="1"
+                paddingLeft="1"
+                paddingRight="1"
+                paddingBottom="1"
+                layoutMarginLeft="5">
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0000FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0088FF"
+                    textSize="12"
+                    layoutHeight="200"
+                    gravity="h_center"
+                    text="height = 200" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#8888FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+        </RatioLayout>
+
+        <RatioLayout
+                orientation="V"
+                layoutRatio="1"
+                layoutHeight="300"
+                borderWidth="1"
+                borderColor="#FF0000"
+                paddingTop="1"
+                paddingLeft="1"
+                paddingRight="1"
+                paddingBottom="1"
+                layoutMarginLeft="5">
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0000FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#0088FF"
+                    textSize="12"
+                    layoutHeight="wrap_content"
+                    lines="0"
+                    gravity="h_center"
+                    text="height = wrap_content" />
+
+            <VText
+                    layoutWidth="match_parent"
+                    background="#8888FF"
+                    textSize="12"
+                    layoutRatio="1"
+                    gravity="h_center"
+                    text="ratio = 1" />
+        </RatioLayout>
+    </RatioLayout>
+
+</VHLayout>
