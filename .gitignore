@@ -30,3 +30,6 @@ xcuserdata/
 Pods/
 Podfile.lock
 *.xcworkspace
+
+# IDEA
+.idea/

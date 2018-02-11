@@ -84,10 +84,10 @@ typedef NS_ENUM(NSUInteger, VVFlag) {
 
 typedef NS_ENUM(NSUInteger, VVDirection) {
     VVDirectionLeft = 1,
-    VVDirectionRight = 2,
-    VVDirectionTop = 4,
+    VVDirectionTop = 2,
+    VVDirectionRight = 4,
     VVDirectionBottom = 8,
-    VVDirectionDefault = 5 // VVDirectionLeft | VVDirectionTop
+    VVDirectionDefault = 3 // VVDirectionLeft | VVDirectionTop
 };
 
 typedef NS_ENUM(NSUInteger, VVTextStyle) {

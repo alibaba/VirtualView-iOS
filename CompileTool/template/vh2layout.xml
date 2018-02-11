@@ -1,143 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VHLayout
-        flag="flag_exposure|flag_clickable"
         orientation="V"
-        layoutWidth="match_parent"
+        layoutWidth="750rp"
         layoutHeight="match_parent"
->
+        background="#FFFFFF">
+
     <VText
-            text="Title: orientation = H | layoutDirection = l r"
+            text="orientation = H"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
 
     <VH2Layout
-            layoutWidth="match_parent"
-            layoutHeight="200"
-            orientation="H"
-        >
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="H">
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
                 background="#0000FF"
                 textSize="12"
-                gravity="v_center|h_center"
+                layoutGravity="v_center|h_center"
+                gravity="h_center"
                 text="1" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginTop="10"
+                layoutMarginLeft="10"
                 background="#0088FF"
                 textSize="12"
-                gravity="v_center|h_center"
+                layoutGravity="left|top"
+                layoutDirection="right"
+                gravity="h_center"
                 text="2" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginBottom="10"
+                layoutMarginRight="10"
                 background="#8888FF"
                 textSize="12"
-                gravity="v_center|h_center"
+                layoutGravity="right|bottom"
+                layoutDirection="right"
+                gravity="h_center"
                 text="3" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginRight="15"
+                layoutMarginLeft="15"
+                gravity="h_center"
                 background="#88FFFF"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="right"
                 text="4" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
-                background="#FFFFFF"
-                textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="right"
-                text="5" />
-
-        <VText
-                layoutWidth="50"
-                layoutHeight="50"
+                layoutMarginBottom="15"
+                layoutMarginTop="15"
+                gravity="h_center"
                 background="#FFFF88"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="right"
-                text="6" />
+                text="5" />
+    </VH2Layout>
 
+    <VH2Layout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            layoutMarginTop="5"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="H">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutDirection="right"
+                background="#0088FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutDirection="right"
+                background="#8888FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
     </VH2Layout>
 
     <VText
-            text="Title: orientation = V | layoutDirection = t b"
+            text="orientation = V"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
 
     <VH2Layout
-            layoutWidth="match_parent"
-            layoutHeight="400"
-            orientation="V"
-    >
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="V">
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
                 background="#0000FF"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="top"
+                layoutGravity="v_center|h_center"
+                gravity="h_center"
                 text="1" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginTop="10"
+                layoutMarginLeft="10"
                 background="#0088FF"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="top"
+                layoutGravity="left|top"
+                layoutDirection="bottom"
+                gravity="h_center"
                 text="2" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginBottom="10"
+                layoutMarginRight="10"
                 background="#8888FF"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="top"
+                layoutGravity="right|bottom"
+                layoutDirection="bottom"
+                gravity="h_center"
                 text="3" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
+                layoutMarginRight="15"
+                layoutMarginLeft="15"
+                gravity="h_center"
                 background="#88FFFF"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="bottom"
                 text="4" />
-
         <VText
                 layoutWidth="50"
                 layoutHeight="50"
-                background="#FFFFFF"
-                textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="bottom"
-                text="5" />
-
-        <VText
-                layoutWidth="50"
-                layoutHeight="50"
+                layoutMarginBottom="15"
+                layoutMarginTop="15"
+                gravity="h_center"
                 background="#FFFF88"
                 textSize="12"
-                gravity="v_center|h_center"
-                layoutDirection="bottom"
-                text="6" />
+                text="5" />
+    </VH2Layout>
 
+    <VH2Layout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            layoutMarginTop="5"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="V">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutDirection="bottom"
+                background="#0088FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutDirection="bottom"
+                background="#8888FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
     </VH2Layout>
 
 </VHLayout>
