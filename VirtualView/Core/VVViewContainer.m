@@ -100,7 +100,8 @@
     }
 }
 
-- (void)update:(NSObject*)obj{
+- (void)update:(NSObject *)obj
+{
     if (obj==nil || obj==self.updateDataObj) {
         return;
     }else{
@@ -125,8 +126,12 @@
         [item didUpdated];
     }
     self.virtualView.nodeX = self.virtualView.nodeY = 0;
-    self.virtualView.nodeWidth = self.bounds.size.width;
-    self.virtualView.nodeHeight = self.bounds.size.height;
+    if (self.virtualView.nodeWidth != self.bounds.size.width || self.virtualView.nodeHeight != self.bounds.size.height) {
+        [self.virtualView setNeedsResize];
+        self.virtualView.nodeWidth = self.bounds.size.width;
+        self.virtualView.nodeHeight = self.bounds.size.height;
+    }
+    [self.virtualView updateHidden];
     [self.virtualView updateFrame];
     [self.virtualView layoutSubNodes];
     [self setNeedsDisplay];
