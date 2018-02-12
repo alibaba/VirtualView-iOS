@@ -20,6 +20,8 @@
     self = [super init];
     if (self) {
         _privateLayer = [VVLayer layer];
+        _privateLayer.drawsAsynchronously = YES;
+        _privateLayer.contentsScale = [[UIScreen mainScreen] scale];
     }
     return self;
 }
@@ -29,7 +31,7 @@
     _privateLayer.delegate = nil;
 }
 
-- (BOOL)needDrawLayer
+- (BOOL)needCanvasLayer
 {
     if (self.borderColor && [self.borderColor isEqual:[UIColor clearColor]] == NO) {
         return YES;
@@ -48,10 +50,8 @@
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
-    if (self.canvasLayer == nil && [self needDrawLayer]) {
+    if (self.canvasLayer == nil && [self needCanvasLayer]) {
         self.canvasLayer = _privateLayer;
-        self.canvasLayer.drawsAsynchronously = YES;
-        self.canvasLayer.contentsScale = [[UIScreen mainScreen] scale];
     }
     if (self.canvasLayer) {
         if (self.canvasLayer.superlayer) {

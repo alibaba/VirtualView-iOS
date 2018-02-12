@@ -13,14 +13,18 @@
     CGFloat height;
 }
 
+@property (nonatomic, assign, readonly) CGSize vv_size;
+
 @end
 
 @implementation VVLayer
 
+@dynamic vv_size;
+
 - (instancetype)init
 {
     if (self = [super init]) {
-        VVSetNeedsDisplayObserve(frame);
+        VVSetNeedsDisplayObserve(vv_size);
         VVSetNeedsDisplayObserve(vv_borderWidth);
         VVSetNeedsDisplayObserve(vv_borderColor);
         VVSetNeedsDisplayObserve(vv_borderRadius);
@@ -63,6 +67,20 @@
     _vv_borderRadius = vv_borderRadius > 0 ? vv_borderRadius : 0;
 }
 
+- (void)setFrame:(CGRect)frame
+{
+    [self willChangeValueForKey:@"vv_size"];
+    [super setFrame:frame];
+    width = CGRectGetWidth(frame);
+    height = CGRectGetHeight(frame);
+    [self didChangeValueForKey:@"vv_size"];
+}
+
+- (CGSize)vv_size
+{
+    return CGSizeMake(width, height);
+}
+
 - (void)createPath:(CGContextRef)context borderWidth:(CGFloat)borderWidth
 {
     // 1--2--3
@@ -98,8 +116,6 @@
 
 - (void)drawInContext:(CGContextRef)context
 {
-    width = CGRectGetWidth(self.bounds);
-    height = CGRectGetHeight(self.bounds);
     CGContextClearRect(context, CGRectMake(0, 0, width, height));
     
     if (self.vv_backgroundColor
