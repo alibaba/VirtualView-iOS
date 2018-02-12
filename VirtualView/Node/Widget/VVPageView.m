@@ -66,7 +66,7 @@
     return ret;
 }
 
-- (void)setDataObj:(NSObject*)obj forKey:(int)key{
+- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key{
     VVViewContainer* vvContainer = nil;
     if([[self superNode].rootCocoaView isKindOfClass:[VVViewContainer class]]){
         vvContainer = (VVViewContainer*)[self superNode].rootCocoaView;
@@ -80,6 +80,7 @@
     if (self.scrollView.superview == nil) {
         [vvContainer addSubview:self.scrollView];
     }
+    return YES;
 }
 
 - (void)attachCocoaViews:(VVBaseNode*)vvObj{

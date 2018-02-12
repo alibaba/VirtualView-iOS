@@ -289,9 +289,10 @@
     return ret;
 }
 
-- (void)setDataObj:(NSObject *)obj forKey:(int)key
+- (BOOL)setDataObj:(NSObject *)obj forKey:(int)key
 {
     // override me
+    return NO;
 }
 
 - (void)reset

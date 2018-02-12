@@ -74,7 +74,7 @@
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key;
 - (BOOL)setStringDataValue:(NSString *)value forKey:(int)key;
-- (void)setDataObj:(NSObject *)obj forKey:(int)key;
+- (BOOL)setDataObj:(NSObject *)obj forKey:(int)key;
 - (void)reset;
 - (void)didUpdated;
 

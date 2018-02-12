@@ -121,9 +121,10 @@
     return ret;
 }
 
-- (void)setDataObj:(NSObject*)obj forKey:(int)key{
+- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key
+{
     if (obj==nil || obj==self.updateDataObj) {
-        return;
+        return NO;
     }else{
         self.updateDataObj = obj;
     }
@@ -156,6 +157,7 @@
     if (self.gridContainer.superview == nil) {
         [vvContainer addSubview:self.gridContainer];
     }
+    return YES;
 }
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer

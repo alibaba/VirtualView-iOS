@@ -228,12 +228,13 @@
     [super setRootCanvasLayer:rootCanvasLayer];
 }
 
-- (void)setDataObj:(NSObject*)obj forKey:(int)key{
+- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key{
     //
     //[dic objectForKey:self.dataTag];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.drawLayer setNeedsDisplay];
     });
+    return YES;
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize{

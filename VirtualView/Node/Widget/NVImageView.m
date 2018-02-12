@@ -247,31 +247,18 @@
     return YES;
 }
 
-- (void)setDataObj:(NSObject*)obj forKey:(int)key{
-    //
+- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key
+{
+    BOOL ret = YES;
     switch (key) {
         case STR_ID_src:
             self.imgUrl = (NSString*)obj;
             break;
         default:
+            ret = NO;
             break;
     }
-
-    /*
-    __weak typeof(NVImageView*) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // 耗时的操作
-        __strong typeof(NVImageView*) strongSelf = weakSelf;
-        UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-        _imageSize.width = img.size.width/3.0;
-        _imageSize.height = img.size.height/3.0;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // 更新界面
-            ((UIImageView*)strongSelf.cocoaView).image = img;
-            
-        });
-    });
-     */
+    return ret;
 }
 
 - (void)reset
