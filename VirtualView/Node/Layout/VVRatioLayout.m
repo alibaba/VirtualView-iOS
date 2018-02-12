@@ -43,6 +43,8 @@
 - (BOOL)needResizeIfSubNodeResize
 {
     for (VVBaseNode *subNode in self.subNodes) {
+        // 任意子元素尺寸要变化时都会触发这个调用
+        // 在这里强制标记所有子元素需要重新布局
         [subNode setNeedsLayout];
     }
     return [super needResizeIfSubNodeResize];

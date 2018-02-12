@@ -27,7 +27,6 @@
 @property (nonatomic, assign) CGFloat paddingRight;
 @property (nonatomic, assign) CGFloat paddingTop;
 @property (nonatomic, assign) CGFloat paddingBottom;
-@property (nonatomic, assign) VVGravity gravity;
 
 // container layout
 @property (nonatomic, assign) CGFloat marginLeft;
@@ -118,7 +117,7 @@
  */
 - (void)setNeedsLayout;
 // used by setNeedsResize method
-- (BOOL)needLayoutIfSuperNodeResize;
+- (BOOL)needLayoutIfResize;
 - (BOOL)needResizeIfSuperNodeResize;
 - (BOOL)needResizeIfSubNodeResize;
 /**

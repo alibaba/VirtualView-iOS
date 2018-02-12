@@ -26,6 +26,7 @@
 @property (nonatomic, assign) VVEllipsize ellipsize;
 @property (nonatomic, assign) int lines;
 @property (nonatomic, assign) int maxLines;
+@property (nonatomic, assign) VVGravity gravity;
 //@property (nonatomic, assign) CGFloat lineSpaceMultiplier;
 //@property (nonatomic, assign) CGFloat lineSpaceExtra;
 

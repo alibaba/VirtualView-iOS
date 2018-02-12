@@ -36,18 +36,19 @@
     if (self) {
         _textView = [[VVLabel alloc] init];
         _textView.backgroundColor = [UIColor clearColor];
-        _textView.layer.borderColor = [UIColor clearColor].CGColor;
         _textColor = [UIColor blackColor];
         _textView.textColor = _textColor;
         _textSize = 17;
         _textStyle = VVTextStyleNormal;
         _ellipsize = VVEllipsizeEnd;
         _lines = 1;
+        _gravity = VVGravityDefault;
 //        _lineSpaceMultiplier = 1;
         VVSelectorObserve(textStyle, updateFont);
         VVSelectorObserve(textSize, updateFont);
         VVSelectorObserve(ellipsize, updateLineBreakMode);
         VVSelectorObserve(lines, updateNumberOfLines);
+        VVSelectorObserve(maxLines, updateNumberOfLines);
         VVSelectorObserve(textStyle, updateAttributedText);
         VVSelectorObserve(text, updateAttributedText);
 //        VVSelectorObserve(lineSpaceMultiplier, updateAttributedText);
@@ -124,10 +125,10 @@
 
 - (void)setGravity:(VVGravity)gravity
 {
-    [super setGravity:gravity];
-    if (self.gravity & VVGravityRight) {
+    _gravity = gravity;
+    if (_gravity & VVGravityRight) {
         self.textView.textAlignment = NSTextAlignmentRight;
-    } else if (self.gravity & VVGravityHCenter) {
+    } else if (_gravity & VVGravityHCenter) {
         self.textView.textAlignment = NSTextAlignmentCenter;
     } else {
         self.textView.textAlignment = NSTextAlignmentLeft;
@@ -160,7 +161,9 @@
     } else {
         self.textView.font = [UIFont systemFontOfSize:self.textSize];
     }
-    [self setNeedsResize];
+    if ([self needResizeIfSubNodeResize]) {
+        [self setNeedsResize];
+    }
 }
 
 - (void)updateLineBreakMode
@@ -176,16 +179,20 @@
             self.textView.lineBreakMode = NSLineBreakByTruncatingMiddle;
             break;
         default:
-            self.textView.lineBreakMode = NSLineBreakByWordWrapping;
+            self.textView.lineBreakMode = 0;
             break;
     }
-    [self setNeedsResize];
+    if ([self needResizeIfSubNodeResize]) {
+        [self setNeedsResize];
+    }
 }
 
 - (void)updateNumberOfLines
 {
     self.textView.numberOfLines = self.lines;
-    [self setNeedsResize];
+    if ([self needResizeIfSubNodeResize]) {
+        [self setNeedsResize];
+    }
 }
 
 - (void)updateAttributedText
@@ -203,7 +210,9 @@
         self.textView.attributedText = nil;
         self.textView.text = self.text;
     }
-    [self setNeedsResize];
+    if ([self needResizeIfSubNodeResize]) {
+        [self setNeedsResize];
+    }
 }
 
 #pragma mark Update
@@ -228,6 +237,9 @@
                 break;
             case STR_ID_maxLines:
                 self.maxLines = value;
+                break;
+            case STR_ID_gravity:
+                self.gravity = value;
                 break;
             case STR_ID_supportHTMLStyle:
                 break;

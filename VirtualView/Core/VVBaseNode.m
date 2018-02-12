@@ -7,6 +7,7 @@
 
 #import "VVBaseNode.h"
 #import "VVVH2Layout.h"
+#import "VVRatioLayout.h"
 
 @interface VVBaseNode () {
     NSMutableArray *_subNodes;
@@ -28,7 +29,6 @@
         _backgroundColor = [UIColor clearColor];
         _borderColor = [UIColor clearColor];
         _layoutGravity = VVGravityDefault;
-        _gravity = VVGravityDefault;
         _visibility = VVVisibilityVisible;
         _layoutDirection = VVDirectionDefault;
         _autoDimDirection = VVAutoDimDirectionNone;
@@ -173,9 +173,6 @@
             case STR_ID_autoDimDirection:
                 self.autoDimDirection = value;
                 break;
-            case STR_ID_gravity:
-                self.gravity = value;
-                break;
             case STR_ID_layoutGravity:
                 self.layoutGravity = value;
                 break;
@@ -309,18 +306,37 @@
 
 - (void)setupLayoutAndResizeObserver
 {
+    // 这些宽高相关值被修改时：
+    // 1. 元素本身的尺寸一定会发生更改
+    // 2. 如果元素不是左上对齐，那么位置也会变化，这个会在setNeedsResize里被自动判断并标记为需修改
+    // 3. 父元素子元素的布局相关修改会在setNeedsResize里被自动传递
+    // 4. 有关VHLayout等子元素需要全部重新计算位置的，在对应Layout类里处理
     VVSetNeedsResizeObserve(layoutWidth);
     VVSetNeedsResizeObserve(layoutHeight);
     VVSetNeedsResizeObserve(autoDimX);
     VVSetNeedsResizeObserve(autoDimY);
     VVSetNeedsResizeObserve(autoDimDirection);
+    // padding被修改时：
+    // 1. 如果自己会被子元素撑开，那么自己的尺寸要修改
+    // 2. 子元素的位置一定会变，子元素尺寸如果受自己影响，子元素尺寸也要变
     __weak VVBaseNode *weakSelf = self;
     VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
-        for (VVBaseNode *subNode in strongSelf.subNodes) {
-            [subNode setNeedsLayout];
-            if ([subNode needResizeIfSuperNodeResize]) {
-                [subNode setNeedsResize];
+        if ([self needResizeIfSubNodeResize]) {
+            // 进行1的操作
+            [strongSelf setNeedsResize];
+            // 如果进行过1的操作，这里子元素尺寸的改变实际上已经被传递过了
+            // 所以只需要对位置改变进行一次标记就可以
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+            }
+        } else {
+            // 进行上述2的操作
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+                if ([subNode needResizeIfSuperNodeResize]) {
+                    [subNode setNeedsResize];
+                }
             }
         }
     };
@@ -328,24 +344,54 @@
     VVBlockObserve(paddingLeft, contentChangedBlock);
     VVBlockObserve(paddingRight, contentChangedBlock);
     VVBlockObserve(paddingBottom, contentChangedBlock);
+    // margin被修改时：
+    // 1. 如果父元素被自己撑开，那么父元素尺寸要修改
+    // 2. 自己的位置一定会变，如果自己的尺寸受父元素影响，那么自己的尺寸也要变
+    // 3. 根元素的margin会被无视的，所以一定要有superNode才会继续以上逻辑
     VVObserverBlock selfChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
-        [strongSelf setNeedsLayout];
-        [strongSelf setNeedsResize];
+        if (strongSelf.superNode) {
+            if ([strongSelf.superNode needResizeIfSubNodeResize]) {
+                // 进行1的操作
+                [strongSelf.superNode setNeedsResize];
+                // 如果进行过1的操作，自己的元素尺寸如果需要修改肯定已经被传递过了
+                // 所以只需要对位置改变进行一次标记就可以
+                [strongSelf setNeedsLayout];
+            } else {
+                // 进行2的操作
+                [strongSelf setNeedsLayout];
+                [strongSelf setNeedsResize];
+            }
+        }
     };
     VVBlockObserve(marginTop, selfChangedBlock);
     VVBlockObserve(marginLeft, selfChangedBlock);
     VVBlockObserve(marginRight, selfChangedBlock);
     VVBlockObserve(marginBottom, selfChangedBlock);
+    // visibility被修改时逻辑大体可以使用和margin被修改时一样
     VVBlockObserve(visibility, selfChangedBlock);
-    VVBlockObserve(layoutRatio, selfChangedBlock);
-    [self vv_addObserverForKeyPath:VVKeyPath(gravity) block:^(id _Nonnull value) {
+    // layoutRatio类似match_parent的一种变种，不会对父元素产生尺寸变更才对，逻辑可以简化
+    // 而且因为是RatioLayout下才生效的值，所以加一个保护判断
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutRatio) block:^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
-        for (VVBaseNode *subNode in strongSelf.subNodes) {
-            [subNode setNeedsLayout];
+        if (strongSelf.superNode && [strongSelf.superNode isKindOfClass:[VVRatioLayout class]]) {
+            [strongSelf setNeedsLayout];
+            [strongSelf setNeedsResize];
         }
     }];
+    // layoutGravity被修改时尺寸不会变化，只会影响自己的位置
     VVSelectorObserve(layoutGravity, setNeedsLayout);
+    // layoutDirection被修改时逻辑比较特殊，影响所有弟弟元素的位置
+    // 注意是弟弟元素不是兄弟元素，不过这里为了简化代码直接写成兄弟元素
+    // 而且因为是VH2Layout下才生效的值，所以加一个保护判断
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if (strongSelf.superNode && [strongSelf.superNode isKindOfClass:[VVVH2Layout class]]) {
+            for (VVBaseNode *brotherNode in strongSelf.superNode.subNodes) {
+                [brotherNode setNeedsLayout];
+            }
+        }
+    }];
 }
 
 - (BOOL)needLayout
@@ -363,7 +409,7 @@
     _nodeX = _nodeY = CGFLOAT_MIN;
 }
 
-- (BOOL)needLayoutIfSuperNodeResize
+- (BOOL)needLayoutIfResize
 {
     return _layoutGravity & VVGravityNotDefault;
 }
@@ -385,6 +431,9 @@
     }
     self.updatingNeedsResize = YES;
     [self setNeedsResizeNonRecursively];
+    if ([self needLayoutIfResize]) {
+        [self setNeedsLayout];
+    }
     if (_superNode && [_superNode needResizeIfSubNodeResize]) {
         [_superNode setNeedsResize];
     }
@@ -392,7 +441,8 @@
         if ([subNode needResizeIfSuperNodeResize]) {
             [subNode setNeedsResize];
         }
-        if ([subNode needLayoutIfSuperNodeResize]) {
+        if ([subNode needLayoutIfResize]) {
+            // 子元素非左上对齐，父元素的尺寸变了，也是要重新计算位置的
             [subNode setNeedsLayout];
         }
     }

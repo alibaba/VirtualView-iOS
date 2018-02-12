@@ -21,13 +21,21 @@
 {
     if (self = [super init]) {
         _colCount = 2;
+        // 和padding被修改时做一样的操作，调用内容尺寸变化Block
         __weak VVBaseNode *weakSelf = self;
         VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
             __strong VVBaseNode *strongSelf = weakSelf;
-            for (VVBaseNode *subNode in strongSelf.subNodes) {
-                [subNode setNeedsLayout];
-                if ([subNode needResizeIfSuperNodeResize]) {
-                    [subNode setNeedsResize];
+            if ([self needResizeIfSubNodeResize]) {
+                [strongSelf setNeedsResize];
+                for (VVBaseNode *subNode in strongSelf.subNodes) {
+                    [subNode setNeedsLayout];
+                }
+            } else {
+                for (VVBaseNode *subNode in strongSelf.subNodes) {
+                    [subNode setNeedsLayout];
+                    if ([subNode needResizeIfSuperNodeResize]) {
+                        [subNode setNeedsResize];
+                    }
                 }
             }
         };
@@ -96,10 +104,16 @@
 
 - (BOOL)needResizeIfSubNodeResize
 {
+    return self.layoutWidth == VV_WRAP_CONTENT || (self.layoutHeight == VV_WRAP_CONTENT && _itemHeight == 0);
+}
+
+- (void)setNeedsResize
+{
+    [super setNeedsResize];
     for (VVBaseNode *subNode in self.subNodes) {
+        // 所有子元素强制重新计算位置
         [subNode setNeedsLayout];
     }
-    return [super needResizeIfSubNodeResize];
 }
 
 - (void)layoutSubNodes
