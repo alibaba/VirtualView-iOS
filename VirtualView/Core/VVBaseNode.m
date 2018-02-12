@@ -426,7 +426,7 @@
 
 - (void)setNeedsResize
 {
-    if (self.updatingNeedsResize) {
+    if (self.updatingNeedsResize || [self needResize]) {
         return;
     }
     self.updatingNeedsResize = YES;

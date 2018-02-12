@@ -23,12 +23,15 @@
 
 @interface NVTextView ()
 
-@property (nonatomic, strong, readwrite) VVLabel *textView;
+@property (nonatomic, strong) VVLabel *textView;
+@property (nonatomic, strong, readwrite) NSAttributedString *attributedText;
+@property (nonatomic, strong) NSDictionary *style;
 
 @end
 
 @implementation NVTextView
-@synthesize cocoaView;
+
+@dynamic cocoaView;
 
 - (instancetype)init
 {
@@ -38,21 +41,23 @@
         _textView.backgroundColor = [UIColor clearColor];
         _textColor = [UIColor blackColor];
         _textView.textColor = _textColor;
-        _textSize = 17;
+        _textSize = UIFont.labelFontSize;
         _textStyle = VVTextStyleNormal;
         _ellipsize = VVEllipsizeEnd;
         _lines = 1;
         _gravity = VVGravityDefault;
 //        _lineSpaceMultiplier = 1;
-        VVSelectorObserve(textStyle, updateFont);
+        VVSelectorObserve(text, updateSizeAndAttributedText);
+        VVSelectorObserve(textColor, updateAttributedText);
         VVSelectorObserve(textSize, updateFont);
-        VVSelectorObserve(ellipsize, updateLineBreakMode);
-        VVSelectorObserve(lines, updateNumberOfLines);
-        VVSelectorObserve(maxLines, updateNumberOfLines);
-        VVSelectorObserve(textStyle, updateAttributedText);
-        VVSelectorObserve(text, updateAttributedText);
-//        VVSelectorObserve(lineSpaceMultiplier, updateAttributedText);
-//        VVSelectorObserve(lineSpaceExtra, updateAttributedText);
+        VVSelectorObserve(textStyle, updateFont);
+        VVSelectorObserve(textStyle, updateStyle);
+        VVSelectorObserve(ellipsize, updateAttributedText);
+        VVSelectorObserve(lines, updateSize);
+        VVSelectorObserve(maxLines, updateSize);
+        VVSelectorObserve(gravity, updateAttributedText);
+//        VVSelectorObserve(lineSpaceMultiplier, updateSizeAndAttributedText);
+//        VVSelectorObserve(lineSpaceExtra, updateSizeAndAttributedText);
     }
     return self;
 }
@@ -93,12 +98,6 @@
     self.textView.layer.borderWidth = borderWidth;
 }
 
-- (void)setTextColor:(UIColor *)textColor
-{
-    _textColor = textColor;
-    self.textView.textColor = textColor;
-}
-
 - (void)setPaddingTop:(CGFloat)paddingTop
 {
     [super setPaddingTop:paddingTop];
@@ -123,16 +122,16 @@
     self.textView.paddingRight = paddingRight;
 }
 
-- (void)setGravity:(VVGravity)gravity
+- (void)setText:(NSString *)text
 {
-    _gravity = gravity;
-    if (_gravity & VVGravityRight) {
-        self.textView.textAlignment = NSTextAlignmentRight;
-    } else if (_gravity & VVGravityHCenter) {
-        self.textView.textAlignment = NSTextAlignmentCenter;
-    } else {
-        self.textView.textAlignment = NSTextAlignmentLeft;
-    }
+    _text = text;
+    self.textView.text = text;
+}
+
+- (void)setTextColor:(UIColor *)textColor
+{
+    _textColor = textColor;
+    self.textView.textColor = textColor;
 }
 
 - (void)setTextSize:(CGFloat)textSize
@@ -140,35 +139,10 @@
     if (textSize > 0) _textSize = textSize;
 }
 
-- (void)setLines:(int)lines
+- (void)setEllipsize:(VVEllipsize)ellipsize
 {
-    if (lines >= 0) _lines = lines;
-}
-
-- (void)setMaxLines:(int)maxLines
-{
-    if (maxLines >= 0) _maxLines = maxLines;
-}
-
-#pragma mark Observers
-
-- (void)updateFont
-{
-    if (self.textStyle & VVTextStyleBold) {
-        self.textView.font = [UIFont boldSystemFontOfSize:self.textSize];
-    } else if (self.textStyle & VVTextStyleItalic) {
-        self.textView.font = [UIFont italicSystemFontOfSize:self.textSize];
-    } else {
-        self.textView.font = [UIFont systemFontOfSize:self.textSize];
-    }
-    if ([self needResizeIfSubNodeResize]) {
-        [self setNeedsResize];
-    }
-}
-
-- (void)updateLineBreakMode
-{
-    switch (self.ellipsize) {
+    _ellipsize = ellipsize;
+    switch (ellipsize) {
         case VVEllipsizeEnd:
             self.textView.lineBreakMode = NSLineBreakByTruncatingTail;
             break;
@@ -182,37 +156,91 @@
             self.textView.lineBreakMode = 0;
             break;
     }
-    if ([self needResizeIfSubNodeResize]) {
-        [self setNeedsResize];
+}
+
+- (void)setLines:(int)lines
+{
+    if (lines >= 0) {
+        _lines = lines;
+        self.textView.numberOfLines = lines;
     }
 }
 
-- (void)updateNumberOfLines
+- (void)setMaxLines:(int)maxLines
 {
-    self.textView.numberOfLines = self.lines;
-    if ([self needResizeIfSubNodeResize]) {
-        [self setNeedsResize];
+    if (maxLines >= 0) _maxLines = maxLines;
+}
+
+- (void)setGravity:(VVGravity)gravity
+{
+    _gravity = gravity;
+    if (gravity & VVGravityRight) {
+        self.textView.textAlignment = NSTextAlignmentRight;
+    } else if (gravity & VVGravityHCenter) {
+        self.textView.textAlignment = NSTextAlignmentCenter;
+    } else {
+        self.textView.textAlignment = NSTextAlignmentLeft;
     }
+}
+
+- (NSAttributedString *)attributedText
+{
+    if (_attributedText == nil && _style != nil) {
+        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+        paragraphStyle.alignment = self.textView.textAlignment;
+        paragraphStyle.lineBreakMode = self.textView.lineBreakMode;
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+        [attributes setObject:self.textView.font forKey:NSFontAttributeName];
+        [attributes setObject:self.textColor forKey:NSForegroundColorAttributeName];
+        [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
+        [attributes addEntriesFromDictionary:_style];
+        _attributedText = [[NSAttributedString alloc] initWithString:self.text
+                                                          attributes:attributes];
+    }
+    return _attributedText;
+}
+
+#pragma mark Observers
+
+- (void)updateFont
+{
+    if (self.textStyle & VVTextStyleBold) {
+        self.textView.font = [UIFont boldSystemFontOfSize:self.textSize];
+    } else if (self.textStyle & VVTextStyleItalic) {
+        self.textView.font = [UIFont italicSystemFontOfSize:self.textSize];
+    } else {
+        self.textView.font = [UIFont systemFontOfSize:self.textSize];
+    }
+    [self updateSizeAndAttributedText];
+}
+
+- (void)updateStyle
+{
+    self.style = nil;
+    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
+        self.style = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
+    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
+        self.style = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
+    }
+    [self updateAttributedText];
 }
 
 - (void)updateAttributedText
 {
-    NSDictionary *attributes = nil;
-    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
-        attributes = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
-    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
-        attributes = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
-    }
-    if (attributes && self.text) {
-        self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.text
-                                                                       attributes:attributes];
-    } else {
-        self.textView.attributedText = nil;
-        self.textView.text = self.text;
-    }
+    _attributedText = nil;
+}
+
+- (void)updateSize
+{
     if ([self needResizeIfSubNodeResize]) {
         [self setNeedsResize];
     }
+}
+
+- (void)updateSizeAndAttributedText
+{
+    [self updateSize];
+    [self updateAttributedText];
 }
 
 #pragma mark Update
@@ -342,15 +370,24 @@
         }
         CGSize contentSize = self.contentSize;
         
-        // Calculate text size.
-        self.textView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-        [self.textView sizeToFit];
+        // Calculate text frame.
+        CGRect frame;
+        if (self.attributedText) {
+            frame = [self.attributedText boundingRectWithSize:contentSize
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                     context:NULL];
+        } else {
+            frame = [self.text boundingRectWithSize:contentSize
+                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                        attributes:@{NSFontAttributeName : self.textView.font}
+                                           context:NULL];
+        }
         
         if (self.layoutWidth == VV_WRAP_CONTENT) {
-            self.nodeWidth = self.textView.frame.size.width + self.paddingLeft + self.paddingRight;
+            self.nodeWidth = frame.size.width + self.paddingLeft + self.paddingRight;
         }
         if (self.layoutHeight == VV_WRAP_CONTENT) {
-            self.nodeHeight = self.textView.frame.size.height + self.paddingTop + self.paddingBottom;
+            self.nodeHeight = frame.size.height + self.paddingTop + self.paddingBottom;
         }
         [self applyAutoDim];
     }

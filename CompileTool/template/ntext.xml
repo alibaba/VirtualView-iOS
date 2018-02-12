@@ -1,287 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VHLayout
-        flag="flag_exposure|flag_clickable"
         orientation="V"
-        layoutWidth="match_parent"
+        layoutWidth="750rp"
         layoutHeight="match_parent"
->
+        background="#FFFFFF">
+
     <NText
-            text="Title: text"
+            text="text only (cannot work)"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"/>
 
+    <NText
+            text="wrap content &amp; padding"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
             layoutWidth="wrap_content"
-            layoutHeight="20" />
+            layoutHeight="wrap_content"
+            paddingLeft="10"
+            paddingTop="10"
+            paddingRight="20"
+            paddingBottom="20"
+            background="#ccccff"
+            borderWidth="1"
+            borderColor="#FF0000"
+            borderRadius="10"/>
 
     <NText
-            text="Title: textSize = 16"
+            text="text size &amp; bold"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
-            textSize="16"
-            textColor="#333333"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
-
-    <NText
-            text="Title: textColor = #FF0000"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
+            textSize="20"
+            textColor="#0000FF"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="30"/>
     <NText
             text="Hello Virtual View"
-            textSize="12"
-            textColor="#FF0000"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
-
-    <NText
-            text="Title: textStyle = bold"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="Hello Virtual View"
-            textSize="12"
-            textColor="#333333"
+            textSize="20"
             textStyle="bold"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
+            layoutWidth="match_parent"
+            layoutHeight="30"/>
 
     <NText
-            text="Title: textStyle = strike"
+            text="bold &amp; italic &amp; strike"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
-            textStyle="strike"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
-
-    <NText
-            text="Title: textStyle = italic"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
+            textStyle="bold|strike"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
             textStyle="italic"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
-
-    <NText
-            text="Title: borderWidth = 1 borderColor = #0088FF"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
+            background="#ccccff"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
-            borderColor="#0088FF"
-            borderWidth="1"
-            layoutWidth="wrap_content"
-            layoutHeight="20" />
+            textStyle="italic|strike"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
 
     <NText
-            text="Title: gravity = h_center|v_center"
+            text="gravity (left/center/right)"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
-            borderColor="#0088FF"
-            borderWidth="1"
-            gravity="h_center|v_center"
+            gravity="left"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="Title: background = #008899"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
             text="Hello Virtual View"
             textSize="12"
-            textColor="#333333"
-            background="#008899"
-            gravity="h_center|v_center"
+            gravity="h_center"
+            background="#ccccff"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            gravity="right"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
 
     <NText
-            text="Title: ellipsize = end | maxLines = 1"
+            text="ellipsize (none/start/middle/end)"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="20"/>
     <NText
-            text="Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View"
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
             textSize="12"
-            textColor="#333333"
-            maxLines="1"
+            ellipsize="none"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="start"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="middle"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
             ellipsize="end"
+            background="#ccccff"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
 
     <NText
-            text="Title: lines = 2 | layoutHeight=wrap_content (layoutHeight > lines)"
+            text="fixed lines (lines = 1/2/3/4)"
             textSize="12"
             textColor="#333333"
-            background="#008899"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="1"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="2"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="3"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="4"/>
 
     <NText
-            text="Hello Virtual View"
+            text="max lines (lines = 0 &amp; maxLines = 1/2/3)"
             textSize="12"
             textColor="#333333"
-            borderColor="#0088FF"
-            borderWidth="1"
-            lines="2"
-            ellipsize="end"
+            paddingLeft="5"
+            background="#cccccc"
             layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
-
+            layoutHeight="20"/>
     <NText
-            text="Title: lines = 2 | layoutHeight=20 (layoutHeight > lines)"
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
             textSize="12"
-            textColor="#333333"
-            background="#008899"
+            background="#ccccff"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="1"/>
     <NText
-            text="Hello Virtual View"
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
             textSize="12"
-            textColor="#333333"
-            borderColor="#0088FF"
-            borderWidth="1"
-            lines="2"
-            ellipsize="end"
             layoutWidth="match_parent"
-            layoutHeight="20" />
-
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="2"/>
     <NText
-            text="Title: no lineSpaceMultiplier or lineSpaceExtra"
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
             textSize="12"
-            textColor="#333333"
-            background="#008899"
+            background="#ccccff"
             layoutWidth="match_parent"
-            layoutHeight="20" />
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="3"/>
 
-    <NText
-            text="Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View"
-            textSize="12"
-            textColor="#333333"
-            layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
-
-    <NText
-            text="Title: lineSpaceMultiplier = 2"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View"
-            textSize="12"
-            textColor="#333333"
-            lineSpaceMultiplier="2"
-            layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
-
-    <NText
-            text="Title: lineSpaceExtra = 10"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View"
-            textSize="12"
-            textColor="#333333"
-            lineSpaceExtra="10"
-            layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
-
-    <NText
-            text="Title: lineSpaceMultiplier | lineSpaceExtra"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View Hello Virtual View"
-            textSize="12"
-            textColor="#333333"
-            lineSpaceMultiplier="2"
-            lineSpaceExtra="10"
-            layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
-
-    <NText
-            text="Title: rich text"
-            textSize="12"
-            textColor="#333333"
-            background="#008899"
-            layoutWidth="match_parent"
-            layoutHeight="20" />
-
-    <NText
-            text="<h2>Title</h2><br><p>Description here</p>"
-            textSize="12"
-            textColor="#333333"
-            supportHTMLStyle="true"
-            layoutWidth="match_parent"
-            layoutHeight="wrap_content" />
 </VHLayout>

@@ -9,8 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface VVLayer () {
-    CGFloat width;
-    CGFloat height;
+    CGFloat _width;
+    CGFloat _height;
 }
 
 @property (nonatomic, assign, readonly) CGSize vv_size;
@@ -71,14 +71,14 @@
 {
     [self willChangeValueForKey:@"vv_size"];
     [super setFrame:frame];
-    width = CGRectGetWidth(frame);
-    height = CGRectGetHeight(frame);
+    _width = CGRectGetWidth(frame);
+    _height = CGRectGetHeight(frame);
     [self didChangeValueForKey:@"vv_size"];
 }
 
 - (CGSize)vv_size
 {
-    return CGSizeMake(width, height);
+    return CGSizeMake(_width, _height);
 }
 
 - (void)createPath:(CGContextRef)context borderWidth:(CGFloat)borderWidth
@@ -89,9 +89,9 @@
     // |     |
     // 7--6--5
     CGFloat halfBorderWidth = borderWidth / 2;
-    CGFloat maximunRadius = MIN(width, height) / 2 - halfBorderWidth;
-    CGFloat minX = halfBorderWidth, midX = width / 2, maxX = width - halfBorderWidth;
-    CGFloat minY = halfBorderWidth, midY = height / 2, maxY = height - halfBorderWidth;
+    CGFloat maximunRadius = MIN(_width, _height) / 2 - halfBorderWidth;
+    CGFloat minX = halfBorderWidth, midX = _width / 2, maxX = _width - halfBorderWidth;
+    CGFloat minY = halfBorderWidth, midY = _height / 2, maxY = _height - halfBorderWidth;
     // start from 0
     CGContextMoveToPoint(context, minX, midY);
     // add arc from 1 to 2
@@ -116,7 +116,7 @@
 
 - (void)drawInContext:(CGContextRef)context
 {
-    CGContextClearRect(context, CGRectMake(0, 0, width, height));
+    CGContextClearRect(context, CGRectMake(0, 0, _width, _height));
     
     if (self.vv_backgroundColor
         && [self.vv_backgroundColor isEqual:[UIColor clearColor]] == NO) {
