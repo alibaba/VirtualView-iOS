@@ -112,10 +112,10 @@
     return YES;
 }
 
-- (void)applyToNode:(VVBaseNode *)node withDict:(NSDictionary *)dict
+- (void)applyToNode:(VVBaseNode *)node withObject:(nullable NSDictionary *)object
 {
     if (self.expression) {
-        id objectValue = [self.expression resultWithObject:dict];
+        id objectValue = [self.expression resultWithObject:object];
         NSString *stringValue = [objectValue description];
         BOOL handled = NO;
         switch (self.valueType) {

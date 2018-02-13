@@ -13,54 +13,22 @@
 #import <UT/AppMonitor.h>
 #endif
 
-@interface VVViewContainer() {
-    UILongPressGestureRecognizer* _pressRecognizer;
-}
-@property(nonatomic, strong)NSMutableArray *dataTagObjs;
-@property(weak, nonatomic)NSObject*            updateDataObj;
+@interface VVViewContainer() <UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) NSArray *nodesWithExpression;
+@property (nonatomic, weak) id lastData;
+
 @end
 
 @implementation VVViewContainer
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type
 {
-    VVBaseNode *vv = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
-    VVViewContainer *vvc = [[VVViewContainer alloc] initWithVirtualView:vv];
-    [vvc attachViews];
-    return vvc;
+    VVBaseNode *rootNode = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
+    return [[VVViewContainer alloc] initWithRootNode:rootNode];
 }
 
-- (void)updateDisplayRect:(CGRect)rect{
-
-}
-
-- (void)handleLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
-    CGPoint pt =[gestureRecognizer locationInView:self];
-    VVBaseNode *vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [vvobj isLongClickable]) {
-        [self.delegate subViewLongPressed:vvobj.action andValue:vvobj.actionValue gesture:gestureRecognizer];
-    }
-}
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    UITouch *touch =  [touches anyObject];
-    CGPoint pt = [touch locationInView:self];
-    VVBaseNode *vvobj=[self.virtualView hitTest:pt];
-    if (vvobj!=nil && [vvobj isClickable]) {
-        if([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)])
-        {
-            [self.delegate subView:vvobj clicked:vvobj.action andValue:vvobj.actionValue];
-        }
-        else if([self.delegate respondsToSelector:@selector(subViewClicked:andValue:)])
-        {
-            [self.delegate subViewClicked:vvobj.action andValue:vvobj.actionValue];
-        }
-    }else{
-        [super touchesEnded:touches withEvent:event];
-    }
-}
-
-- (id)initWithVirtualView:(VVBaseNode*)virtualView
+- (instancetype)initWithRootNode:(VVBaseNode *)rootNode
 {
 #ifdef VV_ALIBABA
     static dispatch_once_t onceToken;
@@ -68,72 +36,103 @@
         [VVViewContainer registerAppMoniter];
     });
 #endif
-    self = [super init];
-    if (self) {
-        self.virtualView = virtualView;
-        self.virtualView.rootCocoaView = self;
-        self.virtualView.rootCanvasLayer = self.layer;
+    if (self = [super init]) {
+        _lastData = self;
+        _rootNode = rootNode;
+        _rootNode.rootCanvasLayer = self.layer;
+        _rootNode.rootCocoaView = self;
+        _nodesWithExpression = [VVViewContainer nodesWithExpression:_rootNode];
         self.backgroundColor = [UIColor clearColor];
-        _dataTagObjs = [NSMutableArray array];
-        [VVViewContainer getDataTagObjsHelper:virtualView collection:_dataTagObjs];
-        if ([self.virtualView isLongClickable]) {
-            _pressRecognizer =
-            [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressed:)];
-            [self addGestureRecognizer:_pressRecognizer];
+        if ([_rootNode isClickable]) {
+            UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
+            tapGes.delegate = self;
+            [self addGestureRecognizer:tapGes];
+        }
+        if ([_rootNode isLongClickable]) {
+            UILongPressGestureRecognizer *longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
+            longPressGes.delegate = self;
+            [self addGestureRecognizer:longPressGes];
         }
     }
     return self;
 }
 
-- (void) attachViews {
-    [self attachViews:self.virtualView];
-}
-
-- (void) attachViews:(VVBaseNode*)virtualView {
-    
-    if ([virtualView isKindOfClass:VVLayout.class]) {
-        for (VVLayout* item in virtualView.subNodes) {
-            [self attachViews:item];
-        }
-    } else if(virtualView.cocoaView && virtualView.visibility!=VVVisibilityGone) {
-        [self addSubview:virtualView.cocoaView];
-    }
-}
-
-- (void)update:(NSObject *)obj
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    if (obj==nil || obj==self.updateDataObj) {
+    return YES;
+}
+
+- (void)gestureHandler:(UIGestureRecognizer *)gesture
+{
+    if (self.delegate == nil) {
         return;
-    }else{
-        self.updateDataObj = obj;
     }
+    
+    BOOL isClick = NO;
+    if ([gesture isKindOfClass:[UITapGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan) {
+        isClick = YES;
+    }
+
+    BOOL isLongClick = NO;
+    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateEnded) {
+        isLongClick = YES;
+    }
+
+    if (isClick || isLongClick) {
+        CGPoint point = [gesture locationInView:self];
+        VVBaseNode *clickedNode = [self.rootNode hitTest:point];
+        if (clickedNode) {
+            if (isClick) {
+                if ([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)]) {
+                    [self.delegate subView:clickedNode clicked:clickedNode.action andValue:clickedNode.actionValue];
+                }
+                if ([self.delegate respondsToSelector:@selector(subViewClicked:andValue:)]) {
+                    [self.delegate subViewClicked:clickedNode.action andValue:clickedNode.actionValue];
+                }
+            }
+            if (isLongClick && [self.delegate respondsToSelector:@selector(subViewLongPressed:andValue:gesture:)]) {
+                [self.delegate subViewLongPressed:clickedNode.action andValue:clickedNode.actionValue gesture:gesture];
+            }
+        }
+    }
+}
+
+- (void)update:(id)data
+{
+    if (data == self.lastData) {
+        return;
+    }
+    self.lastData = data;
     
 #ifdef VV_ALIBABA
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
     
-    NSDictionary* jsonData = (NSDictionary*)obj;
-    for (VVBaseNode* item in self.dataTagObjs) {
-        [item reset];
+    for (VVBaseNode *node in _nodesWithExpression) {
+        [node reset];
 
-        for (VVPropertyExpressionSetter *setter in item.expressionSetters.allValues) {
+        for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
             if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                [setter applyToNode:item withDict:jsonData];
+                [setter applyToNode:node withObject:data];
             }
         }
-        item.actionValue = [jsonData objectForKey:item.action];
+        if ([data isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = (NSDictionary *)data;
+            node.actionValue = [dict objectForKey:node.action];
+        }
         
-        [item didUpdated];
+        [node didUpdated];
     }
-    self.virtualView.nodeX = self.virtualView.nodeY = 0;
-    if (self.virtualView.nodeWidth != self.bounds.size.width || self.virtualView.nodeHeight != self.bounds.size.height) {
-        [self.virtualView setNeedsResize];
-        self.virtualView.nodeWidth = self.bounds.size.width;
-        self.virtualView.nodeHeight = self.bounds.size.height;
+    
+    self.rootNode.nodeX = self.rootNode.nodeY = 0;
+    if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height) {
+        [self.rootNode setNeedsResize];
+        self.rootNode.nodeWidth = self.bounds.size.width;
+        self.rootNode.nodeHeight = self.bounds.size.height;
     }
-    [self.virtualView updateHidden];
-    [self.virtualView updateFrame];
-    [self.virtualView layoutSubNodes];
+    [self.rootNode updateHidden];
+    [self.rootNode updateFrame];
+    [self.rootNode layoutSubNodes];
     [self setNeedsDisplay];
     
 #ifdef VV_ALIBABA
@@ -144,16 +143,23 @@
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID
 {
-    return [self.virtualView nodeWithID:nodeID];
+    return [self.rootNode nodeWithID:nodeID];
 }
 
-+ (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs
++ (NSArray *)nodesWithExpression:(VVBaseNode *)rootNode
+{
+    NSMutableArray *result = [NSMutableArray array];
+    [self private_nodesWithExpression:rootNode result:result];
+    return [result copy];
+}
+
++ (void)private_nodesWithExpression:(VVBaseNode *)node result:(NSMutableArray *)result
 {
     if (node.expressionSetters.count > 0) {
-        [dataTagObjs addObject:node];
+        [result addObject:node];
     }
     for (VVBaseNode *subNode in node.subNodes) {
-        [self getDataTagObjsHelper:subNode collection:dataTagObjs];
+        [self private_nodesWithExpression:subNode result:result];
     }
 }
 

@@ -6,17 +6,16 @@
 //
 
 #import "VVGridView.h"
-#import "VVGridLayout.h"
 #import "VVViewContainer.h"
 #import "VVTemplateManager.h"
 #import "VVPropertyExpressionSetter.h"
 
-@interface VVGridView (){
+@interface VVGridView ()
 
-}
-@property(strong, nonatomic)VVGridLayout*   gridlayout;
-@property(strong, nonatomic)UIView*         gridContainer;
-@property(weak, nonatomic)NSObject*       updateDataObj;
+@property (strong, nonatomic)VVGridLayout*   gridlayout;
+@property (strong, nonatomic)UIView*         gridContainer;
+@property (weak, nonatomic)NSObject*       updateDataObj;
+
 @end
 
 @implementation VVGridView
@@ -136,14 +135,13 @@
     NSArray* dataArray = (NSArray*)obj;
     for (NSDictionary* jsonData in dataArray) {
         NSString* nodeType=[jsonData objectForKey:@"type"];
-        NSMutableArray* updateObjs = [[NSMutableArray alloc] init];
         VVBaseNode* vv = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
-        [VVViewContainer getDataTagObjsHelper:vv collection:updateObjs];
+        NSArray *updateObjs = [VVViewContainer nodesWithExpression:vv];
         for (VVBaseNode* item in updateObjs) {
             [item reset];
             for (VVPropertyExpressionSetter *setter in item.expressionSetters.allValues) {
                 if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                    [setter applyToNode:item withDict:jsonData];
+                    [setter applyToNode:item withObject:jsonData];
                 }
             }
         }

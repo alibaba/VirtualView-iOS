@@ -8,25 +8,28 @@
 #import <UIKit/UIKit.h>
 #import "VVBaseNode.h"
 
-@protocol VirtualViewDelegate
+@protocol VirtualViewDelegate <NSObject>
+
 @optional
-- (void)subViewClicked:(NSString*)action andValue:(NSString*)value;
-- (void)subView:(VVBaseNode *)view clicked:(NSString*)action andValue:(NSString*)value;
-- (void)subViewLongPressed:(NSString*)action andValue:(NSString*)value gesture:(UILongPressGestureRecognizer *)gesture;
+
+- (void)subViewClicked:(NSString *)action andValue:(NSString *)value;
+- (void)subView:(VVBaseNode *)view clicked:(NSString *)action andValue:(NSString *)value;
+- (void)subViewLongPressed:(NSString *)action andValue:(NSString *)value gesture:(UIGestureRecognizer *)gesture;
+
 @end
 
 @interface VVViewContainer : UIView
-@property(nonatomic, strong)VVBaseNode* virtualView;
-@property(nonatomic, weak)NSObject<VirtualViewDelegate> *delegate;
+
+@property (nonatomic, strong, readonly) VVBaseNode *rootNode;
+@property (nonatomic, weak) id<VirtualViewDelegate> delegate;
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type;
+- (id)initWithRootNode:(VVBaseNode *)rootNode;
 
-- (id)initWithVirtualView:(VVBaseNode*)virtualView;
-- (void)attachViews;
-- (void) attachViews:(VVBaseNode*)virtualView;
-- (void)update:(NSObject*)obj;
+- (void)update:(id)data;
+
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
 
-+ (void)getDataTagObjsHelper:(VVBaseNode *)node collection:(NSMutableArray *)dataTagObjs;
++ (NSArray *)nodesWithExpression:(VVBaseNode *)rootNode;
 
 @end

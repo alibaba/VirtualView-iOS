@@ -39,11 +39,11 @@
 {
     // override me
     if ([self isExpression] == YES) {
-        [self applyToNode:node withDict:nil];
+        [self applyToNode:node withObject:nil];
     }
 }
 
-- (void)applyToNode:(VVBaseNode *)node withDict:(NSDictionary *)dict
+- (void)applyToNode:(VVBaseNode *)node withObject:(nullable NSDictionary *)object
 {
     // override me
     if ([self isExpression] == NO) {
