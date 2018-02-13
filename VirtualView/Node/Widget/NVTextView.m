@@ -337,18 +337,6 @@
 
 #pragma mark Layout
 
-- (void)updateHidden
-{
-    [super updateHidden];
-    self.textView.hidden = self.hidden;
-}
-
-- (void)updateFrame
-{
-    [super updateFrame];
-    self.textView.frame = self.nodeFrame;
-}
-
 - (CGSize)calculateSize:(CGSize)maxSize
 {
     [super calculateSize:maxSize];

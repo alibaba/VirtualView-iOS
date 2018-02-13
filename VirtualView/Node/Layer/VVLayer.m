@@ -81,14 +81,14 @@
     return CGSizeMake(_width, _height);
 }
 
-- (void)createPath:(CGContextRef)context borderWidth:(CGFloat)borderWidth
+- (void)createPath:(CGContextRef)context
 {
     // 1--2--3
     // |     |
     // 0     4
     // |     |
     // 7--6--5
-    CGFloat halfBorderWidth = borderWidth / 2;
+    CGFloat halfBorderWidth = _vv_borderWidth / 2;
     CGFloat maximunRadius = MIN(_width, _height) / 2 - halfBorderWidth;
     CGFloat minX = halfBorderWidth, midX = _width / 2, maxX = _width - halfBorderWidth;
     CGFloat minY = halfBorderWidth, midY = _height / 2, maxY = _height - halfBorderWidth;
@@ -121,7 +121,7 @@
     if (self.vv_backgroundColor
         && [self.vv_backgroundColor isEqual:[UIColor clearColor]] == NO) {
         CGContextSetFillColorWithColor(context, self.vv_backgroundColor.CGColor);
-        [self createPath:context borderWidth:self.vv_borderWidth];
+        [self createPath:context];
         CGContextFillPath(context);
     }
 
@@ -130,7 +130,7 @@
         && [self.vv_borderColor isEqual:[UIColor clearColor]] == NO) {
         CGContextSetLineWidth(context, self.vv_borderWidth);
         CGContextSetStrokeColorWithColor(context, self.vv_borderColor.CGColor);
-        [self createPath:context borderWidth:self.vv_borderWidth];
+        [self createPath:context];
         CGContextStrokePath(context);
     }
 }

@@ -469,6 +469,9 @@
     if (_superNode) {
         _hidden |= _superNode.hidden;
     }
+    if (self.cocoaView) {
+        self.cocoaView.hidden = _hidden;
+    }
 }
 
 - (void)updateFrame
@@ -479,6 +482,9 @@
         y = _superNode.nodeFrame.origin.y;
     }
     _nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
+    if (self.cocoaView) {
+        self.cocoaView.frame = _nodeFrame;
+    }
 }
 
 - (void)layoutSubviews

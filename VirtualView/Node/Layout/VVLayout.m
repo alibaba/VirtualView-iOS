@@ -19,16 +19,11 @@
 {
     self = [super init];
     if (self) {
-        _privateLayer = [VVLayer layer];
+        _privateLayer = [[VVLayer alloc] init];
         _privateLayer.drawsAsynchronously = YES;
         _privateLayer.contentsScale = [[UIScreen mainScreen] scale];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    _privateLayer.delegate = nil;
 }
 
 - (BOOL)needCanvasLayer
