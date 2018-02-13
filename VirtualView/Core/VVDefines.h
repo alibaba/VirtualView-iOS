@@ -107,19 +107,19 @@ typedef NS_ENUM(NSUInteger, VVEllipsize) {
 };
 
 typedef NS_ENUM(NSUInteger, VVScaleType) {
-    VVScaleTypeMatrix = 0,
+    VVScaleTypeMatrix = 0, // not suggested
     VVScaleTypeFitXY = 1,
-    VVScaleTypeFitStart = 2,
+    VVScaleTypeFitStart = 2, // not suggested
     VVScaleTypeFitCenter = 3,
-    VVScaleTypeFitEnd = 4,
+    VVScaleTypeFitEnd = 4, // not suggested
     VVScaleTypeCenter = 5,
     VVScaleTypeCenterCrop = 6,
-    VVScaleTypeCenterInside = 7
+    VVScaleTypeCenterInside = 7 // not suggested
 };
 
 typedef NS_ENUM(NSUInteger, VVLineStyle) {
     VVLineStyleSolid = 1,
-    VVLineStyleDash = 2
+    VVLineStyleDash = 2 // not supported
 };
 
 #define STR_ID_VHLayout  1302701180

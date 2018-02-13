@@ -296,6 +296,7 @@
                 break;
             case STR_ID_borderRadius:
                 self.textView.layer.cornerRadius = value;
+                self.textView.clipsToBounds = YES;
                 break;
             default:
                 ret = NO;

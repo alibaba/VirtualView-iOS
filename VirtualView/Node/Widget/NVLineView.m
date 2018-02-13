@@ -43,6 +43,12 @@
     [super setRootCocoaView:rootCocoaView];
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.cocoaView.backgroundColor = backgroundColor;
+}
+
 - (BOOL)setIntValue:(int)value forKey:(int)key
 {
     BOOL ret = [ super setIntValue:value forKey:key];

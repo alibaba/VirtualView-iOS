@@ -9,4 +9,10 @@
 
 @interface NVImageView : VVBaseNode
 
+@property (nonatomic, strong, readonly) UIImageView *imageView;
+
+@property (nonatomic, strong) NSString *src;
+@property (nonatomic, assign) VVScaleType scaleType;
+@property (nonatomic, assign) CGFloat ratio;
+
 @end

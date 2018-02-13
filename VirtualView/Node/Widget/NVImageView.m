@@ -7,8 +7,6 @@
 
 #import "NVImageView.h"
 #import "UIColor+VirtualView.h"
-#import "VVViewContainer.h"
-#import "VVLayout.h"
 #import "VVPropertyExpressionSetter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -19,240 +17,220 @@
 #define VV_NImageViewType UIImageView
 #endif
 
-@interface NVImageView (){
-    //
+@interface NVImageView () {
+    VV_NImageViewType *_imageView;
 }
-@property (nonatomic, strong, readwrite) UIView *cocoaView;
-@property(nonatomic, assign)CGSize   imageSize;
-@property(assign, nonatomic)BOOL disableCache;
-@property(nonatomic, strong)VV_NImageViewType   *imageView;
-@property(nonatomic, strong)UIView   *maskView;
-@property(nonatomic, strong)NSString *imgUrl;
-@property(assign, nonatomic)CGFloat   ratio;
-@property(assign, nonatomic)int       fixBy;
+
+@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, assign) BOOL needReload;
+
 @end
 
 @implementation NVImageView
-@synthesize cocoaView;
-- (id)init{
-    self = [super init];
-    if (self) {
-        self.cocoaView = [[UIView alloc] init];
-        self.cocoaView.hidden = YES;
-        self.ratio = 0;
-        self.fixBy = 0;
+
+@dynamic cocoaView;
+
+- (id)init
+{
+    if (self = [super init]) {
+        _imageView = [[VV_NImageViewType alloc] init];
+        _imageView.backgroundColor = [UIColor clearColor];
+        _imageView.contentMode = UIViewContentModeScaleToFill;
+        _scaleType = VVScaleTypeFitXY;
+        _needReload = YES;
+#ifdef VV_ALIBABA
+        VVSelectorObserve(src, updateSrc);
+#endif
+        VVSelectorObserve(ratio, updateSize);
+        VVSelectorObserve(paddingTop, updatePadding);
+        VVSelectorObserve(paddingLeft, updatePadding);
+        VVSelectorObserve(paddingBottom, updatePadding);
+        VVSelectorObserve(paddingRight, updatePadding);
     }
     return self;
 }
 
-- (UIView *)maskView
+- (UIView *)cocoaView
 {
-    if(!_maskView)
-    {
-        _maskView = [[UIView alloc]init];
-        _maskView.userInteractionEnabled = NO;
-    }
-    return _maskView;
+    return _containerView ?: _imageView;
 }
 
-- (VV_NImageViewType *)imageView{
-    if(!_imageView){
-        _imageView = [[VV_NImageViewType alloc] init];
-        [self.cocoaView addSubview:_imageView];
-        [self.cocoaView addSubview:self.maskView];
+- (BOOL)needContainerView
+{
+    if (self.paddingTop > 0 || self.paddingRight > 0 || self.paddingLeft > 0 || self.paddingBottom > 0
+        || [self.expressionSetters.allKeys containsObject:@"paddingTop"]
+        || [self.expressionSetters.allKeys containsObject:@"paddingRight"]
+        || [self.expressionSetters.allKeys containsObject:@"paddingLeft"]
+        || [self.expressionSetters.allKeys containsObject:@"paddingBottom"]) {
+        return YES;
     }
-
-    return _imageView;
+    return NO;
 }
 
-- (void)showImage{
-
-    if ([self.imgUrl rangeOfString:@"//"].location==NSNotFound) {
-        UIImage* image = [UIImage imageNamed:self.imgUrl];
-        if (image) {
-            self.imageView.image = image;
-            self.cocoaView.hidden = NO;
+- (void)setRootCocoaView:(UIView *)rootCocoaView
+{
+    if (self.containerView == nil && [self needContainerView]) {
+        CGRect frame = CGRectMake(0,
+                                  0,
+                                  self.paddingLeft + self.paddingRight + 10,
+                                  self.paddingTop + self.paddingBottom + 10);
+        self.containerView = [[UIView alloc] initWithFrame:frame];
+        self.containerView.backgroundColor = self.imageView.backgroundColor;
+        if (self.imageView.layer.cornerRadius > 0) {
+            self.containerView.layer.cornerRadius = self.imageView.layer.cornerRadius;
+            self.containerView.clipsToBounds = YES;
+            self.imageView.layer.cornerRadius = 0;
         }
-    }else{
-        [self.imageView sd_cancelCurrentAnimationImagesLoad];
-        if ([self.imgUrl isKindOfClass:[NSString class]] && self.imgUrl.length > 0) {
-            self.cocoaView.hidden = NO;
-            [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.imgUrl]];
-        }else{
-            self.cocoaView.hidden = YES;
+        self.containerView.layer.borderColor = self.imageView.layer.borderColor;
+        if (self.imageView.layer.borderWidth > 0) {
+            self.containerView.layer.borderWidth = self.imageView.layer.borderWidth;
+            self.imageView.layer.borderWidth = 0;
         }
+        [self updatePadding];
+        self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.containerView addSubview:self.imageView];
+    }
+    if (self.cocoaView.superview != rootCocoaView) {
+        if (self.cocoaView.superview) {
+            [self.cocoaView removeFromSuperview];
+        }
+        [rootCocoaView addSubview:self.cocoaView];
+    }
+    [super setRootCocoaView:rootCocoaView];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.cocoaView.backgroundColor = backgroundColor;
+}
+
+- (void)setBorderColor:(UIColor *)borderColor
+{
+    [super setBorderColor:borderColor];
+    self.cocoaView.layer.borderColor = borderColor.CGColor;
+}
+
+- (void)setBorderWidth:(CGFloat)borderWidth
+{
+    [super setBorderWidth:borderWidth];
+    self.cocoaView.layer.borderWidth = borderWidth;
+}
+
+- (void)setRatio:(CGFloat)ratio
+{
+    if (ratio >= 0) _ratio = ratio;
+}
+
+- (void)setScaleType:(VVScaleType)scaleType
+{
+    _scaleType = scaleType;
+    switch (scaleType) {
+        case VVScaleTypeFitCenter:
+        case VVScaleTypeFitEnd: // best choice
+        case VVScaleTypeFitStart: // best choice
+        case VVScaleTypeCenterInside: // best choice
+            self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+            break;
+        case VVScaleTypeCenterCrop:
+            self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            self.imageView.clipsToBounds = YES;
+            break;
+        case VVScaleTypeCenter:
+            self.imageView.contentMode = UIViewContentModeCenter;
+            self.imageView.clipsToBounds = YES;
+            break;
+        case VVScaleTypeMatrix: // best choice
+        default:
+            self.imageView.contentMode = UIViewContentModeScaleToFill;
+            break;
     }
 }
 
-- (void)layoutSubNodes{
+#ifdef VV_ALIBABA
+- (void)updateSrc
+{
+    self.ratio = [TMImageView imageWidthByHeight:1 imgUrl:self.src];
+}
+#endif
 
-    self.cocoaView.frame = self.nodeFrame;
-    self.imageView.frame = CGRectMake(self.paddingLeft, self.paddingTop, self.imageSize.width, self.imageSize.height);
-    self.maskView.frame = self.cocoaView.bounds;
-    [self showImage];
-    [super layoutSubNodes];
+- (void)updateSize
+{
+    if ([self needResizeIfSubNodeResize]) {
+        [self setNeedsResize];
+    }
 }
 
-- (CGSize)calculateSize:(CGSize)maxSize{
-    switch ((int)self.layoutWidth) {
-        case VV_WRAP_CONTENT:
-#ifdef VV_ALIBABA
-            _imageSize.width = [TMImageView imageWidthByHeight:self.heightModle imgUrl:self.imgUrl];
-            self.width = self.paddingRight+self.paddingLeft+_imageSize.width;
-            if (self.width>maxSize.width) {
-                self.width = maxSize.width;
-                _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
-            }
-#endif
-            break;
-        case VV_MATCH_PARENT:
-            if (self.superNode.layoutWidth==VV_WRAP_CONTENT && self.superNode.autoDimDirection==VVAutoDimDirectionNone) {
-                //_imageSize.width = maxSize.width;
-                self.nodeWidth = maxSize.width;//self.paddingRight+self.paddingLeft+_imageSize.width;
-                _imageSize.width = self.nodeWidth - self.paddingLeft - self.paddingRight;
-                /*if (self.width>maxSize.width) {
-                    self.width = maxSize.width;
-                    _imageSize.width = self.width - self.paddingLeft - self.paddingRight;
-                }*/
-            }else{
-                self.nodeWidth=maxSize.width;
-                _imageSize.width = self.nodeWidth-self.paddingRight-self.paddingLeft;
-            }
-            break;
-        default:
-            _imageSize.width = self.layoutWidth-self.paddingRight-self.paddingLeft;
-            self.nodeWidth = self.layoutWidth;
-            break;
-    }
-    
-    switch ((int)self.layoutHeight) {
-        case VV_WRAP_CONTENT:
-#ifdef VV_ALIBABA
-            _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
-            self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
-            if (self.height>maxSize.height) {
-                self.height = maxSize.height;
-                _imageSize.height = self.height - self.paddingTop - self.paddingBottom;
-            }
-#endif
-            break;
-        case VV_MATCH_PARENT:
-            if (self.superNode.layoutHeight==VV_WRAP_CONTENT && self.superNode.autoDimDirection==VVAutoDimDirectionNone) {
-#ifdef VV_ALIBABA
-                _imageSize.height = [TMImageView imageHeightByWidth:self.width imgUrl:self.imgUrl];
-                self.height = self.paddingTop+self.paddingBottom+_imageSize.height;
-                if (self.height>maxSize.height) {
-                    self.height = maxSize.height;
-                    _imageSize.height = self.height - self.paddingTop - self.paddingBottom;
-                }
-#endif
-            } else {
-                self.nodeHeight=maxSize.height;
-                _imageSize.height = self.nodeHeight-self.paddingTop-self.paddingBottom;
-            }
-            break;
-        default:
-            _imageSize.height = self.layoutHeight-self.paddingTop-self.paddingBottom;
-            self.nodeHeight = self.layoutHeight;
-            break;
-    }
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-            _imageSize.height = _imageSize.width*(self.autoDimY/self.autoDimX);
-            break;
-        case VVAutoDimDirectionY:
-            _imageSize.height = _imageSize.width*(self.autoDimX/self.autoDimY);
-        default:
-            break;
-    }
-    [self applyAutoDim];
-    
-    if (self.ratio>0) {
-        if (self.fixBy==0) {
-            self.nodeHeight = self.nodeWidth*self.ratio;
-            _imageSize.height = _imageSize.width*self.ratio;
-        }else{
-            self.nodeWidth = self.nodeHeight*self.ratio;
-            _imageSize.width = _imageSize.height*self.ratio;
+- (void)updatePadding
+{
+    CGSize size = self.containerView.frame.size;
+    self.imageView.frame = CGRectMake(self.paddingLeft,
+                                      self.paddingTop,
+                                      size.width - self.paddingLeft - self.paddingRight,
+                                      size.height - self.paddingTop - self.paddingBottom);
+}
+
+- (BOOL)setIntValue:(int)value forKey:(int)key
+{
+    BOOL ret = [super setIntValue:value forKey:key];
+    if (!ret) {
+        ret = YES;
+        switch (key) {
+            case STR_ID_scaleType:
+                self.scaleType = value;
+                break;
+            default:
+                ret = NO;
+                break;
         }
     }
-    
-    CGSize size = CGSizeMake(self.nodeWidth<maxSize.width?self.nodeWidth:maxSize.width, self.nodeHeight<maxSize.height?self.nodeHeight:maxSize.height);
-    return size;
+    return ret;
+}
+
+- (BOOL)setFloatValue:(float)value forKey:(int)key
+{
+    BOOL ret = [super setFloatValue:value forKey:key];
+    if (!ret) {
+        ret = YES;
+        switch (key) {
+            case STR_ID_ratio:
+                self.ratio = value;
+                break;
+            case STR_ID_borderRadius:
+                self.cocoaView.layer.cornerRadius = value;
+                self.cocoaView.clipsToBounds = YES;
+                break;
+            default:
+                ret = NO;
+                break;
+        }
+    }
+    return ret;
 }
 
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key
 {
     BOOL ret  = [super setStringValue:value forKey:key];
-
     if (!ret) {
         ret = YES;
         switch (key) {
             case STR_ID_src:
-                self.imgUrl = value;
+                self.src = value;
                 break;
             default:
+                ret = NO;
                 break;
         }
     }
     return ret;
 }
 
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = [super setIntValue:value forKey:key];
-    if (!ret) {
-        switch (key) {
-            case STR_ID_disableCache:
-                self.disableCache = value;
-                break;
-            case STR_ID_maskColor:
-                self.maskView.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
-                break;
-            case STR_ID_itemHeight:
-                self.nodeHeight = value;
-                break;
-            case STR_ID_fixBy:
-                self.fixBy = value;
-                break;
-            default:
-                break;
-        }
-    }
-    return ret;
-}
-
-- (BOOL)setFloatValue:(float)value forKey:(int)key{
-    BOOL ret  = [super setFloatValue:value forKey:key];
-    if (!ret) {
-        switch (key) {
-            case STR_ID_itemHeight:
-                self.nodeHeight = value;
-                break;
-            case STR_ID_ratio:
-                self.ratio = value;
-            default:
-                break;
-        }
-    }
-    return ret;
-}
-
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
-    
-    switch (key) {
-        case STR_ID_src:
-            self.imgUrl = value;
-            break;
-    }
-    return YES;
-}
-
-- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key
+- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
 {
     BOOL ret = YES;
     switch (key) {
         case STR_ID_src:
-            self.imgUrl = (NSString*)obj;
+            self.src = value;
             break;
         default:
             ret = NO;
@@ -263,53 +241,35 @@
 
 - (void)reset
 {
-    [super reset];
-    //self.imgUrl = @"";
-    self.cocoaView.hidden = YES;
+    self.imageView.image = nil;
+    [self.imageView sd_setImageWithURL:nil];
+    self.needReload = YES;
 }
 
-+ (UIColor *)pixelColorFromImage:(UIImage *)image
+- (void)updateFrame
 {
-    CGImageRef imageRef = [image CGImage];
-    if(!imageRef)
-    {
-        return [UIColor vv_colorWithString:@"#E1E2DF"];
+    [super updateFrame];
+    if (self.needReload) {
+        if ([self.src containsString:@"//"]) {
+            [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.src]];
+        } else {
+            self.imageView.image = [UIImage imageNamed:self.src];
+        }
+        self.needReload = NO;
     }
-    NSUInteger width = CGImageGetWidth(imageRef);
-    NSUInteger height = CGImageGetHeight(imageRef);
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
-    if (!rawData)
-    {
-        return [UIColor vv_colorWithString:@"#E1E2DF"];
+}
+
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    [super calculateSize:maxSize];
+    if (_ratio > 0) {
+        if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT) {
+            self.nodeHeight = (self.nodeWidth - self.paddingLeft - self.paddingRight) / _ratio + self.paddingTop + self.paddingBottom;
+        } else if (self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT) {
+            self.nodeWidth = (self.nodeHeight - self.paddingTop - self.paddingBottom) * _ratio + self.paddingLeft + self.paddingRight;
+        }
     }
-    NSUInteger bytesPerPixel = 4;
-    NSUInteger bytesPerRow = bytesPerPixel * width;
-    NSUInteger bitsPerComponent = 8;
-    CGContextRef context = CGBitmapContextCreate(rawData, width, height,
-                                                 bitsPerComponent, bytesPerRow, colorSpace,
-                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
-    CGColorSpaceRelease(colorSpace);
-    
-    CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
-    CGContextRelease(context);
-    
-    NSUInteger byteIndex = (bytesPerRow * 1) + 1 * bytesPerPixel;
-    CGFloat red   = (rawData[byteIndex]     * 1.0) / 255.0;
-    CGFloat green = (rawData[byteIndex + 1] * 1.0) / 255.0;
-    CGFloat blue  = (rawData[byteIndex + 2] * 1.0) / 255.0;
-    CGFloat alpha = (rawData[byteIndex + 3] * 1.0) / 255.0;
-    byteIndex += bytesPerPixel;
-    UIColor *acolor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-    free(rawData);
-    if(acolor)
-    {
-        return acolor;
-    }
-    else
-    {
-        return [UIColor vv_colorWithString:@"#E1E2DF"];
-    }
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
 @end
