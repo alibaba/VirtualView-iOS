@@ -69,11 +69,11 @@
 
 - (void)setRootCocoaView:(UIView *)rootCocoaView
 {
-    if (self.textView.superview !=  rootCocoaView) {
-        if (self.textView.superview) {
-            [self.textView removeFromSuperview];
+    if (self.cocoaView.superview !=  rootCocoaView) {
+        if (self.cocoaView.superview) {
+            [self.cocoaView removeFromSuperview];
         }
-        [rootCocoaView addSubview:self.textView];
+        [rootCocoaView addSubview:self.cocoaView];
     }
     [super setRootCocoaView:rootCocoaView];
 }

@@ -29,7 +29,11 @@
 - (id)initWithRootNode:(VVBaseNode *)rootNode;
 - (id)initWithRootNode:(VVBaseNode *)rootNode alwaysRefresh:(BOOL)alwaysRefresh;
 
-- (CGSize)calculateSize:(CGSize)maxSize; // maybe will cost a lot of CPU resource
+/**
+ Get estimated size of VirtualView. Maybe will cost a lot of CPU resources.
+ Cannot get correct size if size of VirtualView will change with binding data.
+ */
+- (CGSize)estimatedSize:(CGSize)maxSize;
 
 - (void)update:(id)data;
 

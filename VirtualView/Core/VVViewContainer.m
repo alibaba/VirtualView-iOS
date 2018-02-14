@@ -123,7 +123,7 @@
     }
 }
 
-- (CGSize)calculateSize:(CGSize)maxSize
+- (CGSize)estimatedSize:(CGSize)maxSize
 {
     [self.rootNode setNeedsResize];
     return [self.rootNode calculateSize:maxSize];

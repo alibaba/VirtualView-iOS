@@ -43,11 +43,16 @@
     return NO;
 }
 
+- (VVLayer *)canvasLayer
+{
+    if (_canvasLayer == nil && [self needCanvasLayer]) {
+        _canvasLayer = _privateLayer;
+    }
+    return _canvasLayer;
+}
+
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
-    if (self.canvasLayer == nil && [self needCanvasLayer]) {
-        self.canvasLayer = _privateLayer;
-    }
     if (self.canvasLayer) {
         if (self.canvasLayer.superlayer) {
             [self.canvasLayer removeFromSuperlayer];

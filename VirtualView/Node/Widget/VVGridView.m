@@ -12,196 +12,106 @@
 
 @interface VVGridView ()
 
-@property (strong, nonatomic)VVGridLayout*   gridlayout;
-@property (strong, nonatomic)UIView*         gridContainer;
-@property (weak, nonatomic)NSObject*       updateDataObj;
+@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, weak) id lastData;
+@property (nonatomic, assign, readwrite) CGRect nodeFrame;
 
 @end
 
 @implementation VVGridView
 
-- (id)init{
-    self = [super init];
-    if (self) {
-        self.gridContainer = [[UIView alloc] init];
+@synthesize rootCocoaView = _rootCocoaView, rootCanvasLayer = _rootCanvasLayer;
+@synthesize nodeFrame;
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _lastData = self;
+        _containerView = [[UIView alloc] init];
+        _containerView.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
 
-- (void)dealloc
+- (UIView *)cocoaView
 {
-    if (self.canvasLayer) {
-        self.canvasLayer.delegate = nil;
-    }
+    return _containerView;
 }
 
-- (void)layoutSubNodes{
-    
-    
-    CGFloat x = self.nodeFrame.origin.x;
-    CGFloat y = self.nodeFrame.origin.y;
-    self.nodeWidth = self.nodeWidth<0?self.superNode.nodeFrame.size.width:self.nodeWidth;
-    self.nodeHeight = self.nodeHeight<0?self.superNode.nodeFrame.size.height:self.nodeHeight;
-    self.nodeX = x;
-    self.nodeY = y;
-    [self updateFrame];
-    
-    self.gridContainer.frame = self.nodeFrame;
-    int index = 0;
-    for (int row=0; row<self.rowCount; row++) {
-        for (int col=0; col<self.colCount; col++) {
-            if (index<self.subNodes.count) {
-                VVBaseNode* vvObj = [self.subNodes objectAtIndex:index];
-                if(vvObj.visibility==VVVisibilityGone){
-                    continue;
-                }
-                CGFloat pX = (vvObj.nodeWidth+self.itemHorizontalMargin)*col+self.paddingLeft+vvObj.marginLeft;
-                CGFloat pY = (vvObj.nodeHeight+self.itemVerticalMargin)*row+self.paddingTop+vvObj.marginTop;
-                
-                self.nodeX = pX;
-                self.nodeY = pY;
-                [vvObj updateFrame];
-                [vvObj layoutSubNodes];
-                index++;
-            }else{
-                break;
-            }
-        }
-    }
-    [super layoutSubNodes];
-}
-
-- (BOOL)setFloatValue:(float)value forKey:(int)key{
-    BOOL ret = [ super setFloatValue:value forKey:key];
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_itemHeight:
-                self.itemHeight = value;
-                break;
-            case STR_ID_itemHorizontalMargin:
-                self.itemHorizontalMargin = value;
-                break;
-            case STR_ID_itemVerticalMargin:
-                self.itemVerticalMargin = value;
-                break;
-            default:
-                ret = false;
-                break;
-        }
-    }
-    return ret;
-}
-
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = [ super setIntValue:value forKey:key];
-    
-    if (!ret) {
-        ret = true;
-        switch (key) {
-            case STR_ID_colCount:
-                self.colCount = value;
-                break;
-                
-            case STR_ID_itemHeight:
-                self.itemHeight = value;
-                break;
-            case STR_ID_itemHorizontalMargin:
-                self.itemHorizontalMargin = value;
-                break;
-            case STR_ID_itemVerticalMargin:
-                self.itemVerticalMargin = value;
-                break;
-            default:
-                ret = false;
-                break;
-        }
-    }
-    return ret;
-}
-
-- (BOOL)setDataObj:(NSObject*)obj forKey:(int)key
+- (void)setRootCocoaView:(UIView *)rootCocoaView
 {
-    if (obj==nil || obj==self.updateDataObj) {
-        return NO;
-    }else{
-        self.updateDataObj = obj;
-    }
-    VVViewContainer* vvContainer = nil;
-    if([self.superNode.rootCocoaView isKindOfClass:[VVViewContainer class]]){
-        vvContainer = (VVViewContainer*)self.superNode.rootCocoaView;
-    }
-    [self resetObj];
-    NSArray* dataArray = (NSArray*)obj;
-    for (NSDictionary* jsonData in dataArray) {
-        NSString* nodeType=[jsonData objectForKey:@"type"];
-        VVBaseNode* vv = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
-        NSArray *updateObjs = [VVViewContainer nodesWithExpression:vv];
-        for (VVBaseNode* item in updateObjs) {
-            [item reset];
-            for (VVPropertyExpressionSetter *setter in item.expressionSetters.allValues) {
-                if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                    [setter applyToNode:item withObject:jsonData];
-                }
-            }
+    _rootCocoaView = rootCocoaView;
+    if (self.cocoaView.superview !=  rootCocoaView) {
+        if (self.cocoaView.superview) {
+            [self.cocoaView removeFromSuperview];
         }
-        vv.actionValue = [jsonData objectForKey:vv.action];
-        [self addSubNode:vv];
-
+        [rootCocoaView addSubview:self.cocoaView];
     }
-    self.rootCocoaView = self.gridContainer;
-    self.rootCanvasLayer = self.gridContainer.layer;
-    [self attachCocoaViews:self];
-    if (self.gridContainer.superview == nil) {
-        [vvContainer addSubview:self.gridContainer];
-    }
-    return YES;
 }
 
 - (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
 {
-    if (self.canvasLayer == nil) {
-        self.canvasLayer = [VVLayer layer];
-        self.canvasLayer.drawsAsynchronously = YES;
-        self.canvasLayer.contentsScale = [[UIScreen mainScreen] scale];
-        self.canvasLayer.delegate =  (id<CALayerDelegate>)self;
-    }
+    _rootCanvasLayer = rootCanvasLayer;
     if (self.canvasLayer) {
         if (self.canvasLayer.superlayer) {
             [self.canvasLayer removeFromSuperlayer];
         }
         [rootCanvasLayer addSublayer:self.canvasLayer];
     }
-    [super setRootCanvasLayer:rootCanvasLayer];
 }
 
-- (void)attachCocoaViews:(VVBaseNode*)vvObj{
-    for (VVBaseNode* subView in vvObj.subNodes) {
-        [self attachCocoaViews:subView];
-        if (subView.cocoaView && subView.visibility!=VVVisibilityGone) {
-            [self.gridContainer addSubview:subView.cocoaView];
+- (BOOL)setDataObj:(NSObject *)obj forKey:(int)key
+{
+    if (key == STR_ID_dataTag) {
+        if (obj != _lastData && [obj isKindOfClass:[NSArray class]]) {
+            _lastData = obj;
+            
+            for (VVBaseNode *subNode in self.subNodes) {
+                [subNode removeFromSuperNode];
+            }
+            [self.containerView.subviews performSelector:@selector(removeFromSuperview)];
+            [self.containerView.layer.sublayers performSelector:@selector(removeFromSuperlayer)];
+            
+            NSArray *dataArray = (NSArray *)obj;
+            for (NSDictionary *itemData in dataArray) {
+                if ([itemData isKindOfClass:[NSDictionary class]] == NO
+                    || [itemData.allKeys containsObject:@"type"] == NO) {
+                    continue;
+                }
+                NSString *nodeType = [itemData objectForKey:@"type"];
+                VVBaseNode *node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
+                if (node.expressionSetters.count > 0) {
+                    [node reset];
+                    
+                    for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
+                        if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
+                            [setter applyToNode:node withObject:itemData];
+                        }
+                    }
+                    node.actionValue = [itemData objectForKey:node.action];
+                    
+                    [node didUpdated];
+                }
+                [self addSubNode:node];
+            }
+            for (VVBaseNode *subNode in self.subNodes) {
+                subNode.rootCanvasLayer = self.containerView.layer;
+            }
+            for (VVBaseNode *subNode in self.subNodes) {
+                subNode.rootCocoaView = self.containerView;
+            }
         }
+        return YES;
     }
+    return NO;
 }
 
-- (void)removeCocoaView:(VVBaseNode*)vvObj{
-
-    NSArray* subViews = [NSArray arrayWithArray:vvObj.subNodes];
-    for (VVBaseNode* item in subViews) {
-        [self removeCocoaView:item];
-    }
-
-    if (vvObj.cocoaView) {
-        [vvObj.cocoaView removeFromSuperview];
-    }
+- (void)layoutSubNodes
+{
+    CGPoint origin = self.nodeFrame.origin;
+    self.nodeFrame = CGRectMake(0, 0, self.nodeFrame.size.width, self.nodeFrame.size.height);
+    [super layoutSubNodes];
+    self.nodeFrame = CGRectMake(origin.x, origin.y, self.nodeFrame.size.width, self.nodeFrame.size.height);
 }
 
-- (void)resetObj{
-    NSArray* subViews = [NSArray arrayWithArray:self.subNodes];
-    for (VVBaseNode* subView in subViews) {
-        [self removeCocoaView:subView];
-        [subView removeFromSuperNode];
-    }
-
-}
 @end

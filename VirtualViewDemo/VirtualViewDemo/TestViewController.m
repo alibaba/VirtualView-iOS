@@ -51,7 +51,7 @@
     self.scrollView.frame = self.view.bounds;
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGSize size = CGSizeMake(viewWidth, 1000);
-    size = [self.container calculateSize:size];
+    size = [self.container estimatedSize:size];
     self.scrollView.contentSize = size;
     self.container.frame = CGRectMake(0, 0, size.width, size.height);
     [self.container update:self.params];
