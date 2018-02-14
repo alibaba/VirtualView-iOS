@@ -21,28 +21,6 @@
 {
     if (self = [super init]) {
         _colCount = 2;
-        // 和padding被修改时做一样的操作，调用内容尺寸变化Block
-        __weak VVBaseNode *weakSelf = self;
-        VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
-            __strong VVBaseNode *strongSelf = weakSelf;
-            if ([self needResizeIfSubNodeResize]) {
-                [strongSelf setNeedsResize];
-                for (VVBaseNode *subNode in strongSelf.subNodes) {
-                    [subNode setNeedsLayout];
-                }
-            } else {
-                for (VVBaseNode *subNode in strongSelf.subNodes) {
-                    [subNode setNeedsLayout];
-                    if ([subNode needResizeIfSuperNodeResize]) {
-                        [subNode setNeedsResize];
-                    }
-                }
-            }
-        };
-        VVBlockObserve(colCount, contentChangedBlock);
-        VVBlockObserve(itemHeight, contentChangedBlock);
-        VVBlockObserve(itemVerticalMargin, contentChangedBlock);
-        VVBlockObserve(itemHorizontalMargin, contentChangedBlock);
     }
     return self;
 }
@@ -100,6 +78,33 @@
         }
     }
     return ret;
+}
+
+- (void)setupLayoutAndResizeObserver
+{
+    [super setupLayoutAndResizeObserver];
+    // 和padding被修改时做一样的操作，调用内容尺寸变化Block
+    __weak VVBaseNode *weakSelf = self;
+    VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if ([self needResizeIfSubNodeResize]) {
+            [strongSelf setNeedsResize];
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+            }
+        } else {
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+                if ([subNode needResizeIfSuperNodeResize]) {
+                    [subNode setNeedsResize];
+                }
+            }
+        }
+    };
+    VVBlockObserve(colCount, contentChangedBlock);
+    VVBlockObserve(itemHeight, contentChangedBlock);
+    VVBlockObserve(itemVerticalMargin, contentChangedBlock);
+    VVBlockObserve(itemHorizontalMargin, contentChangedBlock);
 }
 
 - (BOOL)needResizeIfSubNodeResize

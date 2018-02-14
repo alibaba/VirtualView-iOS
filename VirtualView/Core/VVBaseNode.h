@@ -110,6 +110,8 @@
  */
 @property (nonatomic, assign, readonly) CGSize containerSize;
 
+- (void)setupLayoutAndResizeObserver NS_REQUIRES_SUPER;
+
 - (BOOL)needLayout;
 - (BOOL)needResize;
 /**

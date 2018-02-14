@@ -47,17 +47,15 @@
         _lines = 1;
         _gravity = VVGravityDefault;
 //        _lineSpaceMultiplier = 1;
-        VVSelectorObserve(text, updateSizeAndAttributedText);
+        VVSelectorObserve(text, updateAttributedText);
         VVSelectorObserve(textColor, updateAttributedText);
         VVSelectorObserve(textSize, updateFont);
         VVSelectorObserve(textStyle, updateFont);
         VVSelectorObserve(textStyle, updateStyle);
         VVSelectorObserve(ellipsize, updateAttributedText);
-        VVSelectorObserve(lines, updateSize);
-        VVSelectorObserve(maxLines, updateSize);
         VVSelectorObserve(gravity, updateAttributedText);
-//        VVSelectorObserve(lineSpaceMultiplier, updateSizeAndAttributedText);
-//        VVSelectorObserve(lineSpaceExtra, updateSizeAndAttributedText);
+//        VVSelectorObserve(lineSpaceMultiplier, updateAttributedText);
+//        VVSelectorObserve(lineSpaceExtra, updateAttributedText);
     }
     return self;
 }
@@ -211,7 +209,7 @@
     } else {
         self.textView.font = [UIFont systemFontOfSize:self.textSize];
     }
-    [self updateSizeAndAttributedText];
+    [self updateAttributedText];
 }
 
 - (void)updateStyle
@@ -236,13 +234,6 @@
         [self setNeedsResize];
     }
 }
-
-- (void)updateSizeAndAttributedText
-{
-    [self updateSize];
-    [self updateAttributedText];
-}
-
 #pragma mark Update
 
 - (BOOL)setIntValue:(int)value forKey:(int)key
@@ -337,6 +328,18 @@
 }
 
 #pragma mark Layout
+
+- (void)setupLayoutAndResizeObserver
+{
+    [super setupLayoutAndResizeObserver];
+    VVSelectorObserve(text, updateSize);
+    VVSelectorObserve(textSize, updateSize);
+    VVSelectorObserve(textStyle, updateSize);
+    VVSelectorObserve(lines, updateSize);
+    VVSelectorObserve(maxLines, updateSize);
+//    VVSelectorObserve(lineSpaceMultiplier, updateSize);
+//    VVSelectorObserve(lineSpaceExtra, updateSize);
+}
 
 - (CGSize)calculateSize:(CGSize)maxSize
 {

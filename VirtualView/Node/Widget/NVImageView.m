@@ -38,10 +38,6 @@
         _imageView.contentMode = UIViewContentModeScaleToFill;
         _scaleType = VVScaleTypeFitXY;
         _needReload = YES;
-#ifdef VV_ALIBABA
-        VVSelectorObserve(src, updateSrc);
-#endif
-        VVSelectorObserve(ratio, updateSize);
         VVSelectorObserve(paddingTop, updatePadding);
         VVSelectorObserve(paddingLeft, updatePadding);
         VVSelectorObserve(paddingBottom, updatePadding);
@@ -244,6 +240,15 @@
     self.imageView.image = nil;
     [self.imageView sd_setImageWithURL:nil];
     self.needReload = YES;
+}
+
+- (void)setupLayoutAndResizeObserver
+{
+    [super setupLayoutAndResizeObserver];
+#ifdef VV_ALIBABA
+    VVSelectorObserve(src, updateSrc);
+#endif
+    VVSelectorObserve(ratio, updateSize);
 }
 
 - (void)updateFrame

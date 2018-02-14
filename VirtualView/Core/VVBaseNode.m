@@ -34,7 +34,6 @@
         _autoDimDirection = VVAutoDimDirectionNone;
         [self setNeedsResizeNonRecursively];
         [self setNeedsLayout];
-        [self setupLayoutAndResizeObserver];
     }
     return self;
 }
@@ -392,6 +391,10 @@
             }
         }
     }];
+    // 递归调用
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode setupLayoutAndResizeObserver];
+    }
 }
 
 - (BOOL)needLayout

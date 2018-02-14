@@ -9,6 +9,7 @@
 #import "VVLayout.h"
 #import "VVTemplateManager.h"
 #import "VVPropertyExpressionSetter.h"
+#import "VVConfig.h"
 #ifdef VV_ALIBABA
 #import <UT/AppMonitor.h>
 #endif
@@ -27,11 +28,21 @@
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type
 {
+    return [self viewContainerWithTemplateType:type alwaysRefresh:VVConfig.alwaysRefresh];
+}
+
++ (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type alwaysRefresh:(BOOL)alwaysRefresh
+{
     VVBaseNode *rootNode = [[VVTemplateManager sharedManager] createNodeTreeForType:type];
-    return [[VVViewContainer alloc] initWithRootNode:rootNode];
+    return [[VVViewContainer alloc] initWithRootNode:rootNode alwaysRefresh:alwaysRefresh];
 }
 
 - (instancetype)initWithRootNode:(VVBaseNode *)rootNode
+{
+    return [self initWithRootNode:rootNode alwaysRefresh:VVConfig.alwaysRefresh];
+}
+
+- (instancetype)initWithRootNode:(VVBaseNode *)rootNode alwaysRefresh:(BOOL)alwaysRefresh
 {
 #ifdef VV_ALIBABA
     static dispatch_once_t onceToken;
@@ -40,10 +51,14 @@
     });
 #endif
     if (self = [super init]) {
+        _alwaysRefresh = alwaysRefresh;
         _lastData = self;
         _rootNode = rootNode;
         _rootNode.rootCanvasLayer = self.layer;
         _rootNode.rootCocoaView = self;
+        if (alwaysRefresh == NO) {
+            [_rootNode setupLayoutAndResizeObserver];
+        }
         _nodesWithExpression = [VVViewContainer nodesWithExpression:_rootNode];
         self.backgroundColor = [UIColor clearColor];
         if ([_rootNode isClickable]) {
@@ -141,6 +156,9 @@
         [node didUpdated];
     }
     
+    if (self.alwaysRefresh) {
+        [self.rootNode setNeedsLayoutAndResizeRecursively];
+    }
     self.rootNode.nodeX = self.rootNode.nodeY = 0;
     if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height) {
         [self.rootNode setNeedsResize];

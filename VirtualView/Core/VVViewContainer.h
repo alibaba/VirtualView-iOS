@@ -22,9 +22,12 @@
 
 @property (nonatomic, strong, readonly) VVBaseNode *rootNode;
 @property (nonatomic, weak) id<VirtualViewDelegate> delegate;
+@property (nonatomic, assign, readonly) BOOL alwaysRefresh;
 
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type;
++ (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type alwaysRefresh:(BOOL)alwaysRefresh;
 - (id)initWithRootNode:(VVBaseNode *)rootNode;
+- (id)initWithRootNode:(VVBaseNode *)rootNode alwaysRefresh:(BOOL)alwaysRefresh;
 
 - (CGSize)calculateSize:(CGSize)maxSize; // maybe will cost a lot of CPU resource
 
