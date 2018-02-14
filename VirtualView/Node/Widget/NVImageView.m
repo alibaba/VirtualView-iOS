@@ -12,13 +12,13 @@
 
 #ifdef VV_ALIBABA
 #import "TMImageView.h"
-#define VV_NImageViewType TMImageView
+#define VV_IMAGE_VIEW_TYPE TMImageView
 #else
-#define VV_NImageViewType UIImageView
+#define VV_IMAGE_VIEW_TYPE UIImageView
 #endif
 
 @interface NVImageView () {
-    VV_NImageViewType *_imageView;
+    VV_IMAGE_VIEW_TYPE *_imageView;
 }
 
 @property (nonatomic, strong) UIView *containerView;
@@ -33,7 +33,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        _imageView = [[VV_NImageViewType alloc] init];
+        _imageView = [[VV_IMAGE_VIEW_TYPE alloc] init];
         _imageView.backgroundColor = [UIColor clearColor];
         _imageView.contentMode = UIViewContentModeScaleToFill;
         _scaleType = VVScaleTypeFitXY;

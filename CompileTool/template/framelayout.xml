@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         layoutWidth="750rp"
-        layoutHeight="match_parent"
+        layoutHeight="800"
         background="#FFFFFF">
     <NText
             text="width = match_parent"

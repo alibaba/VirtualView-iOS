@@ -17,7 +17,6 @@
 		92D80CE82030228100398A2B /* FrameLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE22030228100398A2B /* FrameLayout.out */; };
 		92D80CE92030228100398A2B /* NImage.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE32030228100398A2B /* NImage.out */; };
 		92D80CEA2030228100398A2B /* NText.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE42030228100398A2B /* NText.out */; };
-		92D80CEB2030228100398A2B /* TmallComponent2.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE52030228100398A2B /* TmallComponent2.out */; };
 		92D80CEC2030228100398A2B /* VH2Layout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE62030228100398A2B /* VH2Layout.out */; };
 		92D80CED2030228100398A2B /* VHLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CE72030228100398A2B /* VHLayout.out */; };
 		92D80CEF20303F3800398A2B /* GridLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CEE20303F3800398A2B /* GridLayout.out */; };
@@ -25,6 +24,7 @@
 		92D80CF32030646900398A2B /* CompileTool in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CF22030646900398A2B /* CompileTool */; };
 		92D80CF920328EC300398A2B /* NLine.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CF820328EC300398A2B /* NLine.out */; };
 		92D80CFB2032E67A00398A2B /* local_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CFA2032E67A00398A2B /* local_image.png */; };
+		92D80CFD2034614D00398A2B /* Container.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80CFC2034614D00398A2B /* Container.out */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +45,6 @@
 		92D80CE22030228100398A2B /* FrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = FrameLayout.out; sourceTree = "<group>"; };
 		92D80CE32030228100398A2B /* NImage.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NImage.out; sourceTree = "<group>"; };
 		92D80CE42030228100398A2B /* NText.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NText.out; sourceTree = "<group>"; };
-		92D80CE52030228100398A2B /* TmallComponent2.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = TmallComponent2.out; sourceTree = "<group>"; };
 		92D80CE62030228100398A2B /* VH2Layout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = VH2Layout.out; sourceTree = "<group>"; };
 		92D80CE72030228100398A2B /* VHLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = VHLayout.out; sourceTree = "<group>"; };
 		92D80CEE20303F3800398A2B /* GridLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = GridLayout.out; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		92D80CF22030646900398A2B /* CompileTool */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CompileTool; path = ../../CompileTool; sourceTree = "<group>"; };
 		92D80CF820328EC300398A2B /* NLine.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NLine.out; sourceTree = "<group>"; };
 		92D80CFA2032E67A00398A2B /* local_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = local_image.png; sourceTree = "<group>"; };
+		92D80CFC2034614D00398A2B /* Container.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = Container.out; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,7 +123,7 @@
 				92D80CE42030228100398A2B /* NText.out */,
 				92D80CF820328EC300398A2B /* NLine.out */,
 				92D80CE32030228100398A2B /* NImage.out */,
-				92D80CE52030228100398A2B /* TmallComponent2.out */,
+				92D80CFC2034614D00398A2B /* Container.out */,
 				92D80CFA2032E67A00398A2B /* local_image.png */,
 			);
 			path = Resources;
@@ -201,7 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92D80CEF20303F3800398A2B /* GridLayout.out in Resources */,
-				92D80CEB2030228100398A2B /* TmallComponent2.out in Resources */,
+				92D80CFD2034614D00398A2B /* Container.out in Resources */,
 				92D80CF120305DFB00398A2B /* RatioLayout.out in Resources */,
 				92D80CEA2030228100398A2B /* NText.out in Resources */,
 				926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */,

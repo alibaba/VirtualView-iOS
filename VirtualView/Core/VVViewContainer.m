@@ -13,10 +13,13 @@
 #import <UT/AppMonitor.h>
 #endif
 
+#define VV_LONG_PRESS_CANCEL_DISTANCE 20
+
 @interface VVViewContainer() <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSArray *nodesWithExpression;
 @property (nonatomic, weak) id lastData;
+@property (nonatomic, assign) CGPoint startPoint;
 
 @end
 
@@ -69,13 +72,21 @@
     }
     
     BOOL isClick = NO;
-    if ([gesture isKindOfClass:[UITapGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan) {
+    if ([gesture isKindOfClass:[UITapGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateEnded) {
         isClick = YES;
     }
 
     BOOL isLongClick = NO;
-    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateEnded) {
-        isLongClick = YES;
+    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        if (gesture.state == UIGestureRecognizerStateEnded) {
+            CGPoint point = [gesture locationInView:self];
+            if (ABS(point.x - self.startPoint.x) < VV_LONG_PRESS_CANCEL_DISTANCE
+                && ABS(point.y - self.startPoint.y) < VV_LONG_PRESS_CANCEL_DISTANCE) {
+                isLongClick = YES;
+            }
+        } else if (gesture.state == UIGestureRecognizerStateBegan) {
+            self.startPoint = [gesture locationInView:self];
+        }
     }
 
     if (isClick || isLongClick) {
@@ -95,6 +106,12 @@
             }
         }
     }
+}
+
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    [self.rootNode setNeedsResize];
+    return [self.rootNode calculateSize:maxSize];
 }
 
 - (void)update:(id)data

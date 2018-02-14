@@ -10,7 +10,7 @@
 #import <VirtualView/VVViewFactory.h>
 #import <VirtualView/VVViewContainer.h>
 
-@interface TestViewController ()
+@interface TestViewController () <VirtualViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) VVViewContainer *container;
@@ -40,6 +40,7 @@
         [[VVTemplateManager sharedManager] loadTemplateFile:path forType:nil];
     }
     self.container = [VVViewContainer viewContainerWithTemplateType:self.title];
+    self.container.delegate = self;
     [self.scrollView addSubview:self.container];
 }
 
@@ -49,9 +50,25 @@
     
     self.scrollView.frame = self.view.bounds;
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
-    self.scrollView.contentSize = CGSizeMake(viewWidth, 1000);
-    self.container.frame = CGRectMake(0, 0, viewWidth, 1000);
+    CGSize size = CGSizeMake(viewWidth, 1000);
+    size = [self.container calculateSize:size];
+    self.scrollView.contentSize = size;
+    self.container.frame = CGRectMake(0, 0, size.width, size.height);
     [self.container update:self.params];
+}
+
+- (void)subViewClicked:(NSString *)action andValue:(NSString *)value
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"tap" message:action preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)subViewLongPressed:(NSString *)action andValue:(NSString *)value gesture:(UIGestureRecognizer *)gesture
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"long press" message:action preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
 @end

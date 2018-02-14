@@ -26,6 +26,8 @@
 + (VVViewContainer *)viewContainerWithTemplateType:(NSString *)type;
 - (id)initWithRootNode:(VVBaseNode *)rootNode;
 
+- (CGSize)calculateSize:(CGSize)maxSize; // maybe will cost a lot of CPU resource
+
 - (void)update:(id)data;
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
