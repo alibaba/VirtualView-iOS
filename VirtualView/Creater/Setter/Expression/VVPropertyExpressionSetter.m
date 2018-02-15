@@ -62,13 +62,8 @@
             case STR_ID_textSize:
                 _valueType = TYPE_FLOAT;
                 break;
-            case STR_ID_data:
-            case STR_ID_dataUrl:
-            case STR_ID_dataParam:
             case STR_ID_action:
-            case STR_ID_actionParam:
             case STR_ID_class:
-            case STR_ID_name:
             case STR_ID_backgroundImage:
             case STR_ID_src:
             case STR_ID_text:
@@ -78,7 +73,6 @@
             case STR_ID_color:
             case STR_ID_textColor:
             case STR_ID_borderColor:
-            case STR_ID_maskColor:
             case STR_ID_background:
                 _valueType = TYPE_COLOR;
                 break;
@@ -162,8 +156,7 @@
                 break;
             case TYPE_OBJECT:
             {
-                [node setDataObj:objectValue forKey:self.key];
-                handled = YES;
+                handled = [node setDataObj:objectValue forKey:self.key];
             }
                 break;
             default:

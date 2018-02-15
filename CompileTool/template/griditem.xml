@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <VHLayout
         layoutHeight="180"
         layoutWidth="match_parent"
@@ -9,7 +10,9 @@
         paddingRight="0.5"
         paddingBottom="0.5"
         paddingTop="0.5"
-        layoutGravity="v_center|h_center">
+        layoutGravity="v_center|h_center"
+        flag="flag_clickable|flag_longclickable"
+        action="${action}">
     <NImage
             src="${imgUrl}"
             layoutWidth="match_parent"

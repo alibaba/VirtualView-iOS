@@ -25,16 +25,20 @@
 
 - (void)subViewClicked:(NSString *)action andValue:(NSString *)value
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"tap" message:action preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
-    [self.navigationController presentViewController:alert animated:YES completion:nil];
+    if (action) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"tap" message:action preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (void)subViewLongPressed:(NSString *)action andValue:(NSString *)value gesture:(UIGestureRecognizer *)gesture
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"long press" message:action preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
-    [self.navigationController presentViewController:alert animated:YES completion:nil];
+    if (action) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"long press" message:action preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (NSDictionary *)params

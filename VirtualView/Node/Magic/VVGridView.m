@@ -60,6 +60,27 @@
     }
 }
 
+- (VVBaseNode *)hitTest:(CGPoint)point
+{
+    if (self.visibility == VVVisibilityVisible
+        && CGRectContainsPoint(self.nodeFrame, point)) {
+        if (self.subNodes.count > 0) {
+            point.x -= self.nodeFrame.origin.x;
+            point.y -= self.nodeFrame.origin.y;
+            for (VVBaseNode* subNode in [self.subNodes reverseObjectEnumerator]) {
+                VVBaseNode *hitNode = [subNode hitTest:point];
+                if (hitNode) {
+                    return hitNode;
+                }
+            }
+        }
+        if ([self isClickable] || [self isLongClickable]) {
+            return self;
+        }
+    }
+    return nil;
+}
+
 - (BOOL)setDataObj:(NSObject *)obj forKey:(int)key
 {
     if (key == STR_ID_dataTag) {

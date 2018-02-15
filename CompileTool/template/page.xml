@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        layoutWidth="750rp"
+        layoutHeight="wrap_content"
+        background="#FFFFFF"
+        flag="flag_clickable|flag_longclickable"
+        orientation="V">
+
+    <VText
+            text="orientation = V &amp; canSlide"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Page
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            orientation="V"
+            dataTag="${data}"/>
+
+    <VText
+            text="orientation = V &amp; autoSwitch"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Page
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            orientation="V"
+            autoSwitch="true"
+            canSlide="false"
+            dataTag="${data}"/>
+
+    <VText
+            text="orientation = H &amp; canSlide"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Page
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            orientation="H"
+            dataTag="${data}"/>
+
+    <VText
+            text="orientation = H &amp; autoSwitch"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Page
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            orientation="H"
+            autoSwitch="true"
+            canSlide="false"
+            dataTag="${data}"/>
+
+    <VText
+            text="orientation = H &amp; autoSwitch &amp; canSlide"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Page
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            orientation="H"
+            autoSwitch="true"
+            canSlide="true"
+            dataTag="${data}"/>
+
+</VHLayout>

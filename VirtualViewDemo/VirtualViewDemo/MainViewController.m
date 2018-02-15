@@ -9,6 +9,7 @@
 #import "TestViewController.h"
 #import "ContainerViewController.h"
 #import "GridViewController.h"
+#import "PageViewController.h"
 
 @interface MainViewController ()
 
@@ -22,7 +23,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid"];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page"];
     }
     return self;
 }
@@ -50,6 +51,8 @@
         vc = [[ContainerViewController alloc] initWithFilename:demoName];
     } else if ([demoName isEqualToString:@"Grid"]) {
         vc = [[GridViewController alloc] initWithFilename:demoName];
+    } else if ([demoName isEqualToString:@"Page"]) {
+        vc = [[PageViewController alloc] initWithFilename:demoName];
     } else {
         vc = [[TestViewController alloc] initWithFilename:demoName];
     }

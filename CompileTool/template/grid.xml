@@ -3,7 +3,8 @@
         layoutWidth="750rp"
         layoutHeight="220"
         background="#FFFFFF"
-        orientation="V">
+        orientation="V"
+        flag="flag_clickable|flag_longclickable">
 
     <VText
             text="Grid"

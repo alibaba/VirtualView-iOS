@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        layoutHeight="match_parent"
+        layoutWidth="match_parent"
+        flag="flag_clickable|flag_longclickable"
+        action="${action}">
+    <NImage
+            src="${imgUrl}"
+            layoutWidth="match_parent"
+            layoutHeight="match_parent" />
+    <NText
+            text="${title}"
+            textSize="12"
+            gravity="h_center"
+            background="#40000000"
+            textColor="#FFFFFF"
+            layoutWidth="match_parent"
+            layoutHeight="30"
+            layoutGravity="bottom"/>
+</FrameLayout>

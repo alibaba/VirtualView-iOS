@@ -279,6 +279,12 @@
         case STR_ID_background:
             self.backgroundColor = [UIColor vv_colorWithString:value];
             break;
+        case STR_ID_action:
+            _action = value;
+            break;
+        case STR_ID_class:
+            _className = value;
+            break;
         default:
             ret = NO;
             break;

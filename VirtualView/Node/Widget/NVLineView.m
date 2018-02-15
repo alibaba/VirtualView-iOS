@@ -116,6 +116,7 @@
             _lineLayer.vv_lineColor = [UIColor vv_colorWithString:value];
             break;
         case STR_ID_dashEffect:
+//                self.dashEffect = value;
             break;
         default:
             ret = NO;
