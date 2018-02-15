@@ -35,45 +35,65 @@
 {
     if (self = [super initWithPropertyKey:key]) {
         switch (key) {
-            case STR_ID_autoDimDirection:
-            case STR_ID_stayTime:
             case STR_ID_animatorTime:
+            case STR_ID_autoDimDirection:
             case STR_ID_autoSwitchTime:
+            case STR_ID_colCount:
+            case STR_ID_ellipsize:
+            case STR_ID_id:
+            case STR_ID_layoutDirection:
+            case STR_ID_lines:
+            case STR_ID_maxLines:
+            case STR_ID_scaleType:
+            case STR_ID_stayTime:
+            case STR_ID_style:
+            case STR_ID_supportHTMLStyle:
+            case STR_ID_textStyle:
                 _valueType = TYPE_INT;
                 break;
-            case STR_ID_paddingLeft:
-            case STR_ID_paddingTop:
-            case STR_ID_paddingRight:
-            case STR_ID_paddingBottom:
-            case STR_ID_layoutMarginLeft:
-            case STR_ID_layoutMarginRight:
-            case STR_ID_layoutMarginTop:
-            case STR_ID_layoutMarginBottom:
             case STR_ID_autoDimX:
             case STR_ID_autoDimY:
-            case STR_ID_borderWidth:
+            case STR_ID_borderBottomLeftRadius:
+            case STR_ID_borderBottomRightRadius:
             case STR_ID_borderRadius:
             case STR_ID_borderTopLeftRadius:
             case STR_ID_borderTopRightRadius:
-            case STR_ID_borderBottomLeftRadius:
-            case STR_ID_borderBottomRightRadius:
+            case STR_ID_borderWidth:
+            case STR_ID_itemHeight:
             case STR_ID_itemHorizontalMargin:
             case STR_ID_itemVerticalMargin:
+            case STR_ID_layoutHeight:
+            case STR_ID_layoutMarginBottom:
+            case STR_ID_layoutMarginLeft:
+            case STR_ID_layoutMarginRight:
+            case STR_ID_layoutMarginTop:
+            case STR_ID_layoutRatio:
+            case STR_ID_layoutWidth:
+            case STR_ID_lineSpaceExtra:
+            case STR_ID_lineSpaceMultiplier:
+            case STR_ID_minHeight:
+            case STR_ID_minWidth:
+            case STR_ID_paddingBottom:
+            case STR_ID_paddingLeft:
+            case STR_ID_paddingRight:
+            case STR_ID_paddingTop:
+            case STR_ID_paintWidth:
+            case STR_ID_ratio:
             case STR_ID_textSize:
                 _valueType = TYPE_FLOAT;
                 break;
             case STR_ID_action:
+            case STR_ID_ck:
             case STR_ID_class:
-            case STR_ID_backgroundImage:
+            case STR_ID_dashEffect:
             case STR_ID_src:
             case STR_ID_text:
-            case STR_ID_ck:
                 _valueType = TYPE_STRING;
                 break;
+            case STR_ID_background:
+            case STR_ID_borderColor:
             case STR_ID_color:
             case STR_ID_textColor:
-            case STR_ID_borderColor:
-            case STR_ID_background:
                 _valueType = TYPE_COLOR;
                 break;
             case STR_ID_autoSwitch:
@@ -85,6 +105,7 @@
                 _valueType = TYPE_VISIBILITY;
                 break;
             case STR_ID_gravity:
+            case STR_ID_layoutGravity:
                 _valueType = TYPE_GRAVITY;
                 break;
             case STR_ID_dataTag:
