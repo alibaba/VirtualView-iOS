@@ -25,7 +25,6 @@
         _cocoaView.backgroundColor = [UIColor clearColor];
         _orientation = VVOrientationHorizontal;
         _lineLayer = [[VVLineLayer alloc] init];
-        _lineLayer.drawsAsynchronously = YES;
         _lineLayer.contentsScale = [[UIScreen mainScreen] scale];
         [_cocoaView.layer addSublayer:_lineLayer];
     }

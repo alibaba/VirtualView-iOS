@@ -66,11 +66,9 @@
         if (obj != _lastData && [obj isKindOfClass:[NSArray class]]) {
             _lastData = obj;
             
-            for (VVBaseNode *subNode in self.subNodes) {
-                [subNode removeFromSuperNode];
-            }
-            [self.containerView.subviews performSelector:@selector(removeFromSuperview)];
-            [self.containerView.layer.sublayers performSelector:@selector(removeFromSuperlayer)];
+            [self.subNodes makeObjectsPerformSelector:@selector(removeFromSuperNode)];
+            [self.containerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+            [self.containerView.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
             
             NSArray *dataArray = (NSArray *)obj;
             for (NSDictionary *itemData in dataArray) {
@@ -80,17 +78,18 @@
                 }
                 NSString *nodeType = [itemData objectForKey:@"type"];
                 VVBaseNode *node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
-                if (node.expressionSetters.count > 0) {
-                    [node reset];
+                NSArray *nodesWithExpression = [VVViewContainer nodesWithExpression:node];
+                for (VVBaseNode *nodeWithExpression in nodesWithExpression) {
+                    [nodeWithExpression reset];
                     
-                    for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
+                    for (VVPropertyExpressionSetter *setter in nodeWithExpression.expressionSetters.allValues) {
                         if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                            [setter applyToNode:node withObject:itemData];
+                            [setter applyToNode:nodeWithExpression withObject:itemData];
                         }
                     }
-                    node.actionValue = [itemData objectForKey:node.action];
+                    nodeWithExpression.actionValue = [itemData objectForKey:nodeWithExpression.action];
                     
-                    [node didUpdated];
+                    [nodeWithExpression didUpdated];
                 }
                 [self addSubNode:node];
             }

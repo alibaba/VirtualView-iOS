@@ -7,6 +7,8 @@
 
 #import "MainViewController.h"
 #import "TestViewController.h"
+#import "ContainerViewController.h"
+#import "GridViewController.h"
 
 @interface MainViewController ()
 
@@ -20,7 +22,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container"];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid"];
     }
     return self;
 }
@@ -42,26 +44,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *demoFilename = self.demoArray[indexPath.row];
-    TestViewController *vc = [[TestViewController alloc] initWithFilename:demoFilename];
-    if ([demoFilename isEqualToString:@"Container"]) {
-        vc.params = @{
-            @"type" : @"Container",
-            @"content" : @[
-                @{
-                    @"imgUrl" : @"https://img.alicdn.com/imgextra/i1/1910146537/TB2Xluvad3nyKJjSZFEXXXTTFXa_!!1910146537.jpg",
-                    @"title" : @"title1"
-                },
-                @{
-                    @"imgUrl" : @"https://img.alicdn.com/imgextra/i4/2215696389/TB2uXtXXGZPyuJjy1zcXXXp1FXa_!!2215696389.jpg",
-                    @"title" : @"title2"
-                },
-                @{
-                    @"imgUrl" : @"https://img.alicdn.com/imgextra/i3/1709193846/TB2W5neXHAlyKJjSZFwXXXtqpXa_!!1709193846.jpg",
-                    @"title" : @"title3"
-                }
-            ]
-        };
+    NSString *demoName = self.demoArray[indexPath.row];
+    TestViewController *vc;
+    if ([demoName isEqualToString:@"Container"]) {
+        vc = [[ContainerViewController alloc] initWithFilename:demoName];
+    } else if ([demoName isEqualToString:@"Grid"]) {
+        vc = [[GridViewController alloc] initWithFilename:demoName];
+    } else {
+        vc = [[TestViewController alloc] initWithFilename:demoName];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

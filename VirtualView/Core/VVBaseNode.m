@@ -14,6 +14,7 @@
 }
 
 @property (nonatomic, assign) BOOL updatingNeedsResize; // to avoid infinite loop
+@property (nonatomic, assign, readwrite) CGRect nodeFrame;
 
 @end
 
@@ -484,9 +485,9 @@
         x = _superNode.nodeFrame.origin.x;
         y = _superNode.nodeFrame.origin.y;
     }
-    _nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
+    self.nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
     if (self.cocoaView) {
-        self.cocoaView.frame = _nodeFrame;
+        self.cocoaView.frame = self.nodeFrame;
     }
 }
 

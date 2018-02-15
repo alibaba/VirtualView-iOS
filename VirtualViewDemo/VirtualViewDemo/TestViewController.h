@@ -9,7 +9,7 @@
 
 @interface TestViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *params;
+@property (nonatomic, strong, readonly) NSDictionary *params;
 
 - (instancetype)initWithFilename:(NSString *)filename;
 
