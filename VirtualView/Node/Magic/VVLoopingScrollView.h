@@ -15,6 +15,7 @@
 
 @property (nonatomic, assign) BOOL autoSwitch;
 @property (nonatomic, assign) NSTimeInterval stayTime;
+@property (nonatomic, assign) NSTimeInterval autoSwitchTime;
 
 - (void)reset;
 - (void)startAutoSwitch;

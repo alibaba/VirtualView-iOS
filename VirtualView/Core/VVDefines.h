@@ -123,7 +123,6 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 };
 
 #define STR_ID_action  -1422950858
-#define STR_ID_animatorTime  1347692116
 #define STR_ID_autoDimDirection  -1422893274
 #define STR_ID_autoDimX  1438248735
 #define STR_ID_autoDimY  1438248736
@@ -176,7 +175,6 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define STR_ID_src  114148
 #define STR_ID_stayTime  1322318022
 #define STR_ID_style  109780401
-#define STR_ID_supportHTMLStyle  506010071
 #define STR_ID_text  3556653
 #define STR_ID_textColor  -1063571914
 #define STR_ID_textSize  -1003668786
@@ -219,6 +217,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define STR_ID_alignSelf  1767100401
 #define STR_ID_alpha  92909918
 #define STR_ID_ancestor  -973829677
+#define STR_ID_animatorTime  1347692116
 #define STR_ID_autoRefreshThreshold  -51356769
 #define STR_ID_backgroundImage  1292595405
 #define STR_ID_blurRadius  -1428201511
@@ -272,6 +271,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define STR_ID_siblings  166965745
 #define STR_ID_size  3530753
 #define STR_ID_span  3536714
+#define STR_ID_supportHTMLStyle  506010071
 #define STR_ID_supportSticky  -977844584
 #define STR_ID_this  3559070
 #define STR_ID_type  3575610
@@ -287,7 +287,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define TYPE_INT         0
 #define TYPE_FLOAT       1
 #define TYPE_STRING      2
-#define TYPE_COLOR       3
+#define TYPE_CONVERTION  3
 #define TYPE_BOOLEAN     4
 #define TYPE_VISIBILITY  5
 #define TYPE_GRAVITY     6

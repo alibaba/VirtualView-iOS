@@ -22,7 +22,7 @@
     self.container.delegate = self;
 }
 
-- (void)subViewClicked:(NSString *)action andValue:(NSString *)value
+- (void)virtualViewClickedWithAction:(NSString *)action andValue:(NSString *)value
 {
     if (action) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"tap" message:action preferredStyle:UIAlertControllerStyleAlert];
@@ -31,7 +31,7 @@
     }
 }
 
-- (void)subViewLongPressed:(NSString *)action andValue:(NSString *)value gesture:(UIGestureRecognizer *)gesture
+- (void)virtualViewLongPressedWithAction:(NSString *)action andValue:(NSString *)value
 {
     if (action) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"long press" message:action preferredStyle:UIAlertControllerStyleAlert];

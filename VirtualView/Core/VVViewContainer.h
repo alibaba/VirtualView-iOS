@@ -12,9 +12,10 @@
 
 @optional
 
-- (void)subViewClicked:(NSString *)action andValue:(NSString *)value;
-- (void)subView:(VVBaseNode *)view clicked:(NSString *)action andValue:(NSString *)value;
-- (void)subViewLongPressed:(NSString *)action andValue:(NSString *)value gesture:(UIGestureRecognizer *)gesture;
+- (void)virtualViewClickedWithAction:(NSString *)action andValue:(NSString *)value;
+- (void)virtualView:(VVBaseNode *)node clickedWithAction:(NSString *)action andValue:(NSString *)value;
+- (void)virtualViewLongPressedWithAction:(NSString *)action andValue:(NSString *)value;
+- (void)virtualView:(VVBaseNode *)node longPressedWithAction:(NSString *)action andValue:(NSString *)value;
 
 @end
 
@@ -30,15 +31,26 @@
 - (id)initWithRootNode:(VVBaseNode *)rootNode alwaysRefresh:(BOOL)alwaysRefresh;
 
 /**
- Get estimated size of VirtualView. Maybe will cost a lot of CPU resources.
- Cannot get correct size if size of VirtualView will change with binding data.
+ Get estimated size of VirtualView.
+ Cannot get correct size if VirtualView will change size after binding data (wrap_content).
+ If you want to calculate size via this method, try these steps:
+ (will cost a lot of CPU resources & not tested)
+ 1. call "updateWithObject:"
+ 2. call "estimatedSize:" to calculate correct size
+ 3. update the frame of VVViewContainer
+ 4. call "updateWithObject:" again
  */
 - (CGSize)estimatedSize:(CGSize)maxSize;
+/**
+ Get established size of VirtualView.
+ Will get zero size if VirtualView will change size after binding data (wrap_content).
+ */
+- (CGSize)establishedSize:(CGSize)maxSize;
 
-- (void)update:(id)data;
+- (void)updateWithObject:(id)data;
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
 
-+ (NSArray *)nodesWithExpression:(VVBaseNode *)rootNode;
++ (NSArray *)variableNodes:(VVBaseNode *)rootNode;
 
 @end

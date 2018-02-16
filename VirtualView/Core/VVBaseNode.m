@@ -253,9 +253,6 @@
 {
     BOOL ret = YES;
     switch (key) {
-        case STR_ID_dataTag:
-            _dataTag = value;
-            break;
         case STR_ID_action:
             _action = value;
             break;
@@ -269,21 +266,15 @@
     return ret;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
+- (BOOL)setStringData:(NSString*)data forKey:(int)key
 {
     BOOL ret = YES;
     switch (key) {
         case STR_ID_borderColor:
-            self.borderColor = [UIColor vv_colorWithString:value];
+            self.borderColor = [UIColor vv_colorWithString:data] ?: [UIColor clearColor];
             break;
         case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithString:value];
-            break;
-        case STR_ID_action:
-            _action = value;
-            break;
-        case STR_ID_class:
-            _className = value;
+            self.backgroundColor = [UIColor vv_colorWithString:data] ?: [UIColor clearColor];
             break;
         default:
             ret = NO;

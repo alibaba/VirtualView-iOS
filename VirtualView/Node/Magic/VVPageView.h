@@ -13,9 +13,6 @@
 @property (nonatomic, assign) BOOL autoSwitch;
 @property (nonatomic, assign) BOOL canSlide;
 @property (nonatomic, assign) NSTimeInterval stayTime;
-//@property (nonatomic, assign) NSTimeInterval autoSwitchTime;
-//@property (nonatomic, assign) NSTimeInterval animatorTime;
-//@property (nonatomic, assign) int layoutOrientation;
-//@property (nonatomic, assign) int animationStyle;
+@property (nonatomic, assign) NSTimeInterval autoSwitchTime;
 
 @end

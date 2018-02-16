@@ -53,13 +53,13 @@
 - (void)autoSwitchHandler:(id)sender
 {
     if (self.contentSize.width > self.frame.size.width) {
-        [UIView animateWithDuration:0.25 animations:^{
+        [UIView animateWithDuration:_autoSwitchTime animations:^{
             self.contentOffset = CGPointMake(self.contentOffset.x + self.frame.size.width, 0);
         } completion:^(BOOL finished) {
             [self scrollViewDidEndDecelerating:self];
         }];
     } else {
-        [UIView animateWithDuration:0.25 animations:^{
+        [UIView animateWithDuration:_autoSwitchTime animations:^{
             self.contentOffset = CGPointMake(0, self.contentOffset.y + self.frame.size.height);
         } completion:^(BOOL finished) {
             [self scrollViewDidEndDecelerating:self];

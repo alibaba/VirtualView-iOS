@@ -99,18 +99,18 @@
                 }
                 NSString *nodeType = [itemData objectForKey:@"type"];
                 VVBaseNode *node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
-                NSArray *nodesWithExpression = [VVViewContainer nodesWithExpression:node];
-                for (VVBaseNode *nodeWithExpression in nodesWithExpression) {
-                    [nodeWithExpression reset];
+                NSArray *variableNodes = [VVViewContainer variableNodes:node];
+                for (VVBaseNode *variableNode in variableNodes) {
+                    [variableNode reset];
                     
-                    for (VVPropertyExpressionSetter *setter in nodeWithExpression.expressionSetters.allValues) {
+                    for (VVPropertyExpressionSetter *setter in variableNode.expressionSetters.allValues) {
                         if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                            [setter applyToNode:nodeWithExpression withObject:itemData];
+                            [setter applyToNode:variableNode withObject:itemData];
                         }
                     }
-                    nodeWithExpression.actionValue = [itemData objectForKey:nodeWithExpression.action];
+                    variableNode.actionValue = [itemData objectForKey:variableNode.action];
                     
-                    [nodeWithExpression didUpdated];
+                    [variableNode didUpdated];
                 }
                 [self addSubNode:node];
             }

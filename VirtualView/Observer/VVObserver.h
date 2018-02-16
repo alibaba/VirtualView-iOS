@@ -11,6 +11,10 @@ FOUNDATION_EXPORT void * _Nonnull const VVObserverContext;
 
 typedef void(^VVObserverBlock)(id _Nonnull value);
 
+/**
+ Helper class to use KVO easier.
+ Try to use this with NSObject+VVObserver.
+ */
 @interface VVObserver : NSObject
 
 @property (nonatomic, copy, nullable) NSString *name;

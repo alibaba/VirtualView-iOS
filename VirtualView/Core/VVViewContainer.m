@@ -18,7 +18,7 @@
 
 @interface VVViewContainer() <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) NSArray *nodesWithExpression;
+@property (nonatomic, strong) NSArray *variableNodes;
 @property (nonatomic, weak) id lastData;
 @property (nonatomic, assign) CGPoint startPoint;
 
@@ -59,7 +59,7 @@
         if (alwaysRefresh == NO) {
             [_rootNode setupLayoutAndResizeObserver];
         }
-        _nodesWithExpression = [VVViewContainer nodesWithExpression:_rootNode];
+        _variableNodes = [VVViewContainer variableNodes:_rootNode];
         self.backgroundColor = [UIColor clearColor];
         if ([_rootNode isClickable]) {
             UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
@@ -109,15 +109,19 @@
         VVBaseNode *clickedNode = [self.rootNode hitTest:point];
         if (clickedNode) {
             if (isClick) {
-                if ([self.delegate respondsToSelector:@selector(subView:clicked:andValue:)]) {
-                    [self.delegate subView:clickedNode clicked:clickedNode.action andValue:clickedNode.actionValue];
+                if ([self.delegate respondsToSelector:@selector(virtualView:clickedWithAction:andValue:)]) {
+                    [self.delegate virtualView:clickedNode clickedWithAction:clickedNode.action andValue:clickedNode.actionValue];
                 }
-                if ([self.delegate respondsToSelector:@selector(subViewClicked:andValue:)]) {
-                    [self.delegate subViewClicked:clickedNode.action andValue:clickedNode.actionValue];
+                if ([self.delegate respondsToSelector:@selector(virtualViewClickedWithAction:andValue:)]) {
+                    [self.delegate virtualViewClickedWithAction:clickedNode.action andValue:clickedNode.actionValue];
                 }
             }
-            if (isLongClick && [self.delegate respondsToSelector:@selector(subViewLongPressed:andValue:gesture:)]) {
-                [self.delegate subViewLongPressed:clickedNode.action andValue:clickedNode.actionValue gesture:gesture];
+            if (isLongClick) {
+                if ([self.delegate respondsToSelector:@selector(virtualViewLongPressedWithAction:andValue:)]) {
+                    [self.delegate virtualViewLongPressedWithAction:clickedNode.action andValue:clickedNode.actionValue];
+                } else if ([self.delegate respondsToSelector:@selector(virtualView:longPressedWithAction:andValue:)]) {
+                    [self.delegate virtualView:clickedNode longPressedWithAction:clickedNode.action andValue:clickedNode.actionValue];
+                }
             }
         }
     }
@@ -129,7 +133,16 @@
     return [self.rootNode calculateSize:maxSize];
 }
 
-- (void)update:(id)data
+- (CGSize)establishedSize:(CGSize)maxSize
+{
+    if (self.rootNode.layoutWidth != VV_WRAP_CONTENT && self.rootNode.layoutHeight != VV_WRAP_CONTENT) {
+        [self.rootNode setNeedsResize];
+        return [self.rootNode calculateSize:maxSize];
+    }
+    return CGSizeZero;
+}
+
+- (void)updateWithObject:(id)data
 {
     if (data == self.lastData) {
         return;
@@ -140,7 +153,7 @@
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
     
-    for (VVBaseNode *node in _nodesWithExpression) {
+    for (VVBaseNode *node in _variableNodes) {
         [node reset];
 
         for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
@@ -181,20 +194,20 @@
     return [self.rootNode nodeWithID:nodeID];
 }
 
-+ (NSArray *)nodesWithExpression:(VVBaseNode *)rootNode
++ (NSArray *)variableNodes:(VVBaseNode *)rootNode
 {
     NSMutableArray *result = [NSMutableArray array];
-    [self private_nodesWithExpression:rootNode result:result];
+    [self private_variableNodes:rootNode result:result];
     return [result copy];
 }
 
-+ (void)private_nodesWithExpression:(VVBaseNode *)node result:(NSMutableArray *)result
++ (void)private_variableNodes:(VVBaseNode *)node result:(NSMutableArray *)result
 {
     if (node.expressionSetters.count > 0) {
         [result addObject:node];
     }
     for (VVBaseNode *subNode in node.subNodes) {
-        [self private_nodesWithExpression:subNode result:result];
+        [self private_variableNodes:subNode result:result];
     }
 }
 

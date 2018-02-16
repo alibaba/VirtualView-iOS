@@ -35,8 +35,6 @@
 {
     if (self = [super initWithPropertyKey:key]) {
         switch (key) {
-            case STR_ID_animatorTime:
-            case STR_ID_autoDimDirection:
             case STR_ID_autoSwitchTime:
             case STR_ID_colCount:
             case STR_ID_ellipsize:
@@ -47,7 +45,6 @@
             case STR_ID_scaleType:
             case STR_ID_stayTime:
             case STR_ID_style:
-            case STR_ID_supportHTMLStyle:
             case STR_ID_textStyle:
                 _valueType = TYPE_INT;
                 break;
@@ -94,7 +91,7 @@
             case STR_ID_borderColor:
             case STR_ID_color:
             case STR_ID_textColor:
-                _valueType = TYPE_COLOR;
+                _valueType = TYPE_CONVERTION;
                 break;
             case STR_ID_autoSwitch:
             case STR_ID_canSlide:
@@ -135,20 +132,16 @@
         BOOL handled = NO;
         switch (self.valueType) {
             case TYPE_INT:
-            {
                 handled = [node setIntValue:[stringValue intValue] forKey:self.key];
-            }
                 break;
             case TYPE_FLOAT:
-            {
                 handled = [node setFloatValue:[stringValue floatValue] forKey:self.key];
-            }
                 break;
             case TYPE_STRING:
-            case TYPE_COLOR:
-            {
-                handled = [node setStringDataValue:stringValue forKey:self.key];
-            }
+                handled = [node setStringValue:stringValue forKey:self.key];
+                break;
+            case TYPE_CONVERTION:
+                handled = [node setStringData:stringValue forKey:self.key];
                 break;
             case TYPE_BOOLEAN:
             {
@@ -171,14 +164,10 @@
             }
                 break;
             case TYPE_GRAVITY:
-            {
                 handled = [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
-            }
                 break;
             case TYPE_OBJECT:
-            {
                 handled = [node setDataObj:objectValue forKey:self.key];
-            }
                 break;
             default:
                 break;

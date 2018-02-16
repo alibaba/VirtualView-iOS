@@ -221,20 +221,6 @@
     return ret;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
-{
-    BOOL ret = YES;
-    switch (key) {
-        case STR_ID_src:
-            self.src = value;
-            break;
-        default:
-            ret = NO;
-            break;
-    }
-    return ret;
-}
-
 - (void)reset
 {
     self.imageView.image = nil;

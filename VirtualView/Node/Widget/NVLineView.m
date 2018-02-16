@@ -108,15 +108,12 @@
     return ret;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
+- (BOOL)setStringData:(NSString*)data forKey:(int)key
 {
     BOOL ret = YES;
     switch (key) {
         case STR_ID_color:
-            _lineLayer.vv_lineColor = [UIColor vv_colorWithString:value];
-            break;
-        case STR_ID_dashEffect:
-//                self.dashEffect = value;
+            _lineLayer.vv_lineColor = [UIColor vv_colorWithString:data] ?: [UIColor blackColor];
             break;
         default:
             ret = NO;

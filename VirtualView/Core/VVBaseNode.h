@@ -39,7 +39,6 @@
 
 // other
 @property (nonatomic, assign) VVFlag flag;
-@property (nonatomic, strong) NSString *dataTag;
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *actionValue;
 @property (nonatomic, strong) NSString *className;
@@ -72,7 +71,7 @@
 - (BOOL)setIntValue:(int)value forKey:(int)key;
 - (BOOL)setFloatValue:(float)value forKey:(int)key;
 - (BOOL)setStringValue:(NSString *)value forKey:(int)key;
-- (BOOL)setStringDataValue:(NSString *)value forKey:(int)key;
+- (BOOL)setStringData:(NSString *)data forKey:(int)key;
 - (BOOL)setDataObj:(NSObject *)obj forKey:(int)key;
 - (void)reset;
 - (void)didUpdated;
@@ -88,13 +87,13 @@
 /**
  hidden state
  Will be YES if superNode is hidden.
- Will be updated in layoutSubNodes method of superNode.
+ Will be updated via updateHidden method in layoutSubNodes method of superNode.
  */
 @property (nonatomic, assign, readonly) BOOL hidden;
 /**
  absolute frame relative to root
  = CGRectMake(superNodeFrameX + nodeX, superNodeFrameY + nodeY, nodeWidth, nodeHeight)
- Will be updated in layoutSubNodes method of superNode.
+ Will be updated via updateFrame method in layoutSubNodes method of superNode.
  */
 @property (nonatomic, assign, readonly) CGRect nodeFrame;
 /**

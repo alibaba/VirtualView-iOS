@@ -35,9 +35,11 @@
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.pagingEnabled = YES;
         _scrollView.stayTime = 2;
+        _scrollView.autoSwitchTime = 0.5;
         _orientation = VVOrientationVertical;
         _canSlide = YES;
         _stayTime = 2;
+        _autoSwitchTime = 0.5;
     }
     return self;
 }
@@ -87,6 +89,12 @@
     _scrollView.stayTime = stayTime;
 }
 
+- (void)setAutoSwitchTime:(NSTimeInterval)autoSwitchTime
+{
+    _autoSwitchTime = autoSwitchTime;
+    _scrollView.autoSwitchTime = autoSwitchTime;
+}
+
 - (VVBaseNode *)hitTest:(CGPoint)point
 {
     if (self.visibility == VVVisibilityVisible
@@ -120,6 +128,9 @@
             case STR_ID_autoSwitch:
                 self.autoSwitch = value != 0;
                 break;
+            case STR_ID_autoSwitchTime:
+                self.autoSwitchTime = value / 1000.0;
+                break;
             case STR_ID_canSlide:
                 self.canSlide = value != 0;
                 break;
@@ -144,9 +155,11 @@
             [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self.scrollView.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
             
+            // Dup the fisrt and last object.
             NSMutableArray *dataArray = [(NSArray *)obj mutableCopy];
             [dataArray insertObject:[[dataArray lastObject] copy] atIndex:0];
             [dataArray addObject:[[dataArray objectAtIndex:1] copy]];
+            // Create subnodes as usual.
             for (NSDictionary *itemData in dataArray) {
                 if ([itemData isKindOfClass:[NSDictionary class]] == NO
                     || [itemData.allKeys containsObject:@"type"] == NO) {
@@ -154,18 +167,18 @@
                 }
                 NSString *nodeType = [itemData objectForKey:@"type"];
                 VVBaseNode *node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
-                NSArray *nodesWithExpression = [VVViewContainer nodesWithExpression:node];
-                for (VVBaseNode *nodeWithExpression in nodesWithExpression) {
-                    [nodeWithExpression reset];
+                NSArray *variableNodes = [VVViewContainer variableNodes:node];
+                for (VVBaseNode *variableNode in variableNodes) {
+                    [variableNode reset];
                     
-                    for (VVPropertyExpressionSetter *setter in nodeWithExpression.expressionSetters.allValues) {
+                    for (VVPropertyExpressionSetter *setter in variableNode.expressionSetters.allValues) {
                         if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                            [setter applyToNode:nodeWithExpression withObject:itemData];
+                            [setter applyToNode:variableNode withObject:itemData];
                         }
                     }
-                    nodeWithExpression.actionValue = [itemData objectForKey:nodeWithExpression.action];
+                    variableNode.actionValue = [itemData objectForKey:variableNode.action];
                     
-                    [nodeWithExpression didUpdated];
+                    [variableNode didUpdated];
                 }
                 [self addSubNode:node];
             }

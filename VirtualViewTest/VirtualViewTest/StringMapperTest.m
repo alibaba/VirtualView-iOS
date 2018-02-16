@@ -28,7 +28,6 @@
     assertThatInt([VVBinaryStringMapper hashOfString:@"layoutWidth"], equalToInt(STR_ID_layoutWidth));
     assertThatInt([VVBinaryStringMapper hashOfString:@"paddingLeft"], equalToInt(STR_ID_paddingLeft));
     assertThatInt([VVBinaryStringMapper hashOfString:@"orientation"], equalToInt(STR_ID_orientation));
-    assertThatInt([VVBinaryStringMapper hashOfString:@"type"], equalToInt(STR_ID_type));
     assertThatInt([VVBinaryStringMapper hashOfString:@"gravity"], equalToInt(STR_ID_gravity));
     assertThatInt([VVBinaryStringMapper hashOfString:@"layoutGravity"], equalToInt(STR_ID_layoutGravity));
     assertThatInt([VVBinaryStringMapper hashOfString:@"action"], equalToInt(STR_ID_action));
@@ -39,7 +38,6 @@
     assertThatInt([VVBinaryStringMapper hashOfString:@"borderWidth"], equalToInt(STR_ID_borderWidth));
     assertThatInt([VVBinaryStringMapper hashOfString:@"borderBottomRightRadius"], equalToInt(STR_ID_borderBottomRightRadius));
     assertThatInt([VVBinaryStringMapper hashOfString:@"ratio"], equalToInt(STR_ID_ratio));
-    assertThatInt([VVBinaryStringMapper hashOfString:@"alpha"], equalToInt(STR_ID_alpha));
 }
 
 @end

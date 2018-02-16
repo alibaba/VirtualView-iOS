@@ -260,8 +260,6 @@
             case STR_ID_gravity:
                 self.gravity = value;
                 break;
-            case STR_ID_supportHTMLStyle:
-                break;
             default:
                 ret = NO;
                 break;
@@ -314,14 +312,11 @@
     return  ret;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key
+- (BOOL)setStringData:(NSString*)data forKey:(int)key
 {
     switch (key) {
-        case STR_ID_text:
-            self.text = value;
-            break;
         case STR_ID_textColor:
-            self.textColor = [UIColor vv_colorWithString:value] ?: [UIColor blackColor];
+            self.textColor = [UIColor vv_colorWithString:data] ?: [UIColor blackColor];
             break;
     }
     return YES;
