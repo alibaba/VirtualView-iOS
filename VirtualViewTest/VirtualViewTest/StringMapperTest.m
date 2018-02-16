@@ -2,7 +2,7 @@
 //  StringMapperTest.m
 //  VirtualViewTest
 //
-//  Created by HarrisonXi on 2018/1/24.
+//  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

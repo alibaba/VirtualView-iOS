@@ -2,8 +2,7 @@
 //  PageViewController.m
 //  VirtualViewDemo
 //
-//  Created by HarrisonXi on 2018/2/15.
-//  Copyright © 2018年 tmall. All rights reserved.
+//  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
 #import "PageViewController.h"
