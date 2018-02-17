@@ -378,6 +378,7 @@
         }
         [self applyAutoDim];
     }
+    self.nodeHeight = ceil(self.nodeHeight);
     return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 @end

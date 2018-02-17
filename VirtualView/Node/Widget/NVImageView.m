@@ -241,10 +241,12 @@
 {
     [super updateFrame];
     if (self.needReload) {
-        if ([self.src containsString:@"//"]) {
-            [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.src]];
-        } else {
-            self.imageView.image = [UIImage imageNamed:self.src];
+        if (self.src && self.src.length) {
+            if ([self.src containsString:@"//"]) {
+                [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.src]];
+            } else {
+                self.imageView.image = [UIImage imageNamed:self.src];
+            }
         }
         self.needReload = NO;
     }

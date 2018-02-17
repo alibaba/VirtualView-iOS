@@ -151,17 +151,23 @@
     return CGSizeZero;
 }
 
-- (void)updateWithObject:(id)data
-{
-    [self updateWithObject:data forceRefresh:NO];
-}
-
-- (void)updateWithObject:(id)data forceRefresh:(BOOL)forceRefresh
+- (void)update:(id)data
 {
 #ifdef VV_ALIBABA
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
     
+    [self updateData:data];
+    [self updateLayout];
+    
+#ifdef VV_ALIBABA
+    NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
+    [self.class commitAppMoniterForBindData:[jsonData objectForKey:@"type"] costTime:costTime];
+#endif
+}
+
+- (void)updateData:(id)data
+{
     if (data != self.lastData) {
         self.lastData = data;
         
@@ -181,12 +187,15 @@
             [node didUpdated];
         }
     }
-    
+}
+
+- (void)updateLayout
+{
     if (self.alwaysRefresh) {
         [self.rootNode setNeedsLayoutAndResizeRecursively];
     }
     self.rootNode.nodeX = self.rootNode.nodeY = 0;
-    if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height || forceRefresh) {
+    if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height) {
         [self.rootNode setNeedsResize];
         self.rootNode.nodeWidth = self.bounds.size.width;
         self.rootNode.nodeHeight = self.bounds.size.height;
@@ -194,11 +203,6 @@
     [self.rootNode updateHidden];
     [self.rootNode updateFrame];
     [self.rootNode layoutSubNodes];
-    
-#ifdef VV_ALIBABA
-    NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
-    [self.class commitAppMoniterForBindData:[jsonData objectForKey:@"type"] costTime:costTime];
-#endif
 }
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID

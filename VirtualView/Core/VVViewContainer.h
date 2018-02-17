@@ -34,11 +34,11 @@
  Get estimated size of VirtualView.
  Cannot get correct size if VirtualView will change size after binding data (wrap_content).
  If you want to calculate size via this method, try these steps:
- (will cost a lot of CPU resources & not tested)
- 1. call "updateWithObject:"
+ (will cost a lot of CPU resources & not tested adequately)
+ 1. call "updateData:"
  2. call "estimatedSize:" to calculate correct size
  3. update the frame of VVViewContainer
- 4. call "updateWithObject:" again
+ 4. call "updatelayout"
  */
 - (CGSize)estimatedSize:(CGSize)maxSize;
 /**
@@ -54,17 +54,16 @@
 
 /**
  Bind new data to VirtualView and resize & layout it if it is necessary.
- 
- @param data          New Data.
  */
-- (void)updateWithObject:(id)data;
+- (void)update:(id)data;
 /**
- Bind new data to VirtualView and resize & layout it if it is necessary.
-
- @param data          New Data.
- @param forceRefresh  Force VirtualView to resize & layout.
+ Bind new data to VirtualView.
  */
-- (void)updateWithObject:(id)data forceRefresh:(BOOL)forceRefresh;
+- (void)updateData:(id)data;
+/**
+ Resize & layout VirtualView if it is necessary.
+ */
+- (void)updateLayout;
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
 

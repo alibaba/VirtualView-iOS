@@ -11,6 +11,11 @@
 
 @implementation VVNodeCreater
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; nodeClassName = %@>", self.class, self, self.nodeClassName];
+}
+
 - (NSMutableArray<VVPropertySetter *> *)propertySetters
 {
     if (!_propertySetters) {

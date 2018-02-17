@@ -80,12 +80,12 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
+        [subNode calculateSize:contentSize];
+        if (subNode.layoutRatio > 0) {
+            subNode.nodeHeight = totalHeight / totalRatio * subNode.layoutRatio;
+            [subNode applyAutoDim];
+        }
         if ([subNode needLayout]) {
-            [subNode calculateSize:contentSize];
-            if (subNode.layoutRatio > 0) {
-                subNode.nodeHeight = totalHeight / totalRatio * subNode.layoutRatio;
-                [subNode applyAutoDim];
-            }
             CGSize subNodeSize = subNode.contentSize;
             
             if (subNode.layoutGravity & VVGravityHCenter) {
@@ -127,12 +127,12 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
+        [subNode calculateSize:contentSize];
+        if (subNode.layoutRatio > 0) {
+            subNode.nodeWidth = totalWidth / totalRatio * subNode.layoutRatio;
+            [subNode applyAutoDim];
+        }
         if ([subNode needLayout]) {
-            [subNode calculateSize:contentSize];
-            if (subNode.layoutRatio > 0) {
-                subNode.nodeWidth = totalWidth / totalRatio * subNode.layoutRatio;
-                [subNode applyAutoDim];
-            }
             CGSize subNodeSize = subNode.contentSize;
             
             subNode.nodeX = currentX + subNode.marginLeft;

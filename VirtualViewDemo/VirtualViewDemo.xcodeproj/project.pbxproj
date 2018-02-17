@@ -31,6 +31,9 @@
 		92D80D0A2035538E00398A2B /* PageItem.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D082035538D00398A2B /* PageItem.out */; };
 		92D80D0B2035538E00398A2B /* Page.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D092035538E00398A2B /* Page.out */; };
 		92D80D0E2035542300398A2B /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D80D0D2035542300398A2B /* PageViewController.m */; };
+		92D80D162037CDBF00398A2B /* TextCell.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D152037CDBF00398A2B /* TextCell.out */; };
+		92D80D182037CE9300398A2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D172037CE9300398A2B /* Media.xcassets */; };
+		92D80D1B2037CF4800398A2B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D80D1A2037CF4800398A2B /* TableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +72,10 @@
 		92D80D092035538E00398A2B /* Page.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = Page.out; sourceTree = "<group>"; };
 		92D80D0C2035542300398A2B /* PageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		92D80D0D2035542300398A2B /* PageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
+		92D80D152037CDBF00398A2B /* TextCell.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = TextCell.out; sourceTree = "<group>"; };
+		92D80D172037CE9300398A2B /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		92D80D192037CF4800398A2B /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		92D80D1A2037CF4800398A2B /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +134,8 @@
 				92D80D0620348CC700398A2B /* GridViewController.m */,
 				92D80D0C2035542300398A2B /* PageViewController.h */,
 				92D80D0D2035542300398A2B /* PageViewController.m */,
+				92D80D192037CF4800398A2B /* TableViewController.h */,
+				92D80D1A2037CF4800398A2B /* TableViewController.m */,
 				926B4011200396DB0003D88E /* Assets.xcassets */,
 				926B4013200396DB0003D88E /* LaunchScreen.storyboard */,
 				926B4017200396DB0003D88E /* main.m */,
@@ -150,7 +159,9 @@
 				92D80CFF20348C2200398A2B /* GridItem.out */,
 				92D80D092035538E00398A2B /* Page.out */,
 				92D80D082035538D00398A2B /* PageItem.out */,
+				92D80D152037CDBF00398A2B /* TextCell.out */,
 				92D80CFA2032E67A00398A2B /* local_image.png */,
+				92D80D172037CE9300398A2B /* Media.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -232,6 +243,7 @@
 				92D80CEA2030228100398A2B /* NText.out in Resources */,
 				926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */,
 				92D80D0B2035538E00398A2B /* Page.out in Resources */,
+				92D80D162037CDBF00398A2B /* TextCell.out in Resources */,
 				92D80CFB2032E67A00398A2B /* local_image.png in Resources */,
 				92D80CF920328EC300398A2B /* NLine.out in Resources */,
 				92D80CEC2030228100398A2B /* VH2Layout.out in Resources */,
@@ -241,6 +253,7 @@
 				92D80D0120348C2200398A2B /* GridItem.out in Resources */,
 				926B4012200396DB0003D88E /* Assets.xcassets in Resources */,
 				92D80D0020348C2200398A2B /* Grid.out in Resources */,
+				92D80D182037CE9300398A2B /* Media.xcassets in Resources */,
 				92D80D0A2035538E00398A2B /* PageItem.out in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,6 +338,7 @@
 				92D80D0720348CC700398A2B /* GridViewController.m in Sources */,
 				92D80D0420348CBA00398A2B /* ContainerViewController.m in Sources */,
 				92D80D0E2035542300398A2B /* PageViewController.m in Sources */,
+				92D80D1B2037CF4800398A2B /* TableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

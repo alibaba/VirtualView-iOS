@@ -39,6 +39,31 @@
     return self;
 }
 
+- (NSString *)description
+{
+    NSString *layoutWidthString;
+    if (self.layoutWidth == VV_MATCH_PARENT) {
+        layoutWidthString = @"match_parent";
+    } else if (self.layoutWidth == VV_WRAP_CONTENT) {
+        layoutWidthString = @"wrap_conetent";
+    } else {
+        layoutWidthString = [NSString stringWithFormat:@"%f", self.layoutWidth];
+    }
+    NSString *layoutHeightString;
+    if (self.layoutHeight == VV_MATCH_PARENT) {
+        layoutHeightString = @"match_parent";
+    } else if (self.layoutHeight == VV_WRAP_CONTENT) {
+        layoutHeightString = @"wrap_conetent";
+    } else {
+        layoutHeightString = [NSString stringWithFormat:@"%f", self.layoutHeight];
+    }
+    if (_subNodes.count > 0) {
+        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@; subNodes = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), layoutWidthString, layoutHeightString, _subNodes];
+    } else {
+        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), layoutWidthString, layoutHeightString];
+    }
+}
+
 #pragma mark Properties
 
 - (CGSize)nodeSize

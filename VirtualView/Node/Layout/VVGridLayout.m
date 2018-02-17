@@ -134,10 +134,10 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
+        CGSize subNodeSize = [subNode calculateSize:gridSize];
         if ([subNode needLayout]) {
             col = index % _colCount;
             row = index / _colCount;
-            CGSize subNodeSize = [subNode calculateSize:gridSize];
             
             if (subNode.layoutGravity & VVGravityHCenter) {
                 CGFloat midX = self.paddingLeft + gridSizeWithMargin.width * (col + 0.5);

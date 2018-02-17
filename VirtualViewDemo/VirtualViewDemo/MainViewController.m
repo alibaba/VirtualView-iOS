@@ -10,6 +10,7 @@
 #import "ContainerViewController.h"
 #import "GridViewController.h"
 #import "PageViewController.h"
+#import "TableViewController.h"
 
 @interface MainViewController ()
 
@@ -23,7 +24,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page"];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page", @"TableViewCell"];
     }
     return self;
 }
@@ -46,14 +47,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *demoName = self.demoArray[indexPath.row];
-    TestViewController *vc;
+    UIViewController *vc;
     if ([demoName isEqualToString:@"Container"]) {
         vc = [[ContainerViewController alloc] initWithFilename:demoName];
     } else if ([demoName isEqualToString:@"Grid"]) {
         vc = [[GridViewController alloc] initWithFilename:demoName];
     } else if ([demoName isEqualToString:@"Page"]) {
         vc = [[PageViewController alloc] initWithFilename:demoName];
-    } else {
+    } else if ([demoName isEqualToString:@"TableViewCell"]) {
+        vc = [[TableViewController alloc] init];
+   } else {
         vc = [[TestViewController alloc] initWithFilename:demoName];
     }
     [self.navigationController pushViewController:vc animated:YES];

@@ -53,7 +53,7 @@
     size = [self.container estimatedSize:size];
     self.scrollView.contentSize = size;
     self.container.frame = CGRectMake(0, 0, size.width, size.height);
-    [self.container updateWithObject:self.params];
+    [self.container update:self.params];
 }
 
 @end

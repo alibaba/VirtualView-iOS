@@ -67,9 +67,8 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
+        CGSize subNodeSize = [subNode calculateSize:contentSize];
         if ([subNode needLayout]) {
-            CGSize subNodeSize = [subNode calculateSize:contentSize];
-            
             if (subNode.layoutGravity & VVGravityHCenter) {
                 CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
                 subNode.nodeX = midX - subNodeSize.width / 2;
@@ -96,9 +95,8 @@
         if (subNode.visibility == VVVisibilityGone) {
             continue;
         }
+        CGSize subNodeSize = [subNode calculateSize:contentSize];
         if ([subNode needLayout]) {
-            CGSize subNodeSize = [subNode calculateSize:contentSize];
-            
             subNode.nodeX = currentX + subNode.marginLeft;
             currentX += subNode.containerSize.width;
             
