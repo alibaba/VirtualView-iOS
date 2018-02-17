@@ -142,38 +142,51 @@
     return CGSizeZero;
 }
 
+- (CGSize)establishedSize
+{
+    if (self.rootNode.layoutWidth != VV_WRAP_CONTENT && self.rootNode.layoutHeight != VV_WRAP_CONTENT) {
+        [self.rootNode setNeedsResize];
+        return [self.rootNode calculateSize:CGSizeZero];
+    }
+    return CGSizeZero;
+}
+
 - (void)updateWithObject:(id)data
 {
-    if (data == self.lastData) {
-        return;
-    }
-    self.lastData = data;
-    
+    [self updateWithObject:data forceRefresh:NO];
+}
+
+- (void)updateWithObject:(id)data forceRefresh:(BOOL)forceRefresh
+{
 #ifdef VV_ALIBABA
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
     
-    for (VVBaseNode *node in _variableNodes) {
-        [node reset];
-
-        for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
-            if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
-                [setter applyToNode:node withObject:data];
-            }
-        }
-        if ([data isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dict = (NSDictionary *)data;
-            node.actionValue = [dict objectForKey:node.action];
-        }
+    if (data != self.lastData) {
+        self.lastData = data;
         
-        [node didUpdated];
+        for (VVBaseNode *node in _variableNodes) {
+            [node reset];
+            
+            for (VVPropertyExpressionSetter *setter in node.expressionSetters.allValues) {
+                if ([setter isKindOfClass:[VVPropertyExpressionSetter class]]) {
+                    [setter applyToNode:node withObject:data];
+                }
+            }
+            if ([data isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *dict = (NSDictionary *)data;
+                node.actionValue = [dict objectForKey:node.action];
+            }
+            
+            [node didUpdated];
+        }
     }
     
     if (self.alwaysRefresh) {
         [self.rootNode setNeedsLayoutAndResizeRecursively];
     }
     self.rootNode.nodeX = self.rootNode.nodeY = 0;
-    if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height) {
+    if (self.rootNode.nodeWidth != self.bounds.size.width || self.rootNode.nodeHeight != self.bounds.size.height || forceRefresh) {
         [self.rootNode setNeedsResize];
         self.rootNode.nodeWidth = self.bounds.size.width;
         self.rootNode.nodeHeight = self.bounds.size.height;
@@ -181,7 +194,6 @@
     [self.rootNode updateHidden];
     [self.rootNode updateFrame];
     [self.rootNode layoutSubNodes];
-    [self setNeedsDisplay];
     
 #ifdef VV_ALIBABA
     NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;

@@ -46,8 +46,25 @@
  Will get zero size if VirtualView will change size after binding data (wrap_content).
  */
 - (CGSize)establishedSize:(CGSize)maxSize;
+/**
+ Get established fixed size of VirtualView.
+ Will get zero size if size of VirtualView is not fixed.
+ */
+- (CGSize)establishedSize;
 
+/**
+ Bind new data to VirtualView and resize & layout it if it is necessary.
+ 
+ @param data          New Data.
+ */
 - (void)updateWithObject:(id)data;
+/**
+ Bind new data to VirtualView and resize & layout it if it is necessary.
+
+ @param data          New Data.
+ @param forceRefresh  Force VirtualView to resize & layout.
+ */
+- (void)updateWithObject:(id)data forceRefresh:(BOOL)forceRefresh;
 
 - (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
 
