@@ -23,7 +23,8 @@
 @synthesize subNodes = _subNodes;
 @dynamic nodeSize, contentSize, containerSize;
 
-- (id)init{
+- (id)init
+{
     self = [super init];
     if (self) {
         _subNodes = [[NSMutableArray alloc] init];
@@ -39,28 +40,51 @@
     return self;
 }
 
+- (NSString *)layoutWidthString
+{
+    if (self.layoutWidth == VV_MATCH_PARENT) {
+        return @"match_parent";
+    } else if (self.layoutWidth == VV_WRAP_CONTENT) {
+        return @"wrap_conetent";
+    } else {
+        return [NSString stringWithFormat:@"%f", self.layoutWidth];
+    }
+}
+
+- (NSString *)layoutHeightString
+{
+    if (self.layoutHeight == VV_MATCH_PARENT) {
+        return @"match_parent";
+    } else if (self.layoutHeight == VV_WRAP_CONTENT) {
+        return @"wrap_conetent";
+    } else {
+        return [NSString stringWithFormat:@"%f", self.layoutHeight];
+    }
+}
+
+- (NSString *)visibilityString
+{
+    if (self.visibility == VVVisibilityGone) {
+        return @"; visibility = Gone";
+    } else if (self.visibility == VVVisibilityInvisible) {
+        return @"; visibility = Invisible";
+    } else {
+        return @"";
+    }
+}
+
+- (NSString *)descriptionWithoutSubNodes
+{
+    return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@%@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), [self layoutWidthString], [self layoutHeightString], [self visibilityString]];
+}
+
 - (NSString *)description
 {
-    NSString *layoutWidthString;
-    if (self.layoutWidth == VV_MATCH_PARENT) {
-        layoutWidthString = @"match_parent";
-    } else if (self.layoutWidth == VV_WRAP_CONTENT) {
-        layoutWidthString = @"wrap_conetent";
-    } else {
-        layoutWidthString = [NSString stringWithFormat:@"%f", self.layoutWidth];
-    }
-    NSString *layoutHeightString;
-    if (self.layoutHeight == VV_MATCH_PARENT) {
-        layoutHeightString = @"match_parent";
-    } else if (self.layoutHeight == VV_WRAP_CONTENT) {
-        layoutHeightString = @"wrap_conetent";
-    } else {
-        layoutHeightString = [NSString stringWithFormat:@"%f", self.layoutHeight];
-    }
     if (_subNodes.count > 0) {
-        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@; subNodes = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), layoutWidthString, layoutHeightString, _subNodes];
+        NSArray *subNodeStrings = [_subNodes valueForKeyPath:@"descriptionWithoutSubNodes"];
+        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@%@; subNodes = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), [self layoutWidthString], [self layoutHeightString], [self visibilityString], subNodeStrings];
     } else {
-        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), layoutWidthString, layoutHeightString];
+        return [self descriptionWithoutSubNodes];
     }
 }
 
@@ -497,6 +521,14 @@
     }
     if (self.cocoaView) {
         self.cocoaView.hidden = _hidden;
+    }
+}
+
+- (void)updateHiddenRecursively
+{
+    [self updateHidden];
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode updateHiddenRecursively];
     }
 }
 

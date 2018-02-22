@@ -203,6 +203,7 @@
     NSInteger index = 0;
     for (VVBaseNode *subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
+            [subNode updateHiddenRecursively];
             continue;
         }
         if ([subNode needLayout]) {

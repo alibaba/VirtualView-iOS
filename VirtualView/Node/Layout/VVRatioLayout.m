@@ -78,6 +78,7 @@
     CGFloat currentY = self.paddingTop;
     for (VVBaseNode* subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
+            [subNode updateHiddenRecursively];
             continue;
         }
         [subNode calculateSize:contentSize];
@@ -125,6 +126,7 @@
     CGFloat currentX = self.paddingLeft;
     for (VVBaseNode* subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
+            [subNode updateHiddenRecursively];
             continue;
         }
         [subNode calculateSize:contentSize];
@@ -159,10 +161,10 @@
     if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
         || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
         if (self.nodeWidth <= 0) {
-            self.nodeWidth = maxSize.width;
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
         }
         if (self.nodeHeight <= 0) {
-            self.nodeHeight = maxSize.height;
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
         }
         [self applyAutoDim];
     }

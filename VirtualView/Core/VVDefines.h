@@ -11,10 +11,10 @@
 #define VV_VERSION  10100 // 1.1.0
 
 #ifdef DEBUG
-#define VV_DEBUG    1
+//#define VV_DEBUG    1
 #endif
 
-//#define VV_ALIBABA  1
+#define VV_ALIBABA  1
 
 #import "NSObject+VVObserver.h"
 #import "UIColor+VirtualView.h"
@@ -182,7 +182,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define STR_ID_visibility  1941332754
 
 #define STR_ID_ck  3176
-#define STR_ID_inmainthread  999999
+#define STR_ID_inMainThread  999999
 
 #ifdef VV_ALIBABA
 #define STR_ID_Component  604060893

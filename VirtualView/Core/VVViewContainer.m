@@ -14,7 +14,7 @@
 #import <UT/AppMonitor.h>
 #endif
 
-#define VV_LONG_PRESS_CANCEL_DISTANCE 20
+#define VV_LONG_PRESS_CANCEL_DISTANCE 10
 
 @interface VVViewContainer() <UIGestureRecognizerDelegate>
 
@@ -75,6 +75,11 @@
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; frame = %@; type = %@; rootNode = %p>", self.class, self, NSStringFromCGRect(self.frame), self.rootNode.templateType, self.rootNode];
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
@@ -111,16 +116,15 @@
             if (isClick) {
                 if ([self.delegate respondsToSelector:@selector(virtualView:clickedWithAction:andValue:)]) {
                     [self.delegate virtualView:clickedNode clickedWithAction:clickedNode.action andValue:clickedNode.actionValue];
-                }
-                if ([self.delegate respondsToSelector:@selector(virtualViewClickedWithAction:andValue:)]) {
+                } else if ([self.delegate respondsToSelector:@selector(virtualViewClickedWithAction:andValue:)]) {
                     [self.delegate virtualViewClickedWithAction:clickedNode.action andValue:clickedNode.actionValue];
                 }
             }
             if (isLongClick) {
-                if ([self.delegate respondsToSelector:@selector(virtualViewLongPressedWithAction:andValue:)]) {
-                    [self.delegate virtualViewLongPressedWithAction:clickedNode.action andValue:clickedNode.actionValue];
-                } else if ([self.delegate respondsToSelector:@selector(virtualView:longPressedWithAction:andValue:)]) {
+                if ([self.delegate respondsToSelector:@selector(virtualView:longPressedWithAction:andValue:)]) {
                     [self.delegate virtualView:clickedNode longPressedWithAction:clickedNode.action andValue:clickedNode.actionValue];
+                } else if ([self.delegate respondsToSelector:@selector(virtualViewLongPressedWithAction:andValue:)]) {
+                    [self.delegate virtualViewLongPressedWithAction:clickedNode.action andValue:clickedNode.actionValue];
                 }
             }
         }
@@ -161,8 +165,11 @@
     [self updateLayout];
     
 #ifdef VV_ALIBABA
-    NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
-    [self.class commitAppMoniterForBindData:[jsonData objectForKey:@"type"] costTime:costTime];
+    if ([data isKindOfClass:[NSDictionary class]]) {
+        NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
+        NSDictionary *dict = (NSDictionary *)data;
+        [self.class commitAppMoniterForBindData:[dict objectForKey:@"type"] costTime:costTime];
+    }
 #endif
 }
 

@@ -96,8 +96,9 @@
     NSTimeInterval startTime = [NSDate date].timeIntervalSince1970;
 #endif
     VVBaseNode *nodeTree = creater ? [creater createNodeTree] : nil;
-#ifdef VV_ALIBABA
     if (nodeTree) {
+        nodeTree.templateType = type;
+#ifdef VV_ALIBABA
         NSTimeInterval costTime = [NSDate date].timeIntervalSince1970 - startTime;
         [self.class commitAppMoniterForCreateNodeTree:type
                                               success:YES
@@ -106,8 +107,8 @@
         [self.class commitAppMoniterForCreateNodeTree:type
                                               success:NO
                                              costTime:0];
-    }
 #endif
+    }
     return nodeTree;
 }
 

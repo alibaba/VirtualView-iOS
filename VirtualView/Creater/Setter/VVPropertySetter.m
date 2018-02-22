@@ -17,7 +17,7 @@
         _name = [VVBinaryStringMapper stringForKey:key];
         if (!_name) {
 #ifdef VV_DEBUG
-            NSAssert(NO, @"Does not match a string.");
+            NSLog(@"VVPropertySetter - Key does not match a string: %d", key);
 #endif
             _name = [NSString stringWithFormat:@"%d", key];
         }

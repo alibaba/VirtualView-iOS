@@ -10,7 +10,8 @@
 
 @interface VVBaseNode : NSObject
 
-@property (nonatomic, readonly) NSInteger nodeID;
+@property (nonatomic, assign, readonly) NSInteger nodeID;
+@property (nonatomic, strong) NSString *templateType;
 
 // self visibility
 @property (nonatomic, assign) VVVisibility visibility;
@@ -136,6 +137,7 @@
 - (void)setNeedsLayoutAndResizeRecursively;
 
 - (void)updateHidden NS_REQUIRES_SUPER;
+- (void)updateHiddenRecursively;
 - (void)updateFrame NS_REQUIRES_SUPER;
 - (void)layoutSubNodes;
 - (void)layoutSubviews __deprecated_msg("use layoutSubNodes");

@@ -132,6 +132,7 @@
     int index = 0, col, row;
     for (VVBaseNode *subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
+            [subNode updateHiddenRecursively];
             continue;
         }
         CGSize subNodeSize = [subNode calculateSize:gridSize];
@@ -174,10 +175,10 @@
     if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
         || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
         if (self.nodeWidth <= 0) {
-            self.nodeWidth = maxSize.width;
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
         }
         if (self.nodeHeight <= 0) {
-            self.nodeHeight = maxSize.height;
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
         }
         CGSize contentSize = self.contentSize;
         CGSize gridSize = CGSizeMake((contentSize.width + _itemHorizontalMargin) / _colCount - _itemHorizontalMargin,
@@ -191,8 +192,12 @@
             }
             [subNode calculateSize:gridSize];
             CGSize subNodeContainerSize = subNode.containerSize;
-            maxSubNodeWidth = MAX(maxSubNodeWidth, subNodeContainerSize.width);
-            maxSubNodeHeight = MAX(maxSubNodeHeight, subNodeContainerSize.height);
+            if (subNode.layoutWidth != VV_MATCH_PARENT) {
+                maxSubNodeWidth = MAX(maxSubNodeWidth, subNodeContainerSize.width);
+            }
+            if (subNode.layoutHeight != VV_MATCH_PARENT) {
+                maxSubNodeHeight = MAX(maxSubNodeHeight, subNodeContainerSize.height);
+            }
         }
         
         if (self.layoutWidth == VV_WRAP_CONTENT) {

@@ -241,7 +241,7 @@
 {
     [super updateFrame];
     if (self.needReload) {
-        if (self.src && self.src.length) {
+        if (self.src && self.src.length > 0) {
             if ([self.src containsString:@"//"]) {
                 [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.src]];
             } else {
@@ -256,10 +256,12 @@
 {
     [super calculateSize:maxSize];
     if (_ratio > 0) {
-        if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT) {
+        if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && self.nodeWidth > 0) {
             self.nodeHeight = (self.nodeWidth - self.paddingLeft - self.paddingRight) / _ratio + self.paddingTop + self.paddingBottom;
-        } else if (self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT) {
+            self.nodeHeight = MIN(maxSize.height, self.nodeHeight);
+        } else if (self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT && self.nodeHeight > 0) {
             self.nodeWidth = (self.nodeHeight - self.paddingTop - self.paddingBottom) * _ratio + self.paddingLeft + self.paddingRight;
+            self.nodeWidth = MIN(maxSize.width, self.nodeWidth);
         }
     }
     return CGSizeMake(self.nodeWidth, self.nodeHeight);

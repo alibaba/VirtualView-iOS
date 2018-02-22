@@ -95,7 +95,7 @@
                 break;
             case STR_ID_autoSwitch:
             case STR_ID_canSlide:
-            case STR_ID_inmainthread:
+            case STR_ID_inMainThread:
                 _valueType = TYPE_BOOLEAN;
                 break;
             case STR_ID_visibility:

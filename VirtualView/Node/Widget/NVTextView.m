@@ -346,13 +346,12 @@
     if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
         || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
         if (self.nodeWidth <= 0) {
-            self.nodeWidth = maxSize.width;
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
         }
         if (self.nodeHeight <= 0) {
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
             if (self.maxLines > 0) {
-                self.nodeHeight = MIN(maxSize.height, self.maxLines * self.textView.font.lineHeight);
-            } else {
-                self.nodeHeight = maxSize.height;
+                self.nodeHeight = MIN(self.nodeHeight, self.maxLines * self.textView.font.lineHeight);
             }
         }
         CGSize contentSize = self.contentSize;
@@ -379,6 +378,7 @@
         [self applyAutoDim];
     }
     self.nodeHeight = ceil(self.nodeHeight);
+    self.nodeWidth = ceil(self.nodeWidth);
     return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 @end
