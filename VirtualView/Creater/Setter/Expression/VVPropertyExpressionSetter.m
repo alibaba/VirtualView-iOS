@@ -35,67 +35,77 @@
 {
     if (self = [super initWithPropertyKey:key]) {
         switch (key) {
-            case STR_ID_autoDimDirection:
-            case STR_ID_stayTime:
-            case STR_ID_animatorTime:
             case STR_ID_autoSwitchTime:
+            case STR_ID_colCount:
+            case STR_ID_ellipsize:
+            case STR_ID_id:
+            case STR_ID_layoutDirection:
+            case STR_ID_lines:
+            case STR_ID_maxLines:
+            case STR_ID_scaleType:
+            case STR_ID_stayTime:
+            case STR_ID_style:
+            case STR_ID_textStyle:
                 _valueType = TYPE_INT;
                 break;
-            case STR_ID_paddingLeft:
-            case STR_ID_paddingTop:
-            case STR_ID_paddingRight:
-            case STR_ID_paddingBottom:
-            case STR_ID_layoutMarginLeft:
-            case STR_ID_layoutMarginRight:
-            case STR_ID_layoutMarginTop:
-            case STR_ID_layoutMarginBottom:
             case STR_ID_autoDimX:
             case STR_ID_autoDimY:
-            case STR_ID_borderWidth:
+            case STR_ID_borderBottomLeftRadius:
+            case STR_ID_borderBottomRightRadius:
             case STR_ID_borderRadius:
             case STR_ID_borderTopLeftRadius:
             case STR_ID_borderTopRightRadius:
-            case STR_ID_borderBottomLeftRadius:
-            case STR_ID_borderBottomRightRadius:
+            case STR_ID_borderWidth:
+            case STR_ID_itemHeight:
             case STR_ID_itemHorizontalMargin:
             case STR_ID_itemVerticalMargin:
+            case STR_ID_layoutHeight:
+            case STR_ID_layoutMarginBottom:
+            case STR_ID_layoutMarginLeft:
+            case STR_ID_layoutMarginRight:
+            case STR_ID_layoutMarginTop:
+            case STR_ID_layoutRatio:
+            case STR_ID_layoutWidth:
+            case STR_ID_lineSpaceExtra:
+            case STR_ID_lineSpaceMultiplier:
+            case STR_ID_minHeight:
+            case STR_ID_minWidth:
+            case STR_ID_paddingBottom:
+            case STR_ID_paddingLeft:
+            case STR_ID_paddingRight:
+            case STR_ID_paddingTop:
+            case STR_ID_paintWidth:
+            case STR_ID_ratio:
             case STR_ID_textSize:
                 _valueType = TYPE_FLOAT;
                 break;
-            case STR_ID_data:
-            case STR_ID_dataUrl:
-            case STR_ID_dataParam:
             case STR_ID_action:
-            case STR_ID_actionParam:
+            case STR_ID_ck:
             case STR_ID_class:
-            case STR_ID_name:
-            case STR_ID_backgroundImage:
+            case STR_ID_dashEffect:
             case STR_ID_src:
             case STR_ID_text:
-            case STR_ID_ck:
                 _valueType = TYPE_STRING;
                 break;
+            case STR_ID_background:
+            case STR_ID_borderColor:
             case STR_ID_color:
             case STR_ID_textColor:
-            case STR_ID_borderColor:
-            case STR_ID_maskColor:
-            case STR_ID_background:
-                _valueType = TYPE_COLOR;
+                _valueType = TYPE_CONVERTION;
                 break;
             case STR_ID_autoSwitch:
             case STR_ID_canSlide:
-            case STR_ID_inmainthread:
+            case STR_ID_inMainThread:
                 _valueType = TYPE_BOOLEAN;
                 break;
             case STR_ID_visibility:
                 _valueType = TYPE_VISIBILITY;
                 break;
             case STR_ID_gravity:
+            case STR_ID_layoutGravity:
                 _valueType = TYPE_GRAVITY;
                 break;
             case STR_ID_dataTag:
-                _valueType = TYPE_OBJECT;
-                break;
             default:
                 _valueType = TYPE_OBJECT;
                 break;
@@ -114,61 +124,57 @@
     return YES;
 }
 
-- (void)applyToNode:(VVBaseNode *)node withDict:(NSDictionary *)dict
+- (void)applyToNode:(VVBaseNode *)node withObject:(nullable NSDictionary *)object
 {
     if (self.expression) {
-        id objectValue = [self.expression resultWithObject:dict];
+        id objectValue = [self.expression resultWithObject:object];
         NSString *stringValue = [objectValue description];
+        BOOL handled = NO;
         switch (self.valueType) {
             case TYPE_INT:
-            {
-                [node setIntValue:[stringValue intValue] forKey:self.key];
-            }
+                handled = [node setIntValue:[stringValue intValue] forKey:self.key];
                 break;
             case TYPE_FLOAT:
-            {
-                [node setFloatValue:[stringValue floatValue] forKey:self.key];
-            }
+                handled = [node setFloatValue:[stringValue floatValue] forKey:self.key];
                 break;
             case TYPE_STRING:
-            case TYPE_COLOR:
-            {
-                [node setStringDataValue:stringValue forKey:self.key];
-            }
+                handled = [node setStringValue:stringValue forKey:self.key];
+                break;
+            case TYPE_CONVERTION:
+                handled = [node setStringData:stringValue forKey:self.key];
                 break;
             case TYPE_BOOLEAN:
             {
+                BOOL boolValue = 0;
                 if ([stringValue isEqualToString:@"true"]) {
-                    [node setIntValue:1 forKey:self.key];
-                } else {
-                    [node setIntValue:0 forKey:self.key];
+                    boolValue = 1;
                 }
+                handled = [node setIntValue:boolValue forKey:self.key];
             }
                 break;
             case TYPE_VISIBILITY:
             {
+                int visibilityValue = VVVisibilityGone;
                 if ([stringValue isEqualToString:@"invisible"]) {
-                    [node setIntValue:VVVisibilityInvisible forKey:self.key];
+                    visibilityValue = VVVisibilityInvisible;
                 } else if ([stringValue isEqualToString:@"visible"]) {
-                    [node setIntValue:VVVisibilityVisible forKey:self.key];
-                } else {
-                    [node setIntValue:VVVisibilityGone forKey:self.key];
+                    visibilityValue = VVVisibilityVisible;
                 }
+                handled = [node setIntValue:visibilityValue forKey:self.key];
             }
                 break;
             case TYPE_GRAVITY:
-            {
-                [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
-            }
+                handled = [node setIntValue:[VVPropertyExpressionSetter getGravity:stringValue] forKey:self.key];
                 break;
             case TYPE_OBJECT:
-            {
-                [node setDataObj:objectValue forKey:self.key];
-            }
+                handled = [node setDataObj:objectValue forKey:self.key];
                 break;
             default:
                 break;
         }
+#ifdef VV_DEBUG
+        NSAssert(handled == YES, @"Property is not handled.");
+#endif
     }
 }
 
@@ -177,20 +183,21 @@
     NSArray *array = [stringValue componentsSeparatedByString:@"|"];
     int gravity = 0;
     for (NSString *item in array) {
-        if ([item compare:@"left" options:NSCaseInsensitiveSearch]) {
+        NSString *trimmedItem = [item stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([trimmedItem isEqualToString:@"left"]) {
             gravity |= VVGravityLeft;
-        } else if ([item compare:@"right" options:NSCaseInsensitiveSearch]) {
+        } else if ([trimmedItem isEqualToString:@"right"]) {
             gravity |= VVGravityRight;
-        } else if ([item compare:@"h_center" options:NSCaseInsensitiveSearch]) {
+        } else if ([trimmedItem isEqualToString:@"h_center"]) {
             gravity |= VVGravityHCenter;
-        } else if ([item compare:@"top" options:NSCaseInsensitiveSearch]) {
+        } else if ([trimmedItem isEqualToString:@"top"]) {
             gravity |= VVGravityTop;
-        } else if ([item compare:@"bottom" options:NSCaseInsensitiveSearch]) {
+        } else if ([trimmedItem isEqualToString:@"bottom"]) {
             gravity |= VVGravityBottom;
-        } else if ([item compare:@"v_center" options:NSCaseInsensitiveSearch]) {
+        } else if ([trimmedItem isEqualToString:@"v_center"]) {
             gravity |= VVGravityVCenter;
-        } else if ([item compare:@"center" options:NSCaseInsensitiveSearch]) {
-            gravity |= VVGravityHCenter|VVGravityVCenter;
+        } else if ([trimmedItem isEqualToString:@"center"]) {
+            gravity |= VVGravityHCenter | VVGravityVCenter;
         }
     }
     return gravity;

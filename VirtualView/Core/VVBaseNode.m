@@ -6,34 +6,121 @@
 //
 
 #import "VVBaseNode.h"
-#import "UIColor+VirtualView.h"
+#import "VVVH2Layout.h"
+#import "VVRatioLayout.h"
 
-@interface VVBaseNode ()
-{
-    NSMutableArray*   _subViews;
-    NSUInteger        _objectID;
-    int _align, _flag, _minWidth, _minHeight;
+@interface VVBaseNode () {
+    NSMutableArray *_subNodes;
 }
+
+@property (nonatomic, assign) BOOL updatingNeedsResize; // to avoid infinite loop
+@property (nonatomic, assign, readwrite) CGRect nodeFrame;
 
 @end
 
 @implementation VVBaseNode
-@synthesize subViews = _subViews;
-@synthesize objectID   = _objectID;
 
-- (id)init{
+@synthesize subNodes = _subNodes;
+@dynamic nodeSize, contentSize, containerSize;
+
+- (id)init
+{
     self = [super init];
     if (self) {
-        self.alpha = 1.0f;
-        self.hidden = NO;
-        _subViews = [[NSMutableArray alloc] init];
-        self.backgroundColor = [UIColor clearColor];
-        self.gravity = VVGravityLeft|VVGravityTop;
-        self.visible = VVVisibilityVisible;
-        self.layoutDirection = VVDirectionLeft;
-        self.autoDimDirection = VVAutoDimDirectionNone;
+        _subNodes = [[NSMutableArray alloc] init];
+        _backgroundColor = [UIColor clearColor];
+        _borderColor = [UIColor clearColor];
+        _layoutGravity = VVGravityDefault;
+        _visibility = VVVisibilityVisible;
+        _layoutDirection = VVDirectionDefault;
+        _autoDimDirection = VVAutoDimDirectionNone;
+        [self setNeedsResizeNonRecursively];
+        [self setNeedsLayout];
     }
     return self;
+}
+
+- (NSString *)layoutWidthString
+{
+    if (self.layoutWidth == VV_MATCH_PARENT) {
+        return @"match_parent";
+    } else if (self.layoutWidth == VV_WRAP_CONTENT) {
+        return @"wrap_conetent";
+    } else {
+        return [NSString stringWithFormat:@"%f", self.layoutWidth];
+    }
+}
+
+- (NSString *)layoutHeightString
+{
+    if (self.layoutHeight == VV_MATCH_PARENT) {
+        return @"match_parent";
+    } else if (self.layoutHeight == VV_WRAP_CONTENT) {
+        return @"wrap_conetent";
+    } else {
+        return [NSString stringWithFormat:@"%f", self.layoutHeight];
+    }
+}
+
+- (NSString *)visibilityString
+{
+    if (self.visibility == VVVisibilityGone) {
+        return @"; visibility = Gone";
+    } else if (self.visibility == VVVisibilityInvisible) {
+        return @"; visibility = Invisible";
+    } else {
+        return @"";
+    }
+}
+
+- (NSString *)descriptionWithoutSubNodes
+{
+    return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@%@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), [self layoutWidthString], [self layoutHeightString], [self visibilityString]];
+}
+
+- (NSString *)description
+{
+    if (_subNodes.count > 0) {
+        NSArray *subNodeStrings = [_subNodes valueForKeyPath:@"descriptionWithoutSubNodes"];
+        return [NSString stringWithFormat:@"<%@: %p; frame = %@; layoutWidth = %@; layoutHeight = %@%@; subNodes = %@>", self.class, self, NSStringFromCGRect(CGRectMake(self.nodeX, self.nodeY, self.nodeWidth, self.nodeHeight)), [self layoutWidthString], [self layoutHeightString], [self visibilityString], subNodeStrings];
+    } else {
+        return [self descriptionWithoutSubNodes];
+    }
+}
+
+#pragma mark Properties
+
+- (CGSize)nodeSize
+{
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
+}
+
+- (CGSize)contentSize
+{
+    return CGSizeMake(self.nodeWidth - _paddingLeft - _paddingRight,
+                      self.nodeHeight - _paddingTop - _paddingBottom);
+}
+
+- (CGSize)containerSize
+{
+    return CGSizeMake(self.nodeWidth + _marginLeft + _marginRight,
+                      self.nodeHeight + _marginTop + _marginBottom);
+}
+
+- (void)setRootCocoaView:(UIView *)rootCocoaView
+{
+    _rootCocoaView = rootCocoaView;
+    for (VVBaseNode *subNode in self.subNodes) {
+        subNode.rootCocoaView = rootCocoaView;
+    }
+}
+
+- (void)setRootCanvasLayer:(CALayer *)rootCanvasLayer
+{
+    _rootCanvasLayer = rootCanvasLayer;
+    for (VVBaseNode *subNode in self.subNodes) {
+        subNode.rootCanvasLayer = rootCanvasLayer;
+    }
 }
 
 - (NSMutableDictionary *)expressionSetters
@@ -44,60 +131,32 @@
     return _expressionSetters;
 }
 
-- (BOOL)isClickable{
-    if (_flag&VVFlagClickable) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-- (BOOL)isLongClickable{
-    if (_flag&VVFlagLongClickable) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-- (BOOL)supportExposure{
-    if (_flag&VVFlagExposure) {
-        return YES;
-    }else{
-        return NO;
-    }
+#pragma mark ClickEvents
 
-}
--(BOOL)pointInside:(CGPoint)point withView:(VVBaseNode*)vvobj{
-    CGFloat x =vvobj.frame.origin.x;
-    CGFloat y =vvobj.frame.origin.y;
-    CGFloat w =vvobj.frame.size.width;
-    CGFloat h =vvobj.frame.size.height;
-    if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
--(BOOL)pointInside:(CGPoint)point{
-    CGFloat x =self.frame.origin.x;
-    CGFloat y =self.frame.origin.y;
-    CGFloat w =self.frame.size.width;
-    CGFloat h =self.frame.size.height;
-    if (point.x>x && point.y>y && point.x<w+x && point.y<h+y) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
-- (id<VVWidgetObject>)hitTest:(CGPoint)point
+- (BOOL)isClickable
 {
-    if (self.visible == VVVisibilityVisible && self.hidden == NO && self.alpha > 0.1f && [self pointInside:point]) {
-        if (self.subViews.count > 0) {
-            for (VVBaseNode* item in [self.subViews reverseObjectEnumerator]) {
-                id<VVWidgetObject> obj = [item hitTest:point];
-                if (obj) {
-                    return obj;
+    return self.flag & VVFlagClickable;
+}
+
+- (BOOL)isLongClickable
+{
+    return self.flag & VVFlagLongClickable;
+}
+
+- (BOOL)supportExposure
+{
+    return self.flag & VVFlagExposure;
+}
+
+- (VVBaseNode *)hitTest:(CGPoint)point
+{
+    if (self.visibility == VVVisibilityVisible
+        && CGRectContainsPoint(self.nodeFrame, point)) {
+        if (self.subNodes.count > 0) {
+            for (VVBaseNode* subNode in [self.subNodes reverseObjectEnumerator]) {
+                VVBaseNode *hitNode = [subNode hitTest:point];
+                if (hitNode) {
+                    return hitNode;
                 }
             }
         }
@@ -108,324 +167,134 @@
     return nil;
 }
 
-- (VVBaseNode*)findViewByID:(int)tagid{
+#pragma mark NodeTree
 
-    if (self.objectID==tagid) {
+- (VVBaseNode *)nodeWithID:(NSInteger)nodeID
+{
+    if (self.nodeID == nodeID) {
         return self;
     }
-
-    VVBaseNode* obj = nil;
-
-    for (VVBaseNode* item in self.subViews) {
-        if (item.objectID==tagid) {
-            obj = item;
-            break;
-        }else{
-            obj = [item findViewByID:tagid];
-            break;
+    for (VVBaseNode *subNode in self.subNodes) {
+        VVBaseNode *targetNode = [subNode nodeWithID:nodeID];
+        if (targetNode) {
+            return targetNode;
         }
     }
-    return obj;
+    return nil;
 }
 
-- (void)addSubview:(VVBaseNode*)view{
-    [_subViews addObject:view];
-    view.superview = self;
-}
-
-- (void)removeSubView:(VVBaseNode*)view{
-    [_subViews removeObject:view];
-}
-
-- (void)removeFromSuperview{
-    [self.superview removeSubView:self];
-    self.superview = nil;
-}
-
-- (void)setNeedsLayout{
-
-}
-
-- (CGSize)nativeContentSize{
-    return CGSizeZero;
-}
-
-- (void)layoutSubviews
+- (void)addSubNode:(VVBaseNode *)node
 {
-    CGFloat x = self.frame.origin.x;
-    CGFloat y = self.frame.origin.y;
-    _width = _width<0?self.superview.frame.size.width:_width;
-    _height = _height<0?self.superview.frame.size.height:_height;
-    CGFloat a1,a2,w,h;
-    a1 = (int)x*1;
-    a2 = (int)y*1;
-    w = (int)_width*1;
-    h = (int)_height*1;
-    self.frame = CGRectMake(a1, a2, w, h);
-}
-
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
-    CGSize size={0,0};
-    return size;
-}
-
-- (void)autoDim{
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-            self.height = self.width*(self.autoDimY/self.autoDimX);
-            break;
-        case VVAutoDimDirectionY:
-            self.width = self.height*(self.autoDimX/self.autoDimY);
-        default:
-            break;
+    if (nil != node) {
+        [_subNodes addObject:node];
+        node->_superNode = self;
     }
 }
 
-- (void)drawRect:(CGRect)rect{
-
-}
-
-- (void)changeCocoaViewSuperView{
-    if (self.cocoaView.superview && self.visible==VVVisibilityGone) {
-        [self.cocoaView removeFromSuperview];
-    }else if(self.cocoaView.superview==nil && self.visible!=VVVisibilityGone){
-        [(UIView*)self.updateDelegate addSubview:self.cocoaView];
+- (void)removeSubNode:(VVBaseNode*)node
+{
+    if (nil != node && [_subNodes containsObject:node]) {
+        [_subNodes removeObject:node];
+        node->_superNode = nil;
     }
 }
 
-- (BOOL)setIntValue:(int)value forKey:(int)key{
-    BOOL ret = YES;
-    switch (key) {
-
-        case STR_ID_layoutWidth:
-            _widthModle = value;
-            _width = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
-            break;
-        case STR_ID_layoutHeight:
-            _heightModle = value;
-            _height = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
-            break;
-        case STR_ID_paddingLeft:
-            _paddingLeft = value;
-            break;
-        case STR_ID_paddingTop:
-            _paddingTop = value;
-            break;
-        case STR_ID_paddingRight:
-            _paddingRight = value;
-            break;
-        case STR_ID_paddingBottom:
-            _paddingBottom = value;
-            break;
-        case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
-            break;
-        case STR_ID_layoutMarginTop:
-            _marginTop = value;
-            break;
-        case STR_ID_layoutMarginRight:
-            _marginRight = value;
-            break;
-        case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
-            break;
-        case STR_ID_layoutGravity:
-            _layoutGravity = value;
-            break;
-        case STR_ID_id:
-            _objectID = value;
-            break;
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
-            break;
-            
-        case STR_ID_gravity:
-            self.gravity = value;
-            break;
-            
-        case STR_ID_flag:
-            _flag = value;
-            break;
-            
-        case STR_ID_minWidth:
-            _minWidth = value;
-            break;
-        case STR_ID_minHeight:
-            _minHeight = value;
-            break;
-            
-        case STR_ID_uuid:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_uuid:%d",value);
-            #endif
-            break;
-            
-        case STR_ID_autoDimDirection:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimDirection:%d",value);
-            #endif
-            _autoDimDirection = value;
-            break;
-            
-        case STR_ID_autoDimX:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimX:%d",value);
-            #endif
-            _autoDimX = value;
-            break;
-            
-        case STR_ID_autoDimY:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimY:%d",value);
-            #endif
-            _autoDimY = value;
-            break;
-        case STR_ID_layoutRatio:
-            self.layoutRatio = value;
-            break;
-        case STR_ID_visibility:
-            self.visible = value;
-            switch (self.visible) {
-                case VVVisibilityInvisible:
-                    self.hidden = YES;
-                    self.cocoaView.hidden = YES;
-                    break;
-                case VVVisibilityVisible:
-                    self.hidden = NO;
-                    self.cocoaView.hidden = NO;
-                    break;
-                case VVVisibilityGone:
-                    self.hidden = YES;
-                    self.cocoaView.hidden = YES;
-                    break;
-            }
-            [self changeCocoaViewSuperView];
-            break;
-        case STR_ID_layoutDirection:
-            self.layoutDirection = value;
-        default:
-            ret = false;
+- (void)removeFromSuperNode
+{
+    if (nil != self.superNode) {
+        [self.superNode removeSubNode:self];
     }
+}
 
+#pragma mark Update
+- (BOOL)setIntValue:(int)value forKey:(int)key
+{
+    BOOL ret = [self setFloatValue:value forKey:key];
+    if (!ret) {
+        ret = YES;
+        switch (key) {
+            case STR_ID_id:
+                _nodeID = value;
+                break;
+            case STR_ID_visibility:
+                self.visibility = value;
+                break;
+            case STR_ID_autoDimDirection:
+                self.autoDimDirection = value;
+                break;
+            case STR_ID_layoutGravity:
+                self.layoutGravity = value;
+                break;
+            case STR_ID_layoutDirection:
+                self.layoutDirection = value;
+                break;
+            case STR_ID_background:
+                self.backgroundColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
+                break;
+            case STR_ID_borderColor:
+                self.borderColor = [UIColor vv_colorWithARGB:(NSUInteger)value];
+                break;
+            case STR_ID_flag:
+                _flag = value;
+                break;
+            default:
+                ret = NO;
+                break;
+        }
+    }
     return ret;
 }
 
-- (BOOL)setFloatValue:(float)value forKey:(int)key{
+- (BOOL)setFloatValue:(float)value forKey:(int)key
+{
     BOOL ret = YES;
     switch (key) {
-
         case STR_ID_layoutWidth:
-            _widthModle = value;
-            _width = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            self.layoutWidth = value;
             break;
         case STR_ID_layoutHeight:
-            _heightModle = value;
-            _height = value>0?value:0;
-            self.frame = CGRectMake(0, 0, _width, _height);
+            self.layoutHeight = value;
+            break;
+        case STR_ID_autoDimX:
+            self.autoDimX = value;
+            break;
+        case STR_ID_autoDimY:
+            self.autoDimY = value;
             break;
         case STR_ID_paddingLeft:
-            _paddingLeft = value;
+            self.paddingLeft = value;
             break;
         case STR_ID_paddingTop:
-            _paddingTop = value;
+            self.paddingTop = value;
             break;
         case STR_ID_paddingRight:
-            _paddingRight = value;
+            self.paddingRight = value;
             break;
         case STR_ID_paddingBottom:
-            _paddingBottom = value;
+            self.paddingBottom = value;
             break;
         case STR_ID_layoutMarginLeft:
-            _marginLeft = value;
+            self.marginLeft = value;
             break;
         case STR_ID_layoutMarginTop:
-            _marginTop = value;
+            self.marginTop = value;
             break;
         case STR_ID_layoutMarginRight:
-            _marginRight = value;
+            self.marginRight = value;
             break;
         case STR_ID_layoutMarginBottom:
-            _marginBottom = value;
-            break;
-        case STR_ID_layoutGravity:
-            _layoutGravity = value;
-            break;
-        case STR_ID_id:
-            _objectID = value;
-            break;
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithARGB:(int)value];
-            break;
-            
-        case STR_ID_gravity:
-            self.gravity = value;
-            break;
-            
-        case STR_ID_flag:
-            _flag = value;
-            break;
-            
-        case STR_ID_minWidth:
-            _minWidth = value;
-            break;
-        case STR_ID_minHeight:
-            _minHeight = value;
-            break;
-            
-        case STR_ID_uuid:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_uuid:%f",value);
-            #endif
-            break;
-            
-        case STR_ID_autoDimDirection:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimDirection:%f",value);
-            #endif
-            _autoDimDirection = value;
-            break;
-            
-        case STR_ID_autoDimX:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimX:%f",value);
-            #endif
-            _autoDimX = value;
-            break;
-            
-        case STR_ID_autoDimY:
-            #ifdef VV_DEBUG
-                NSLog(@"STR_ID_autoDimY:%f",value);
-            #endif
-            _autoDimY = value;
+            self.marginBottom = value;
             break;
         case STR_ID_layoutRatio:
             self.layoutRatio = value;
             break;
-        case STR_ID_visibility:
-            self.visible = value;
-            switch (self.visible) {
-                case VVVisibilityInvisible:
-                    self.hidden = YES;
-                    self.cocoaView.hidden = YES;
-                    break;
-                case VVVisibilityVisible:
-                    self.hidden = NO;
-                    self.cocoaView.hidden = NO;
-                    break;
-                case VVVisibilityGone:
-                    //
-                    break;
-            }
-            [self changeCocoaViewSuperView];
+        case STR_ID_borderWidth:
+            self.borderWidth = value;
             break;
         default:
-            ret = false;
+            ret = NO;
             break;
     }
-    
     return ret;
 }
 
@@ -433,90 +302,295 @@
 {
     BOOL ret = YES;
     switch (key) {
-
-        case STR_ID_data:
-            break;
-
-        case STR_ID_dataTag:
-            self.dataTag = value;
-            break;
-
         case STR_ID_action:
-            self.action = value;
+            _action = value;
             break;
-
-        case STR_ID_actionParam:
-            self.actionParam = value;
-            break;
-
         case STR_ID_class:
-            self.classString = value;
-            break;
-
-        case STR_ID_name:
-            self.name = value;
-            break;
-
-        case STR_ID_dataUrl:
-            self.dataUrl = value;
-            break;
-        case STR_ID_background:
-            self.backgroundColor = [UIColor vv_colorWithString:value];
+            _className = value;
             break;
         default:
             ret = NO;
+            break;
     }
     return ret;
 }
 
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key{
-    BOOL ret = true;
-    switch (key) {
-        case STR_ID_onClick:
-            break;
-            
-        case STR_ID_onBeforeDataLoad:
-            break;
-            
-        case STR_ID_onAfterDataLoad:
-            break;
-            
-        case STR_ID_onSetData:
-            break;
-            
-        default:
-            ret = false;
-    }
-    
-    return ret;
-}
-
-- (void)reset{
-
-}
-
-- (void)didFinishBinding
+- (BOOL)setStringData:(NSString*)data forKey:(int)key
 {
-    
-}
-
-- (void)dataUpdateFinished{
-    [self layoutSubviews];
-}
-
-- (void)setData:(NSData*)data{
-
-}
-
-- (void)setDataObj:(NSObject*)obj forKey:(int)key{
-
-}
-
-- (void)setUpdateDelegate:(id<VVWidgetAction>)delegate{
-    _updateDelegate = delegate;
-    for (VVBaseNode* subObj in self.subViews) {
-        subObj.updateDelegate = delegate;
+    BOOL ret = YES;
+    switch (key) {
+        case STR_ID_borderColor:
+            self.borderColor = [UIColor vv_colorWithString:data] ?: [UIColor clearColor];
+            break;
+        case STR_ID_background:
+            self.backgroundColor = [UIColor vv_colorWithString:data] ?: [UIColor clearColor];
+            break;
+        default:
+            ret = NO;
+            break;
     }
+    return ret;
+}
+
+- (BOOL)setDataObj:(NSObject *)obj forKey:(int)key
+{
+    // override me
+    return NO;
+}
+
+- (void)reset
+{
+    // override me
+}
+
+- (void)didUpdated
+{
+    // override me
+}
+
+#pragma mark Layout
+
+- (void)setupLayoutAndResizeObserver
+{
+    // 这些宽高相关值被修改时：
+    // 1. 元素本身的尺寸一定会发生更改
+    // 2. 如果元素不是左上对齐，那么位置也会变化，这个会在setNeedsResize里被自动判断并标记为需修改
+    // 3. 父元素子元素的布局相关修改会在setNeedsResize里被自动传递
+    // 4. 有关VHLayout等子元素需要全部重新计算位置的，在对应Layout类里处理
+    VVSetNeedsResizeObserve(layoutWidth);
+    VVSetNeedsResizeObserve(layoutHeight);
+    VVSetNeedsResizeObserve(autoDimX);
+    VVSetNeedsResizeObserve(autoDimY);
+    VVSetNeedsResizeObserve(autoDimDirection);
+    // padding被修改时：
+    // 1. 如果自己会被子元素撑开，那么自己的尺寸要修改
+    // 2. 子元素的位置一定会变，子元素尺寸如果受自己影响，子元素尺寸也要变
+    __weak VVBaseNode *weakSelf = self;
+    VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if ([self needResizeIfSubNodeResize]) {
+            // 进行1的操作
+            [strongSelf setNeedsResize];
+            // 如果进行过1的操作，这里子元素尺寸的改变实际上已经被传递过了
+            // 所以只需要对位置改变进行一次标记就可以
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+            }
+        } else {
+            // 进行上述2的操作
+            for (VVBaseNode *subNode in strongSelf.subNodes) {
+                [subNode setNeedsLayout];
+                if ([subNode needResizeIfSuperNodeResize]) {
+                    [subNode setNeedsResize];
+                }
+            }
+        }
+    };
+    VVBlockObserve(paddingTop, contentChangedBlock);
+    VVBlockObserve(paddingLeft, contentChangedBlock);
+    VVBlockObserve(paddingRight, contentChangedBlock);
+    VVBlockObserve(paddingBottom, contentChangedBlock);
+    // margin被修改时：
+    // 1. 如果父元素被自己撑开，那么父元素尺寸要修改
+    // 2. 自己的位置一定会变，如果自己的尺寸受父元素影响，那么自己的尺寸也要变
+    // 3. 根元素的margin会被无视的，所以一定要有superNode才会继续以上逻辑
+    VVObserverBlock selfChangedBlock = ^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if (strongSelf.superNode) {
+            if ([strongSelf.superNode needResizeIfSubNodeResize]) {
+                // 进行1的操作
+                [strongSelf.superNode setNeedsResize];
+                // 如果进行过1的操作，自己的元素尺寸如果需要修改肯定已经被传递过了
+                // 所以只需要对位置改变进行一次标记就可以
+                [strongSelf setNeedsLayout];
+            } else {
+                // 进行2的操作
+                [strongSelf setNeedsLayout];
+                [strongSelf setNeedsResize];
+            }
+        }
+    };
+    VVBlockObserve(marginTop, selfChangedBlock);
+    VVBlockObserve(marginLeft, selfChangedBlock);
+    VVBlockObserve(marginRight, selfChangedBlock);
+    VVBlockObserve(marginBottom, selfChangedBlock);
+    // visibility被修改时逻辑大体可以使用和margin被修改时一样
+    VVBlockObserve(visibility, selfChangedBlock);
+    // layoutRatio类似match_parent的一种变种，不会对父元素产生尺寸变更才对，逻辑可以简化
+    // 而且因为是RatioLayout下才生效的值，所以加一个保护判断
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutRatio) block:^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if (strongSelf.superNode && [strongSelf.superNode isKindOfClass:[VVRatioLayout class]]) {
+            [strongSelf setNeedsLayout];
+            [strongSelf setNeedsResize];
+        }
+    }];
+    // layoutGravity被修改时尺寸不会变化，只会影响自己的位置
+    VVSelectorObserve(layoutGravity, setNeedsLayout);
+    // layoutDirection被修改时逻辑比较特殊，影响所有弟弟元素的位置
+    // 注意是弟弟元素不是兄弟元素，不过这里为了简化代码直接写成兄弟元素
+    // 而且因为是VH2Layout下才生效的值，所以加一个保护判断
+    [self vv_addObserverForKeyPath:VVKeyPath(layoutDirection) block:^(id _Nonnull value) {
+        __strong VVBaseNode *strongSelf = weakSelf;
+        if (strongSelf.superNode && [strongSelf.superNode isKindOfClass:[VVVH2Layout class]]) {
+            for (VVBaseNode *brotherNode in strongSelf.superNode.subNodes) {
+                [brotherNode setNeedsLayout];
+            }
+        }
+    }];
+    // 递归调用
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode setupLayoutAndResizeObserver];
+    }
+}
+
+- (BOOL)needLayout
+{
+    return _nodeX == CGFLOAT_MIN || _nodeY == CGFLOAT_MIN;
+}
+
+- (BOOL)needResize
+{
+    return _nodeWidth == CGFLOAT_MIN || _nodeHeight == CGFLOAT_MIN;
+}
+
+- (void)setNeedsLayout
+{
+    _nodeX = _nodeY = CGFLOAT_MIN;
+}
+
+- (BOOL)needLayoutIfResize
+{
+    return _layoutGravity & VVGravityNotDefault;
+}
+
+- (BOOL)needResizeIfSuperNodeResize
+{
+    return _layoutWidth == VV_MATCH_PARENT || _layoutHeight == VV_MATCH_PARENT || _layoutRatio > 0;
+}
+
+- (BOOL)needResizeIfSubNodeResize
+{
+    return _layoutWidth == VV_WRAP_CONTENT || _layoutHeight == VV_WRAP_CONTENT;
+}
+
+- (void)setNeedsResize
+{
+    if (self.updatingNeedsResize || [self needResize]) {
+        return;
+    }
+    self.updatingNeedsResize = YES;
+    [self setNeedsResizeNonRecursively];
+    if ([self needLayoutIfResize]) {
+        [self setNeedsLayout];
+    }
+    if (_superNode && [_superNode needResizeIfSubNodeResize]) {
+        [_superNode setNeedsResize];
+    }
+    for (VVBaseNode *subNode in _subNodes) {
+        if ([subNode needResizeIfSuperNodeResize]) {
+            [subNode setNeedsResize];
+        }
+        if ([subNode needLayoutIfResize]) {
+            // 子元素非左上对齐，父元素的尺寸变了，也是要重新计算位置的
+            [subNode setNeedsLayout];
+        }
+    }
+    self.updatingNeedsResize = NO;
+}
+
+- (void)setNeedsResizeNonRecursively
+{
+    _nodeWidth = _nodeHeight = CGFLOAT_MIN;
+}
+
+- (void)setNeedsLayoutAndResizeRecursively
+{
+    [self setNeedsLayout];
+    [self setNeedsResizeNonRecursively];
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode setNeedsLayoutAndResizeRecursively];
+    }
+}
+
+- (void)updateHidden
+{
+    _hidden = _visibility != VVVisibilityVisible;
+    if (_superNode) {
+        _hidden |= _superNode.hidden;
+    }
+    if (self.cocoaView) {
+        self.cocoaView.hidden = _hidden;
+    }
+}
+
+- (void)updateHiddenRecursively
+{
+    [self updateHidden];
+    for (VVBaseNode *subNode in _subNodes) {
+        [subNode updateHiddenRecursively];
+    }
+}
+
+- (void)updateFrame
+{
+    CGFloat x = 0, y = 0;
+    if (_superNode) {
+        x = _superNode.nodeFrame.origin.x;
+        y = _superNode.nodeFrame.origin.y;
+    }
+    self.nodeFrame = CGRectMake(x + _nodeX, y + _nodeY, _nodeWidth, _nodeHeight);
+    if (self.cocoaView) {
+        self.cocoaView.frame = self.nodeFrame;
+    }
+}
+
+- (void)layoutSubviews
+{
+    [self layoutSubNodes];
+}
+
+- (void)layoutSubNodes
+{
+    // override me
+}
+
+- (void)applyAutoDim
+{
+    if (_autoDimX > 0 && _autoDimY > 0) {
+        if (_autoDimDirection == VVAutoDimDirectionX) {
+            _nodeHeight = _nodeWidth / _autoDimX * _autoDimY;
+        } else if (_autoDimDirection == VVAutoDimDirectionY) {
+            _nodeWidth = _nodeHeight / _autoDimY * _autoDimX;
+        }
+    }
+}
+
+- (CGSize)calculateLayoutSize:(CGSize)maxSize
+{
+    return [self calculateSize:maxSize];
+}
+
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    if ([self needResize]) {
+        _nodeWidth = 0;
+        if (_layoutWidth == VV_MATCH_PARENT) {
+            _nodeWidth = maxSize.width - _marginLeft - _marginRight;
+        } else if (_layoutWidth > 0) {
+            _nodeWidth = _layoutWidth;
+        }
+        
+        _nodeHeight = 0;
+        if (_layoutHeight == VV_MATCH_PARENT) {
+            _nodeHeight = maxSize.height - _marginTop - _marginBottom;
+        } else if (_layoutHeight > 0) {
+            _nodeHeight = _layoutHeight;
+        }
+        
+        [self applyAutoDim];
+    }
+    return CGSizeMake(_nodeWidth, _nodeHeight);
 }
 
 @end

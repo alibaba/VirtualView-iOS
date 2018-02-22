@@ -34,7 +34,6 @@
  */
 - (BOOL)isExpression;
 - (void)applyToNode:(nullable VVBaseNode *)node;
-- (void)applyToNode:(nullable VVBaseNode *)node withDict:(nullable NSDictionary *)dict;
-
+- (void)applyToNode:(nullable VVBaseNode *)node withObject:(nullable NSDictionary *)object;
 
 @end

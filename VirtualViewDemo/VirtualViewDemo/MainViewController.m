@@ -7,6 +7,10 @@
 
 #import "MainViewController.h"
 #import "TestViewController.h"
+#import "ContainerViewController.h"
+#import "GridViewController.h"
+#import "PageViewController.h"
+#import "TableViewController.h"
 
 @interface MainViewController ()
 
@@ -20,7 +24,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[ @"NText", @"NImage", @"TmallComponent2" ];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page", @"TableViewCell"];
     }
     return self;
 }
@@ -42,16 +46,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *demoFilename = self.demoArray[indexPath.row];
-    TestViewController *vc = [[TestViewController alloc] initWithFilename:demoFilename];
-    if ([demoFilename isEqualToString:@"TmallComponent2"]) {
-        vc.params = @{
-                      @"type" : demoFilename,
-                      @"imgUrl" : @"https://gw.alicdn.com/tps/TB1Nin9JFXXXXbXaXXXXXXXXXXX-224-224.png",
-                      @"title" : @"test title"
-                      };
-    } else {
-        vc.params = @{ @"type" : demoFilename };
+    NSString *demoName = self.demoArray[indexPath.row];
+    UIViewController *vc;
+    if ([demoName isEqualToString:@"Container"]) {
+        vc = [[ContainerViewController alloc] initWithFilename:demoName];
+    } else if ([demoName isEqualToString:@"Grid"]) {
+        vc = [[GridViewController alloc] initWithFilename:demoName];
+    } else if ([demoName isEqualToString:@"Page"]) {
+        vc = [[PageViewController alloc] initWithFilename:demoName];
+    } else if ([demoName isEqualToString:@"TableViewCell"]) {
+        vc = [[TableViewController alloc] init];
+   } else {
+        vc = [[TestViewController alloc] initWithFilename:demoName];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

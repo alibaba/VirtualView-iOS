@@ -10,6 +10,7 @@
 @interface VVConfig ()
 
 @property (nonatomic, assign) CGFloat pointRatio;
+@property (nonatomic, assign) BOOL alwaysRefresh;
 
 @end
 
@@ -41,6 +42,16 @@
 + (void)setPointRatio:(CGFloat)pointRatio
 {
     [self sharedConfig].pointRatio = pointRatio;
+}
+
++ (BOOL)alwaysRefresh
+{
+    return [self sharedConfig].alwaysRefresh;
+}
+
++ (void)setAlwaysRefresh:(BOOL)alwaysRefresh
+{
+    [self sharedConfig].alwaysRefresh = alwaysRefresh;
 }
 
 @end

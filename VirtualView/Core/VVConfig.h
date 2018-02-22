@@ -23,4 +23,11 @@
  */
 @property (nonatomic, assign, class) CGFloat pointRatio;
 
+/**
+ Always resize and layout whole node tree.
+ VVViewContainer will use this value as its default value.
+ Default value is NO.
+ */
+@property (nonatomic, assign, class) BOOL alwaysRefresh;
+
 @end

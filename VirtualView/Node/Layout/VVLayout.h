@@ -10,7 +10,6 @@
 
 @interface VVLayout : VVBaseNode
 
-@property(strong, nonatomic)VVLayer*   drawLayer;
-@property(strong, nonatomic)UIColor*   borderColor;
+@property (nonatomic, strong) VVLayer *canvasLayer;
 
 @end

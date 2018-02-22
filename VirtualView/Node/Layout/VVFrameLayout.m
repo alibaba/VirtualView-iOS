@@ -7,133 +7,95 @@
 
 #import "VVFrameLayout.h"
 
+@interface VVFrameLayout ()
+
+@property (nonatomic, assign) BOOL updatingNeedsResize;
+
+@end
+
 @implementation VVFrameLayout
-- (void)layoutSubviews{
-    [super layoutSubviews];
-    for (VVBaseNode* vvObj in self.subViews) {
-        if(vvObj.visible==VVVisibilityGone){
+
+- (void)layoutSubNodes
+{
+    CGSize contentSize = self.contentSize;
+    for (VVBaseNode *subNode in self.subNodes) {
+        if (subNode.visibility == VVVisibilityGone) {
+            [subNode updateHiddenRecursively];
             continue;
         }
-        CGFloat pX=self.frame.origin.x+self.paddingLeft,pY=self.frame.origin.y+self.paddingTop;
-        CGFloat blanceW = (self.width-self.paddingLeft-self.paddingRight-vvObj.width-vvObj.marginLeft-vvObj.marginRight)/2.0;
-        CGFloat blanceH = (self.height-self.paddingTop-self.paddingBottom-vvObj.height-vvObj.marginTop-vvObj.marginBottom)/2.0;
-        if((vvObj.layoutGravity&VVGravityHCenter)==VVGravityHCenter){
-            //
-            pX += blanceW<0?0:blanceW;
-        }else if((vvObj.layoutGravity&VVGravityRight)!=0){
-            pX = pX+blanceW*2;//(blanceW<0?0:blanceW)*2.0;
-        }else{
-            pX += 0;
+        CGSize subNodeSize = [subNode calculateSize:contentSize];
+        if ([subNode needLayout]) {
+            if (subNode.layoutGravity & VVGravityHCenter) {
+                CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
+                subNode.nodeX = midX - subNodeSize.width / 2;
+            } else if (subNode.layoutGravity & VVGravityRight) {
+                subNode.nodeX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
+            } else {
+                subNode.nodeX = self.paddingLeft + subNode.marginLeft;
+            }
+            
+            if (subNode.layoutGravity & VVGravityVCenter) {
+                CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
+                subNode.nodeY = midY - subNodeSize.height / 2;
+            } else if (subNode.layoutGravity & VVGravityBottom) {
+                subNode.nodeY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
+            } else {
+                subNode.nodeY = self.paddingTop + subNode.marginTop;
+            }
         }
-        
-        if((vvObj.layoutGravity&VVGravityVCenter)==VVGravityVCenter){
-            //
-            pY += blanceH<0?0:blanceH;
-        }else if((vvObj.layoutGravity&VVGravityBottom)!=0){
-            pY = pY+blanceH*2;//(blanceW<0?0:blanceW)*2.0;
-        }else{
-            pY += 0;
-        }
-        vvObj.frame = CGRectMake(pX+vvObj.marginLeft, pY+vvObj.marginTop, vvObj.width, vvObj.height);
-        [vvObj layoutSubviews];
-        
+        [subNode updateHidden];
+        [subNode updateFrame];
+        [subNode layoutSubNodes];
     }
 }
-- (CGSize)calculateLayoutSize:(CGSize)maxSize{
-    CGFloat maxWidth=0,maxHeight=0;
-    CGSize contentSize = maxSize;
-    
-    if (self.heightModle!=VV_MATCH_PARENT && self.heightModle!=VV_WRAP_CONTENT) {
-        contentSize.height = self.height;
-    }
-    
-    if (self.widthModle!=VV_MATCH_PARENT && self.widthModle!=VV_WRAP_CONTENT) {
-        contentSize.width = self.width;
-    }
-    
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-            contentSize.height = contentSize.width*(self.autoDimY/self.autoDimX);
-            
-            break;
-        case VVAutoDimDirectionY:
-            contentSize.width = contentSize.height*(self.autoDimX/self.autoDimY);
-            break;
-        default:
-            break;
-    }
 
-    contentSize.width -= self.paddingLeft + self.paddingRight;
-    contentSize.height -= self.paddingTop + self.paddingBottom;
-    
-    NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
-    for (VVBaseNode* vvObj in self.subViews) {
-        if (vvObj.visible==VVVisibilityGone) {
-            continue;
-        }else if(self.widthModle==VV_WRAP_CONTENT && vvObj.widthModle==VV_MATCH_PARENT) {
-            [tmpArray addObject:vvObj];
-            continue;
+- (CGSize)calculateSize:(CGSize)maxSize
+{
+    [super calculateSize:maxSize];
+    if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
+        || (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT)) {
+        if (self.nodeWidth <= 0) {
+            self.nodeWidth = maxSize.width - self.marginLeft - self.marginRight;
         }
-        CGSize itemSize = [vvObj calculateLayoutSize:CGSizeMake(contentSize.width-vvObj.marginLeft-vvObj.marginRight, contentSize.height-vvObj.marginTop-vvObj.marginBottom)];
-        itemSize.width+=vvObj.marginLeft+vvObj.marginRight;
-        itemSize.height+=vvObj.marginTop+vvObj.marginBottom;
-        maxWidth = maxWidth<itemSize.width?itemSize.width:maxWidth;
-        maxHeight= maxHeight<itemSize.height?itemSize.height:maxHeight;
+        if (self.nodeHeight <= 0) {
+            self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
+        }
+        CGSize contentSize = self.contentSize;
+        
+        // Calculate size of subNodes.
+        CGFloat maxSubNodeWidth = 0, maxSubNodeHeight = 0; // maximum container size of subNodes
+        for (VVBaseNode *subNode in self.subNodes) {
+            if (subNode.visibility == VVVisibilityGone) {
+                continue;
+            }
+            [subNode calculateSize:contentSize];
+            CGSize subNodeContainerSize = subNode.containerSize;
+            if (subNode.layoutWidth != VV_MATCH_PARENT) {
+                maxSubNodeWidth = MAX(maxSubNodeWidth, subNodeContainerSize.width);
+            }
+            if (subNode.layoutHeight != VV_MATCH_PARENT) {
+                maxSubNodeHeight = MAX(maxSubNodeHeight, subNodeContainerSize.height);
+            }
+        }
+        
+        if (self.layoutWidth == VV_WRAP_CONTENT) {
+            self.nodeWidth = maxSubNodeWidth + self.paddingLeft + self.paddingRight;
+        }
+        if (self.layoutHeight == VV_WRAP_CONTENT) {
+            self.nodeHeight = maxSubNodeHeight + self.paddingTop + self.paddingBottom;
+        }
+        [self applyAutoDim];
+        
+        // Need to resize subNodes.
+        self.updatingNeedsResize = YES;
+        for (VVBaseNode *subNodes in self.subNodes) {
+            if ([subNodes needResizeIfSuperNodeResize]) {
+                [subNodes setNeedsResize];
+            }
+        }
+        self.updatingNeedsResize = NO;
     }
-    
-    switch ((int)self.widthModle) {
-        case VV_WRAP_CONTENT:
-            //
-            self.width = self.paddingRight+self.paddingLeft+maxWidth;
-            break;
-        case VV_MATCH_PARENT:
-            self.width = maxSize.width;
-            
-            break;
-        default:
-            self.width = self.widthModle;
-            break;
-    }
-    
-    self.width = self.width<maxSize.width?self.width:maxSize.width;
-    
-    
-    switch ((int)self.heightModle) {
-        case VV_WRAP_CONTENT:
-            //
-            self.height = self.paddingTop+self.paddingBottom+maxHeight;
-            break;
-        case VV_MATCH_PARENT:
-            self.height = maxSize.height;
-            
-            break;
-        default:
-            self.height = self.heightModle;
-            break;
-    }
-    
-    self.height = self.height<maxSize.height?self.height:maxSize.height;
-    
-    
-    switch (self.autoDimDirection) {
-        case VVAutoDimDirectionX:
-            self.height = self.width*(self.autoDimY/self.autoDimX);
-            break;
-        case VVAutoDimDirectionY:
-            self.width = self.height*(self.autoDimX/self.autoDimY);
-            break;
-        default:
-            break;
-    }
-
-    //[self autoDim];
-    
-    CGSize tmpSize = CGSizeMake(self.width, self.height);
-    for (VVBaseNode* vvObj in tmpArray) {
-        [vvObj calculateLayoutSize:tmpSize];
-    }
-    return CGSizeMake(self.width, self.height);
-    
+    return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
 
 @end

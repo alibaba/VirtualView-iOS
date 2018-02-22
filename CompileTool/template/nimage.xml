@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        orientation="V"
+        layoutWidth="750rp"
+        layoutHeight="match_parent"
+        background="#FFFFFF">
+
+    <NText
+            text="local image"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="local_image"
+            scaleType="center"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <NText
+            text="scaleType = fit_xy"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i1/1910146537/TB2Xluvad3nyKJjSZFEXXXTTFXa_!!1910146537.jpg"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <VText
+            text="scaleType = fit_center"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i4/2215696389/TB2uXtXXGZPyuJjy1zcXXXp1FXa_!!2215696389.jpg"
+            scaleType="fit_center"
+            background="#ffcccc"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <VText
+            text="scaleType = center_crop"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i3/1709193846/TB2W5neXHAlyKJjSZFwXXXtqpXa_!!1709193846.jpg"
+            scaleType="center_crop"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <VText
+            text="scaleType = center"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i3/818931597/TB2otqFaA7myKJjSZFIXXc0OVXa_!!818931597.jpg"
+            scaleType="center"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <VText
+            text="ratio = 2 (width : height = 2 : 1)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i1/1910146537/TB2Xluvad3nyKJjSZFEXXXTTFXa_!!1910146537.jpg"
+            ratio="2"
+            layoutWidth="200"
+            layoutHeight="wrap_content" />
+
+    <VText
+            text="padding"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i4/2215696389/TB2uXtXXGZPyuJjy1zcXXXp1FXa_!!2215696389.jpg"
+            paddingLeft="10"
+            paddingTop="10"
+            paddingRight="20"
+            paddingBottom="20"
+            background="#ffcccc"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <VText
+            text="ratio &amp; padding"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NImage
+            src="https://img.alicdn.com/imgextra/i3/1709193846/TB2W5neXHAlyKJjSZFwXXXtqpXa_!!1709193846.jpg"
+            paddingLeft="5"
+            paddingTop="5"
+            paddingRight="200"
+            paddingBottom="5"
+            background="#ccccff"
+            ratio="2"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content" />/>
+</VHLayout>

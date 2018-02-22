@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        orientation="V"
+        layoutWidth="750rp"
+        layoutHeight="match_parent"
+        background="#FFFFFF">
+
+    <NText
+            text="text only (cannot work)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"/>
+
+    <NText
+            text="wrap content &amp; padding"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            paddingLeft="10"
+            paddingTop="10"
+            paddingRight="20"
+            paddingBottom="20"
+            background="#ccccff"
+            borderWidth="1"
+            borderColor="#FF0000"
+            borderRadius="10"/>
+
+    <NText
+            text="text size &amp; bold"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="20"
+            textColor="#0000FF"
+            layoutWidth="match_parent"
+            layoutHeight="30"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="20"
+            textStyle="bold"
+            layoutWidth="match_parent"
+            layoutHeight="30"/>
+
+    <NText
+            text="bold &amp; italic &amp; strike"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            textStyle="bold|strike"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            textStyle="italic"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            textStyle="italic|strike"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <NText
+            text="gravity (left/center/right)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            gravity="left"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            gravity="h_center"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View"
+            textSize="12"
+            gravity="right"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <NText
+            text="ellipsize (none/start/middle/end)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="none"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="start"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="middle"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            ellipsize="end"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <NText
+            text="fixed lines (lines = 1/2/3/4)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="1"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="2"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="3"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="4"/>
+
+    <NText
+            text="max lines (lines = 0 &amp; maxLines = 1/2/3)"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="1"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="2"/>
+    <NText
+            text="Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View. Hello Virtual View."
+            textSize="12"
+            background="#ccccff"
+            layoutWidth="match_parent"
+            layoutHeight="wrap_content"
+            lines="0"
+            maxLines="3"/>
+
+</VHLayout>

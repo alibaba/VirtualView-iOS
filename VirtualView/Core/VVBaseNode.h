@@ -5,103 +5,145 @@
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "VVDefines.h"
 
+@interface VVBaseNode : NSObject
 
-@protocol NativeViewObject <NSObject>
-- (void)setDataObject:(NSObject*)obj forKey:(int)key;
+@property (nonatomic, assign, readonly) NSInteger nodeID;
+@property (nonatomic, strong) NSString *templateType;
 
-@end
+// self visibility
+@property (nonatomic, assign) VVVisibility visibility;
 
-@protocol VVWidgetObject <NSObject>
-- (CGSize)nativeContentSize;
-- (void)layoutSubviews;
-- (CGSize)calculateLayoutSize:(CGSize)maxSize;
-- (void)dataUpdateFinished;
-@property(nonatomic, assign)CGSize   maxSize;
-@property(nonatomic, strong)NSString* action;
-@property(nonatomic, strong)NSString* actionValue;
-@end
+// self size
+@property (nonatomic, assign) CGFloat layoutWidth; // can be VV_MATCH_PARENT or VV_WARP_CONTENT
+@property (nonatomic, assign) CGFloat layoutHeight; // can be VV_MATCH_PARENT or VV_WARP_CONTENT
+@property (nonatomic, assign) CGFloat autoDimX;
+@property (nonatomic, assign) CGFloat autoDimY;
+@property (nonatomic, assign) VVAutoDimDirection autoDimDirection;
 
-@protocol VVWidgetAction <NSObject>
-- (void)updateDisplayRect:(CGRect)rect;
-//-(id<VVWidgetObject>)hitTest:(CGPoint)point;
-@end
+// content layout
+@property (nonatomic, assign) CGFloat paddingLeft;
+@property (nonatomic, assign) CGFloat paddingRight;
+@property (nonatomic, assign) CGFloat paddingTop;
+@property (nonatomic, assign) CGFloat paddingBottom;
 
+// container layout
+@property (nonatomic, assign) CGFloat marginLeft;
+@property (nonatomic, assign) CGFloat marginRight;
+@property (nonatomic, assign) CGFloat marginTop;
+@property (nonatomic, assign) CGFloat marginBottom;
+@property (nonatomic, assign) VVGravity layoutGravity;
+@property (nonatomic, assign) CGFloat layoutRatio;
+@property (nonatomic, assign) VVDirection layoutDirection;
 
-@interface VVBaseNode : NSObject<VVWidgetObject>
-@property(nonatomic, readonly)NSUInteger  objectID;
-@property(nonatomic, strong)NSString      *name;
-//@property(nonatomic, strong)NSString      *data;
-@property(nonatomic, assign)int           flag;
-@property(nonatomic, assign)int           visible;
-@property(nonatomic, strong)NSString      *dataUrl;
-@property(nonatomic, strong)NSString      *dataTag;
-@property(nonatomic, strong)NSString      *action;
-@property(nonatomic, strong)NSString      *actionValue;
-@property(nonatomic, assign)CGSize        maxSize;
-@property(nonatomic, strong)NSString      *actionParam;
-@property(nonatomic, strong)NSString      *classString;
-@property(nonatomic, weak)  VVBaseNode  *superview;
-@property(nonatomic, strong)UIView        *cocoaView;
-@property(nonatomic, assign)CGRect        frame;
-@property(nonatomic, assign)int           childrenWidth;
-@property(nonatomic, assign)int           childrenHeight;
-@property(nonatomic, assign)CGFloat       alpha;
-@property(nonatomic, assign)BOOL          hidden;
-@property(nonatomic, copy) UIColor        *backgroundColor;
+// other
+@property (nonatomic, assign) VVFlag flag;
+@property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *actionValue;
+@property (nonatomic, strong) NSString *className;
+@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, assign) CGFloat borderWidth;
 
-@property(nonatomic, assign)CGFloat           width;
-@property(nonatomic, assign)CGFloat           height;
-@property(nonatomic, assign)CGFloat           widthModle;//VV_MATCH_PARENT:-1,VV_WRAP_CONTENT:-2
-@property(nonatomic, assign)CGFloat           heightModle;//VV_MATCH_PARENT:-1,VV_WRAP_CONTENT:-2
+// node tree & native view
+@property (nonatomic, weak, readonly) VVBaseNode  *superNode;
+@property (nonatomic, strong, readonly) NSArray<VVBaseNode *> *subNodes;
+@property (nonatomic, strong, readonly) UIView *cocoaView;
 
-@property(nonatomic, assign)int           gravity;
-@property(nonatomic, assign)CGFloat       layoutRatio;
-@property(nonatomic, assign)int           layoutGravity;
-@property(nonatomic, assign)int           autoDimDirection;//0：VVAutoDimDirectionNone，1：VVAutoDimDirectionX，2：VVAutoDimDirectionY
-@property(nonatomic, assign)CGFloat       autoDimX;
-@property(nonatomic, assign)CGFloat       autoDimY;
-@property(nonatomic, assign)int           layoutDirection;
+// root canvas & native view
+@property (nonatomic, weak) CALayer *rootCanvasLayer;
+@property (nonatomic, weak) UIView *rootCocoaView;
 
-@property(nonatomic, assign)int           paddingLeft;
-@property(nonatomic, assign)int           paddingRight;
-@property(nonatomic, assign)int           paddingTop;
-@property(nonatomic, assign)int           paddingBottom;
-
-@property(nonatomic, assign)int           marginLeft;
-@property(nonatomic, assign)int           marginRight;
-@property(nonatomic, assign)int           marginTop;
-@property(nonatomic, assign)int           marginBottom;
-@property(nonatomic, strong)NSMutableDictionary     *userVarDic;
-@property(nonatomic, weak)id<VVWidgetAction>      updateDelegate;
-@property(nonatomic, readonly, copy) NSArray<__kindof VVBaseNode *> *subViews;
-@property(strong, nonatomic)NSMutableDictionary      *cacheInfoDic;
-
+// expression setters
 @property (nonatomic, strong) NSMutableDictionary *expressionSetters;
 
--(id<VVWidgetObject>)hitTest:(CGPoint)pt;
-- (VVBaseNode*)findViewByID:(int)tagid;
-- (void)addSubview:(VVBaseNode*)view;
-- (void)removeSubView:(VVBaseNode*)view;
-- (void)removeFromSuperview;
-- (void)setNeedsLayout;
-- (CGSize)nativeContentSize;
-- (void)layoutSubviews;
-- (CGSize)calculateLayoutSize:(CGSize)maxSize;
-- (void)autoDim;
-- (void)drawRect:(CGRect)rect;
-- (BOOL)setIntValue:(int)value forKey:(int)key;
-- (BOOL)setFloatValue:(float)value forKey:(int)key;
-- (BOOL)setStringValue:(NSString *)value forKey:(int)key;
-- (BOOL)setStringDataValue:(NSString*)value forKey:(int)key;
-
-- (void)reset;
-- (void)didFinishBinding;
-- (void)setData:(NSData*)data;
-- (void)setDataObj:(NSObject*)obj forKey:(int)key;
 - (BOOL)isClickable;
 - (BOOL)isLongClickable;
 - (BOOL)supportExposure;
+- (VVBaseNode *)hitTest:(CGPoint)point;
+
+- (VVBaseNode *)nodeWithID:(NSInteger)nodeID;
+- (void)addSubNode:(VVBaseNode *)node;
+- (void)removeSubNode:(VVBaseNode *)node;
+- (void)removeFromSuperNode;
+
+- (BOOL)setIntValue:(int)value forKey:(int)key;
+- (BOOL)setFloatValue:(float)value forKey:(int)key;
+- (BOOL)setStringValue:(NSString *)value forKey:(int)key;
+- (BOOL)setStringData:(NSString *)data forKey:(int)key;
+- (BOOL)setDataObj:(NSObject *)obj forKey:(int)key;
+- (void)reset;
+- (void)didUpdated;
+
+#pragma mark Layout
+
+// calculated result
+// DO NOT modify these properties unless you know what you are doing.
+@property (nonatomic, assign) CGFloat nodeX;
+@property (nonatomic, assign) CGFloat nodeY;
+@property (nonatomic, assign) CGFloat nodeWidth;
+@property (nonatomic, assign) CGFloat nodeHeight;
+/**
+ hidden state
+ Will be YES if superNode is hidden.
+ Will be updated via updateHidden method in layoutSubNodes method of superNode.
+ */
+@property (nonatomic, assign, readonly) BOOL hidden;
+/**
+ absolute frame relative to root
+ = CGRectMake(superNodeFrameX + nodeX, superNodeFrameY + nodeY, nodeWidth, nodeHeight)
+ Will be updated via updateFrame method in layoutSubNodes method of superNode.
+ */
+@property (nonatomic, assign, readonly) CGRect nodeFrame;
+/**
+ helper method to get node size = CGSizeMake(nodeWidth, nodeHeight)
+ */
+@property (nonatomic, assign, readonly) CGSize nodeSize;
+/**
+ the content maximun size = nodeSize - padding
+ */
+@property (nonatomic, assign, readonly) CGSize contentSize;
+/**
+ the size in container = nodeSize + margin
+ */
+@property (nonatomic, assign, readonly) CGSize containerSize;
+
+- (void)setupLayoutAndResizeObserver NS_REQUIRES_SUPER;
+
+- (BOOL)needLayout;
+- (BOOL)needResize;
+/**
+ Will set this node only.
+ */
+- (void)setNeedsLayout;
+// used by setNeedsResize method
+- (BOOL)needLayoutIfResize;
+- (BOOL)needResizeIfSuperNodeResize;
+- (BOOL)needResizeIfSubNodeResize;
+/**
+ Will set this node.
+ Will affect superNode & subNodes if it is necessary.
+ */
+- (void)setNeedsResize;
+/**
+ Will set this node only.
+ */
+- (void)setNeedsResizeNonRecursively;
+/**
+ Will set whole node tree, please call this method with root node.
+ */
+- (void)setNeedsLayoutAndResizeRecursively;
+
+- (void)updateHidden NS_REQUIRES_SUPER;
+- (void)updateHiddenRecursively;
+- (void)updateFrame NS_REQUIRES_SUPER;
+- (void)layoutSubNodes;
+- (void)layoutSubviews __deprecated_msg("use layoutSubNodes");
+
+- (void)applyAutoDim;
+- (CGSize)calculateSize:(CGSize)maxSize;
+- (CGSize)calculateLayoutSize:(CGSize)maxSize __deprecated_msg("use calculateSize:");
+
 @end

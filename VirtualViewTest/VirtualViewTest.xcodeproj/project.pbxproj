@@ -11,9 +11,9 @@
 		920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B12015B704004F7966 /* ExpressionTest.m */; };
 		920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8B420173E89004F7966 /* ColorUtilsTest.m */; };
 		920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 920BF8DA20184B54004F7966 /* StringMapperTest.m */; };
+		921CB845202AB0A4000F9B5E /* ObserverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB844202AB0A4000F9B5E /* ObserverTest.m */; };
 		926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B40432004950B0003D88E /* BinaryReaderTest.m */; };
 		926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */; };
-		926CFAC82008BE25003C0BCE /* icon.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFAC72008BE25003C0BCE /* icon.out */; };
 		926CFAD1200CCBDE003C0BCE /* RatioLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACA200CCBDE003C0BCE /* RatioLayout.out */; };
 		926CFAD2200CCBDE003C0BCE /* FrameLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACB200CCBDE003C0BCE /* FrameLayout.out */; };
 		926CFAD3200CCBDE003C0BCE /* NLine.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACC200CCBDE003C0BCE /* NLine.out */; };
@@ -21,6 +21,7 @@
 		926CFAD5200CCBDE003C0BCE /* NImage.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACE200CCBDE003C0BCE /* NImage.out */; };
 		926CFAD6200CCBDE003C0BCE /* NText.out in Resources */ = {isa = PBXBuildFile; fileRef = 926CFACF200CCBDE003C0BCE /* NText.out */; };
 		926CFAD8200CCC30003C0BCE /* TemplateManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 926CFAD7200CCC30003C0BCE /* TemplateManagerTest.m */; };
+		92D80D142036B3DB00398A2B /* GridItem.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D132036B3DB00398A2B /* GridItem.out */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,11 +30,11 @@
 		920BF8B12015B704004F7966 /* ExpressionTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpressionTest.m; sourceTree = "<group>"; };
 		920BF8B420173E89004F7966 /* ColorUtilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorUtilsTest.m; sourceTree = "<group>"; };
 		920BF8DA20184B54004F7966 /* StringMapperTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringMapperTest.m; sourceTree = "<group>"; };
+		921CB844202AB0A4000F9B5E /* ObserverTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObserverTest.m; sourceTree = "<group>"; };
 		926B40402004950B0003D88E /* VirtualViewTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualViewTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		926B40432004950B0003D88E /* BinaryReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryReaderTest.m; sourceTree = "<group>"; };
 		926B40452004950B0003D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryLoaderTest.m; sourceTree = "<group>"; };
-		926CFAC72008BE25003C0BCE /* icon.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = icon.out; sourceTree = "<group>"; };
 		926CFACA200CCBDE003C0BCE /* RatioLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = RatioLayout.out; sourceTree = "<group>"; };
 		926CFACB200CCBDE003C0BCE /* FrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = FrameLayout.out; sourceTree = "<group>"; };
 		926CFACC200CCBDE003C0BCE /* NLine.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NLine.out; sourceTree = "<group>"; };
@@ -41,6 +42,7 @@
 		926CFACE200CCBDE003C0BCE /* NImage.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NImage.out; sourceTree = "<group>"; };
 		926CFACF200CCBDE003C0BCE /* NText.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NText.out; sourceTree = "<group>"; };
 		926CFAD7200CCC30003C0BCE /* TemplateManagerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TemplateManagerTest.m; sourceTree = "<group>"; };
+		92D80D132036B3DB00398A2B /* GridItem.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = GridItem.out; sourceTree = "<group>"; };
 		F02F4632E61BA36C34599908 /* libPods-VirtualViewTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualViewTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,11 +91,12 @@
 				926CFAB1200760B4003C0BCE /* Resources */,
 				926B40432004950B0003D88E /* BinaryReaderTest.m */,
 				926CFAC52008BDCB003C0BCE /* BinaryLoaderTest.m */,
+				920BF8B420173E89004F7966 /* ColorUtilsTest.m */,
 				920BF8B12015B704004F7966 /* ExpressionTest.m */,
+				921CB844202AB0A4000F9B5E /* ObserverTest.m */,
 				920BF8DA20184B54004F7966 /* StringMapperTest.m */,
 				926CFAD7200CCC30003C0BCE /* TemplateManagerTest.m */,
 				926B40452004950B0003D88E /* Info.plist */,
-				920BF8B420173E89004F7966 /* ColorUtilsTest.m */,
 			);
 			path = VirtualViewTest;
 			sourceTree = "<group>";
@@ -101,13 +104,13 @@
 		926CFAB1200760B4003C0BCE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92D80D132036B3DB00398A2B /* GridItem.out */,
 				926CFACE200CCBDE003C0BCE /* NImage.out */,
 				926CFACC200CCBDE003C0BCE /* NLine.out */,
 				926CFACF200CCBDE003C0BCE /* NText.out */,
 				926CFACB200CCBDE003C0BCE /* FrameLayout.out */,
 				926CFACA200CCBDE003C0BCE /* RatioLayout.out */,
 				926CFACD200CCBDE003C0BCE /* VHLayout.out */,
-				926CFAC72008BE25003C0BCE /* icon.out */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -179,11 +182,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92D80D142036B3DB00398A2B /* GridItem.out in Resources */,
 				926CFAD3200CCBDE003C0BCE /* NLine.out in Resources */,
 				926CFAD1200CCBDE003C0BCE /* RatioLayout.out in Resources */,
 				926CFAD6200CCBDE003C0BCE /* NText.out in Resources */,
 				926CFAD4200CCBDE003C0BCE /* VHLayout.out in Resources */,
-				926CFAC82008BE25003C0BCE /* icon.out in Resources */,
 				926CFAD2200CCBDE003C0BCE /* FrameLayout.out in Resources */,
 				926CFAD5200CCBDE003C0BCE /* NImage.out in Resources */,
 			);
@@ -250,6 +253,7 @@
 				920BF8B22015B704004F7966 /* ExpressionTest.m in Sources */,
 				926B40442004950B0003D88E /* BinaryReaderTest.m in Sources */,
 				920BF8B520173E89004F7966 /* ColorUtilsTest.m in Sources */,
+				921CB845202AB0A4000F9B5E /* ObserverTest.m in Sources */,
 				920BF8DB20184B54004F7966 /* StringMapperTest.m in Sources */,
 				926CFAD8200CCC30003C0BCE /* TemplateManagerTest.m in Sources */,
 				926CFAC62008BDCB003C0BCE /* BinaryLoaderTest.m in Sources */,

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        layoutHeight="wrap_content"
+        layoutWidth="match_parent">
+    <NImage
+            src="${imgUrl}"
+            layoutWidth="20"
+            layoutHeight="20"
+            layoutMarginRight="10"
+            layoutGravity="right|v_center"/>
+    <NText
+            text="${title}"
+            textSize="@{${size} ? ${size} : 12}"
+            layoutMarginLeft="10"
+            layoutMarginTop="12"
+            layoutMarginBottom="12"
+            layoutMarginRight="@{${imgUrl} ? 40 : 10}"
+            background="#eeeeff"
+            layoutWidth="match_parent"
+            lines="0"
+            maxLines="3"
+            layoutHeight="wrap_content"/>
+</FrameLayout>

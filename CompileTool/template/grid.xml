@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        layoutWidth="750rp"
+        layoutHeight="220"
+        background="#FFFFFF"
+        orientation="V"
+        flag="flag_clickable|flag_longclickable">
+
+    <VText
+            text="Grid"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <Grid
+            layoutWidth="match_parent"
+            layoutHeight="200"
+            paddingLeft="20"
+            paddingTop="10"
+            paddingRight="20"
+            paddingBottom="10"
+            background="#ffeeee"
+            itemHorizontalMargin="5"
+            colCount="3"
+            itemHeight="180"
+            dataTag="${data}"/>
+
+</VHLayout>

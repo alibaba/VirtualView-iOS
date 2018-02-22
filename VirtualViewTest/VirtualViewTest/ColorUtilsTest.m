@@ -2,7 +2,7 @@
 //  ColorUtilsTest.m
 //  VirtualViewTest
 //
-//  Created by HarrisonXi on 2018/1/23.
+//  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -35,23 +35,23 @@
     assertThat([UIColor vv_colorWithARGB:0xFFFF0000], equalTo([UIColor redColor]));
     assertThat([UIColor vv_colorWithARGB:0xFF00FF00], equalTo([UIColor greenColor]));
     assertThat([UIColor vv_colorWithARGB:0xFF0000FF], equalTo([UIColor blueColor]));
-    assertThat([UIColor vv_colorWithARGB:0xFF0000], equalTo([UIColor colorWithRed:1 green:0 blue:0 alpha:0]));
-    assertThat([UIColor vv_colorWithARGB:0xFF00], equalTo([UIColor colorWithRed:0 green:1 blue:0 alpha:0]));
+    assertThat([UIColor vv_colorWithARGB:0xFF0000], equalTo([UIColor clearColor]));
+    assertThat([UIColor vv_colorWithARGB:0xFF00], equalTo([UIColor clearColor]));
 }
 
 - (void)testStringColor {
     assertThat([UIColor vv_colorWithString:@"0xFF0000"], equalTo([UIColor redColor]));
     assertThat([UIColor vv_colorWithString:@"0x00FF00"], equalTo([UIColor greenColor]));
     assertThat([UIColor vv_colorWithString:@"0xFF0000FF"], equalTo([UIColor blueColor]));
-    assertThat([UIColor vv_colorWithString:@"0x00FF0000"], equalTo([UIColor colorWithRed:1 green:0 blue:0 alpha:0]));
+    assertThat([UIColor vv_colorWithString:@"0x00FF0000"], equalTo([UIColor clearColor]));
     assertThat([UIColor vv_colorWithString:@"#FF0000"], equalTo([UIColor redColor]));
     assertThat([UIColor vv_colorWithString:@"#00FF00"], equalTo([UIColor greenColor]));
     assertThat([UIColor vv_colorWithString:@"#FF0000FF"], equalTo([UIColor blueColor]));
-    assertThat([UIColor vv_colorWithString:@"#0000FF00"], equalTo([UIColor colorWithRed:0 green:1 blue:0 alpha:0]));
+    assertThat([UIColor vv_colorWithString:@"#0000FF00"], equalTo([UIColor clearColor]));
     assertThat([UIColor vv_colorWithString:@"FF0000"], equalTo([UIColor redColor]));
     assertThat([UIColor vv_colorWithString:@"00FF00"], equalTo([UIColor greenColor]));
     assertThat([UIColor vv_colorWithString:@"FF0000FF"], equalTo([UIColor blueColor]));
-    assertThat([UIColor vv_colorWithString:@"000000FF"], equalTo([UIColor colorWithRed:0 green:0 blue:1 alpha:0]));
+    assertThat([UIColor vv_colorWithString:@"000000FF"], equalTo([UIColor clearColor]));
     assertThat([UIColor vv_colorWithString:@"0xF00"], nilValue());
     assertThat([UIColor vv_colorWithString:@"#0F0"], nilValue());
     assertThat([UIColor vv_colorWithString:@"00F"], nilValue());

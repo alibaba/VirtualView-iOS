@@ -20,6 +20,10 @@
 + (UIColor *)vv_colorWithARGB:(NSUInteger)argb
 {
     CGFloat alpha = ((argb & 0xFF000000) >> 24) / 255.0;
+    if (alpha == 0) {
+        return [UIColor clearColor];
+    }
+    
     CGFloat red = ((argb & 0xFF0000) >> 16) / 255.0;
     CGFloat green = ((argb & 0xFF00) >> 8) / 255.0;
     CGFloat blue = (argb & 0xFF) / 255.0;

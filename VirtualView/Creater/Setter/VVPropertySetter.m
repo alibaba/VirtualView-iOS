@@ -16,6 +16,9 @@
         _key = key;
         _name = [VVBinaryStringMapper stringForKey:key];
         if (!_name) {
+#ifdef VV_DEBUG
+            NSLog(@"VVPropertySetter - Key does not match a string: %d", key);
+#endif
             _name = [NSString stringWithFormat:@"%d", key];
         }
     }
@@ -36,11 +39,11 @@
 {
     // override me
     if ([self isExpression] == YES) {
-        [self applyToNode:node withDict:nil];
+        [self applyToNode:node withObject:nil];
     }
 }
 
-- (void)applyToNode:(VVBaseNode *)node withDict:(NSDictionary *)dict
+- (void)applyToNode:(VVBaseNode *)node withObject:(nullable NSDictionary *)object
 {
     // override me
     if ([self isExpression] == NO) {

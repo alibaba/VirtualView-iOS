@@ -53,11 +53,18 @@
             @"tag", @"text", @"textColor", @"textSize", @"textStyle", @"this", @"TMNImage", @"TMVImage",
             @"type", @"typeface", @"uuid", @"var", @"VGraph", @"VH", @"VH2Layout", @"VHLayout", @"VImage",
             @"visibility", @"VLine", @"vList", @"VText", @"VTime", @"waterfall", @"while"
+#ifdef VV_ALIBABA
+            , @"height", @"marginBottom", @"marginLeft", @"marginRight", @"marginTop", @"videoInfo",
+            @"VVNavtiveViewContainer", @"width"
+#endif
         ];
         _mapperDict = [NSMutableDictionary dictionaryWithCapacity:strings.count];
         for (NSString *string in strings) {
             [_mapperDict setObject:string forKey:@([VVBinaryStringMapper hashOfString:string])];
         }
+#ifdef VV_ALIBABA
+        [_mapperDict setObject:@"inMainThread" forKey:@(STR_ID_inMainThread)];
+#endif
     }
     return self;
 }

@@ -34,7 +34,11 @@
 
 - (void)applyToNode:(VVBaseNode *)node
 {
-    [node setStringValue:self.value forKey:self.key];
+    BOOL handled;
+    handled = [node setStringValue:self.value forKey:self.key];
+#ifdef VV_DEBUG
+    NSAssert(handled == YES, @"Property is not handled.");
+#endif
 }
 
 @end

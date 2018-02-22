@@ -33,7 +33,7 @@
  Alpha value always take effect.
 
  @param  argb  UInteger value.
- @return       Color.
+ @return       Color. Will discard RGB value if alpha is zero.
  */
 + (nonnull UIColor *)vv_colorWithARGB:(NSUInteger)argb;
 

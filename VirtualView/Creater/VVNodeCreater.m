@@ -11,6 +11,11 @@
 
 @implementation VVNodeCreater
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; nodeClassName = %@>", self.class, self, self.nodeClassName];
+}
+
 - (NSMutableArray<VVPropertySetter *> *)propertySetters
 {
     if (!_propertySetters) {
@@ -52,7 +57,7 @@
     
     for (VVNodeCreater *creater in self.subCreaters) {
         VVBaseNode *subNode = [creater createNodeTree];
-        [node addSubview:subNode];
+        [node addSubNode:subNode];
     }
     
     return node;
