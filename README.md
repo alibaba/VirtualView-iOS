@@ -30,11 +30,11 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 
 Use VirtualView alone:
 
-    pod 'VirtualView', '~> 1.1'
+    pod 'VirtualView'
 
 Use VirtualView with [Tangram](https://github.com/alibaba/Tangram-iOS):
 
-    pod 'Tangram', '~> 2.1'
+    pod 'Tangram'
 
 CocoaPods will install VirtualView as a part of Tangram 2.x.
 
@@ -72,6 +72,10 @@ self.viewContainer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1000);
 
 See more details in the demo project.
 
-## Tools
+## XML Compile Tools
+
+An executable jar is in the CompileTool path. In the demo project, we use bash script to sync XML template changes. You can find the script here:
+
+![compile_tools_script](https://github.com/alibaba/VirtualView-iOS/raw/master/README/compile_tools_script.png)
 
 See more details [here](https://github.com/alibaba/virtualview_tools).
