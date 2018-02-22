@@ -47,27 +47,40 @@ Or you can download source codes from [releases page](https://github.com/alibaba
 1. Load component template from out file.
 
 ```objective-c
-if (![[VVTemplateManager sharedManager].loadedTypes containsObject:@"icon"]) {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"icon" ofType:@"out"];
-    [[VVTemplateManager sharedManager] loadTemplateFile:path forType:nil];
+if (![[VVTemplateManager sharedManager].loadedTypes containsObject:@"icon_type"]) {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"icon_file" ofType:@"out"];
+    [[VVTemplateManager sharedManager] loadTemplateFile:path forType:@"type_alias"];
 }
 ```
 
 2. Create component.
 
 ```objective-c
-self.viewContainer = [VVViewContainer viewContainerWithTemplateType:@"icon"];
+self.viewContainer = [VVViewContainer viewContainerWithTemplateType:@"icon_type"];
 [self.view addSubview:self.viewContainer];
 ```
 
-3. Bind data and calc the layout.
+3. Bind data and calc the layout (fixed size).
 
 ```objective-c
 self.viewContainer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1000);
 [self.viewContainer update:@{
-    @"type" : @"icon",
+    @"type" : @"icon-type",
     @"imgUrl" : @"https://test.com/test.png"
 }];
+```
+
+4. If you want to clac size.
+
+```objective-c
+[self.viewContainer updateData:@{
+    @"type" : @"icon-type",
+    @"imgUrl" : @"https://test.com/test.png"
+}];
+CGSize size = CGSizeMake(MAX_WIDTH, MAX_HEIGHT);
+size = [self.viewContainer estimatedSize:size];
+self.viewContainer.frame = CGRectMake(0, 0, size.width, size.height);
+[self.viewContainer updateLayout];
 ```
 
 See more details in the demo project.
