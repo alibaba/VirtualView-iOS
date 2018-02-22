@@ -11,10 +11,10 @@
 #define VV_VERSION  10100 // 1.1.0
 
 #ifdef DEBUG
-//#define VV_DEBUG    1
+#define VV_DEBUG    1
 #endif
 
-#define VV_ALIBABA  1
+//#define VV_ALIBABA  1
 
 #import "NSObject+VVObserver.h"
 #import "UIColor+VirtualView.h"
