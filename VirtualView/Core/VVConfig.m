@@ -6,6 +6,9 @@
 //
 
 #import "VVConfig.h"
+#ifdef VV_ALIBABA
+#import "Orange.h"
+#endif
 
 @interface VVConfig ()
 
@@ -30,6 +33,10 @@
 {
     if (self = [super init]) {
         _pointRatio = [UIScreen mainScreen].bounds.size.width / 750;
+#ifdef VV_ALIBABA
+        NSString *alwaysRefreshConfig = [Orange getConfigByGroupName:@"tangram" key:@"vv_forceRefresh" defaultConfig:nil isDefault:nil];
+        _alwaysRefresh = [alwaysRefreshConfig integerValue] != 0;
+#endif
     }
     return self;
 }
