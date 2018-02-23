@@ -33,6 +33,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self vv_removeAllObservers];
+}
+
 - (void)setVv_lineWidth:(CGFloat)vv_lineWidth
 {
     _vv_lineWidth = vv_lineWidth > 0 ? vv_lineWidth : 0;

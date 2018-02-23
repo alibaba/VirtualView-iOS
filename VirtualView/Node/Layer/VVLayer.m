@@ -37,6 +37,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self vv_removeAllObservers];
+}
+
 - (void)setVv_borderWidth:(CGFloat)vv_borderWidth
 {
     _vv_borderWidth = vv_borderWidth > 0 ? vv_borderWidth : 0;

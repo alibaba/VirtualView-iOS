@@ -40,6 +40,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self vv_removeAllObservers];
+}
+
 - (NSString *)layoutWidthString
 {
     if (self.layoutWidth == VV_MATCH_PARENT) {

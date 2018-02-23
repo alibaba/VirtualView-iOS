@@ -43,24 +43,34 @@
 
 - (void)vv_removeObserverForKeyPath:(NSString *)keyPath
 {
+    NSMutableArray *observers = objc_getAssociatedObject(self, @"vv_observers");
+    if (!observers) {
+        return;
+    }
+    
     NSMutableSet *toBeRemoved = [NSMutableSet set];
-    for (VVObserver *observer in self.vv_observers) {
+    for (VVObserver *observer in observers) {
         if ([observer.name isEqualToString:keyPath]) {
             [toBeRemoved addObject:observer];
         }
     }
     for (VVObserver *observer in toBeRemoved) {
         [self removeObserver:observer forKeyPath:keyPath context:VVObserverContext];
-        [self.vv_observers removeObject:observer];
+        [observers removeObject:observer];
     }
 }
 
 - (void)vv_removeAllObservers
 {
-    for (VVObserver *observer in self.vv_observers) {
+    NSMutableArray *observers = objc_getAssociatedObject(self, @"vv_observers");
+    if (!observers) {
+        return;
+    }
+    
+    for (VVObserver *observer in observers) {
         [self removeObserver:observer forKeyPath:observer.name context:VVObserverContext];
     }
-    [self.vv_observers removeAllObjects];
+    [observers removeAllObjects];
 }
 
 @end
