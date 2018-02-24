@@ -17,12 +17,12 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 ![feature](https://github.com/alibaba/VirtualView-iOS/raw/master/README/feature.png)
 
 1. Write component via XML.
-2. Compile XML to a out (binary) file.
-3. Load out file in iOS application.
+2. Compile XML to a .out (binary) file.
+3. Load .out file in iOS application.
 4. Create component from loaded template and bind data to it.
 5. Show the component.
 
-简单总结起来就是用 XML 描述一个组件，用我们提供的工具编译成 out 二进制文件，在集成了 VirtualView 的 App 里直接加载 out 文件就可以得到一个组件，然后像使用普通 UIView 一样使用它就好了。
+简单总结起来就是用 XML 描述一个组件，用我们提供的工具编译成 .out 二进制文件，在集成了 VirtualView 的 App 里直接加载 .out 文件就可以得到一个组件，然后像使用普通 UIView 一样使用它就好了。
 
 ## Install
 
@@ -44,7 +44,7 @@ Or you can download source codes from [releases page](https://github.com/alibaba
 
 ## How to use
 
-1. Load component template from out file.
+1. Load component template from .out file.
 
 ```objective-c
 if (![[VVTemplateManager sharedManager].loadedTypes containsObject:@"icon_type"]) {
