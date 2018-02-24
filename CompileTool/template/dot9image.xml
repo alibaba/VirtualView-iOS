@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VHLayout
+        orientation="V"
+        layoutWidth="750rp"
+        layoutHeight="500"
+        background="#FFFFFF">
+
+    <NText
+            text="local image"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="original image"
+            textSize="10"
+            textColor="#666666"
+            paddingLeft="5"
+            layoutWidth="match_parent"
+            layoutHeight="16"/>
+    <NImage
+            src="right_bubble"
+            layoutMarginLeft="5"
+            layoutWidth="96"
+            layoutHeight="40" />
+    <NText
+            text=".9 image"
+            textSize="10"
+            textColor="#666666"
+            paddingLeft="5"
+            layoutWidth="match_parent"
+            layoutHeight="16"/>
+    <Dot9Image
+            src="right_bubble"
+            layoutMarginTop="5"
+            layoutMarginLeft="5"
+            layoutMarginRight="5"
+            dot9Left="8"
+            dot9Top="31"
+            dot9Bottom="8"
+            dot9Right="15"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+
+    <NText
+            text="http image"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+    <NText
+            text="original image"
+            textSize="10"
+            textColor="#666666"
+            paddingLeft="5"
+            layoutWidth="match_parent"
+            layoutHeight="16"/>
+    <NImage
+            src="https://gw.alicdn.com/tfs/TB1S2p4aGmWBuNjy1XaXXXCbXXa-136-40.png"
+            layoutMarginLeft="5"
+            layoutWidth="68"
+            layoutHeight="20" />
+    <NText
+            text=".9 image"
+            textSize="10"
+            textColor="#666666"
+            paddingLeft="5"
+            layoutWidth="match_parent"
+            layoutHeight="16"/>
+    <Dot9Image
+            src="https://gw.alicdn.com/tfs/TB1S2p4aGmWBuNjy1XaXXXCbXXa-136-40.png"
+            layoutMarginTop="5"
+            layoutMarginLeft="5"
+            layoutMarginRight="5"
+            dot9Scale="2"
+            dot9Left="18"
+            dot9Top="11"
+            dot9Bottom="7"
+            dot9Right="7"
+            layoutWidth="match_parent"
+            layoutHeight="100" />
+</VHLayout>

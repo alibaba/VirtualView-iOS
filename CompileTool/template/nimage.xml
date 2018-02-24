@@ -125,5 +125,5 @@
             background="#ccccff"
             ratio="2"
             layoutWidth="match_parent"
-            layoutHeight="wrap_content" />/>
+            layoutHeight="wrap_content" />
 </VHLayout>

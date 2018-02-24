@@ -7,7 +7,6 @@
 
 #import "NVImageView.h"
 #import "UIColor+VirtualView.h"
-#import "VVPropertyExpressionSetter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #ifdef VV_ALIBABA

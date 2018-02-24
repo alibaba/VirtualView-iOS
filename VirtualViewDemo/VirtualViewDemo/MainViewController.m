@@ -11,6 +11,8 @@
 #import "GridViewController.h"
 #import "PageViewController.h"
 #import "TableViewController.h"
+#import <VirtualView/VVNodeClassMapper.h>
+#import <VirtualView/VVBinaryStringMapper.h>
 
 @interface MainViewController ()
 
@@ -24,9 +26,21 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page", @"TableViewCell"];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page", @"TableViewCell", @"Dot9Image"];
+        
+        [self registerVV];
     }
     return self;
+}
+
+- (void)registerVV
+{
+    [VVNodeClassMapper registerClassName:@"Dot9ImageView" forID:1001];
+    [VVBinaryStringMapper registerString:@"dot9Left"];
+    [VVBinaryStringMapper registerString:@"dot9Top"];
+    [VVBinaryStringMapper registerString:@"dot9Right"];
+    [VVBinaryStringMapper registerString:@"dot9Bottom"];
+    [VVBinaryStringMapper registerString:@"dot9Scale"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

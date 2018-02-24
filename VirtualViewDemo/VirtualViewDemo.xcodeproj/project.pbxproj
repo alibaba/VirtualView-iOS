@@ -34,6 +34,8 @@
 		92D80D162037CDBF00398A2B /* TextCell.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D152037CDBF00398A2B /* TextCell.out */; };
 		92D80D182037CE9300398A2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D172037CE9300398A2B /* Media.xcassets */; };
 		92D80D1B2037CF4800398A2B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D80D1A2037CF4800398A2B /* TableViewController.m */; };
+		92D80D9820410C7900398A2B /* Dot9Image.out in Resources */ = {isa = PBXBuildFile; fileRef = 92D80D9720410C7800398A2B /* Dot9Image.out */; };
+		92D80D9B20410D7F00398A2B /* Dot9ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D80D9A20410D7F00398A2B /* Dot9ImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +78,9 @@
 		92D80D172037CE9300398A2B /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		92D80D192037CF4800398A2B /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		92D80D1A2037CF4800398A2B /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		92D80D9720410C7800398A2B /* Dot9Image.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dot9Image.out; sourceTree = "<group>"; };
+		92D80D9920410D7F00398A2B /* Dot9ImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dot9ImageView.h; sourceTree = "<group>"; };
+		92D80D9A20410D7F00398A2B /* Dot9ImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dot9ImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +127,6 @@
 				92D80CF22030646900398A2B /* CompileTool */,
 				92D80CE12030228100398A2B /* Resources */,
 				926B4008200396DB0003D88E /* AppDelegate.h */,
-				926B4016200396DB0003D88E /* Info.plist */,
 				926B4009200396DB0003D88E /* AppDelegate.m */,
 				926B401E200397AA0003D88E /* MainViewController.h */,
 				926B402A200397AB0003D88E /* MainViewController.m */,
@@ -136,6 +140,9 @@
 				92D80D0D2035542300398A2B /* PageViewController.m */,
 				92D80D192037CF4800398A2B /* TableViewController.h */,
 				92D80D1A2037CF4800398A2B /* TableViewController.m */,
+				92D80D9920410D7F00398A2B /* Dot9ImageView.h */,
+				92D80D9A20410D7F00398A2B /* Dot9ImageView.m */,
+				926B4016200396DB0003D88E /* Info.plist */,
 				926B4011200396DB0003D88E /* Assets.xcassets */,
 				926B4013200396DB0003D88E /* LaunchScreen.storyboard */,
 				926B4017200396DB0003D88E /* main.m */,
@@ -160,6 +167,7 @@
 				92D80D092035538E00398A2B /* Page.out */,
 				92D80D082035538D00398A2B /* PageItem.out */,
 				92D80D152037CDBF00398A2B /* TextCell.out */,
+				92D80D9720410C7800398A2B /* Dot9Image.out */,
 				92D80CFA2032E67A00398A2B /* local_image.png */,
 				92D80D172037CE9300398A2B /* Media.xcassets */,
 			);
@@ -251,6 +259,7 @@
 				92D80CE82030228100398A2B /* FrameLayout.out in Resources */,
 				92D80CED2030228100398A2B /* VHLayout.out in Resources */,
 				92D80D0120348C2200398A2B /* GridItem.out in Resources */,
+				92D80D9820410C7900398A2B /* Dot9Image.out in Resources */,
 				926B4012200396DB0003D88E /* Assets.xcassets in Resources */,
 				92D80D0020348C2200398A2B /* Grid.out in Resources */,
 				92D80D182037CE9300398A2B /* Media.xcassets in Resources */,
@@ -336,6 +345,7 @@
 				926B400A200396DB0003D88E /* AppDelegate.m in Sources */,
 				926B4034200397AB0003D88E /* MainViewController.m in Sources */,
 				92D80D0720348CC700398A2B /* GridViewController.m in Sources */,
+				92D80D9B20410D7F00398A2B /* Dot9ImageView.m in Sources */,
 				92D80D0420348CBA00398A2B /* ContainerViewController.m in Sources */,
 				92D80D0E2035542300398A2B /* PageViewController.m in Sources */,
 				92D80D1B2037CF4800398A2B /* TableViewController.m in Sources */,
