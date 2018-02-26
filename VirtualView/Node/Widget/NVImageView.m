@@ -7,6 +7,7 @@
 
 #import "NVImageView.h"
 #import "UIColor+VirtualView.h"
+#import "VVPropertyExpressionSetter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #ifdef VV_ALIBABA
@@ -142,6 +143,16 @@
     }
 }
 
+- (void)setSrc:(NSString *)src
+{
+    if ([_src isEqualToString:src] == NO) {
+        _src = src;
+        self.imageView.image = nil;
+        [self.imageView sd_setImageWithURL:nil];
+        self.needReload = YES;
+    }
+}
+
 #ifdef VV_ALIBABA
 - (void)updateSrc
 {
@@ -218,13 +229,6 @@
         }
     }
     return ret;
-}
-
-- (void)reset
-{
-    self.imageView.image = nil;
-    [self.imageView sd_setImageWithURL:nil];
-    self.needReload = YES;
 }
 
 - (void)setupLayoutAndResizeObserver
