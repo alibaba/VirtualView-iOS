@@ -226,11 +226,12 @@
             } else {
                 subNode.nodeY = self.paddingTop + subNode.marginTop;
             }
-        }
-        if (self.orientation == VVOrientationHorizontal) {
-            subNode.nodeX += self.nodeWidth * index;
-        } else {
-            subNode.nodeY += self.nodeHeight * index;
+            
+            if (self.orientation == VVOrientationHorizontal) {
+                subNode.nodeX += self.nodeWidth * index;
+            } else {
+                subNode.nodeY += self.nodeHeight * index;
+            }
         }
         [subNode updateHidden];
         [subNode updateFrame];
