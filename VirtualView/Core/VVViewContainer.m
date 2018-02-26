@@ -226,7 +226,7 @@
 
 + (void)private_variableNodes:(VVBaseNode *)node result:(NSMutableArray *)result
 {
-    if (node.expressionSetters.count > 0) {
+    if (node.expressionSetters.count > 0 || (node.action && node.action.length > 0)) {
         [result addObject:node];
     }
     for (VVBaseNode *subNode in node.subNodes) {
