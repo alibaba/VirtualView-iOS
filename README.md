@@ -10,7 +10,9 @@ It a part of our [Tangram](https://github.com/alibaba/Tangram-iOS) solution. And
 
 它是我们 [Tangram](https://github.com/alibaba/Tangram-iOS) 方案的一部分。当然它也可以独立使用。
 
-中文站点：[VirtualView](http://tangram.pingguohe.net/docs/virtualview/about-virtualview)
+中文介绍：[VirtualView iOS](http://pingguohe.net/2018/02/23/virtualview-ios-1.2.html)
+
+中文文档：[VirtualView通用文档](http://tangram.pingguohe.net/docs/virtualview/about-virtualview)，[VirtualView iOS文档](http://tangram.pingguohe.net/docs/ios/use-virtualview)
 
 ## Features
 
