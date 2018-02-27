@@ -94,3 +94,6 @@ An executable jar is in the CompileTool path. In the demo project, we use bash s
 ![compile_tools_script](https://github.com/alibaba/VirtualView-iOS/raw/master/README/compile_tools_script.png)
 
 See more details [here](https://github.com/alibaba/virtualview_tools).
+
+## WeChatGroup
+Search `longerian` to be invited in WeChat.
