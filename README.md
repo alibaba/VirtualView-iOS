@@ -89,7 +89,7 @@ See more details in the demo project.
 
 ## XML Compile Tools
 
-An executable jar is in the CompileTool path. In the demo project, we use bash script to sync XML template changes. You can find the script here:
+An executable jar (need Java 1.8) is in the CompileTool path. In the demo project, we use bash script to sync XML template changes. You can find the script here:
 
 ![compile_tools_script](https://github.com/alibaba/VirtualView-iOS/raw/master/README/compile_tools_script.png)
 
