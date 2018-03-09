@@ -324,6 +324,11 @@
 
 #pragma mark Layout
 
+- (BOOL)needResizeIfSubNodeResize
+{
+    return self.layoutWidth == VV_WRAP_CONTENT || (self.layoutHeight == VV_WRAP_CONTENT && _lines == 0);
+}
+
 - (void)setupLayoutAndResizeObserver
 {
     [super setupLayoutAndResizeObserver];
