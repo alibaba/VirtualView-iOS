@@ -151,10 +151,8 @@
         if (obj != _lastData && [obj isKindOfClass:[NSArray class]]) {
             _lastData = obj;
             
-            [self.subNodes makeObjectsPerformSelector:@selector(removeFromSuperNode)];
-            [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-            [self.scrollView.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-            
+            // For reusing feature.
+            NSMutableArray *unusedNodes = [self.subNodes mutableCopy];
             // Dup the fisrt and last object.
             NSMutableArray *dataArray = [(NSArray *)obj mutableCopy];
             [dataArray insertObject:[[dataArray lastObject] copy] atIndex:0];
@@ -166,7 +164,11 @@
                     continue;
                 }
                 NSString *nodeType = [itemData objectForKey:@"type"];
-                VVBaseNode *node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
+                VVBaseNode *node = [VVPageView popReuseableNodeWithType:nodeType fromUnusedNodes:unusedNodes];
+                if (!node) {
+                    node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
+                }
+                node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
                 NSArray *variableNodes = [VVViewContainer variableNodes:node];
                 for (VVBaseNode *variableNode in variableNodes) {
                     [variableNode reset];
@@ -180,13 +182,16 @@
                     
                     [variableNode didUpdated];
                 }
-                [self addSubNode:node];
+                if (node.superNode == nil) {
+                    [self addSubNode:node];
+                    node.rootCanvasLayer = self.scrollView.layer;
+                    node.rootCocoaView = self.scrollView;
+                }
             }
-            for (VVBaseNode *subNode in self.subNodes) {
-                subNode.rootCanvasLayer = self.scrollView.layer;
-            }
-            for (VVBaseNode *subNode in self.subNodes) {
-                subNode.rootCocoaView = self.scrollView;
+            for (VVBaseNode *unusedNode in unusedNodes) {
+                [unusedNode removeFromSuperNode];
+                unusedNode.rootCanvasLayer = nil;
+                unusedNode.rootCocoaView = nil;
             }
         }
         return YES;
@@ -246,6 +251,21 @@
     [_scrollView reset];
     
     self.nodeFrame = CGRectMake(origin.x, origin.y, self.nodeFrame.size.width, self.nodeFrame.size.height);
+}
+
++ (VVBaseNode *)popReuseableNodeWithType:(NSString *)nodeType fromUnusedNodes:(NSMutableArray *)unusedNodes
+{
+    VVBaseNode *reuseableNode = nil;
+    for (VVBaseNode *unusedNode in unusedNodes) {
+        if ([unusedNode.templateType isEqualToString:nodeType]) {
+            reuseableNode = unusedNode;
+            break;
+        }
+    }
+    if (reuseableNode) {
+        [unusedNodes removeObject:reuseableNode];
+    }
+    return reuseableNode;
 }
 
 @end
