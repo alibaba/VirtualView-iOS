@@ -14,9 +14,7 @@
 #import <UT/AppMonitor.h>
 #endif
 
-#define VV_LONG_PRESS_CANCEL_DISTANCE 10
-
-@interface VVViewContainer() <UIGestureRecognizerDelegate>
+@interface VVViewContainer()
 
 @property (nonatomic, strong) NSArray *variableNodes;
 @property (nonatomic, weak) id lastData;
@@ -61,15 +59,18 @@
         }
         _variableNodes = [VVViewContainer variableNodes:_rootNode];
         self.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer *tapGes;
         if ([_rootNode isClickable]) {
-            UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
-            tapGes.delegate = self;
+            tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
             [self addGestureRecognizer:tapGes];
         }
+        UILongPressGestureRecognizer *longPressGes;
         if ([_rootNode isLongClickable]) {
-            UILongPressGestureRecognizer *longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
-            longPressGes.delegate = self;
+            longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
             [self addGestureRecognizer:longPressGes];
+        }
+        if (tapGes && longPressGes) {
+            [tapGes requireGestureRecognizerToFail:longPressGes];
         }
     }
     return self;
@@ -78,11 +79,6 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; frame = %@; type = %@; rootNode = %p>", self.class, self, NSStringFromCGRect(self.frame), self.rootNode.templateType, self.rootNode];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
 }
 
 - (void)gestureHandler:(UIGestureRecognizer *)gesture
@@ -97,16 +93,8 @@
     }
 
     BOOL isLongClick = NO;
-    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        if (gesture.state == UIGestureRecognizerStateEnded) {
-            CGPoint point = [gesture locationInView:self];
-            if (ABS(point.x - self.startPoint.x) < VV_LONG_PRESS_CANCEL_DISTANCE
-                && ABS(point.y - self.startPoint.y) < VV_LONG_PRESS_CANCEL_DISTANCE) {
-                isLongClick = YES;
-            }
-        } else if (gesture.state == UIGestureRecognizerStateBegan) {
-            self.startPoint = [gesture locationInView:self];
-        }
+    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan) {
+        isLongClick = YES;
     }
 
     if (isClick || isLongClick) {
