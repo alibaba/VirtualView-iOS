@@ -82,6 +82,7 @@
 {
     [super setBorderRadius:borderRadius];
     self.cocoaView.layer.cornerRadius = borderRadius;
+    self.cocoaView.clipsToBounds = YES;
 }
 
 - (VVBaseNode *)hitTest:(CGPoint)point

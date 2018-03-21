@@ -35,10 +35,12 @@
             background="#0000FF"
             borderColor="#FF0000"
             borderWidth="1"
-            borderTopLeftRadius="5"
-            borderTopRightRadius="15"
-            borderBottomLeftRadius="15"
-            borderBottomRightRadius="5"/>
+            borderRadius="10">
+        <NFrameLayout
+                layoutWidth="100"
+                layoutHeight="100"
+                background="#00FF00"/>
+    </NFrameLayout>
     <NText
             text="size = wrap_content"
             textSize="12"

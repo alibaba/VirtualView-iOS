@@ -144,7 +144,8 @@
             itemHorizontalMargin="10"
             itemVerticalMargin="15"
             borderColor="#ff0000"
-            borderWidth="1">
+            borderWidth="1"
+            borderRadius="30">
         <VText
                 layoutWidth="match_parent"
                 autoDimX="1"
