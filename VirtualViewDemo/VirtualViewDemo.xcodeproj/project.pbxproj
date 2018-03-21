@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1BC4747A67356CF3BD847521 /* libPods-VirtualViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6082ADC15A33D15C5B7130 /* libPods-VirtualViewDemo.a */; };
+		9247FDF620622EA8004FB14E /* NFrameLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDF120622EA7004FB14E /* NFrameLayout.out */; };
+		9247FDF720622EA8004FB14E /* NRatioLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDF220622EA7004FB14E /* NRatioLayout.out */; };
+		9247FDF820622EA8004FB14E /* NVH2Layout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDF320622EA8004FB14E /* NVH2Layout.out */; };
+		9247FDF920622EA8004FB14E /* NVHLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDF420622EA8004FB14E /* NVHLayout.out */; };
+		9247FDFA20622EA8004FB14E /* NGridLayout.out in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDF520622EA8004FB14E /* NGridLayout.out */; };
 		926B400A200396DB0003D88E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B4009200396DB0003D88E /* AppDelegate.m */; };
 		926B4012200396DB0003D88E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 926B4011200396DB0003D88E /* Assets.xcassets */; };
 		926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 926B4013200396DB0003D88E /* LaunchScreen.storyboard */; };
@@ -42,6 +47,11 @@
 		4E6082ADC15A33D15C5B7130 /* libPods-VirtualViewDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualViewDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D453CCE6CAF38791AE4FC62 /* Pods-VirtualViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualViewDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-VirtualViewDemo/Pods-VirtualViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		768018E4A5DF1EBDB7E8B550 /* Pods-VirtualViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualViewDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-VirtualViewDemo/Pods-VirtualViewDemo.release.xcconfig"; sourceTree = "<group>"; };
+		9247FDF120622EA7004FB14E /* NFrameLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NFrameLayout.out; sourceTree = "<group>"; };
+		9247FDF220622EA7004FB14E /* NRatioLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NRatioLayout.out; sourceTree = "<group>"; };
+		9247FDF320622EA8004FB14E /* NVH2Layout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NVH2Layout.out; sourceTree = "<group>"; };
+		9247FDF420622EA8004FB14E /* NVHLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NVHLayout.out; sourceTree = "<group>"; };
+		9247FDF520622EA8004FB14E /* NGridLayout.out */ = {isa = PBXFileReference; lastKnownFileType = file; path = NGridLayout.out; sourceTree = "<group>"; };
 		926B4005200396DB0003D88E /* VirtualViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		926B4008200396DB0003D88E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		926B4009200396DB0003D88E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -103,6 +113,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9247FDFC20622EBF004FB14E /* Template */ = {
+			isa = PBXGroup;
+			children = (
+				9247FDF120622EA7004FB14E /* NFrameLayout.out */,
+				9247FDF520622EA8004FB14E /* NGridLayout.out */,
+				9247FDF220622EA7004FB14E /* NRatioLayout.out */,
+				9247FDF320622EA8004FB14E /* NVH2Layout.out */,
+				9247FDF420622EA8004FB14E /* NVHLayout.out */,
+				92D80CE22030228100398A2B /* FrameLayout.out */,
+				92D80CE72030228100398A2B /* VHLayout.out */,
+				92D80CE62030228100398A2B /* VH2Layout.out */,
+				92D80CEE20303F3800398A2B /* GridLayout.out */,
+				92D80CF020305DFB00398A2B /* RatioLayout.out */,
+				92D80CE42030228100398A2B /* NText.out */,
+				92D80CF820328EC300398A2B /* NLine.out */,
+				92D80CE32030228100398A2B /* NImage.out */,
+				92D80CFC2034614D00398A2B /* Container.out */,
+				92D80CFE20348C2200398A2B /* Grid.out */,
+				92D80CFF20348C2200398A2B /* GridItem.out */,
+				92D80D092035538E00398A2B /* Page.out */,
+				92D80D082035538D00398A2B /* PageItem.out */,
+				92D80D152037CDBF00398A2B /* TextCell.out */,
+				92D80D9720410C7800398A2B /* Dot9Image.out */,
+			);
+			name = Template;
+			sourceTree = "<group>";
+		};
 		926B3FFC200396DB0003D88E = {
 			isa = PBXGroup;
 			children = (
@@ -153,21 +190,7 @@
 		92D80CE12030228100398A2B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				92D80CE22030228100398A2B /* FrameLayout.out */,
-				92D80CE72030228100398A2B /* VHLayout.out */,
-				92D80CE62030228100398A2B /* VH2Layout.out */,
-				92D80CEE20303F3800398A2B /* GridLayout.out */,
-				92D80CF020305DFB00398A2B /* RatioLayout.out */,
-				92D80CE42030228100398A2B /* NText.out */,
-				92D80CF820328EC300398A2B /* NLine.out */,
-				92D80CE32030228100398A2B /* NImage.out */,
-				92D80CFC2034614D00398A2B /* Container.out */,
-				92D80CFE20348C2200398A2B /* Grid.out */,
-				92D80CFF20348C2200398A2B /* GridItem.out */,
-				92D80D092035538E00398A2B /* Page.out */,
-				92D80D082035538D00398A2B /* PageItem.out */,
-				92D80D152037CDBF00398A2B /* TextCell.out */,
-				92D80D9720410C7800398A2B /* Dot9Image.out */,
+				9247FDFC20622EBF004FB14E /* Template */,
 				92D80CFA2032E67A00398A2B /* local_image.png */,
 				92D80D172037CE9300398A2B /* Media.xcassets */,
 			);
@@ -245,17 +268,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9247FDF820622EA8004FB14E /* NVH2Layout.out in Resources */,
 				92D80CEF20303F3800398A2B /* GridLayout.out in Resources */,
 				92D80CFD2034614D00398A2B /* Container.out in Resources */,
 				92D80CF120305DFB00398A2B /* RatioLayout.out in Resources */,
+				9247FDF720622EA8004FB14E /* NRatioLayout.out in Resources */,
 				92D80CEA2030228100398A2B /* NText.out in Resources */,
 				926B4015200396DB0003D88E /* LaunchScreen.storyboard in Resources */,
+				9247FDF920622EA8004FB14E /* NVHLayout.out in Resources */,
 				92D80D0B2035538E00398A2B /* Page.out in Resources */,
 				92D80D162037CDBF00398A2B /* TextCell.out in Resources */,
 				92D80CFB2032E67A00398A2B /* local_image.png in Resources */,
 				92D80CF920328EC300398A2B /* NLine.out in Resources */,
+				9247FDF620622EA8004FB14E /* NFrameLayout.out in Resources */,
 				92D80CEC2030228100398A2B /* VH2Layout.out in Resources */,
 				92D80CE92030228100398A2B /* NImage.out in Resources */,
+				9247FDFA20622EA8004FB14E /* NGridLayout.out in Resources */,
 				92D80CE82030228100398A2B /* FrameLayout.out in Resources */,
 				92D80CED2030228100398A2B /* VHLayout.out in Resources */,
 				92D80D0120348C2200398A2B /* GridItem.out in Resources */,

@@ -21,6 +21,11 @@
 #define VV_NODE_ID_VirtualLine    14
 #define VV_NODE_ID_Page           16
 #define VV_NODE_ID_Grid           17
+#define VV_NODE_ID_NFrameLayout   25
+#define VV_NODE_ID_NGridLayout    26
+#define VV_NODE_ID_NRatioLayout   27
+#define VV_NODE_ID_NVH2Layout     28
+#define VV_NODE_ID_NVHLayout      29
 #define VV_NODE_TYPE_FrameLayout  @"FrameLayout"
 #define VV_NODE_TYPE_VHLayout     @"VHLayout"
 #define VV_NODE_TYPE_VH2Layout    @"VH2Layout"
@@ -34,6 +39,11 @@
 #define VV_NODE_TYPE_VirtualLine  @"VirtualLine"
 #define VV_NODE_TYPE_Page         @"Page"
 #define VV_NODE_TYPE_Grid         @"Grid"
+#define VV_NODE_TYPE_NFrameLayout @"NFrameLayout"
+#define VV_NODE_TYPE_NGridLayout  @"NGridLayout"
+#define VV_NODE_TYPE_NRatioLayout @"NRatioLayout"
+#define VV_NODE_TYPE_NVH2Layout   @"NVH2Layout"
+#define VV_NODE_TYPE_NVHLayout    @"NVHLayout"
 
 @interface VVNodeClassMapper : NSObject
 

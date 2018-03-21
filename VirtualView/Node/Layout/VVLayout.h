@@ -11,5 +11,6 @@
 @interface VVLayout : VVBaseNode
 
 @property (nonatomic, strong) VVLayer *canvasLayer;
+@property (nonatomic, assign) CGFloat borderRadius;
 
 @end

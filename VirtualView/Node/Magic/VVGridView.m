@@ -12,30 +12,20 @@
 
 @interface VVGridView ()
 
-@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, weak) id lastData;
-@property (nonatomic, assign, readwrite) CGRect nodeFrame;
 
 @end
 
 @implementation VVGridView
 
 @synthesize rootCocoaView = _rootCocoaView, rootCanvasLayer = _rootCanvasLayer;
-@synthesize nodeFrame;
 
 - (instancetype)init
 {
     if (self = [super init]) {
         _lastData = self;
-        _containerView = [[UIView alloc] init];
-        _containerView.backgroundColor = [UIColor clearColor];
     }
     return self;
-}
-
-- (UIView *)cocoaView
-{
-    return _containerView;
 }
 
 - (void)setRootCocoaView:(UIView *)rootCocoaView
@@ -58,27 +48,6 @@
         }
         [rootCanvasLayer addSublayer:self.canvasLayer];
     }
-}
-
-- (VVBaseNode *)hitTest:(CGPoint)point
-{
-    if (self.visibility == VVVisibilityVisible
-        && CGRectContainsPoint(self.nodeFrame, point)) {
-        if (self.subNodes.count > 0) {
-            point.x -= self.nodeFrame.origin.x;
-            point.y -= self.nodeFrame.origin.y;
-            for (VVBaseNode* subNode in [self.subNodes reverseObjectEnumerator]) {
-                VVBaseNode *hitNode = [subNode hitTest:point];
-                if (hitNode) {
-                    return hitNode;
-                }
-            }
-        }
-        if ([self isClickable] || [self isLongClickable]) {
-            return self;
-        }
-    }
-    return nil;
 }
 
 - (BOOL)setDataObj:(NSObject *)obj forKey:(int)key
@@ -114,8 +83,8 @@
                 }
                 if (node.superNode == nil) {
                     [self addSubNode:node];
-                    node.rootCanvasLayer = self.containerView.layer;
-                    node.rootCocoaView = self.containerView;
+                    node.rootCanvasLayer = self.cocoaView.layer;
+                    node.rootCocoaView = self.cocoaView;
                 }
             }
             for (VVBaseNode *unusedNode in unusedNodes) {
@@ -127,14 +96,6 @@
         return YES;
     }
     return NO;
-}
-
-- (void)layoutSubNodes
-{
-    CGPoint origin = self.nodeFrame.origin;
-    self.nodeFrame = CGRectMake(0, 0, self.nodeFrame.size.width, self.nodeFrame.size.height);
-    [super layoutSubNodes];
-    self.nodeFrame = CGRectMake(origin.x, origin.y, self.nodeFrame.size.width, self.nodeFrame.size.height);
 }
 
 + (VVBaseNode *)popReuseableNodeWithType:(NSString *)nodeType fromUnusedNodes:(NSMutableArray *)unusedNodes
