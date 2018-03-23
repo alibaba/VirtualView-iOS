@@ -159,6 +159,7 @@ typedef NS_ENUM(NSUInteger, VVLineStyle) {
 #define STR_ID_layoutRatio  1999032065
 #define STR_ID_layoutWidth  2003872956
 #define STR_ID_lines  102977279
+#define STR_ID_lineHeight  -515807685
 #define STR_ID_lineSpaceExtra  -1118334530
 #define STR_ID_lineSpaceMultiplier  -667362093
 #define STR_ID_maxLines  390232059

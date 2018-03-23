@@ -19,6 +19,7 @@
 @end
 
 //################################################################
+
 #pragma mark -
 
 @interface NVTextView ()
@@ -46,7 +47,6 @@
         _ellipsize = VVEllipsizeEnd;
         _lines = 1;
         _gravity = VVGravityDefault;
-//        _lineSpaceMultiplier = 1;
         VVSelectorObserve(text, updateAttributedText);
         VVSelectorObserve(textColor, updateAttributedText);
         VVSelectorObserve(textSize, updateFont);
@@ -54,8 +54,8 @@
         VVSelectorObserve(textStyle, updateStyle);
         VVSelectorObserve(ellipsize, updateAttributedText);
         VVSelectorObserve(gravity, updateAttributedText);
-//        VVSelectorObserve(lineSpaceMultiplier, updateAttributedText);
-//        VVSelectorObserve(lineSpaceExtra, updateAttributedText);
+        VVSelectorObserve(lineHeight, updateAttributedText);
+        VVSelectorObserve(lineSpaceExtra, updateAttributedText);
     }
     return self;
 }
@@ -120,12 +120,6 @@
     self.textView.paddingRight = paddingRight;
 }
 
-- (void)setText:(NSString *)text
-{
-    _text = text;
-    self.textView.text = text;
-}
-
 - (void)setTextColor:(UIColor *)textColor
 {
     _textColor = textColor;
@@ -181,17 +175,41 @@
     }
 }
 
+- (void)setLineHeight:(CGFloat)lineHeight
+{
+    if (lineHeight >= 0) _lineHeight = lineHeight;
+}
+
+- (void)setLineSpaceExtra:(CGFloat)lineSpaceExtra
+{
+    if (lineSpaceExtra >= 0) _lineSpaceExtra = lineSpaceExtra;
+}
+
 - (NSAttributedString *)attributedText
 {
-    if (_attributedText == nil && _style != nil) {
+    if (_attributedText == nil && (self.style != nil || self.lineHeight > 0 || self.lineSpaceExtra > 0)) {
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.alignment = self.textView.textAlignment;
-        paragraphStyle.lineBreakMode = self.textView.lineBreakMode;
+        // Cannot get correct bounding size of text with truncating.
+        // paragraphStyle.lineBreakMode = self.textView.lineBreakMode;
+        if ([self needLineHeight]) {
+            paragraphStyle.maximumLineHeight = self.lineHeight;
+            paragraphStyle.minimumLineHeight = self.lineHeight;
+        }
+        if (self.lineSpaceExtra > 0) {
+            paragraphStyle.lineSpacing = self.lineSpaceExtra;
+        }
         NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
         [attributes setObject:self.textView.font forKey:NSFontAttributeName];
         [attributes setObject:self.textColor forKey:NSForegroundColorAttributeName];
         [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
-        [attributes addEntriesFromDictionary:_style];
+        if ([self needLineHeight]) {
+            [attributes setObject:@((self.lineHeight - self.textView.font.lineHeight) / 4)
+                           forKey:NSBaselineOffsetAttributeName];
+        }
+        if (self.style) {
+            [attributes addEntriesFromDictionary:self.style];
+        }
         _attributedText = [[NSAttributedString alloc] initWithString:self.text
                                                           attributes:attributes];
     }
@@ -215,9 +233,9 @@
 - (void)updateStyle
 {
     self.style = nil;
-    if ((self.textStyle & VVTextStyleUnderLine) == VVTextStyleUnderLine) {
+    if (self.textStyle & VVTextStyleUnderLine) {
         self.style = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
-    } else if ((self.textStyle & VVTextStyleStrike) == VVTextStyleStrike) {
+    } else if (self.textStyle & VVTextStyleStrike) {
         self.style = @{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
     }
     [self updateAttributedText];
@@ -228,12 +246,20 @@
     _attributedText = nil;
 }
 
-- (void)updateSize
+- (void)updateText
+{
+    if (self.layoutWidth == VV_WRAP_CONTENT || (self.layoutHeight == VV_WRAP_CONTENT && self.lines == 0)) {
+        [self setNeedsResize];
+    }
+}
+
+- (void)updateContentSize
 {
     if ([self needResizeIfSubNodeResize]) {
         [self setNeedsResize];
     }
 }
+
 #pragma mark Update
 
 - (BOOL)setIntValue:(int)value forKey:(int)key
@@ -277,15 +303,18 @@
             case STR_ID_textSize:
                 self.textSize = value;
                 break;
-            case STR_ID_lineSpaceMultiplier:
-//                self.lineSpaceMultiplier = value;
-                break;
-            case STR_ID_lineSpaceExtra:
-//                self.lineSpaceExtra = value;
-                break;
             case STR_ID_borderRadius:
                 self.textView.layer.cornerRadius = value;
                 self.textView.clipsToBounds = YES;
+                break;
+            case STR_ID_lineHeight:
+                self.lineHeight = value;
+                break;
+            case STR_ID_lineSpaceExtra:
+                self.lineSpaceExtra = value;
+                break;
+            case STR_ID_lineSpaceMultiplier:
+                // ignore this property
                 break;
             default:
                 ret = NO;
@@ -299,14 +328,9 @@
 {
     BOOL ret = [super setStringValue:value forKey:key];
     if (!ret) {
-        ret = YES;
-        switch (key) {
-            case STR_ID_text:
-                self.text = value;
-                break;
-            default:
-                ret = NO;
-                break;
+        if (key == STR_ID_text) {
+            self.text = value;
+            ret = YES;
         }
     }
     return  ret;
@@ -314,38 +338,68 @@
 
 - (BOOL)setStringData:(NSString*)data forKey:(int)key
 {
-    switch (key) {
-        case STR_ID_textColor:
-            self.textColor = [UIColor vv_colorWithString:data] ?: [UIColor blackColor];
-            break;
+    BOOL ret = NO;
+    if (key == STR_ID_textColor) {
+        self.textColor = [UIColor vv_colorWithString:data] ?: [UIColor blackColor];
+        ret = YES;
     }
-    return YES;
+    return ret;
 }
 
 #pragma mark Layout
 
-- (BOOL)needResizeIfSubNodeResize
-{
-    return self.layoutWidth == VV_WRAP_CONTENT || (self.layoutHeight == VV_WRAP_CONTENT && _lines == 0);
-}
-
 - (void)setupLayoutAndResizeObserver
 {
     [super setupLayoutAndResizeObserver];
-    VVSelectorObserve(text, updateSize);
-    VVSelectorObserve(textSize, updateSize);
-    VVSelectorObserve(textStyle, updateSize);
-    VVSelectorObserve(lines, updateSize);
-    VVSelectorObserve(maxLines, updateSize);
-//    VVSelectorObserve(lineSpaceMultiplier, updateSize);
-//    VVSelectorObserve(lineSpaceExtra, updateSize);
+    VVSelectorObserve(text, updateText);
+    VVSelectorObserve(textSize, updateContentSize);
+    VVSelectorObserve(textStyle, updateContentSize);
+    VVSelectorObserve(lines, updateContentSize);
+    VVSelectorObserve(maxLines, updateContentSize);
+    VVSelectorObserve(lineHeight, updateContentSize);
+    VVSelectorObserve(lineSpaceExtra, updateContentSize);
+}
+
+- (void)layoutSubNodes
+{
+    if (self.attributedText) {
+        self.textView.attributedText = self.attributedText;
+    } else {
+        self.textView.text = self.text;
+    }
+}
+
+- (CGSize)calcContentSize:(CGSize)maxSize
+{
+    if (self.maxLines > 0) {
+        maxSize.height = MIN(maxSize.height, self.maxLines * [self expectedLineHeight]);
+    }
+
+    CGSize size;
+    if (self.attributedText) {
+        size = [self.attributedText boundingRectWithSize:maxSize
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                                  context:NULL].size;
+    } else {
+        size = [self.text boundingRectWithSize:maxSize
+                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                     attributes:@{NSFontAttributeName : self.textView.font}
+                                        context:NULL].size;
+    }
+    
+    return size;
 }
 
 - (CGSize)calculateSize:(CGSize)maxSize
-{
+{    
     [super calculateSize:maxSize];
-    if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && _lines > 0) {
-        self.nodeHeight = _lines * self.textView.font.lineHeight + self.paddingTop + self.paddingBottom;
+    if (self.nodeHeight <= 0 && self.layoutHeight == VV_WRAP_CONTENT && self.lines > 0) {
+        self.nodeHeight = self.lines * [self expectedLineHeight] + self.paddingTop + self.paddingBottom;
+        if (self.lines > 1 || [self needLineHeight] == NO) {
+            // UILabel does not ignore line space for single line text when line height is set.
+            // NOT a bug.
+            self.nodeHeight -= self.lineSpaceExtra;
+        }
         [self applyAutoDim];
     }
     if ((self.nodeWidth <= 0 && self.layoutWidth == VV_WRAP_CONTENT)
@@ -355,30 +409,16 @@
         }
         if (self.nodeHeight <= 0) {
             self.nodeHeight = maxSize.height - self.marginTop - self.marginBottom;
-            if (self.maxLines > 0) {
-                self.nodeHeight = MIN(self.nodeHeight, self.maxLines * self.textView.font.lineHeight);
-            }
         }
-        CGSize contentSize = self.contentSize;
         
-        // Calculate text frame.
-        CGRect frame;
-        if (self.attributedText) {
-            frame = [self.attributedText boundingRectWithSize:contentSize
-                                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                                     context:NULL];
-        } else {
-            frame = [self.text boundingRectWithSize:contentSize
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                        attributes:@{NSFontAttributeName : self.textView.font}
-                                           context:NULL];
-        }
+        CGSize contentSize = self.contentSize;
+        contentSize = [self calcContentSize:contentSize];
         
         if (self.layoutWidth == VV_WRAP_CONTENT) {
-            self.nodeWidth = frame.size.width + self.paddingLeft + self.paddingRight;
+            self.nodeWidth = contentSize.width + self.paddingLeft + self.paddingRight;
         }
         if (self.layoutHeight == VV_WRAP_CONTENT) {
-            self.nodeHeight = frame.size.height + self.paddingTop + self.paddingBottom;
+            self.nodeHeight = contentSize.height + self.paddingTop + self.paddingBottom;
         }
         [self applyAutoDim];
     }
@@ -386,4 +426,21 @@
     self.nodeWidth = ceil(self.nodeWidth);
     return CGSizeMake(self.nodeWidth, self.nodeHeight);
 }
+
+#pragma mark Helper
+
+- (CGFloat)expectedLineHeight
+{
+    if ([self needLineHeight]) {
+        return self.lineHeight + self.lineSpaceExtra;
+    } else {
+        return self.textView.font.lineHeight + self.lineSpaceExtra;
+    }
+}
+
+- (BOOL)needLineHeight
+{
+    return self.lineHeight > self.textView.font.lineHeight;
+}
+
 @end
