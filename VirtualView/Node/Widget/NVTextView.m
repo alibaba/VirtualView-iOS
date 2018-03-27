@@ -187,7 +187,7 @@
 
 - (NSAttributedString *)attributedText
 {
-    if (_attributedText == nil && (self.style != nil || self.lineHeight > 0 || self.lineSpaceExtra > 0)) {
+    if (_attributedText == nil && self.text && (self.style != nil || self.lineHeight > 0 || self.lineSpaceExtra > 0)) {
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.alignment = self.textView.textAlignment;
         // Cannot get correct bounding size of text with truncating.
