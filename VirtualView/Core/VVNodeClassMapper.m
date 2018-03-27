@@ -78,6 +78,8 @@
         [_mapperDict setObject:@"TMVVSelectedCountDown" forKey:@(1012)];
         [_mapperDict setObject:@"TMVVVideoView" forKey:@(1014)];
         [_mapperDict setObject:@"TMVVVideoView" forKey:@"TMMediaPlayerContainer"];
+        [_mapperDict setObject:@"TMVVVideoView" forKey:@"TMPlayableContainer"];
+        [_mapperDict setObject:@"TMVVSelectedBrandAnimtionView" forKey:@"TMBrandWallItemView"];
 #endif
     }
     return self;

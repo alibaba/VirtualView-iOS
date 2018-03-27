@@ -119,9 +119,9 @@
         int key = [self readIntLE];
         short length = [self readShortLE];
         NSString *value = [self readString:length];
-        [self.stringDict setObject:value forKey:@(key)];
+            [self.stringDict setObject:value forKey:@(key)];
+        }
     }
-}
 
 - (BOOL)loadMainData:(NSUInteger)startLocation
 {
@@ -337,10 +337,8 @@
         NSData *subData = [self.data subdataWithRange:NSMakeRange(self.location, length)];
         result = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
         self.location += length;
-    } else {
-        result = @"";
     }
-    return result;
+    return result ?: @"";
 }
 
 @end
