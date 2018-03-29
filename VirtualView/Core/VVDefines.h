@@ -47,14 +47,13 @@ typedef NS_ENUM(NSUInteger, VVOrientation) {
 };
 
 typedef NS_ENUM(NSUInteger, VVGravity) {
+    VVGravityNone = 0,
     VVGravityLeft = 1,
     VVGravityRight = 2,
     VVGravityHCenter = 4,
-    VVGravityX = 7, // VVGravityLeft | VVGravityHCenter | VVGravityRight
     VVGravityTop = 8,
     VVGravityBottom = 16,
     VVGravityVCenter = 32,
-    VVGravityY = 56, // VVGravityTop | VVGravityVCenter | VVGravityBottom
     VVGravityDefault = 9, // VVGravityLeft | VVGravityTop
     VVGravityNotDefault = 54 // VVGravityHCenter | VVGravityRight | VVGravityVCenter | VVGravityBottom
 };

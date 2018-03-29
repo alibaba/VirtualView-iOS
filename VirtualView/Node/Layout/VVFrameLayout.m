@@ -15,6 +15,26 @@
 
 @implementation VVFrameLayout
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _gravity = VVGravityDefault;
+    }
+    return self;
+}
+
+- (BOOL)setIntValue:(int)value forKey:(int)key
+{
+    BOOL ret = [super setIntValue:value forKey:key];
+    if (!ret) {
+        if (key == STR_ID_gravity) {
+            self.gravity = value;
+            ret = YES;
+        }
+    }
+    return ret;
+}
+
 - (void)layoutSubNodes
 {
     CGSize contentSize = self.contentSize;
@@ -25,19 +45,21 @@
         }
         CGSize subNodeSize = [subNode calculateSize:contentSize];
         if ([subNode needLayout]) {
-            if (subNode.layoutGravity & VVGravityHCenter) {
+            VVGravity gravity = subNode.layoutGravity != VVGravityNone ? subNode.layoutGravity : self.gravity;
+            
+            if (gravity & VVGravityHCenter) {
                 CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
                 subNode.nodeX = midX - subNodeSize.width / 2;
-            } else if (subNode.layoutGravity & VVGravityRight) {
+            } else if (gravity & VVGravityRight) {
                 subNode.nodeX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
             } else {
                 subNode.nodeX = self.paddingLeft + subNode.marginLeft;
             }
             
-            if (subNode.layoutGravity & VVGravityVCenter) {
+            if (gravity & VVGravityVCenter) {
                 CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
                 subNode.nodeY = midY - subNodeSize.height / 2;
-            } else if (subNode.layoutGravity & VVGravityBottom) {
+            } else if (gravity & VVGravityBottom) {
                 subNode.nodeY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
             } else {
                 subNode.nodeY = self.paddingTop + subNode.marginTop;

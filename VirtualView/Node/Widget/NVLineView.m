@@ -24,6 +24,7 @@
         _cocoaView = [[UIView alloc] init];
         _cocoaView.backgroundColor = [UIColor clearColor];
         _orientation = VVOrientationHorizontal;
+        _gravity = VVGravityDefault;
         _lineLayer = [[VVLineLayer alloc] init];
         _lineLayer.contentsScale = [[UIScreen mainScreen] scale];
         [_cocoaView.layer addSublayer:_lineLayer];
@@ -50,7 +51,7 @@
 
 - (BOOL)setIntValue:(int)value forKey:(int)key
 {
-    BOOL ret = [ super setIntValue:value forKey:key];
+    BOOL ret = [super setIntValue:value forKey:key];
     if (!ret) {
         ret = YES;
         switch (key) {

@@ -10,5 +10,6 @@
 @interface VVVHLayout : VVLayout
 
 @property (nonatomic, assign) VVOrientation orientation;
+@property (nonatomic, assign) VVGravity gravity;
 
 @end

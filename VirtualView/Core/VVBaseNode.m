@@ -30,7 +30,7 @@
         _subNodes = [[NSMutableArray alloc] init];
         _backgroundColor = [UIColor clearColor];
         _borderColor = [UIColor clearColor];
-        _layoutGravity = VVGravityDefault;
+        _layoutGravity = VVGravityNone;
         _visibility = VVVisibilityVisible;
         _layoutDirection = VVDirectionDefault;
         _autoDimDirection = VVAutoDimDirectionNone;

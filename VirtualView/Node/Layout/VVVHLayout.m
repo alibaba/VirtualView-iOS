@@ -19,6 +19,7 @@
 {
     if (self = [super init]) {
         _orientation = VVOrientationHorizontal;
+        _gravity = VVGravityDefault;
     }
     return self;
 }
@@ -30,7 +31,10 @@
         ret = YES;
         switch (key) {
             case STR_ID_orientation:
-                _orientation = value;
+                self.orientation = value;
+                break;
+            case STR_ID_gravity:
+                self.gravity = value;
                 break;
             default:
                 ret = NO;
@@ -63,6 +67,21 @@
 {
     CGSize contentSize = self.contentSize;
     CGFloat currentY = self.paddingTop;
+    if (self.gravity & (VVGravityBottom | VVGravityVCenter)) {
+        CGFloat spacingHeight = contentSize.height;
+        for (VVBaseNode* subNode in self.subNodes) {
+            if (subNode.visibility == VVVisibilityGone) {
+                continue;
+            }
+            [subNode calculateSize:contentSize];
+            spacingHeight -= subNode.containerSize.height;
+        }
+        if (self.gravity & VVGravityBottom) {
+            currentY += spacingHeight;
+        } else if (self.gravity & VVGravityVCenter) {
+            currentY += spacingHeight / 2;
+        }
+    }
     for (VVBaseNode* subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
             [subNode updateHiddenRecursively];
@@ -70,10 +89,12 @@
         }
         CGSize subNodeSize = [subNode calculateSize:contentSize];
         if ([subNode needLayout]) {
-            if (subNode.layoutGravity & VVGravityHCenter) {
+            VVGravity gravity = subNode.layoutGravity != VVGravityNone ? subNode.layoutGravity : self.gravity;
+
+            if (gravity & VVGravityHCenter) {
                 CGFloat midX = (self.nodeFrame.size.width + self.paddingLeft + subNode.marginLeft - subNode.marginRight - self.paddingRight) / 2;
                 subNode.nodeX = midX - subNodeSize.width / 2;
-            } else if (subNode.layoutGravity & VVGravityRight) {
+            } else if (gravity & VVGravityRight) {
                 subNode.nodeX = self.nodeFrame.size.width - self.paddingRight - subNode.marginRight - subNodeSize.width;
             } else {
                 subNode.nodeX = self.paddingLeft + subNode.marginLeft;
@@ -92,6 +113,21 @@
 {
     CGSize contentSize = self.contentSize;
     CGFloat currentX = self.paddingLeft;
+    if (self.gravity & (VVGravityRight | VVGravityHCenter)) {
+        CGFloat spacingWidth = contentSize.width;
+        for (VVBaseNode* subNode in self.subNodes) {
+            if (subNode.visibility == VVVisibilityGone) {
+                continue;
+            }
+            [subNode calculateSize:contentSize];
+            spacingWidth -= subNode.containerSize.width;
+        }
+        if (self.gravity & VVGravityRight) {
+            currentX += spacingWidth;
+        } else if (self.gravity & VVGravityHCenter) {
+            currentX += spacingWidth / 2;
+        }
+    }
     for (VVBaseNode* subNode in self.subNodes) {
         if (subNode.visibility == VVVisibilityGone) {
             [subNode updateHiddenRecursively];
@@ -102,10 +138,12 @@
             subNode.nodeX = currentX + subNode.marginLeft;
             currentX += subNode.containerSize.width;
             
-            if (subNode.layoutGravity & VVGravityVCenter) {
+            VVGravity gravity = subNode.layoutGravity != VVGravityNone ? subNode.layoutGravity : self.gravity;
+
+            if (gravity & VVGravityVCenter) {
                 CGFloat midY = (self.nodeFrame.size.height + self.paddingTop + subNode.marginTop - subNode.marginBottom - self.paddingBottom) / 2;
                 subNode.nodeY = midY - subNodeSize.height / 2;
-            } else if (subNode.layoutGravity & VVGravityBottom) {
+            } else if (gravity & VVGravityBottom) {
                 subNode.nodeY = self.nodeFrame.size.height - self.paddingBottom - subNode.marginBottom - subNodeSize.height;
             } else {
                 subNode.nodeY = self.paddingTop + subNode.marginTop;
