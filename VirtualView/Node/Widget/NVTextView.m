@@ -24,7 +24,6 @@
 
 @interface NVTextView ()
 
-@property (nonatomic, strong) VVLabel *textView;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedText;
 @property (nonatomic, strong) NSDictionary *style;
 

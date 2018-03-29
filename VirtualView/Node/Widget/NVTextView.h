@@ -21,6 +21,8 @@
 
 @interface NVTextView : VVBaseNode
 
+@property (nonatomic, strong) VVLabel *textView;
+
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong, readonly) NSAttributedString *attributedText;
 @property (nonatomic, strong) UIColor *textColor;
