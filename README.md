@@ -95,5 +95,8 @@ An executable jar (need Java 1.8) is in the CompileTool path. In the demo projec
 
 See more details [here](https://github.com/alibaba/virtualview_tools).
 
-## WeChatGroup
-Search `longerian` to be invited in WeChat.
+# 微信群
+
+![](https://img.alicdn.com/tfs/TB11_2_kbSYBuNjSspiXXXNzpXa-167-167.png)
+
+搜索 `tangram_` 或者扫描以上二维码添加 Tangram 为好友，以便我们邀请你入群。
