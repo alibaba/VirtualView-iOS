@@ -149,7 +149,7 @@
             nextObject = [dict objectForKey:self.key];
         }
         if (self.nextExpression) {
-            return [self.nextExpression resultWithObject:nextObject];
+            return [self.nextExpression resultWithObject:nextObject ?: object];
         } else {
             return nextObject;
         }

@@ -42,6 +42,11 @@
         [_mapperDict setObject:@"NVLineView" forKey:@(VV_NODE_ID_VirtualLine)];
         [_mapperDict setObject:@"VVPageView" forKey:@(VV_NODE_ID_Page)];
         [_mapperDict setObject:@"VVGridView" forKey:@(VV_NODE_ID_Grid)];
+        [_mapperDict setObject:@"NVFrameLayout" forKey:@(VV_NODE_ID_NFrameLayout)];
+        [_mapperDict setObject:@"NVVHLayout" forKey:@(VV_NODE_ID_NVHLayout)];
+        [_mapperDict setObject:@"NVVH2Layout" forKey:@(VV_NODE_ID_NVH2Layout)];
+        [_mapperDict setObject:@"NVGridLayout" forKey:@(VV_NODE_ID_NGridLayout)];
+        [_mapperDict setObject:@"NVRatioLayout" forKey:@(VV_NODE_ID_NRatioLayout)];
         [_mapperDict setObject:@"VVFrameLayout" forKey:VV_NODE_TYPE_FrameLayout];
         [_mapperDict setObject:@"VVVHLayout" forKey:VV_NODE_TYPE_VHLayout];
         [_mapperDict setObject:@"VVVH2Layout" forKey:VV_NODE_TYPE_VH2Layout];
@@ -55,6 +60,11 @@
         [_mapperDict setObject:@"NVLineView" forKey:VV_NODE_TYPE_VirtualLine];
         [_mapperDict setObject:@"VVPageView" forKey:VV_NODE_TYPE_Page];
         [_mapperDict setObject:@"VVGridView" forKey:VV_NODE_TYPE_Grid];
+        [_mapperDict setObject:@"NVFrameLayout" forKey:VV_NODE_TYPE_NFrameLayout];
+        [_mapperDict setObject:@"NVVHLayout" forKey:VV_NODE_TYPE_NVHLayout];
+        [_mapperDict setObject:@"NVVH2Layout" forKey:VV_NODE_TYPE_NVH2Layout];
+        [_mapperDict setObject:@"NVGridLayout" forKey:VV_NODE_TYPE_NGridLayout];
+        [_mapperDict setObject:@"NVRatioLayout" forKey:VV_NODE_TYPE_NRatioLayout];
 #ifdef VV_ALIBABA
         [_mapperDict setObject:@"TMNVImageView" forKey:@(11)];
         [_mapperDict setObject:@"TMNVImageView" forKey:@(12)];
@@ -68,6 +78,8 @@
         [_mapperDict setObject:@"TMVVSelectedCountDown" forKey:@(1012)];
         [_mapperDict setObject:@"TMVVVideoView" forKey:@(1014)];
         [_mapperDict setObject:@"TMVVVideoView" forKey:@"TMMediaPlayerContainer"];
+        [_mapperDict setObject:@"TMVVVideoView" forKey:@"TMPlayableContainer"];
+        [_mapperDict setObject:@"TMVVSelectedBrandAnimtionView" forKey:@"TMBrandWallItemView"];
 #endif
     }
     return self;

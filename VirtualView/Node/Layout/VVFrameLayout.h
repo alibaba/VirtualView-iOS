@@ -9,4 +9,6 @@
 
 @interface VVFrameLayout : VVLayout
 
+@property (nonatomic, assign) VVGravity gravity;
+
 @end

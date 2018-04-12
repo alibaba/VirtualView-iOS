@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NVHLayout
+        orientation="V"
+        layoutWidth="750rp"
+        layoutHeight="match_parent"
+        background="#FFFFFF">
+
+    <VText
+            text="orientation = H"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <NVHLayout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="H">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                layoutGravity="v_center|h_center"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginTop="10"
+                layoutMarginLeft="10"
+                background="#0088FF"
+                textSize="12"
+                layoutGravity="left|top"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginBottom="10"
+                layoutMarginRight="10"
+                background="#8888FF"
+                textSize="12"
+                layoutGravity="right|bottom"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginRight="15"
+                layoutMarginLeft="15"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginBottom="15"
+                layoutMarginTop="15"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
+    </NVHLayout>
+
+    <NVHLayout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            borderRadius="10"
+            layoutMarginTop="5"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="H">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0088FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#8888FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
+    </NVHLayout>
+
+    <VText
+            text="orientation = V"
+            textSize="12"
+            textColor="#333333"
+            paddingLeft="5"
+            background="#cccccc"
+            layoutWidth="match_parent"
+            layoutHeight="20"/>
+
+    <NVHLayout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="V">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                layoutGravity="v_center|h_center"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginTop="10"
+                layoutMarginLeft="10"
+                background="#0088FF"
+                textSize="12"
+                layoutGravity="left|top"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginBottom="10"
+                layoutMarginRight="10"
+                background="#8888FF"
+                textSize="12"
+                layoutGravity="right|bottom"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginRight="15"
+                layoutMarginLeft="15"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                layoutMarginBottom="15"
+                layoutMarginTop="15"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
+    </NVHLayout>
+
+    <NVHLayout
+            layoutWidth="wrap_content"
+            layoutHeight="wrap_content"
+            borderWidth="1"
+            borderColor="#FF0000"
+            borderRadius="10"
+            layoutMarginTop="5"
+            paddingTop="1"
+            paddingLeft="1"
+            paddingRight="1"
+            paddingBottom="1"
+            orientation="V">
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0000FF"
+                textSize="12"
+                gravity="h_center"
+                text="1" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#0088FF"
+                textSize="12"
+                gravity="h_center"
+                text="2" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                background="#8888FF"
+                textSize="12"
+                gravity="h_center"
+                text="3" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#88FFFF"
+                textSize="12"
+                text="4" />
+        <VText
+                layoutWidth="50"
+                layoutHeight="50"
+                gravity="h_center"
+                background="#FFFF88"
+                textSize="12"
+                text="5" />
+    </NVHLayout>
+
+</NVHLayout>

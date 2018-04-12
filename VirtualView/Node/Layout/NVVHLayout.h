@@ -1,12 +1,12 @@
 //
-//  VVGridView.h
+//  NVVHLayout.h
 //  VirtualView
 //
 //  Copyright (c) 2017-2018 Alibaba. All rights reserved.
 //
 
-#import "NVGridLayout.h"
+#import "VVVHLayout.h"
 
-@interface VVGridView : NVGridLayout
+@interface NVVHLayout : VVVHLayout
 
 @end

@@ -87,7 +87,7 @@
     __weak VVBaseNode *weakSelf = self;
     VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
-        if ([self needResizeIfSubNodeResize]) {
+        if ([strongSelf needResizeIfSubNodeResize]) {
             [strongSelf setNeedsResize];
             for (VVBaseNode *subNode in strongSelf.subNodes) {
                 [subNode setNeedsLayout];

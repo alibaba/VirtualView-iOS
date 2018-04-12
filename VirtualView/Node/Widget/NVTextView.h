@@ -17,7 +17,11 @@
 
 @end
 
+//################################################################
+
 @interface NVTextView : VVBaseNode
+
+@property (nonatomic, strong) VVLabel *textView;
 
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong, readonly) NSAttributedString *attributedText;
@@ -28,7 +32,7 @@
 @property (nonatomic, assign) int lines;
 @property (nonatomic, assign) int maxLines;
 @property (nonatomic, assign) VVGravity gravity;
-//@property (nonatomic, assign) CGFloat lineSpaceMultiplier;
-//@property (nonatomic, assign) CGFloat lineSpaceExtra;
+@property (nonatomic, assign) CGFloat lineHeight;
+@property (nonatomic, assign) CGFloat lineSpaceExtra; // appearance may be different from Android
 
 @end

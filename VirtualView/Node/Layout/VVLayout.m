@@ -91,6 +91,12 @@
     _privateLayer.vv_borderWidth = borderWidth;
 }
 
+- (void)setBorderRadius:(CGFloat)borderRadius
+{
+    _borderRadius = borderRadius;
+    _privateLayer.vv_borderRadius = borderRadius;
+}
+
 - (BOOL)setFloatValue:(float)value forKey:(int)key
 {
     BOOL ret = [super setFloatValue:value forKey:key];
@@ -98,7 +104,7 @@
         ret = YES;
         switch (key) {
             case STR_ID_borderRadius:
-                _privateLayer.vv_borderRadius = value;
+                self.borderRadius = value;
                 break;
             case STR_ID_borderTopLeftRadius:
                 _privateLayer.vv_borderTopLeftRadius = value;

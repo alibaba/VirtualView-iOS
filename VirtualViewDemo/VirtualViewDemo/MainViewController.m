@@ -26,7 +26,7 @@
 {
     if (self = [super init]) {
         self.title = @"VirtualViewDemo";
-        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"Container", @"Grid", @"Page", @"TableViewCell", @"Dot9Image"];
+        self.demoArray = @[@"FrameLayout", @"VHLayout", @"VH2Layout", @"GridLayout", @"RatioLayout", @"NText", @"NLine", @"NImage", @"NFrameLayout", @"NVHLayout", @"NVH2Layout", @"NGridLayout", @"NRatioLayout", @"Container", @"Grid", @"Page", @"TableViewCell", @"Dot9Image"];
         
         [self registerVV];
     }

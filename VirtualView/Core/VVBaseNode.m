@@ -30,7 +30,7 @@
         _subNodes = [[NSMutableArray alloc] init];
         _backgroundColor = [UIColor clearColor];
         _borderColor = [UIColor clearColor];
-        _layoutGravity = VVGravityDefault;
+        _layoutGravity = VVGravityNone;
         _visibility = VVVisibilityVisible;
         _layoutDirection = VVDirectionDefault;
         _autoDimDirection = VVAutoDimDirectionNone;
@@ -373,7 +373,7 @@
     __weak VVBaseNode *weakSelf = self;
     VVObserverBlock contentChangedBlock = ^(id _Nonnull value) {
         __strong VVBaseNode *strongSelf = weakSelf;
-        if ([self needResizeIfSubNodeResize]) {
+        if ([strongSelf needResizeIfSubNodeResize]) {
             // 进行1的操作
             [strongSelf setNeedsResize];
             // 如果进行过1的操作，这里子元素尺寸的改变实际上已经被传递过了
