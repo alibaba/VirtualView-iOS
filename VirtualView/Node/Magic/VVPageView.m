@@ -168,7 +168,6 @@
                 if (!node) {
                     node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
                 }
-                node = [[VVTemplateManager sharedManager] createNodeTreeForType:nodeType];
                 NSArray *variableNodes = [VVViewContainer variableNodes:node];
                 for (VVBaseNode *variableNode in variableNodes) {
                     [variableNode reset];
