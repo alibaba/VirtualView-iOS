@@ -10,6 +10,7 @@
 @interface VVLoopingScrollView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) BOOL inAnimation;
 
 @end
 
@@ -52,18 +53,23 @@
 
 - (void)autoSwitchHandler:(id)sender
 {
-    if (self.contentSize.width > self.frame.size.width) {
-        [UIView animateWithDuration:_autoSwitchTime animations:^{
-            self.contentOffset = CGPointMake(self.contentOffset.x + self.frame.size.width, 0);
-        } completion:^(BOOL finished) {
-            [self scrollViewDidEndDecelerating:self];
-        }];
-    } else {
-        [UIView animateWithDuration:_autoSwitchTime animations:^{
-            self.contentOffset = CGPointMake(0, self.contentOffset.y + self.frame.size.height);
-        } completion:^(BOOL finished) {
-            [self scrollViewDidEndDecelerating:self];
-        }];
+    if (!self.inAnimation) {
+        self.inAnimation = YES;
+        if (self.contentSize.width > self.frame.size.width) {
+            [UIView animateWithDuration:_autoSwitchTime animations:^{
+                self.contentOffset = CGPointMake(self.contentOffset.x + self.frame.size.width, 0);
+            } completion:^(BOOL finished) {
+                [self scrollViewDidEndDecelerating:self];
+                self.inAnimation = NO;
+            }];
+        } else {
+            [UIView animateWithDuration:_autoSwitchTime animations:^{
+                self.contentOffset = CGPointMake(0, self.contentOffset.y + self.frame.size.height);
+            } completion:^(BOOL finished) {
+                [self scrollViewDidEndDecelerating:self];
+                self.inAnimation = NO;
+            }];
+        }
     }
 }
 
@@ -77,15 +83,15 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (self.contentSize.width > self.frame.size.width) {
-        if (self.contentOffset.x == 0) {
+        if (self.contentOffset.x <= 0) {
             self.contentOffset = CGPointMake(self.contentSize.width - self.frame.size.width * 2, 0);
-        } else if (self.contentOffset.x == self.contentSize.width - self.frame.size.width) {
+        } else if (self.contentOffset.x >= self.contentSize.width - self.frame.size.width) {
             self.contentOffset = CGPointMake(self.frame.size.width, 0);
         }
     } else {
-        if (self.contentOffset.y == 0) {
+        if (self.contentOffset.y <= 0) {
             self.contentOffset = CGPointMake(0, self.contentSize.height - self.frame.size.height * 2);
-        } else if (self.contentOffset.y == self.contentSize.height - self.frame.size.height) {
+        } else if (self.contentOffset.y >= self.contentSize.height - self.frame.size.height) {
             self.contentOffset = CGPointMake(0, self.frame.size.height);
         }
     }
