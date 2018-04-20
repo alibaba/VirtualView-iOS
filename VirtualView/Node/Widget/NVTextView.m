@@ -159,7 +159,10 @@
 
 - (void)setMaxLines:(int)maxLines
 {
-    if (maxLines >= 0) _maxLines = maxLines;
+    if (maxLines >= 0) {
+        _maxLines = maxLines;
+        self.lines = 0;
+    }
 }
 
 - (void)setGravity:(VVGravity)gravity
