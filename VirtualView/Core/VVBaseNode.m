@@ -138,6 +138,36 @@
 
 #pragma mark ClickEvents
 
+- (BOOL)containsClickable
+{
+    if ([self isClickable]) {
+        return YES;
+    }
+    if (self.subNodes && self.subNodes.count > 0) {
+        for (VVBaseNode *subNode in self.subNodes) {
+            if ([subNode containsClickable]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+- (BOOL)containsLongClickable
+{
+    if ([self isLongClickable]) {
+        return YES;
+    }
+    if (self.subNodes && self.subNodes.count > 0) {
+        for (VVBaseNode *subNode in self.subNodes) {
+            if ([subNode containsLongClickable]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 - (BOOL)isClickable
 {
     return self.flag & VVFlagClickable;

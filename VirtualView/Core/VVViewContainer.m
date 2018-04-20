@@ -60,12 +60,12 @@
         _variableNodes = [VVViewContainer variableNodes:_rootNode];
         self.backgroundColor = [UIColor clearColor];
         UITapGestureRecognizer *tapGes;
-        if ([_rootNode isClickable]) {
+        if ([_rootNode containsClickable]) {
             tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
             [self addGestureRecognizer:tapGes];
         }
         UILongPressGestureRecognizer *longPressGes;
-        if ([_rootNode isLongClickable]) {
+        if ([_rootNode containsLongClickable]) {
             longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
             [self addGestureRecognizer:longPressGes];
         }

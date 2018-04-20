@@ -59,6 +59,8 @@
 // expression setters
 @property (nonatomic, strong) NSMutableDictionary *expressionSetters;
 
+- (BOOL)containsClickable;
+- (BOOL)containsLongClickable;
 - (BOOL)isClickable;
 - (BOOL)isLongClickable;
 - (BOOL)supportExposure;
