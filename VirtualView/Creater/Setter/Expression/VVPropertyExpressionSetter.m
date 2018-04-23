@@ -6,6 +6,7 @@
 //
 
 #import "VVPropertyExpressionSetter.h"
+#import "VVConfig.h"
 
 @interface VVPropertyExpressionSetter ()
 
@@ -135,7 +136,13 @@
                 handled = [node setIntValue:[stringValue intValue] forKey:self.key];
                 break;
             case TYPE_FLOAT:
-                handled = [node setFloatValue:[stringValue floatValue] forKey:self.key];
+            {
+                float floatValue = [stringValue floatValue];
+                if ([stringValue hasSuffix:@"rp"]) {
+                    floatValue *= [VVConfig pointRatio];
+                }
+                handled = [node setFloatValue:floatValue forKey:self.key];
+            }
                 break;
             case TYPE_STRING:
                 handled = [node setStringValue:stringValue forKey:self.key];
