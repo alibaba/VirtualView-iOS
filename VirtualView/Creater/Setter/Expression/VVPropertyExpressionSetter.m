@@ -130,6 +130,17 @@
     if (self.expression) {
         id objectValue = [self.expression resultWithObject:object];
         NSString *stringValue = [objectValue description];
+        
+        if ([objectValue isKindOfClass:[NSArray class]] || [objectValue isKindOfClass:[NSDictionary class]]) {
+            NSError *error = nil;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:objectValue options:NSJSONWritingPrettyPrinted error:&error];
+            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            
+            if (!error && jsonStr) {
+                stringValue = jsonStr;
+            }
+        }
+        
         BOOL handled = NO;
         switch (self.valueType) {
             case TYPE_INT:
