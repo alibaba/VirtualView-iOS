@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.source_files = 'VirtualView/**/*.{h,m}' 
   s.prefix_header_contents = '#import "VVDefines.h"'
 
-  s.dependency 'SDWebImage', '~> 4.2'
+  s.dependency 'SDWebImage', '5.0'
 
 end
